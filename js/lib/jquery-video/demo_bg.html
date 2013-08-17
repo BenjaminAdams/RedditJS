@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+	<title>Make an HTML5 video a background - body bg demo</title>
+	<link rel="stylesheet" href="assets/framework.css"/>
+
+	<link rel="stylesheet" href="assets/style.css"/>
+
+	<script type="text/javascript" src="assets/jquery-1.5.1.js"></script>
+	<script type="text/javascript" src="jquery.videoBG.js"></script>
+	<script type="text/javascript" src="assets/script.js"></script>
+	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7654450-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+<body>
+	<div class="wrapper">	
+		<div id="header">
+		
+			<h1><a href="http://www.pledgie.com/campaigns/14895" id="donate_now" style="float:right">Buy me a beer</a>
+				jquery.videoBG plugin</h1>
+		</div>
+		
+		
+		<div id="main">
+			<ul id="nav">
+				<li><a href="index.html#about">About</a></li>
+				<li><a href="index.html#documentation">Documentation</a></li>
+				<li><a href="index.html#demos">Demos</a></li>
+				<li><a href="https://github.com/sydlawrence/jquery.videoBG">Download</a></li>
+				<li><a href="index.html#donate">Donate a beer</a></li>
+				
+			</ul>
+		
+				<div id="demos" class="tab">
+				
+				<a style="float:right" href="http://www.w3.org/html/logo/">
+					<img src="http://www.w3.org/html/logo/badge/html5-badge-h-multimedia.png" width="133" height="64" alt="HTML5 Powered with Multimedia" title="HTML5 Powered with Multimedia">
+				</a>
+		
+				
+				<div class="demo">
+					<h2>Fixed body background</h2>
+					<p>As seen on this page</p>
+<pre><code>
+$('body').videoBG({
+		position:"fixed",
+		zIndex:-1,
+		mp4:'christmas_snow.mp4',
+		ogv:'christmas_snow.ogv',
+		webm:'christmas_snow.webm',
+		poster:'christmas_snow.jpg',
+		opacity:0.5
+	});
+</code></pre>
+				</div>
+				
+				
+			</div>
+			
+			<div id="donate" class="tab">
+				<h2>Donate a beer</h2>
+				<p>You are more than welcome to donate me some beer money :)</p>
+				<p>I recommend &pound;3 for a donation, just &pound;3!</p>
+				<a href='http://www.pledgie.com/campaigns/14895'><img alt='Click here to lend your support to: jquery.videoBG and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/14895.png?skin_name=chrome' border='0' /></a>
+							</div>
+			
+				<div id="footer">
+			<a href="http://sydlawrence.com" style="float:right;color:#a1a1a1;">Handcrafted by Syd</a>
+		</div>
+		</div>
+		<div class="clearfix">&nbsp;</div>
+		
+	</div>
+</body>
+</html>

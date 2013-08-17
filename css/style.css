@@ -1,0 +1,9 @@
+html{
+  height: 100%;
+    background-color: transparent !important;
+}
+body {
+  min-height: 100%;
+  background-color: transparent !important;
+  position:static !important;
+}

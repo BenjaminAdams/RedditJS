@@ -1,0 +1,12 @@
+    {{#if total}}
+    <span class="todo-count">
+        <span class="number">{{remaining}}</span>
+        <span class="word">{{ifequalsinline remaining 1 labels.item labels.items}}</span>
+          {{ifequalsinline remaining 1 labels.left labels.lefts}}.
+    </span>
+    {{/if}}
+    {{#if done}}
+    <span class="todo-clear">
+        <a id="toto">{{#ifequals done 1}} {{labels.clearitem}} {{else}} {{sprintf labels.clearitems done}} {{/ifequals}}</a>
+    </span>
+    {{/if}}

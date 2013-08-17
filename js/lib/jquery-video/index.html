@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+	<title>Make an HTML5 video a background</title>
+	<link rel="stylesheet" href="assets/framework.css"/>
+
+	<link rel="stylesheet" href="assets/style.css"/>
+
+	<script type="text/javascript" src="assets/jquery-1.5.1.js"></script>
+	<script type="text/javascript" src="jquery.videoBG.js"></script>
+	<script type="text/javascript" src="assets/script.js"></script>
+	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7654450-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+<body>
+	<div class="wrapper">	
+		<div id="header">
+		
+			<h1><a href="http://www.pledgie.com/campaigns/14895" id="donate_now" style="float:right">Buy me a beer</a>
+				jquery.videoBG plugin</h1>
+		</div>
+		
+		
+		<div id="main">
+			<ul id="nav">
+				<li><a href="#about">About</a></li>
+				<li><a href="#documentation">Documentation</a></li>
+				<li><a href="#demos">Demos</a></li>
+				<li><a href="https://github.com/sydlawrence/jquery.videoBG">Download</a></li>
+				<li><a href="#donate">Donate a beer</a></li>
+				
+			</ul>
+		
+			<div id="about" class="tab">
+				
+				<a style="float:right" href="http://www.w3.org/html/logo/">
+					<img src="http://www.w3.org/html/logo/badge/html5-badge-h-multimedia.png" width="133" height="64" alt="HTML5 Powered with Multimedia" title="HTML5 Powered with Multimedia">
+				</a>
+			
+				<h2>About</h2>
+				<p>This jQuery plugin enables you to very easily use an HTML5 video as a background to a website or any div.</p>
+				<p>For browsers that don't support the HTML5 video tag, it just uses an image.</p>
+				
+				
+				
+				<div class="alert">
+					<h3>Warning</h3>
+					<p>Don't abuse this code... Don't use it too often, too many video instances will slow down the browser.</p>
+					<p>Please bear in mind bandwidth usage for both you, and your visitors</p>
+					
+				</div>
+				<h3>Browser Support</h3>
+				
+				<table>
+					<thead>
+					<tr>
+						<th width=300></th>
+						<th width=100>Video</th>
+						<th width=100>Image</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td><b>Firefox 4 (the best experience)</b></td>
+						<td class="success">Yes (webm)</td>
+						<td class="success">Yes</td>
+					</tr>
+					<tr>
+						<td><b>Internet Explorer 9</b></td>
+						<td class="success">Yes (mp4)</td>
+						<td class="success">Yes</td>
+					</tr>
+					
+					<tr>
+						<td><b>Firefox 3.5</b></td>
+						<td class="success">Yes (ogv)</td>
+						<td class="success">Yes</td>
+					</tr>
+					<tr>
+						<td><b>Chrome</b></td>
+						<td class="success">Yes (webm/mp4)</td>
+						<td class="success">Yes</td>
+					</tr>
+					<tr>
+						<td><b>Safari</b></td>
+						<td class="success">Yes (mp4)</td>
+						<td class="success">Yes</td>
+					</tr>
+					<tr>
+						<td><b>Opera 10.5+</b></td>
+						<td class="success">Yes (ogv)</td>
+						<td class="success">Yes</td>
+					</tr>
+					<tr>
+						<td><b>Internet Explorer 8</b></td>
+						<td class="error">No</td>
+						<td class="success">Yes</td>
+					</tr>
+					<tr>
+						<td><b>Internet Explorer 7</b></td>
+						<td class="error">No</td>
+						<td class="success">Yes</td>
+					</tr>
+					<tr>
+						<td><b>Android Browser</b></td>
+						<td class="error">No</td>
+						<td class="success">Yes</td>
+					</tr>
+					<tr>
+						<td><b>Mobile Safari</b></td>
+						<td colspan="2" class="info">Does not modify default behaviour</td>
+					</tr>
+					<tr>
+						<td><b>Older Browsers that support position:fixed</b></td>
+						<td class="error">No</td>
+						<td class="success">Yes</td>
+					</tr>
+					<tr>
+						<td><b>Archaic browsers</b></td>
+						<td colspan="2" class="info">Does not modify default behaviour</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		
+			<div id="documentation" class="tab">
+				<h2>Documentation</h2>
+		
+				<p>
+				<code>$(el).videoBG(options);</code>
+				</p>
+				
+				<h3><code>options</code></h3>
+				
+				<dl>
+					<dt>mp4</dt>
+					<dd><i>required.</i> this is the src for the video</dd>
+			<dt>ogv</dt>
+					<dd><i>required.</i> this is the src for the video</dd>
+			<dt>webm</dt>
+					<dd><i>required.</i> this is the src for the video</dd>
+			<dt>poster</dt>
+					<dd><i>required.</i> this is the src for the img</dd>
+			<dt>autoplay</dt>
+					<dd><code>bool</code></dd>
+			<dt>loop</dt>
+					<dd><code>int</code>number of times to loop, true if infinite</dd>
+			<dt>sclae</dt>
+					<dd><code>bool</code></dd>
+			<dt>position</dt>
+					<dd>the css position of the video</dd>
+			<dt>opacity</dt>
+					<dd><code>int</code> 0 - 1</dd>
+			<dt>textReplacement</dt>
+					<dd><code>bool</code> - used if you are replacing text</dd>
+			<dt>zIndex</dt>
+					<dd>optional</dd>
+			<dt>width</dt>
+					<dd><i>required if textReplacement.</i></dd>
+			<dt>height</dt>
+					<dd><i>required if textReplacement.</i></dd>
+				
+				
+				</dl>
+			</div>
+			<div id="demos" class="tab">
+				<h2>Demos</h2>
+				
+					
+				
+				<ul>
+					<li><a href="demo_bg.html">Man example of a background video</a></li>
+					<li><a href="demo_div.html">Example of a background of a div</a></li>
+					<li><a href="demo_text.html">Text Replacement example</a></li>
+				</ul>
+				
+			</div>
+			<div id="donate" class="tab">
+				<h2>Donate a beer</h2>
+				<p>You are more than welcome to donate me some beer money :)</p>
+				<p>I recommend &pound;3 for a donation, just &pound;3!</p>
+				<a href='http://www.pledgie.com/campaigns/14895'><img alt='Click here to lend your support to: jquery.videoBG and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/14895.png?skin_name=chrome' border='0' /></a>
+							</div>
+			<div id="footer">
+			<a href="http://sydlawrence.com" style="float:right">Handcrafted by Syd</a>
+			
+			<a href="http://twitter.com/sydlawrence">Follow me</a>
+			
+			
+			
+			
+		</div>
+		</div>
+		<div class="clearfix">&nbsp;</div>
+		
+	</div>
+</body>
+</html>
