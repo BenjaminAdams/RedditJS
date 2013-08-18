@@ -50,6 +50,8 @@ require.config({
             exports: 'async'
         }
     },
+	
+	 urlArgs: 'appversion=345345345',
 
     // Libraries
     paths: {

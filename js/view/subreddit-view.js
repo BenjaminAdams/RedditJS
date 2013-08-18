@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'collection/subreddit'],
-  function(_, Backbone, Resthub, subredditTmpl,SubredditCollection){
+  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'view/post-row-view','collection/subreddit'],
+  function(_, Backbone, Resthub, subredditTmpl, PostRowView, SubredditCollection){
   var SubredditView = Resthub.View.extend({
   
 	el:$("#main"),
@@ -26,6 +26,12 @@ define([
 	},
 	renderPosts: function() {
 		console.log(this.collection)
+		var self = this;
+		this.collection.each(function(model) {
+			var postview = new PostRowView({ root: "#posts", model: model}); 
+			self.$("#posts").append(postview)
+           // var post = new PostRowView(model)
+        }, this);
 	},
 	
 

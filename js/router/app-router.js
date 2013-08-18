@@ -1,6 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'view/subreddit-view','backbone-queryparams'], function($,_,Backbone, SubredditView) {
-
-
+define([ 'underscore', 'backbone', 'view/subreddit-view','backbone-queryparams'], function(_,Backbone, SubredditView) {
 
     var AppRouter = Backbone.Router.extend({
         
@@ -10,7 +8,6 @@ define(['jquery', 'underscore', 'backbone', 'view/subreddit-view','backbone-quer
         
         routes: {
             '': 'main',
-			'r': 'subreddit',
             'r/:subname': 'subreddit'
         },
         
