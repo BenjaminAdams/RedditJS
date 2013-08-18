@@ -11,16 +11,16 @@ define(['jquery', 'underscore', 'backbone', 'view/subreddit-view','backbone-quer
         routes: {
             '': 'main',
 			'r': 'subreddit',
-            'r/*': 'subreddit'
+            'r/:subname': 'subreddit'
         },
         
         main: function() {
             console.debug("Main route activated");
         },
 
-        subreddit: function() {
-            console.debug("subreddit route activated");
-			subredditView = new SubredditView();
+        subreddit: function(subname) {
+            console.debug("subreddit route for "+subname+"activated");
+			subredditView = new SubredditView({subname:subname});
 
         }
     });

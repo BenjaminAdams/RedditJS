@@ -3,9 +3,9 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 
     // Default attributes 
     defaults: {
-	  name: "Beer name",
-	  image:"some img",
-	  slug: "slug"
+	 // name: "Beer name",
+	 // image:"some img",
+	//  slug: "slug"
     },
 
   });
