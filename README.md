@@ -9,10 +9,10 @@ It then creates the output in the `target` folder
 
 
 Backbone Bootstrap is a Javascript stack based on :
- * `Require.js <http://requirejs.org/>`_
- * `jQuery <http://jquery.com/>`_
- * `Backbone.js <https://github.com/jashkenas/backbone>`_
- * `Underscore.js <https://github.com/jashkenas/underscore>`_
+ * Require.js <http://requirejs.org/>
+ * jQuery <http://jquery.com/>
+ * Backbone.js <https://github.com/jashkenas/backbone>
+ * Underscore.js <https://github.com/jashkenas/underscore>
 
-`RESThub Backbone stack documentation <http://resthub.org/2/backbone-stack.html>`_.
+RESThub Backbone stack documentation <http://resthub.org/2/backbone-stack.html>
 
