@@ -1,4 +1,4 @@
-how to build with the r.js optimizer
+####How to build with the r.js optimizer
 
 ```js
 node js/build/r.js -o build-config.js
@@ -8,7 +8,7 @@ It then creates the output in the `target` folder
 
 
 
-Backbone Bootstrap is a Javascript stack based on :
+####Backbone Bootstrap is a Javascript stack based on :
  * Require.js <http://requirejs.org/>
  * jQuery <http://jquery.com/>
  * Backbone.js <https://github.com/jashkenas/backbone>
