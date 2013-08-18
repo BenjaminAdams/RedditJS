@@ -1,4 +1,4 @@
-define(['backbone', 'model/post'], function(Backbone, PostModel){
+define(['backbone', 'model/post',"moment"], function(Backbone, PostModel){
 	  
     var Post = Backbone.Collection.extend({
 		initialize: function(data) {
@@ -29,6 +29,13 @@ define(['backbone', 'model/post'], function(Backbone, PostModel){
 			var models = Array();
 			_.each(response.data.children, function(item) {
 				var post = new PostModel(item.data)
+				
+				var timeAgo = moment.unix(post.get("created")).fromNow()
+				timeAgo = timeAgo.replace("in ",''); //why would it add the word "in"
+				
+				post.set("timeAgo",timeAgo)		
+				post.set("timeUgly", moment.unix(post.get("created")).format())
+				post.set("timePretty", moment.unix(post.get("created")).format("ddd MMM DD HH:mm:ss YYYY") + " UTC")  //format Sun Aug 18 12:51:06 2013 UTC
 				//console.log(post)
 				models.push(post)
 			});
