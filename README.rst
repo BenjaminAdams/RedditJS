@@ -1,4 +1,4 @@
-***how to build with the r.js optimizer
+how to build with the r.js optimizer
 
 `js
 node js/build/r.js -o build-config.js
