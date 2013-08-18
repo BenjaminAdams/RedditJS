@@ -11,7 +11,13 @@ define(['backbone', 'model/post'], function(Backbone, PostModel){
 		model: PostModel,
 		
 		url: function() {
+		if(this.subName=="front"){
+			return 'http://api.reddit.com/.json?jsonp=?';		
+		}
+		else
+		{
 			return 'http://api.reddit.com/r/'+this.subName+'.json?jsonp=?';
+		}
 		},
 		
 		parse: function(response) {

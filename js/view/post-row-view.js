@@ -3,7 +3,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
         var PostRowView = Resthub.View.extend({
 			strategy: 'append',
             events: {
-                'click .display':  'clickedDisplay',
+                'click img':  'clickedDisplay',
               //  'keyup #new-todo':     'showTooltip'
             },
             

@@ -28,8 +28,8 @@ define([
 		console.log(this.collection)
 		var self = this;
 		this.collection.each(function(model) {
-			var postview = new PostRowView({ root: "#posts", model: model}); 
-			self.$("#posts").append(postview)
+			var postview = new PostRowView({ root: "#siteTable", model: model}); 
+			//self.$("#siteTable").append(postview)
            // var post = new PostRowView(model)
         }, this);
 	},

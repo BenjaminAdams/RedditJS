@@ -13,6 +13,7 @@ define([ 'underscore', 'backbone', 'view/subreddit-view','backbone-queryparams']
         
         main: function() {
             console.debug("Main route activated");
+			subredditView = new SubredditView({subname:"front"});
         },
 
         subreddit: function(subname) {
