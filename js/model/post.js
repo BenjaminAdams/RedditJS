@@ -1,5 +1,5 @@
 define(['underscore', 'backbone'], function(_, Backbone) {
-  var Beer = Backbone.Model.extend({
+  var Post = Backbone.Model.extend({
 
     // Default attributes 
     defaults: {
@@ -9,5 +9,5 @@ define(['underscore', 'backbone'], function(_, Backbone) {
     },
 
   });
-  return Beer;
+  return Post;
 });

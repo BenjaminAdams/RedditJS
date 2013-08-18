@@ -1,14 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'view/beers-view','backbone-queryparams','jqueryvideo'], function($,_,Backbone, BeersView,Jqueryvideo) {
+define(['jquery', 'underscore', 'backbone', 'view/subreddit-view','backbone-queryparams'], function($,_,Backbone, SubredditView) {
 
-	  $('body').videoBG({
-		position:"fixed",
-		zIndex:-1,
-		mp4:'http://shimer.troll.me/js/lib/jquery-video/assets/christmas_snow.mp4',
-		ogv:'http://shimer.troll.me/js/lib/jquery-video/assets/christmas_snow.ogv',
-		webm:'http://shimer.troll.me/js/lib/jquery-video/assets/christmas_snow.webm',
-		poster:'http://shimer.troll.me/js/lib/jquery-video/assets/christmas_snow.jpg',
-		opacity:0.5
-	});
 
 
     var AppRouter = Backbone.Router.extend({
@@ -19,16 +10,17 @@ define(['jquery', 'underscore', 'backbone', 'view/beers-view','backbone-querypar
         
         routes: {
             '': 'main',
-            'beers': 'beers'
+			'r': 'subreddit',
+            'r/*': 'subreddit'
         },
         
         main: function() {
             console.debug("Main route activated");
         },
 
-        beers: function() {
-            console.debug("beers route activated");
-			beersView = new BeersView();
+        subreddit: function() {
+            console.debug("subreddit route activated");
+			subredditView = new SubredditView();
 
         }
     });
