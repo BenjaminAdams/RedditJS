@@ -3,6 +3,6 @@
     RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} !index
+    RewriteCond %{REQUEST_URI} !index.html
     RewriteRule (.*) index.html [L]
 </ifModule>

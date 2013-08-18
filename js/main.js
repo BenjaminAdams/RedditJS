@@ -66,7 +66,6 @@ require.config({
         'backbone-validation': 'lib/resthub/backbone-validation-ext',
         'handlebars-orig': 'lib/handlebars',
         'handlebars': 'lib/resthub/handlebars-helpers',
-
         'backbone-datagrid': 'lib/backbone-datagrid',
         'backbone-paginator': 'lib/backbone-paginator',
         'backbone-associations': 'lib/backbone-associations',

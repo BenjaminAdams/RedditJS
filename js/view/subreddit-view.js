@@ -8,12 +8,25 @@ define([
      // 'click .mark-all-done': 'toggleAllComplete'
     },
     initialize: function(options) {
-    //  _.bindAll(this, 'addOne', 'addAll', 'render', 'toggleAllComplete');
+    _.bindAll(this);
 	this.collection = new SubredditCollection();
 	this.template = subredditTmpl;
 	this.render();
 
+	this.collection.fetch({success : this.loaded});
+	
+
+
     },
+	
+	loaded: function(response, posts){
+	//	console.log(posts)
+		this.renderPosts()
+	},
+	renderPosts: function() {
+		console.log(this.collection)
+	},
+	
 
   });
   return SubredditView;
