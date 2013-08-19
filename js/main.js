@@ -72,7 +72,6 @@ require.config({
         'backbone-paginator': 'lib/backbone-paginator',
         'backbone-associations': 'lib/backbone-associations',
         'backbone-localstorage': 'lib/backbone-localstorage',
-		//markdown: 'lib/markdown',
         async: 'lib/async',
         keymaster: 'lib/keymaster',
         hbs: 'lib/resthub/require-handlebars',
@@ -80,7 +79,9 @@ require.config({
         template: '../template',
 		json2: 'lib/json2',
 		jqueryvideo: 'lib/jquery-video/jquery-videoBG',
-        console: 'lib/resthub/console'
+        console: 'lib/resthub/console',
+		//markdown: 'lib/markdown',
+		"easyXDM": 'lib/easyXDM/easyXDM.min/'
     }
 });
 
