@@ -3,7 +3,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
         var PostRowView = Resthub.View.extend({
 			strategy: 'append',
             events: {
-                'click img':  'clickedDisplay',
+                'click .up':  'upvote',
               //  'keyup #new-todo':     'showTooltip'
             },
             
@@ -13,7 +13,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
                 this.render();
                 // this.$() is a shortcut for this.$el.find().
             },
-			 clickedDisplay: function() {
+			 upvote: function() {
 					console.log(this.model)
 			 }
 

@@ -48,7 +48,8 @@ require.config({
         },
         'async': {
             exports: 'async'
-        }
+        },
+		"cookie"  : ["jquery"]
     },
 	
 	 urlArgs: 'appversion=345345345',
@@ -81,7 +82,7 @@ require.config({
 		jqueryvideo: 'lib/jquery-video/jquery-videoBG',
         console: 'lib/resthub/console',
 		//markdown: 'lib/markdown',
-		"easyXDM": 'lib/easyXDM/easyXDM.min/'
+		'cookie': 'lib/jquery.cookie'         
     }
 });
 
