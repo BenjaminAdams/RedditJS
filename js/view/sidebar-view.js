@@ -1,7 +1,6 @@
 define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/base-view', 'model/sidebar', 'cookie'],
 	function($, _, Backbone, Resthub, SidebarTmpl, BaseView, SidebarModel, Cookie) {
 		var SidebarView = BaseView.extend({
-			//strategy: 'append',
 			events: {
 				'click .theLoginBtn': 'login',
 				//  'keyup #new-todo':     'showTooltip'
@@ -15,6 +14,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				this.model.fetch({
 					success: this.loaded
 				});
+
 				// this.$() is a shortcut for this.$el.find().
 
 			},
