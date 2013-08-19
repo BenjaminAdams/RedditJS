@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'view/post-row-view','collection/subreddit'],
-  function(_, Backbone, Resthub, subredditTmpl, PostRowView, SubredditCollection){
+  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'view/post-row-view', 'view/sidebar-view', 'collection/subreddit'],
+  function(_, Backbone, Resthub, subredditTmpl, PostRowView, SidebarView, SubredditCollection){
   var SubredditView = Resthub.View.extend({
   
 	el:$("#main"),
@@ -12,9 +12,14 @@ define([
 	
     initialize: function(options) {
     _.bindAll(this);
-	this.collection = new SubredditCollection(options.subname);
+	this.subName = options.subName
+	this.collection = new SubredditCollection(this.subName);
 	this.template = subredditTmpl;
 	this.render();
+	
+	//load sidebar
+	this.sidebar = new SidebarView({subName:this.subName, root: ".side" })
+
 
 	this.collection.fetch({success : this.loaded});
 	

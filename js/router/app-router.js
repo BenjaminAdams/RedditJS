@@ -8,17 +8,17 @@ define([ 'underscore', 'backbone', 'view/subreddit-view','backbone-queryparams']
         
         routes: {
             '': 'main',
-            'r/:subname': 'subreddit'
+            'r/:subName': 'subreddit'
         },
         
         main: function() {
             console.debug("Main route activated");
-			subredditView = new SubredditView({subname:"front"});
+			subredditView = new SubredditView({subName:"front"});
         },
 
-        subreddit: function(subname) {
-            console.debug("subreddit route for "+subname+"activated");
-			subredditView = new SubredditView({subname:subname});
+        subreddit: function(subName) {
+            console.debug("subreddit route for "+subName+"activated");
+			subredditView = new SubredditView({subName:subName});
 
         }
     });

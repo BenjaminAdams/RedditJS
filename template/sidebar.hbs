@@ -1,0 +1,215 @@
+<div class="spacer">
+            <form action="http://www.reddit.com/r/{{model.display_name}}/search" id="search"
+            name="search">
+                <input name="q" placeholder="search reddit" type="text">
+
+                <div class="infobar" id="searchexpando" style="display: none;">
+                    <label><input name="restrict_sr" type="checkbox">limit my
+                    search to /r/{{model.display_name}}</label>
+
+                    <div id="moresearchinfo">
+                        <a href="#" id="search_hidemore">[-]</a>
+
+                        <p>use the following search parameters to narrow your
+                        results:</p>
+
+                        <dl>
+                            <dt>subreddit:<em>subreddit</em></dt>
+
+                            <dd>find submissions in "subreddit"</dd>
+
+                            <dt>author:<em>username</em></dt>
+
+                            <dd>find submissions by "username"</dd>
+
+                            <dt>site:<em>example.com</em></dt>
+
+                            <dd>find submissions from "example.com"</dd>
+
+                            <dt>url:<em>text</em></dt>
+
+                            <dd>search for "text" in url</dd>
+
+                            <dt>selftext:<em>text</em></dt>
+
+                            <dd>search for "text" in self post contents</dd>
+
+                            <dt>self:yes (or self:no)</dt>
+
+                            <dd>include (or exclude) self posts</dd>
+
+                            <dt>nsfw:yes (or nsfw:no)</dt>
+
+                            <dd>include (or exclude) results marked as
+                            NSFW</dd>
+                        </dl>
+
+                        <p>e.g. <code>subreddit:aww site:imgur.com
+                        dog</code></p>
+
+                        <p><a href="http://www.reddit.com/wiki/search">see the
+                        search faq for details.</a></p>
+                    </div>
+
+                    <p><a href="http://www.reddit.com/wiki/search" id=
+                    "search_showmore">advanced search: by author,
+                    subreddit...</a></p>
+                </div>
+            </form>
+        </div>
+
+        <div class="spacer">
+            <form action="https://ssl.reddit.com/r/pics/post/login" class="login-form login-form-side" id="login_login-main" method="post" name="login_login-main">
+                <input name="op" type="hidden" value="login-main">
+				<input class='loginUsername' maxlength="20" name="user" placeholder="username" tabindex="1" type="text">
+				<input class='loginPassword' name="passwd" placeholder="password" tabindex="1" type="password">
+
+                <div class="status"></div>
+
+                <div id="remember-me">
+                    <input id="rem-login-main" name="rem" tabindex="1" type="checkbox"><label for="rem-login-main">remember me</label>
+					<a class="recover-password" href="/password">reset password</a>
+                </div>
+
+                <div class="submit">
+                    <span class="throbber"></span><button class="btn theLoginBtn" tabindex="1" type="submit">login</button>
+                </div>
+
+                <div class="clear"></div>
+            </form>
+        </div>
+
+        <div class="spacer">
+            <div class="sponsorshipbox"></div>
+        </div>
+
+        <div class="spacer">
+            <div class="sidebox submit submit-link">
+                <div class="morelink">
+                    <a class="login-required" href=
+                    "http://www.reddit.com/r/{{model.display_name}}/submit">Submit a new link</a>
+
+                    <div class="nub"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spacer">
+            <div class="titlebox">
+                <h1 class="hover redditname"><a class="hover" href=
+                "/r/{{model.display_name}}/">{{model.display_name}}</a></h1><span class=
+                "subscribe-button fancy-toggle-button toggle" data-sr_name=
+                "{{model.display_name}}" style=""><a class="option active remove login-required"
+                href="#" tabindex="100">unsubscribe</a><a class="option add"
+                href="#">subscribe</a></span><span class=
+                "subscribers"><span class="number">4,171,335</span>
+                <span class="word">readers</span></span>
+
+                <p class="users-online" title=
+                "logged-in users viewing this subreddit in the past 15 minutes">
+                <span class="number">11,999</span> <span class="word">users
+                here now</span></p>
+
+                <form action="#" class="usertext" id="form-t5_2qh0u1et" name=
+                "form-t5_2qh0u1et" onsubmit=
+                "return post_form(this, 'editusertext')">
+                    <input name="thing_id" type="hidden" value="t5_2qh0u">
+
+                    <div class="usertext-body">
+                        <div class="md">
+							{{{model.description_html}}} 
+                        </div>
+                    </div>
+                </form>
+
+                <div class="bottom">
+                    <span class="age">a community for <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time></span>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div class="spacer">
+            <iframe frameborder="0" id="ad_main" name="ad_main" scrolling="no"
+            src=
+            "http://static.adzerk.net/reddit/ads.html?sr=pics#http://www.reddit.com">
+            </iframe><script type="text/javascript">
+$(function() { var ad = $("#ad_main"); if(!ad.length || ad.height() == 0 || ad.width() == 0 || ad.offset().left == 0) { $(".footer").append("<img alt='' src='http://pixel.redditmedia.com/pixel/of_defenestration.png?hash=adblock0e31bc319d5b5882b0cddf147f4ce1da5ac9c731&id=adblock&random=" + Math.random()*10000000000000000 + "'/>"); } });
+            </script>
+        </div>
+
+        <div class="spacer">
+            <div class="sidecontentbox">
+                <a class="helplink" href=
+                "/message/compose?to=%2Fr%2Fpics">message the moderators</a>
+
+                <div class="title">
+                    <h1>MODERATORS</h1>
+                </div>
+
+                <ul class="content">
+                    <li>
+                        <a class="author id-t2_31zmq" href=
+                        "http://www.reddit.com/user/Resilience">Resilience</a><span class="userattrs"></span>
+                    </li>
+
+                    <li>
+                        <a class="author id-t2_1uzpp" href=
+                        "http://www.reddit.com/user/qgyh2">qgyh2</a><span class="userattrs"></span>
+                    </li>
+
+                    <li>
+                        <a class="author id-t2_35gvu" href=
+                        "http://www.reddit.com/user/krispykrackers">krispykrackers</a><span class="userattrs"></span>
+                    </li>
+
+                    <li>
+                        <a class="author id-t2_37vxi" href=
+                        "http://www.reddit.com/user/BritishEnglishPolice">BritishEnglishPolice</a><span class="userattrs"></span>
+                    </li>
+
+                    <li>
+                        <a class="author id-t2_2yqt" href=
+                        "http://www.reddit.com/user/maxwellhill">maxwellhill</a><span class="userattrs"></span>
+                    </li>
+
+                    <li>
+                        <a class="author id-t2_2on1" href=
+                        "http://www.reddit.com/user/masta">masta</a><span class="userattrs"></span>
+                    </li>
+
+                    <li>
+                        <a class="author id-t2_36li1" href=
+                        "http://www.reddit.com/user/Tblue">Tblue</a><span class="userattrs"></span>
+                    </li>
+
+                    <li>
+                        <a class="author id-t2_17sb7" href=
+                        "http://www.reddit.com/user/jamt9000">jamt9000</a><span class="userattrs"></span>
+                    </li>
+
+                    <li>
+                        <a class="author id-t2_3e5z7" href=
+                        "http://www.reddit.com/user/nullren">nullren</a><span class="userattrs"></span>
+                    </li>
+
+                    <li>
+                        <span class="flair" title="The Janitor">The
+                        Janitor</span><a class="author id-t2_q22x" href=
+                        "http://www.reddit.com/user/Kylde">Kylde</a><span class="userattrs"></span>
+                    </li>
+
+                    <li class="more">
+                        <a href=
+                        "http://www.reddit.com/r/pics/about/moderators">...and
+                        18 more »</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+ 
+ 
+ 
+ 
