@@ -62,15 +62,31 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 						post.set("external", "data-bypass")
 					}
 
-					//keeps track if the user voted for this or not
+					/*keeps track if the user voted for this or not
+						putting the class upmod makes the vote count as an upvote
+						downmod makes the vote show as a downvote
+						leave the classes as "down" and "up" to leave the no vote option
+
+					*/
 					var likes = post.get("likes")
-					if (likes == null)
+					if (likes == null) {
 						post.set("voted", "unvoted")
-					else if (likes === true) {
+						post.set('downmod', 'down')
+						post.set('upmod', 'up')
+					} else if (likes === true) {
 						post.set("voted", "likes")
+						post.set('downmod', 'down')
+						post.set('upmod', 'upmod')
 					} else {
 						post.set("voted", "dislikes")
+						post.set('downmod', 'downmod')
+						post.set('upmod', 'up')
 					}
+
+					//We have to print the score out for the upvoted and downvoted values
+					var score = post.get('score');
+					post.set("scoreUp", +score + 1)
+					post.set("scoreDown", +score - 1)
 
 					self.count++;
 				}

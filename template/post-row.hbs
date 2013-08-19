@@ -2,21 +2,21 @@
        <p class="parent"></p><span class="rank" style="width:3.30ex;">{{model.count}}</span>
 
         <div class="midcol {{model.voted}} " style="width:5ex;">
-            <div class="arrow up login-required" tabindex="0"></div>
+            <div class="arrow login-required upArrow {{model.upmod}}" role='button' aria-label="upvote" tabindex="0"></div>
 
             <div class="score dislikes">
-                {{model.downs}}
+                {{model.scoreDown}} 
             </div>
 
-            <div class="score {{model.voted}}">
-                {{model.ups}}
+            <div class="score unvoted">
+                {{model.score}}
             </div>
 
             <div class="score likes">
-                {{model.score}}
+                {{model.scoreUp}}
             </div>
 			
-			<div class="arrow login-required down" role="button" aria-label="downvote" tabindex="0"></div>
+	<div class="arrow login-required downArrow {{model.downmod}}" role="button" aria-label="downvote" tabindex="0"></div>
 
 
         </div>

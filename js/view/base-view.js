@@ -3,7 +3,7 @@ define([
 	function(_, Backbone, Resthub, Cookie) {
 		var BaseView = Resthub.View.extend({
 			api: function(url, type, params, callback) {
-				if (checkIfLoggedIn() == true) {
+				if (this.checkIfLoggedIn() == true) {
 					var cookie = $.cookie('reddit_session');
 
 					$.ajax({
@@ -31,6 +31,19 @@ define([
 				} else {
 					return false;
 				}
+			},
+			//Can be used to vote on a post or a comment
+			vote: function(dir, id) {
+
+				var params = {
+					id: id,
+					dir: dir,
+					uh: $.cookie('modhash'),
+				};
+
+				this.api("api/vote", 'POST', params, function(data) {
+					console.log("vote done", data)
+				});
 			}
 
 		});

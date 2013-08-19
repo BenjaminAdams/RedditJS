@@ -3,7 +3,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
         var PostRowView = BaseView.extend({
             strategy: 'append',
             events: {
-                'click .up': 'upvote',
+                'click .upArrow': 'upvote',
+                'click .downArrow': 'downvote',
                 //  'keyup #new-todo':     'showTooltip'
             },
 
@@ -14,20 +15,58 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
                 // this.$() is a shortcut for this.$el.find().
             },
             upvote: function() {
-                this.vote(1)
+                if (this.model.get('likes') == false || this.model.get('likes') == null) {
+                    this.vote(1, this.model.get('name'))
+                    this.model.set('likes', true)
+                    this.model.set('downmod', 'down')
+                    this.model.set('upmod', 'upmod')
+                    this.$('.midcol .dislikes').hide()
+                    this.$('.midcol .likes').show()
+                    this.$('.midcol .unvoted').hide()
+
+                    this.$('.upArrow').addClass('upmod')
+                    this.$('.upArrow').removeClass('up')
+                    this.$('.downArrow').addClass('down')
+                    this.$('.downArrow').removeClass('downmod')
+
+                } else {
+                    this.cancelVote()
+                }
             },
-            vote: function(dir) {
-                var modhash = $.cookie('modhash')
+            downvote: function() {
+                if (this.model.get('likes') == true || this.model.get('likes') == null) {
 
-                var params = {
-                    id: this.model.get('name'),
-                    dir: dir,
-                    uh: modhash,
-                };
+                    this.vote(-1, this.model.get('name'))
+                    this.model.set('likes', false)
+                    this.model.set('downmod', 'downmod')
+                    this.model.set('upmod', 'up')
 
-                this.api("api/vote", 'POST', params, function(data) {
-                    console.log(data)
-                });
+                    this.$('.midcol .dislikes').show()
+                    this.$('.midcol .likes').hide()
+                    this.$('.midcol .unvoted').hide()
+
+                    this.$('.upArrow').addClass('up')
+                    this.$('.upArrow').removeClass('upmod')
+                    this.$('.downArrow').addClass('downmod')
+                    this.$('.downArrow').removeClass('down')
+
+                } else {
+                    this.cancelVote()
+                }
+            },
+            cancelVote: function() {
+                this.vote(0, this.model.get('name'))
+                this.model.set('likes', null)
+                this.model.set('downmod', 'down')
+                this.model.set('upmod', 'up')
+                this.$('.midcol .dislikes').hide()
+                this.$('.midcol .likes').hide()
+                this.$('.midcol .unvoted').show()
+
+                this.$('.upArrow').addClass('up')
+                this.$('.upArrow').removeClass('upmod')
+                this.$('.downArrow').addClass('down')
+                this.$('.downArrow').removeClass('downmod')
             }
 
         });
