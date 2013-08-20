@@ -168,14 +168,14 @@ if ( !$url ) {
   }
   
 //always send cookies
-    $cookie = array();
-    foreach ( $_COOKIE as $key => $value ) {
-      $cookie[] = $key . '=' . $value;
-    }
+ //   $cookie = array();
+ //   foreach ( $_COOKIE as $key => $value ) {
+ //     $cookie[] = $key . '=' . $value;
+ //   }
 
    // $cookie[] = SID;
-    $cookie = implode( '; ', $cookie );   
-    curl_setopt( $ch, CURLOPT_COOKIE, $cookie );
+//    $cookie = implode( '; ', $cookie );   
+ //   curl_setopt( $ch, CURLOPT_COOKIE, $cookie );
   
 
   if(isset($_GET['cookie']))

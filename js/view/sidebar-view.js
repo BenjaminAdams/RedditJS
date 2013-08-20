@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/base-view', 'view/login-view', 'model/sidebar', 'cookie'],
-	function($, _, Backbone, Resthub, SidebarTmpl, BaseView, LoginView, SidebarModel, Cookie) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/base-view', 'view/login-view', 'view/header-view', 'model/sidebar', 'cookie'],
+	function($, _, Backbone, Resthub, SidebarTmpl, BaseView, LoginView, HeaderView, SidebarModel, Cookie) {
 		var SidebarView = BaseView.extend({
 			events: {
 				//  'keyup #new-todo':     'showTooltip'
@@ -24,9 +24,11 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				this.loginView = new LoginView({
 					root: "#theLogin"
 				})
-				this.loginView.render()
 
 				//now render the login view
+				this.loginView.render()
+
+				HeaderView.updateHeader(this.model)
 
 			},
 

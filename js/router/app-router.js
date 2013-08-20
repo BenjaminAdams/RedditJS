@@ -1,4 +1,5 @@
-define(['underscore', 'backbone', 'view/subreddit-view', 'backbone-queryparams'], function(_, Backbone, SubredditView) {
+define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view',
+    'backbone-queryparams'], function(_, Backbone, SubredditView, HeaderView) {
 
     var AppRouter = Backbone.Router.extend({
 
@@ -7,6 +8,9 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'backbone-queryparams']
                 pushState: true,
                 root: "/"
             });
+
+            // this.header = new HeaderView();
+
         },
 
         routes: {
