@@ -1,14 +1,18 @@
 define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 	var Sidebar = Backbone.Model.extend({
 		initialize: function(data) {
-			this.subName = data
+			if (data == null) {
+				this.subName = 'front'
+			} else {
+				this.subName = data
+			}
 		},
 
 		url: function() {
 			if (this.subName == "front") {
-				//KEEP THIS IS A JSON REQUEST!!
+				//KEEP THIS IS A JSONP REQUEST!!
 				return 'http://api.reddit.com/.json?jsonp=?';
-			} else { //KEEP THIS IS A JSON REQUEST!!
+			} else { //KEEP THIS IS A JSONP REQUEST!!
 				return "http://api.reddit.com/r/" + this.subName + "/about.json?jsonp=?"
 			}
 		},
@@ -17,7 +21,9 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 		defaults: {
 			display_name: '',
 			description_html: '',
-			//  slug: "slug"
+			header_img: "img/logo.png",
+			rname: '',
+			public_description: ''
 		},
 		//so we have the attributes in the root of the model
 		parse: function(response) {
@@ -27,7 +33,7 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 			data.timeAgo = timeAgo
 			data.timeUgly = moment.unix(data.created).format()
 			data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
-
+			data.rname = "/r/" + data.display_name
 			//data.description = markdown.toHTML(data.description)
 			data.description_html = (typeof data.description_html === 'undefined') ? '' : $('<div/>').html(data.description_html).text();
 			//data.description_html = data.description_html.replace("reddit.com","redditjs.com")

@@ -11,8 +11,11 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				this.subName = data.subName
 				this.model = new SidebarModel(this.subName)
 
-				if (this.subname == "front") {
+				if (this.subName == "front") {
+					//this.model.set('header_img', 'img/logo.png')
 					this.render()
+					this.loadLoginView()
+					channel.trigger("header:update", this.model);
 
 				} else { //only fetch sidebar info if on the front page
 					this.model.fetch({
@@ -24,18 +27,20 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 			},
 			loaded: function(response, sidebar) {
 				this.render()
+				this.loadLoginView()
+				channel.trigger("header:update", this.model);
 
+				//HeaderView.updateHeader(this.model)
+
+			},
+			loadLoginView: function() {
 				this.loginView = new LoginView({
 					root: "#theLogin"
 				})
 
 				//now render the login view
 				this.loginView.render();
-				channel.trigger("header:update", this.model);
-
-				//HeaderView.updateHeader(this.model)
-
-			},
+			}
 
 		});
 		return SidebarView;

@@ -9,6 +9,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 				_.bindAll(this);
 				this.template = LogInTmpl;
 				this.render()
+				console.log('rendering login view')
 				if (this.checkIfLoggedIn() == true) {
 					this.$el.hide()
 				} else {

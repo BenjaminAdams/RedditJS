@@ -11,29 +11,33 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				_.bindAll(this);
 				this.template = HeaderTmpl;
 				this.me = new MeModel()
-				//this.model = new SidebarModel(data.subName)
+				//this.model = new SidebarModel()
 				console.log("I should only render the header once")
 				this.render();
 				this.userbar = new UserbarView({
 					root: "#header-bottom-right"
 				})
 
-				this.headerImg = ""
 				channel.bind("header:update", this.updateHeader, this);
 				channel.bind("login", this.updateSubreddits, this);
-				// this.model.fetch({
-				// 	success: this.loaded
-				// });
 
 				// this.$() is a shortcut for this.$el.find().
 
 			},
 			updateHeader: function(model) {
-				this.headerImg = model.get('header_img')
-				if (this.headerImg) {
-					//this.$("#header-img").removeClass('default-header')
-					this.$("#header-img").attr("src", this.headerImg);
-				}
+				this.model = model
+				//this.userbar.render()
+				this.$("#pagename-a").prop("href", model.get('rname'))
+				this.$("#pagename-a").text(model.get('display_name'))
+
+				this.$("#header-img").attr("src", model.get('header_img'));
+
+				this.$(".hot").prop("href", model.get('rname'))
+				this.$(".new").prop("href", model.get('rname') + "/new")
+				this.$(".rising").prop("href", model.get('rname') + "/rising")
+				this.$(".controversial").prop("href", model.get('rname') + "/controversial")
+				this.$(".top").prop("href", model.get('rname') + "/top")
+
 			},
 			updateSubreddits: function() {
 				//query the api for /me.json
@@ -43,6 +47,10 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 			},
 			meLoaded: function(response, model) {
 				console.log('the ME model has been loaded in the header view=', model)
+			},
+			//so we can rerender the header without destroying the child views
+			reRender: function() {
+
 			}
 			// loaded: function(response, sidebar) {
 			// 	this.render()
