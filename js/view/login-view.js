@@ -19,6 +19,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/logged-in',
 			},
 			login: function(e) {
 				e.preventDefault()
+				e.stopPropagation()
 				var self = this;
 				var user = this.$(".loginUsername").val()
 				var pw = this.$(".loginPassword").val()
@@ -46,20 +47,20 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/logged-in',
 						var loginData = data.json.data;
 						console.log(loginData)
 
-						console.log("setting cookie=", loginData.cookie)
-
 						// set cookie
 						$.cookie('reddit_session', loginData.cookie);
 						$.cookie('modhash', loginData.modhash);
 						$.cookie('username', user);
 						//self.setCookie('reddit_session', loginData.cookie, 1);
-						this.template = LoggedInTmpl;
-						this.render()
+						self.template = LoggedInTmpl;
+						self.render()
 					}
 				});
 
 			},
-			logout: function() {
+			logout: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
 				$.removeCookie('reddit_session');
 				$.removeCookie('modhash');
 				$.removeCookie('username');
