@@ -6,8 +6,9 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 
 		url: function() {
 			if (this.subName == "front") {
+				//KEEP THIS IS A JSON REQUEST!!
 				return 'http://api.reddit.com/.json?jsonp=?';
-			} else {
+			} else { //KEEP THIS IS A JSON REQUEST!!
 				return "http://api.reddit.com/r/" + this.subName + "/about.json?jsonp=?"
 			}
 		},

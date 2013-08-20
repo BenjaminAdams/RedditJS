@@ -1,25 +1,21 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/base-view', 'model/sidebar', 'cookie'],
-	function($, _, Backbone, Resthub, SidebarTmpl, BaseView, SidebarModel, Cookie) {
-		var SidebarView = BaseView.extend({
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/logged-in', 'hbs!template/logged-out', 'view/base-view', 'cookie'],
+	function($, _, Backbone, Resthub, LoggedInTmpl, LoggedOutTmpl, BaseView, Cookie) {
+		var LoginView = BaseView.extend({
 			events: {
 				'click .theLoginBtn': 'login',
-				//  'keyup #new-todo':     'showTooltip'
+				'click .logout': 'logout',
 			},
-
 			initialize: function(data) {
 				_.bindAll(this);
-				this.template = SidebarTmpl;
-				this.model = new SidebarModel(data.subName)
-				// this.render();
-				this.model.fetch({
-					success: this.loaded
-				});
+				if (this.checkIfLoggedIn() == true) {
+					this.template = LoggedInTmpl;
+				} else {
+					this.template = LoggedOutTmpl;
+				}
+				//this.model = new SidebarModel(data.subName)
 
 				// this.$() is a shortcut for this.$el.find().
 
-			},
-			loaded: function(response, sidebar) {
-				this.render()
 			},
 			login: function(e) {
 				e.preventDefault()
@@ -32,7 +28,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 					api_type: "json",
 					rem: "true",
 					user: user,
-					passwd: pw
+					passwd: pw,
+					byPassAuth: true //this will pass through the user logged in check
 				};
 
 				//http://www.reddit.com/api/login/?user=faketestuser&passwd=abc123&api_type=json
@@ -56,11 +53,20 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 						$.cookie('modhash', loginData.modhash);
 						$.cookie('username', user);
 						//self.setCookie('reddit_session', loginData.cookie, 1);
+						this.template = LoggedInTmpl;
+						this.render()
 					}
 				});
 
+			},
+			logout: function() {
+				$.removeCookie('reddit_session');
+				$.removeCookie('modhash');
+				$.removeCookie('username');
+				this.template = LoggedOutTmpl;
+				this.render()
 			}
 
 		});
-		return SidebarView;
+		return LoginView;
 	});

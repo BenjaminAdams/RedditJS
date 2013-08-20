@@ -12,13 +12,12 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 		model: PostModel,
 
 		url: function() {
-			var cookie = $.cookie('reddit_session');
 
 			if (this.subName == "front") {
-				return "/api/?url=.json&cookie=" + cookie
+				return "/api/?url=.json&cookie=" + $.cookie('reddit_session');
 				//return 'http://api.reddit.com/.json?jsonp=?';		
 			} else {
-				return '/api/?url=r/' + this.subName + ".json&cookie=" + cookie
+				return '/api/?url=r/' + this.subName + ".json&cookie=" + $.cookie('reddit_session');
 				//return 'http://api.reddit.com/r/'+this.subName+'.json?jsonp=?';
 			}
 		},

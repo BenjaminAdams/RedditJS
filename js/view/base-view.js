@@ -3,7 +3,7 @@ define([
 	function(_, Backbone, Resthub, Cookie) {
 		var BaseView = Resthub.View.extend({
 			api: function(url, type, params, callback) {
-				if (this.checkIfLoggedIn() == true) {
+				if (this.checkIfLoggedIn() == true || params.byPassAuth == true) {
 					var cookie = $.cookie('reddit_session');
 
 					$.ajax({

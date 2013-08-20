@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/base-view', 'model/sidebar', 'cookie'],
-	function($, _, Backbone, Resthub, SidebarTmpl, BaseView, SidebarModel, Cookie) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/base-view', 'view/login-view', 'model/sidebar', 'cookie'],
+	function($, _, Backbone, Resthub, SidebarTmpl, BaseView, LoginView, SidebarModel, Cookie) {
 		var SidebarView = BaseView.extend({
 			events: {
 				'click .theLoginBtn': 'login',
@@ -10,6 +10,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				_.bindAll(this);
 				this.template = SidebarTmpl;
 				this.model = new SidebarModel(data.subName)
+
 				// this.render();
 				this.model.fetch({
 					success: this.loaded
@@ -20,6 +21,14 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 			},
 			loaded: function(response, sidebar) {
 				this.render()
+
+				this.loginView = new LoginView({
+					root: "#theLogin"
+				})
+				this.loginView.render()
+
+				//now render the login view
+
 			},
 			login: function(e) {
 				e.preventDefault()
