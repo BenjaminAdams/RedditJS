@@ -1,17 +1,22 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/logged-in', 'hbs!template/logged-out', 'view/base-view', 'cookie'],
-	function($, _, Backbone, Resthub, LoggedInTmpl, LoggedOutTmpl, BaseView, Cookie) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!template/login', 'event/channel', 'cookie'],
+	function($, _, Backbone, Resthub, BaseView, LogInTmpl, channel, Cookie) {
 		var LoginView = BaseView.extend({
 			events: {
 				'click .theLoginBtn': 'login',
-				'click .logout': 'logout',
+				//'click .logout': 'logout',
 			},
 			initialize: function(data) {
 				_.bindAll(this);
+				this.template = LogInTmpl;
+				this.render()
 				if (this.checkIfLoggedIn() == true) {
-					this.template = LoggedInTmpl;
+					this.$el.hide()
 				} else {
-					this.template = LoggedOutTmpl;
+					//this.template = LoggedOutTmpl;
+					this.$el.show()
 				}
+
+				channel.bind("logout", this.logout, this);
 				//this.model = new SidebarModel(data.subName)
 
 				// this.$() is a shortcut for this.$el.find().
@@ -52,20 +57,25 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/logged-in',
 						$.cookie('modhash', loginData.modhash);
 						$.cookie('username', user);
 						//self.setCookie('reddit_session', loginData.cookie, 1);
-						self.template = LoggedInTmpl;
-						self.render()
+						//self.template = LoggedInTmpl;
+						//self.render()
+						channel.trigger("login");
+						self.$el.hide()
+						//HeaderView.userbar.showLoggedIn()
 					}
 				});
 
 			},
-			logout: function(e) {
-				e.preventDefault()
-				e.stopPropagation()
+			logout: function() {
+				//e.preventDefault()
+				//e.stopPropagation()
+				console.log("fired a logout event", this)
 				$.removeCookie('reddit_session');
 				$.removeCookie('modhash');
 				$.removeCookie('username');
-				this.template = LoggedOutTmpl;
-				this.render()
+
+				this.$el.show() //might not need show()
+				//HeaderView.userbar.showLoggedOut()
 			}
 
 		});

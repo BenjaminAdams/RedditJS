@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'view/base-view', 'model/sidebar', 'cookie'],
-	function($, _, Backbone, Resthub, HeaderTmpl, BaseView, SidebarModel, Cookie) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'view/userbar-view', 'view/base-view', 'model/sidebar', 'event/channel', 'cookie'],
+	function($, _, Backbone, Resthub, HeaderTmpl, UserbarView, BaseView, SidebarModel, channel, Cookie) {
 
 		var HeaderView = BaseView.extend({
 			el: $("#theHeader"),
@@ -11,8 +11,13 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				_.bindAll(this);
 				this.template = HeaderTmpl;
 				//this.model = new SidebarModel(data.subName)
-
+				console.log("I should only render the header once")
 				this.render();
+				this.userbar = new UserbarView({
+					root: "#header-bottom-right"
+				})
+
+				console.log("channel=", channel)
 				this.headerImg = ""
 				// this.model.fetch({
 				// 	success: this.loaded

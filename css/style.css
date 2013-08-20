@@ -1,11 +1,5 @@
 
 
-#header-bottom-right {
-	position: absolute;
-	top: 70px;
-	z-index: 555;
-	height: 10px;
-}
 
 #header-bottom-right .separator {
 	margin: 0ex;

@@ -5,7 +5,6 @@ define([
 			api: function(url, type, params, callback) {
 				if (this.checkIfLoggedIn() == true || params.byPassAuth == true) {
 					var cookie = $.cookie('reddit_session');
-					console.log(params)
 
 					$.ajax({
 						url: "/api/index.php?url=" + url + "&cookie=" + cookie,
