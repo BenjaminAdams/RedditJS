@@ -7,6 +7,7 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 		url: function() {
 
 			return "/api/?url=api/me.json&cookie=" + $.cookie('reddit_session');
+
 		},
 
 		// Default attributes 

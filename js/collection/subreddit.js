@@ -86,6 +86,16 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 					post.set("scoreUp", +score + 1)
 					post.set("scoreDown", +score - 1)
 
+					//figure out if we need to use a default thumbnail
+
+					if (post.get('thumbnail') == 'self') {
+						post.set('thumbnail', 'img/self.png')
+					} else if (post.get('thumbnail') == 'nsfw') {
+						post.set('thumbnail', 'img/nsfw.png')
+					} else if (post.get('thumbnail') == '') {
+						post.set('thumbnail', 'img/notsure.png')
+					}
+
 					self.count++;
 				}
 				models.push(post)

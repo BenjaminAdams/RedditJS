@@ -1,3 +1,7 @@
+##RedditJS.com
+The code that powers <http://RedditJS.com/>
+
+
 ####How to build with the r.js optimizer
 
 From the js/build folder

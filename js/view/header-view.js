@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'view/userbar-view', 'view/base-view', 'model/sidebar', 'event/channel', 'cookie'],
-	function($, _, Backbone, Resthub, HeaderTmpl, UserbarView, BaseView, SidebarModel, channel, Cookie) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'view/userbar-view', 'view/base-view', 'model/sidebar', 'model/me', 'event/channel', 'cookie'],
+	function($, _, Backbone, Resthub, HeaderTmpl, UserbarView, BaseView, SidebarModel, MeModel, channel, Cookie) {
 
 		var HeaderView = BaseView.extend({
 			el: $("#theHeader"),
@@ -10,6 +10,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 			initialize: function(data) {
 				_.bindAll(this);
 				this.template = HeaderTmpl;
+				this.me = new MeModel()
 				//this.model = new SidebarModel(data.subName)
 				console.log("I should only render the header once")
 				this.render();
@@ -19,6 +20,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 
 				this.headerImg = ""
 				channel.bind("header:update", this.updateHeader, this);
+				channel.bind("login", this.updateSubreddits, this);
 				// this.model.fetch({
 				// 	success: this.loaded
 				// });
@@ -33,6 +35,15 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 					this.$("#header-img").attr("src", this.headerImg);
 				}
 			},
+			updateSubreddits: function() {
+				//query the api for /me.json
+				this.me.fetch({
+					success: this.meLoaded
+				});
+			},
+			meLoaded: function(response, model) {
+				console.log('the ME model has been loaded in the header view=', model)
+			}
 			// loaded: function(response, sidebar) {
 			// 	this.render()
 
