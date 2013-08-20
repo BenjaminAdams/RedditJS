@@ -23,7 +23,6 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 		},
 
 		parse: function(response) {
-			console.log(response)
 			//set the after for pagination
 			this.after = response.data.after;
 			var modhash = response.data.modhash;

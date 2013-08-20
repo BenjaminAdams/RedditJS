@@ -1,7 +1,9 @@
 ####How to build with the r.js optimizer
 
+From the js/build folder
+
 ```js
-node js/build/r.js -o build-config.js
+node r.js -o build-config.js
 ```
 
 It then creates the output in the `target` folder
