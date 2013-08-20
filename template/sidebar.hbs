@@ -40,12 +40,10 @@
 
                             <dt>nsfw:yes (or nsfw:no)</dt>
 
-                            <dd>include (or exclude) results marked as
-                            NSFW</dd>
+                            <dd>include (or exclude) results marked as NSFW</dd>
                         </dl>
 
-                        <p>e.g. <code>subreddit:aww site:imgur.com
-                        dog</code></p>
+                        <p>e.g. <code>subreddit:aww site:imgur.com dog</code></p>
 
                         <p><a href="http://www.reddit.com/wiki/search">see the
                         search faq for details.</a></p>
@@ -79,28 +77,21 @@
 
         <div class="spacer">
             <div class="titlebox">
-                <h1 class="hover redditname"><a class="hover" href=
-                "/r/{{model.display_name}}/">{{model.display_name}}</a></h1><span class=
-                "subscribe-button fancy-toggle-button toggle" data-sr_name=
-                "{{model.display_name}}" style=""><a class="option active remove login-required"
-                href="#" tabindex="100">unsubscribe</a><a class="option add"
-                href="#">subscribe</a></span><span class=
-                "subscribers"><span class="number">4,171,335</span>
+                <h1 class="hover redditname"><a class="hover" href="/r/{{model.display_name}}/">{{model.display_name}}</a></h1>
+                <span class="subscribe-button fancy-toggle-button toggle" data-sr_name="{{model.display_name}}" style="">
+                <a class="option active remove login-required" href="#" tabindex="100">unsubscribe</a>
+                <a class="option add" href="#">subscribe</a></span><span class="subscribers"><span class="number">4,171,335</span>
                 <span class="word">readers</span></span>
 
-                <p class="users-online" title=
-                "logged-in users viewing this subreddit in the past 15 minutes">
-                <span class="number">11,999</span> <span class="word">users
-                here now</span></p>
+                <p class="users-online" title="logged-in users viewing this subreddit in the past 15 minutes">
+                <span class="number">11,999</span> <span class="word">users here now</span></p>
 
-                <form action="#" class="usertext" id="form-t5_2qh0u1et" name=
-                "form-t5_2qh0u1et" onsubmit=
-                "return post_form(this, 'editusertext')">
+                <form action="#" class="usertext" id="form-t5_2qh0u1et" name="form-t5_2qh0u1et" onsubmit="return post_form(this, 'editusertext')">
                     <input name="thing_id" type="hidden" value="t5_2qh0u">
 
                     <div class="usertext-body">
                         <div class="md">
-							{{{model.description_html}}} 
+		{{{model.description_html}}} 
                         </div>
                     </div>
                 </form>
@@ -114,10 +105,9 @@
         </div>
 
         <div class="spacer">
-            <iframe frameborder="0" id="ad_main" name="ad_main" scrolling="no"
-            src=
-            "http://static.adzerk.net/reddit/ads.html?sr=pics#http://www.reddit.com">
-            </iframe><script type="text/javascript">
+            <iframe frameborder="0" id="ad_main" name="ad_main" scrolling="no" src="http://static.adzerk.net/reddit/ads.html?sr=pics#http://www.reddit.com">
+            </iframe>
+            <script type="text/javascript">
 $(function() { var ad = $("#ad_main"); if(!ad.length || ad.height() == 0 || ad.width() == 0 || ad.offset().left == 0) { $(".footer").append("<img alt='' src='http://pixel.redditmedia.com/pixel/of_defenestration.png?hash=adblock0e31bc319d5b5882b0cddf147f4ce1da5ac9c731&id=adblock&random=" + Math.random()*10000000000000000 + "'/>"); } });
             </script>
         </div>

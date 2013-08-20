@@ -17,8 +17,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 					root: "#header-bottom-right"
 				})
 
-				console.log("channel=", channel)
 				this.headerImg = ""
+				channel.bind("header:update", this.updateHeader, this);
 				// this.model.fetch({
 				// 	success: this.loaded
 				// });
@@ -29,7 +29,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 			updateHeader: function(model) {
 				this.headerImg = model.get('header_img')
 				if (this.headerImg) {
-					this.$("#header-img").removeClass('default-header')
+					//this.$("#header-img").removeClass('default-header')
 					this.$("#header-img").attr("src", this.headerImg);
 				}
 			},
@@ -46,7 +46,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 			// },
 
 		});
-		return new HeaderView();
+		//return new HeaderView();
 		//return header;
-		//return HeaderView;
+		return HeaderView;
 	});

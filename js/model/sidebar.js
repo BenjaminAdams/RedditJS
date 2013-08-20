@@ -15,8 +15,8 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 
 		// Default attributes 
 		defaults: {
-			// name: "Beer name",
-			// image:"some img",
+			display_name: '',
+			description_html: '',
 			//  slug: "slug"
 		},
 		//so we have the attributes in the root of the model

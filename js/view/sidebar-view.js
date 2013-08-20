@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/base-view', 'view/login-view', 'view/header-view', 'model/sidebar', 'cookie'],
-	function($, _, Backbone, Resthub, SidebarTmpl, BaseView, LoginView, HeaderView, SidebarModel, Cookie) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/base-view', 'view/login-view', 'model/sidebar', 'event/channel', 'cookie'],
+	function($, _, Backbone, Resthub, SidebarTmpl, BaseView, LoginView, SidebarModel, channel, Cookie) {
 		var SidebarView = BaseView.extend({
 			events: {
 				//  'keyup #new-todo':     'showTooltip'
@@ -8,13 +8,17 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 			initialize: function(data) {
 				_.bindAll(this);
 				this.template = SidebarTmpl;
-				this.model = new SidebarModel(data.subName)
+				this.subName = data.subName
+				this.model = new SidebarModel(this.subName)
 
-				// this.render();
-				this.model.fetch({
-					success: this.loaded
-				});
+				if (this.subname == "front") {
+					this.render()
 
+				} else { //only fetch sidebar info if on the front page
+					this.model.fetch({
+						success: this.loaded
+					});
+				}
 				// this.$() is a shortcut for this.$el.find().
 
 			},
@@ -26,9 +30,10 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				})
 
 				//now render the login view
-				this.loginView.render()
+				this.loginView.render();
+				channel.trigger("header:update", this.model);
 
-				HeaderView.updateHeader(this.model)
+				//HeaderView.updateHeader(this.model)
 
 			},
 

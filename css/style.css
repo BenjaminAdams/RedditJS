@@ -1,5 +1,12 @@
 
-
+.loading {
+height: 50px;
+position:relative;
+top:250px;
+background-image: url('../img/loading.gif');
+background-repeat: no-repeat;
+background-position: center center;
+}
 
 #header-bottom-right .separator {
 	margin: 0ex;

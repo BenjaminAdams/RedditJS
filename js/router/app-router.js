@@ -9,7 +9,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view',
                 root: "/"
             });
 
-            // this.header = new HeaderView();
+            this.header = new HeaderView();
 
         },
 

@@ -43,6 +43,7 @@ define([
 			},
 			renderPosts: function() {
 				console.log(this.collection)
+				this.$('.loading').hide()
 				var self = this;
 				this.collection.each(function(model) {
 					var postview = new PostRowView({
