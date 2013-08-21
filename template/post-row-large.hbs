@@ -1,0 +1,86 @@
+<div class="thing id-{{model.name}} {{model.evenOrOdd}} link" data-fullname="{{model.name}}" data-ups="{{model.ups}}" data-downs="{{model.downs}}">
+       <p class="parent"></p><span class="rank" style="width:3.30ex;">{{model.count}}</span>
+
+        <div class="midcol {{model.voted}} " style="width:5ex;">
+            <div class="arrow login-required upArrow {{model.upmod}}" role='button' aria-label="upvote" tabindex="0"></div>
+
+            <div class="score dislikes">
+                {{model.scoreDown}} 
+            </div>
+
+            <div class="score unvoted">
+                {{model.score}}
+            </div>
+
+            <div class="score likes">
+                {{model.scoreUp}}
+            </div>
+			
+	<div class="arrow login-required downArrow {{model.downmod}}" role="button" aria-label="downvote" tabindex="0"></div>
+
+
+        </div>
+
+		<a class="thumbnail loggedin" {{model.external}} href="{{model.url}}" target="_blank"><img alt="" height="52" src="{{model.thumbnail}}" width="70"></a>
+
+        <div class="entry {{model.voted}}">
+            <p class="title">
+			<a class="title loggedin" {{model.external}} href="{{model.url}}" target="_blank">{{model.title}}</a> <span class="domain">(<a href="/domain/{{model.domain}}/">{{model.domain}}</a>)</span></p>
+
+            <p class="tagline">submitted <time datetime=
+            "{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href=
+            "/user/{{model.author}}" target="_blank">{{model.author}}</a>
+
+            <span class="userattrs"></span>to <a href="/r/{{model.subreddit}}/" class="subreddit hover">{{model.subreddit}}</a>
+            </p>
+            <ul class="flat-list buttons">
+                <li class="first">
+                    <a class="comments" href=
+                    "{{model.permalink}}"
+                    target="_blank">{{model.num_comments}} comments</a>
+                </li>
+
+                <li class="share">
+				<span class="share-button toggle"><a class="option active login-required" href="#">share</a></span></li>
+                <li>
+                    <form action="/post/save" class="state-button save-button"
+                    method="post">
+                        <input name="executed" type="hidden" value=
+                        "unsave"><span><a href="javascript:void(0)">save</a></span>
+                    </form>
+                </li>
+
+                <li>
+                    <form action="/post/hide" class="state-button hide-button"
+                    method="post">
+                        <input name="executed" type="hidden" value=
+                        "hidden"><span><a href="javascript:void(0)">hide</a></span>
+                    </form>
+                </li>
+
+                <li>
+                    <form action="#" class="toggle report-button" method="get">
+                        <input name="executed" type="hidden" value=
+                        "reported"><span class="option main active"><a class=
+                        "togglebutton" href="#" onclick=
+                        "return toggle(this)">report</a></span><span class=
+                        "option error">are you sure? <a class="yes" href=
+                        "javascript:void(0)" onclick=
+                        "change_state(this, &quot;report&quot;, hide_thing, undefined, null)">
+                        yes</a> / <a class="no" href="javascript:void(0)"
+                        onclick="return toggle(this)">no</a></span>
+                    </form>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="child"></div>
+
+        <div class="clearleft">
+            <!--IE6sux-->
+        </div>
+
+
+
+</div>

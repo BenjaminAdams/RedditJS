@@ -16,3 +16,16 @@ background-position: center center;
 
 	margin: 0 .5ex;
 }
+
+
+.thumbnailSmall {
+
+	width: 90px !important;
+}
+
+.thumbnailSmall img {
+
+height: 70px;
+width: 90px;
+
+}

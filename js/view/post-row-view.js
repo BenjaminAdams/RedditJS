@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 'model/post', 'view/base-view'],
-    function($, _, Backbone, Resthub, PostRowTmpl, PostModel, BaseView) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 'hbs!template/post-row-small', 'model/post', 'view/base-view'],
+    function($, _, Backbone, Resthub, PostRowTmpl, PostRowSmallTmpl, PostModel, BaseView) {
         var PostRowView = BaseView.extend({
             strategy: 'append',
             events: {
@@ -10,7 +10,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
 
             initialize: function(data) {
                 this.model = data.model;
-                this.template = PostRowTmpl;
+                //this.template = PostRowTmpl;
+                this.template = PostRowSmallTmpl
                 this.render();
                 // this.$() is a shortcut for this.$el.find().
             },

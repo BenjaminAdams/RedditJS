@@ -91,7 +91,7 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 						post.set('thumbnail', 'img/self.png')
 					} else if (post.get('thumbnail') == 'nsfw') {
 						post.set('thumbnail', 'img/nsfw.png')
-					} else if (post.get('thumbnail') == '') {
+					} else if (post.get('thumbnail') == '' || post.get('thumbnail') == 'default') {
 						post.set('thumbnail', 'img/notsure.png')
 					}
 
