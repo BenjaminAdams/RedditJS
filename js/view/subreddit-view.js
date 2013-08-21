@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'view/post-row-view', 'view/sidebar-view', 'collection/subreddit', 'infinite-scroll', 'cookie'],
-	function(_, Backbone, Resthub, subredditTmpl, PostRowView, SidebarView, SubredditCollection, InfiniteScroll, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'view/post-row-view', 'view/sidebar-view', 'collection/subreddit', 'infinite-scroll', 'cookie'],
+	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowView, SidebarView, SubredditCollection, InfiniteScroll, Cookie) {
 		var SubredditView = Resthub.View.extend({
 
 			el: $("#main"),
@@ -15,6 +15,7 @@ define([
 				this.subName = options.subName
 				this.collection = new SubredditCollection(this.subName);
 				this.template = subredditTmpl;
+
 				this.render();
 				window.after = "start"
 				//load sidebar
@@ -31,6 +32,7 @@ define([
 
 				this.infiniScroll = new Backbone.InfiniScroll(this.collection, {
 					success: this.renderPosts,
+					scrollOffset: 600
 					//target: "#siteTable",
 
 				});
@@ -48,17 +50,23 @@ define([
 				this.$('.loading').hide()
 
 				response.each(function(model) {
-					var postview = new PostRowView({
-						root: "#siteTable",
-						model: model
-					});
+
+					this.$('#siteTable').append(PostViewSmallTpl({
+						model: model.attributes
+					}))
+
+					//var postview = new PostRowView({
+					//	root: "#siteTable",
+					//	model: model
+					//});
 				}, this);
 
 				window.after = this.collection.after
 
 				//fetch more  posts with the After
-				if (response.after != "stop") {
-
+				if (response.after == "stop") {
+					console.log("AFTER = stop")
+					this.infiniScroll.destroy();
 				}
 
 			},
