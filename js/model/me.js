@@ -2,6 +2,7 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 	var Me = Backbone.Model.extend({
 		initialize: function(data) {
 			this.subName = data
+
 		},
 
 		url: function() {
