@@ -12,8 +12,7 @@
 			page,
 			pageSize,
 			prevScrollY = 0,
-			loadingAfter = "start",
-			loading = false;
+			loadingAfter = "start";
 
 		pageSize = collection.length || 25;
 
@@ -31,7 +30,8 @@
 			scrollOffset: 100,
 			remove: false,
 			strict: false,
-			includePage: false
+			includePage: false,
+			loading: false
 		});
 
 		var initialize = function() {
@@ -60,6 +60,7 @@
 		};
 
 		self.fetchSuccess = function(collection, response) {
+
 			// if ((self.options.strict && collection.length >= (page + 1) * self.options.pageSize) || (!self.options.strict && response.length > 0)) {
 			// 	self.enableFetch();
 			// 	page += 1;
@@ -79,7 +80,8 @@
 			response = new Backbone.Collection(collection.slice((collection.length - length), collection.length))
 			//self.options.success(collection, response);
 			self.options.success(response, response);
-			self.loading = false
+			self.options.loading = false
+
 		};
 
 		self.fetchError = function(collection, response) {
@@ -91,10 +93,8 @@
 		self.watchScroll = function(e) {
 
 			if (self.loadingAfter == window.after) {
-				console.log('after still the same')
 				return; //so we don't keep loading the same reddit page
 			}
-			//console.log('window after=', window.after)
 
 			var queryParams,
 				scrollY = $target.scrollTop() + $target.height(),
@@ -104,28 +104,27 @@
 				docHeight = $(document).height();
 			}
 
-			console.log(scrollY, docHeight)
-
 			if (scrollY >= docHeight - self.options.scrollOffset && fetchOn && prevScrollY <= scrollY) {
 				var lastModel = self.collection.last();
 				if (!lastModel) {
 					return;
 				}
-				if (self.loading == true) {
+
+				if (self.options.loading == true) {
 					return;
 				}
 
 				self.loadingAfter = window.after;
-				self.loading = true
+				self.options.loading = true
 
-				self.onFetch();
-				self.disableFetch();
-				self.collection.fetch({
-					success: self.fetchSuccess,
-					error: self.fetchError,
-					remove: self.options.remove,
-					data: $.extend(buildQueryParams(lastModel), self.options.extraParams)
-				});
+				if (self.loadingAfter != "stop") {
+					self.collection.fetch({
+						success: self.fetchSuccess,
+						//error: self.fetchError,
+						//remove: self.options.remove,
+						//data: $.extend(buildQueryParams(lastModel), self.options.extraParams)
+					});
+				}
 			}
 			prevScrollY = scrollY;
 		};

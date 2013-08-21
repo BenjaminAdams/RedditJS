@@ -29,6 +29,12 @@ define([
 					error: this.fetchError
 				});
 
+				this.infiniScroll = new Backbone.InfiniScroll(this.collection, {
+					success: this.renderPosts,
+					//target: "#siteTable",
+
+				});
+
 			},
 
 			loaded: function(response, posts) {
@@ -39,7 +45,6 @@ define([
 
 			},
 			renderPosts: function(response) {
-				console.log("in the renderPosts in subreddit view", response)
 				this.$('.loading').hide()
 
 				response.each(function(model) {
@@ -49,16 +54,11 @@ define([
 					});
 				}, this);
 
-				console.log('after2=', this.collection.after)
 				window.after = this.collection.after
 
 				//fetch more  posts with the After
 				if (response.after != "stop") {
-					this.infiniScroll = new Backbone.InfiniScroll(this.collection, {
-						success: this.renderPosts,
-						//target: "#siteTable",
 
-					});
 				}
 
 			},

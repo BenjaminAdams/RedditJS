@@ -32,7 +32,6 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 		parse: function(response) {
 			//set the after for pagination
 			this.after = response.data.after;
-			console.log('after=', this.after)
 
 			if (this.after == "" || this.after == null) {
 				this.after = "stop" //tells us we have finished downloading all of the possible posts in this subreddit
@@ -116,7 +115,6 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 
 			//reset the url to have the new after tag
 			this.instanceUrl = this.getUrl()
-
 			return models;
 		},
 
