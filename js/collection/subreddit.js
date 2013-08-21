@@ -2,9 +2,11 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 
 	var Post = Backbone.Collection.extend({
 		initialize: function(data) {
+			_.bindAll(this);
 			this.after = ""
 			this.subName = data
 			this.count = 1
+			this.instanceUrl = this.getUrl()
 
 		},
 		// Reference to this collection's model.
@@ -12,11 +14,17 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 
 		url: function() {
 
+			return this.instanceUrl //keeps a dynamic URL so we can give it a new "after"
+		},
+
+		getUrl: function() {
+
 			if (this.subName == "front") {
-				return "/api/?url=.json&cookie=" + $.cookie('reddit_session');
+				return "/api/?url=.json?after=" + this.after + "&cookie=" + $.cookie('reddit_session');
 				//return 'http://api.reddit.com/.json?jsonp=?';		
 			} else {
-				return '/api/?url=r/' + this.subName + ".json&cookie=" + $.cookie('reddit_session');
+				console.log('/api/?url=r/' + this.subName + ".json?after=" + this.after + "&cookie=" + $.cookie('reddit_session'))
+				return '/api/?url=r/' + this.subName + ".json?after=" + this.after + "&cookie=" + $.cookie('reddit_session');
 				//return 'http://api.reddit.com/r/'+this.subName+'.json?jsonp=?';
 			}
 		},
@@ -24,6 +32,12 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 		parse: function(response) {
 			//set the after for pagination
 			this.after = response.data.after;
+			console.log('after=', this.after)
+
+			if (this.after == "" || this.after == null) {
+				this.after = "stop" //tells us we have finished downloading all of the possible posts in this subreddit
+			}
+
 			var modhash = response.data.modhash;
 			if (typeof modhash == "string" && modhash.length > 5) {
 				$.cookie('modhash', modhash);
@@ -99,6 +113,9 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 				}
 				models.push(post)
 			});
+
+			//reset the url to have the new after tag
+			this.instanceUrl = this.getUrl()
 
 			return models;
 		},

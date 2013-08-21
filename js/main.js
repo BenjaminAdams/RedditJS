@@ -27,6 +27,9 @@ require.config({
             ],
             exports: 'Backbone.Datagrid'
         },
+        'infinite-scroll': {
+            deps: ['backbone']
+        },
         'backbone-paginator': {
             deps: [
                 'backbone'
@@ -49,10 +52,10 @@ require.config({
         'async': {
             exports: 'async'
         },
-		"cookie"  : ["jquery"]
+        "cookie": ["jquery"]
     },
-	
-	 urlArgs: 'appversion=345345345',
+
+    urlArgs: 'appversion=345345345',
 
     // Libraries
     paths: {
@@ -61,7 +64,7 @@ require.config({
         'underscore-string': 'lib/underscore-string',
         backbone: 'lib/backbone',
         resthub: 'lib/resthub/resthub',
-   		'backbone-queryparams': 'lib/backbone-queryparams',     
+        'backbone-queryparams': 'lib/backbone-queryparams',
         text: 'lib/text',
         i18n: 'lib/i18n',
         'bootstrap': 'lib/bootstrap',
@@ -78,11 +81,12 @@ require.config({
         hbs: 'lib/resthub/require-handlebars',
         moment: 'lib/moment',
         template: '../template',
-		json2: 'lib/json2',
-		jqueryvideo: 'lib/jquery-video/jquery-videoBG',
+        json2: 'lib/json2',
+        jqueryvideo: 'lib/jquery-video/jquery-videoBG',
         console: 'lib/resthub/console',
-		//markdown: 'lib/markdown',
-		'cookie': 'lib/jquery.cookie'         
+        //markdown: 'lib/markdown',
+        'cookie': 'lib/jquery.cookie',
+        'infinite-scroll': 'lib/infinitescroll'
     }
 });
 

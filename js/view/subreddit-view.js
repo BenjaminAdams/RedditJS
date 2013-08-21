@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'view/post-row-view', 'view/sidebar-view', 'collection/subreddit', 'cookie'],
-	function(_, Backbone, Resthub, subredditTmpl, PostRowView, SidebarView, SubredditCollection, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'view/post-row-view', 'view/sidebar-view', 'collection/subreddit', 'infinite-scroll', 'cookie'],
+	function(_, Backbone, Resthub, subredditTmpl, PostRowView, SidebarView, SubredditCollection, InfiniteScroll, Cookie) {
 		var SubredditView = Resthub.View.extend({
 
 			el: $("#main"),
@@ -16,14 +16,12 @@ define([
 				this.collection = new SubredditCollection(this.subName);
 				this.template = subredditTmpl;
 				this.render();
-
+				window.after = "start"
 				//load sidebar
 				this.sidebar = new SidebarView({
 					subName: this.subName,
 					root: ".side"
 				})
-
-				//add cookie to subreddit json request
 
 				//this.collection.fetch({success : this.loaded, headers: {'Cookie':'reddit_session='+cookie} });
 				this.collection.fetch({
@@ -34,25 +32,35 @@ define([
 			},
 
 			loaded: function(response, posts) {
-				//	console.log(posts)
-				this.renderPosts()
+				this.renderPosts(response)
 			},
 			fetchError: function(response, error) {
 				console.log(response, error)
 
 			},
-			renderPosts: function() {
-				console.log(this.collection)
+			renderPosts: function(response) {
+				console.log("in the renderPosts in subreddit view", response)
 				this.$('.loading').hide()
-				var self = this;
-				this.collection.each(function(model) {
+
+				response.each(function(model) {
 					var postview = new PostRowView({
 						root: "#siteTable",
 						model: model
 					});
-					//self.$("#siteTable").append(postview)
-					// var post = new PostRowView(model)
 				}, this);
+
+				console.log('after2=', this.collection.after)
+				window.after = this.collection.after
+
+				//fetch more  posts with the After
+				if (response.after != "stop") {
+					this.infiniScroll = new Backbone.InfiniScroll(this.collection, {
+						success: this.renderPosts,
+						//target: "#siteTable",
+
+					});
+				}
+
 			},
 
 		});

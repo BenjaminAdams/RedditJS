@@ -8,6 +8,10 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
+#siteTable {
+	min-height:300px;
+}
+
 #header-bottom-right .separator {
 	margin: 0ex;
 }
@@ -21,6 +25,7 @@ background-position: center center;
 .thumbnailSmall {
 
 	width: 90px !important;
+	height:70px !important;
 }
 
 .thumbnailSmall img {
