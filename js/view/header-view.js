@@ -74,22 +74,23 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 					this.$('#sr-bar').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
 					count++;
 				})
+
+				this.displayDropChoices()
 			},
-			//so we can rerender the header without destroying the child views
-			reRender: function() {
+			displayDropChoices: function() {
+				this.$('.drop-choices').html(" ") //clear the div
+
+				//format:  <a class="choice" href="/r/AdviceAnimals/">AdviceAnimals</a>
+
+				this.mySubreddits.each(function(model) {
+					//this.$('.drop-choices').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
+					this.$('.drop-choices').append('<a class="choice" href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a>')
+				})
+
+				//add the edit subscriptions button
+				this.$('.drop-choices').append('<a class="choice bottom-option" href="/subreddits/">edit subscriptions</a>')
 
 			}
-			// loaded: function(response, sidebar) {
-			// 	this.render()
-
-			// 	this.loginView = new LoginView({
-			// 		root: "#theLogin"
-			// 	})
-			// 	this.loginView.render()
-
-			// 	//now render the login view
-
-			// },
 
 		});
 		//return new HeaderView();
