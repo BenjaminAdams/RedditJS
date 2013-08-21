@@ -2,7 +2,6 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 
 	var Post = Backbone.Collection.extend({
 		initialize: function(data) {
-			console.log(data)
 			this.after = ""
 			this.subName = data
 			this.count = 1

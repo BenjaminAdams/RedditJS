@@ -10,7 +10,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 			initialize: function(data) {
 				_.bindAll(this);
 				this.template = HeaderTmpl;
-				this.mySubreddits = new MySubredditsModel()
+				this.mySubreddits = new MySubredditsCollection()
 				//this.model = new SidebarModel()
 				console.log("I should only render the header once")
 				this.render();
@@ -22,12 +22,13 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				channel.bind("login", this.updateSubreddits, this); //so we update the users subreddits after they login
 
 				//load the subreddits on the top bar
-				if (this.checkIfLoggedIn() == true) {
-					this.updateSubreddits()
-				} else {
+				//we want to always display the default subreddits at first because they take a long time to get back from the api
+				this.mySubreddits.loadDefaultSubreddits()
+				this.displayMySubreddits()
 
-					//this.mySubreddits.loadDefaultSubreddits()
-					//this.displayMySubreddits()
+				if (this.checkIfLoggedIn() == true) {
+					console.log('starting to update the subreddits in the header init')
+					this.updateSubreddits()
 				}
 
 				// this.$() is a shortcut for this.$el.find().
@@ -49,25 +50,30 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 
 			},
 			updateSubreddits: function() {
+				this.mySubreddits.reset()
 				//query the api for /me.json
 				this.mySubreddits.fetch({
 					success: this.displayMySubreddits
 				});
 			},
 			displayMySubreddits: function(response, subreddits) {
-				console.log('the my subreddits model has been loaded in the header view=', subreddits)
+
 				this.$('#sr-bar').html(" ") //clear the div
 				//    Normal Format: 
 				//			<li><a href="/r/pics/">pics</a></li>
 				//   Every Subreddit after the first one has a seperator:  
 				//			<li><span class="separator">-</span><a href= "/r/funny/">funny</a></li>
 
-				var seperator = '<span class="separator">-</span>';
-				_.each(subreddits.data.children, function(item) {
-					console.log(item)
-					//this.$('#sr-bar').append('<li>seperator<a href="/r/' + item.get('display_name') + '/">' + item.get('display_name') + '</a></li>')
-				})
+				var seperator = '';
+				var count = 0;
+				this.mySubreddits.each(function(model) {
+					if (count != 0) {
+						seperator = '<span class="separator">-</span>';
+					}
 
+					this.$('#sr-bar').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
+					count++;
+				})
 			},
 			//so we can rerender the header without destroying the child views
 			reRender: function() {

@@ -11,3 +11,8 @@ background-position: center center;
 #header-bottom-right .separator {
 	margin: 0ex;
 }
+
+#sr-header-area .seperator {
+
+	margin: 0 .5ex;
+}
