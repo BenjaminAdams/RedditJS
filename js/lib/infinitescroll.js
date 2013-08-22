@@ -10,23 +10,17 @@
 			$target,
 			fetchOn,
 			page,
-			pageSize,
 			prevScrollY = 0,
 			loadingAfter = "start";
-
-		pageSize = collection.length || 25;
 
 		self.collection = collection;
 		self.options = _.defaults(options, {
 			success: function() {},
 			error: function() {},
-			onFetch: function() {},
 			target: $(window),
 			param: "until",
 			extraParams: {},
-			pageSizeParam: "page_size",
 			untilAttr: "id",
-			pageSize: pageSize,
 			scrollOffset: 100,
 			remove: false,
 			strict: false,
@@ -44,7 +38,8 @@
 		};
 
 		self.destroy = function() {
-			$target.off("scroll", self.watchScroll);
+			//$target.off("scroll", self.watchScroll);
+			$(window).off("scroll", self.watchScroll);
 		};
 
 		self.enableFetch = function() {
@@ -53,10 +48,6 @@
 
 		self.disableFetch = function() {
 			fetchOn = false;
-		};
-
-		self.onFetch = function() {
-			self.options.onFetch();
 		};
 
 		self.fetchSuccess = function(collection, response) {
@@ -77,6 +68,9 @@
 				self.enableFetch();
 			}
 
+			console.log(collection.length)
+			console.log(response)
+
 			response = new Backbone.Collection(collection.slice((collection.length - length), collection.length))
 			//self.options.success(collection, response);
 			self.options.success(response, response);
@@ -86,6 +80,7 @@
 
 		self.fetchError = function(collection, response) {
 			self.enableFetch();
+			self.loading = false
 
 			self.options.error(collection, response);
 		};
@@ -96,9 +91,8 @@
 				return; //so we don't keep loading the same reddit page
 			}
 
-			var queryParams,
-				scrollY = $target.scrollTop() + $target.height(),
-				docHeight = $target.get(0).scrollHeight;
+			var scrollY = $target.scrollTop() + $target.height();
+			var docHeight = $target.get(0).scrollHeight;
 
 			if (!docHeight) {
 				docHeight = $(document).height();
@@ -122,25 +116,12 @@
 						success: self.fetchSuccess,
 						//error: self.fetchError,
 						//remove: self.options.remove,
-						//data: $.extend(buildQueryParams(lastModel), self.options.extraParams)
+
 					});
 				}
 			}
 			prevScrollY = scrollY;
 		};
-
-		function buildQueryParams(model) {
-			var params = {};
-
-			params[self.options.param] = typeof(model[self.options.untilAttr]) === "function" ? model[self.options.untilAttr]() : model.get(self.options.untilAttr);
-			params[self.options.pageSizeParam] = self.options.pageSize;
-
-			if (self.options.includePage) {
-				params["page"] = page + 1;
-			}
-
-			return params;
-		}
 
 		initialize();
 

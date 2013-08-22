@@ -32,7 +32,7 @@ define([
 
 				this.infiniScroll = new Backbone.InfiniScroll(this.collection, {
 					success: this.renderPosts,
-					scrollOffset: 600
+					scrollOffset: 1000
 					//target: "#siteTable",
 
 				});
@@ -46,10 +46,10 @@ define([
 				console.log(response, error)
 
 			},
-			renderPosts: function(response) {
+			renderPosts: function(models) {
 				this.$('.loading').hide()
 
-				response.each(function(model) {
+				models.each(function(model) {
 
 					this.$('#siteTable').append(PostViewSmallTpl({
 						model: model.attributes
@@ -61,10 +61,19 @@ define([
 					//});
 				}, this);
 
+				this.collection.add([models])
+				//console.log(models)
+				//console.log(this.collection)
+
 				window.after = this.collection.after
 
+				if (this.collection.length < 401) {
+					console.log('invoking infinite scroll', this.collection.length)
+					this.infiniScroll.watchScroll()
+				}
+
 				//fetch more  posts with the After
-				if (response.after == "stop") {
+				if (this.collection.after == "stop") {
 					console.log("AFTER = stop")
 					this.infiniScroll.destroy();
 				}
