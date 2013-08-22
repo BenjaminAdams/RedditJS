@@ -46,8 +46,10 @@ define([
 				console.log(response, error)
 
 			},
-			renderPosts: function(models) {
+			renderPosts: function(models, test) {
 				this.$('.loading').hide()
+
+				console.log(models)
 
 				models.each(function(model) {
 
@@ -61,7 +63,7 @@ define([
 					//});
 				}, this);
 
-				this.collection.add([models])
+				this.collection.add([test])
 				//console.log(models)
 				//console.log(this.collection)
 

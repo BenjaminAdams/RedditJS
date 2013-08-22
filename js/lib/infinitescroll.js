@@ -14,6 +14,7 @@
 			loadingAfter = "start";
 
 		self.collection = collection;
+
 		self.options = _.defaults(options, {
 			success: function() {},
 			error: function() {},
@@ -68,12 +69,13 @@
 				self.enableFetch();
 			}
 
-			console.log(collection.length)
-			console.log(response)
+			//console.log(collection.length)
+			//console.log(response)
 
-			response = new Backbone.Collection(collection.slice((collection.length - length), collection.length))
-			//self.options.success(collection, response);
-			self.options.success(response, response);
+			//response = new Backbone.Collection(collection.slice((collection.length - length), collection.length))
+
+			self.options.success(collection, response);
+			//self.options.success(response, response);
 			self.options.loading = false
 
 		};
