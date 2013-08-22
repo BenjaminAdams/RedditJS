@@ -49,9 +49,16 @@ z-index: 3333;
 .large-thumb {
 max-width: 100%;
 text-align: center;
+margin-bottom: 10px;
 }
 
-.large-thumb img{
+
+.small-thumb-for-large-view  {
+margin-top:3px;
+max-height:45px;
+}
+
+.large-img{
 max-width: 85%;
 margin: 0 auto;
 
@@ -62,9 +69,9 @@ margin: 0 auto;
 .large-thumb .thing {
 background-color:#EFF7FF;
 border: 1px solid #5f99cf;
-max-width: 50%;
+max-width: 90%;
 text-align: left;
-margin: 8px auto 8px auto;
+margin: 0px auto 8px auto;
 }
 
 .board-item {

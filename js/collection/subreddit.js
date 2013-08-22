@@ -109,7 +109,12 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 
 					//figure out a URL that we can embed in an image tag
 					var imgUrl = post.get("url")
+					if (self.checkIsImg(imgUrl) == false) {
+						//URL is NOT an image
+						//try and fix an imgur link?
+						imgUrl = self.fixImgur(imgUrl)
 
+					}
 					post.set('imgUrl', imgUrl)
 
 					self.count++;
@@ -121,6 +126,24 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 			this.instanceUrl = this.getUrl()
 			return models;
 		},
+		checkIsImg: function(url) {
+			return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+		},
+		fixImgur: function(url) {
+			if (this.containsStr("imgur.com", url)) {
+				//check if its a gallery
+				if (this.containsStr("imgur.com/a", url)) {
+					console.log("its a gallery=", url)
+					return false
+				} else {
+					return url + ".jpg"
+				}
+				console.log("i got here!")
+			}
+		},
+		containsStr: function(needle, haystack) {
+			return (haystack.indexOf(needle) >= 0)
+		}
 
 	});
 	return Post;
