@@ -12,6 +12,7 @@ define([
 
 			initialize: function(options) {
 				_.bindAll(this);
+				var self = this;
 				this.subName = options.subName
 				this.collection = new SubredditCollection(this.subName);
 				this.template = subredditTmpl;
@@ -34,7 +35,7 @@ define([
 				if (this.gridOption == null || this.gridOption == "") {
 					this.gridOption = 'normal'
 				} else if (this.gridOption == "large") {
-					this.createThreeCols()
+					this.resize()
 
 				}
 				this.changeActiveGrid() //so we are highlighting the correct grid option on page load
@@ -47,7 +48,10 @@ define([
 				this.prevScrollY = 0; //makes sure you are not checking when the user scrolls upwards
 				this.errorRetries = 0; //keeps track of how many errors we will retry after
 
-				$(window).bind("resize.app", _.bind(this.resize, this));
+				//$(window).bind("resize.app", _.bind(this.debouncer));
+				$(window).resize(this.debouncer(function(e) {
+					self.resize()
+				}));
 				this.resize()
 
 			},
@@ -60,24 +64,43 @@ define([
 				this.$('#' + this.gridOption).addClass('selected');
 
 			},
+			debouncer: function(func, timeout) {
+				var timeoutID, timeout = timeout || 20;
+				return function() {
+					var scope = this,
+						args = arguments;
+					clearTimeout(timeoutID);
+					timeoutID = setTimeout(function() {
+						func.apply(scope, Array.prototype.slice.call(args));
+					}, timeout);
+				}
+			},
 			resize: function() {
-				console.log("I resized")
+				var mobileWidth = 1000; //when to change to mobile CSS
 				if (this.gridOption == "large") {
 					//change css of 
-					this.$(".large-thumb").css("width", function(index) {
-						return $(document).width() - 355;
-					});
+					var docWidth = $(document).width()
+					var newWidth = 0;
+					if (docWidth > mobileWidth) {
+						newWidth = docWidth - 355;
+					} else {
+						newWidth = docWidth;
+					}
+					$('#dnamicWidth').html('<style> .large-thumb { width: ' + newWidth + 'px } </style>');
+
+					// this.$(".large-thumb").css("width", function(index) {
+					// 	
+					// 	console.log('docwidth = ', docWidth)
+					// 	if (docWidth > mobileWidth) {
+					// 		return docWidth - 355;
+					// 	} else {
+					// 		return docWidth;
+					// 	}
+					// });
 				}
 
 			},
-			createThreeCols: function() {
-				console.log('creating 3 grids')
-				//need 3 columns to put 
-				// this.$('#siteTable').append("<div id='board'></div>");
-				// this.$('#board').append("<div id='col1' class='col-grid'></div>");
-				// this.$('#board').append("<div id='col2' class='col-grid'></div>");
-				// this.$('#board').append("<div id='col3' class='col-grid'></div>");
-			},
+
 			changeGridOption: function(e) {
 				e.preventDefault()
 				e.stopPropagation();
@@ -88,7 +111,7 @@ define([
 				this.changeActiveGrid()
 				this.resetPosts()
 				if (this.name == "large") {
-					this.createThreeCols()
+					this.resize()
 				}
 				this.appendPosts(this.collection)
 				this.helpFillUpScreen()
@@ -143,6 +166,7 @@ define([
 						}
 					}
 				}, this);
+				this.resize()
 			},
 			gotNewPosts: function(models, res) {
 				this.$('.loading').hide()
@@ -162,7 +186,6 @@ define([
 				}
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.helpFillUpScreen()
-				this.resize()
 
 			},
 			/**************Infinite Scroll functions ****************/

@@ -23,6 +23,14 @@ z-index: 100;
 }
 
 
+.large-thumb .thing {
+
+max-width: 85%;
+
+}
+
+
+
 .side {
 	display:none;
 }

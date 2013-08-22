@@ -54,7 +54,17 @@ text-align: center;
 .large-thumb img{
 max-width: 85%;
 margin: 0 auto;
-padding: 30px 30px 0px 30px;
+
+  -webkit-box-shadow: 3px 3px 3px #7C7C7C;
+    box-shadow: 3px 3px 3px #7C7C7C;
+}
+
+.large-thumb .thing {
+background-color:#EFF7FF;
+border: 1px solid #5f99cf;
+max-width: 50%;
+text-align: left;
+margin: 8px auto 8px auto;
 }
 
 .board-item {
