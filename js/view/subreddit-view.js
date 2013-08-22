@@ -63,6 +63,7 @@ define([
 				this.changeActiveGrid()
 				this.resetPosts()
 				this.appendPosts(this.collection)
+				this.helpFillUpScreen()
 			},
 			resetPosts: function() {
 				this.$('#siteTable').html(" ")
@@ -119,10 +120,7 @@ define([
 					$(window).off("scroll", this.watchScroll);
 				}
 				this.loading = false; //turn the flag on to go ahead and fetch more!
-
-				if (this.collection.length < 301 && this.gridOption == 'small') {
-					this.watchScroll()
-				}
+				this.helpFillUpScreen()
 
 			},
 			/**************Infinite Scroll functions ****************/
@@ -139,6 +137,11 @@ define([
 					}
 				}
 				//this.prevScrollY = scrollY;
+			},
+			helpFillUpScreen: function() {
+				if (this.collection.length < 301 && this.gridOption == 'small') {
+					this.watchScroll()
+				}
 			}
 
 		});
