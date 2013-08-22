@@ -34,3 +34,14 @@ height: 70px;
 width: 90px;
 
 }
+
+.grid-menu-container {
+	position:relative;
+}
+
+.tabmenu-right {
+position: absolute;
+right: 355px;
+top: -25px;
+z-index: 3333;
+}
