@@ -1,5 +1,4 @@
-define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view',
-    'backbone-queryparams'], function(_, Backbone, SubredditView, HeaderView) {
+define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'event/channel', 'backbone-queryparams'], function(_, Backbone, SubredditView, HeaderView, channel) {
 
     var AppRouter = Backbone.Router.extend({
 
@@ -27,7 +26,6 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view',
         },
 
         subreddit: function(subName) {
-            console.debug("subreddit route for " + subName + "activated");
             subredditView = new SubredditView({
                 subName: subName
             });

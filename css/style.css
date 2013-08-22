@@ -45,3 +45,34 @@ right: 355px;
 top: -25px;
 z-index: 3333;
 }
+
+.large-thumb {
+max-width: 100%;
+text-align: center;
+}
+
+.large-thumb img{
+max-width: 85%;
+margin: 0 auto;
+padding: 30px 30px 0px 30px;
+}
+
+.board-item {
+width: 320px;
+}
+
+.board-column {
+margin-left: 10px;
+width: 328px;
+
+display: inline-block;
+vertical-align: top;
+}
+
+#board {
+line-height: 0;
+text-align: center;
+}
+
+
+

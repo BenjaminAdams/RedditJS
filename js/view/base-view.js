@@ -2,6 +2,11 @@ define([
   'underscore', 'backbone', 'resthub', 'cookie'],
 	function(_, Backbone, Resthub, Cookie) {
 		var BaseView = Resthub.View.extend({
+			destroy: function() {
+				console.log("destroying a view")
+				this.remove();
+				this.unbind();
+			},
 			api: function(url, type, params, callback) {
 				if (this.checkIfLoggedIn() == true || params.byPassAuth == true) {
 					var cookie = $.cookie('reddit_session');

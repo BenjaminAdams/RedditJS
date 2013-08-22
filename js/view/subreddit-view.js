@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'view/post-row-view', 'view/sidebar-view', 'collection/subreddit', 'cookie'],
-	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowView, SidebarView, SubredditCollection, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'view/post-row-view', 'view/sidebar-view', 'collection/subreddit', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowView, SidebarView, SubredditCollection, channel, Cookie) {
 		var SubredditView = Resthub.View.extend({
 
 			el: $("#main"),
@@ -33,6 +33,9 @@ define([
 				this.gridOption = $.cookie('gridOption');
 				if (this.gridOption == null || this.gridOption == "") {
 					this.gridOption = 'normal'
+				} else if (this.gridOption == "large") {
+					this.createThreeCols()
+
 				}
 				this.changeActiveGrid() //so we are highlighting the correct grid option on page load
 
@@ -43,6 +46,10 @@ define([
 				this.scrollOffset = 1000;
 				this.prevScrollY = 0; //makes sure you are not checking when the user scrolls upwards
 				this.errorRetries = 0; //keeps track of how many errors we will retry after
+
+				$(window).bind("resize.app", _.bind(this.resize, this));
+				this.resize()
+
 			},
 
 			/**************Grid functions ****************/
@@ -53,6 +60,24 @@ define([
 				this.$('#' + this.gridOption).addClass('selected');
 
 			},
+			resize: function() {
+				console.log("I resized")
+				if (this.gridOption == "large") {
+					//change css of 
+					this.$(".large-thumb").css("width", function(index) {
+						return $(document).width() - 355;
+					});
+				}
+
+			},
+			createThreeCols: function() {
+				console.log('creating 3 grids')
+				//need 3 columns to put 
+				// this.$('#siteTable').append("<div id='board'></div>");
+				// this.$('#board').append("<div id='col1' class='col-grid'></div>");
+				// this.$('#board').append("<div id='col2' class='col-grid'></div>");
+				// this.$('#board').append("<div id='col3' class='col-grid'></div>");
+			},
 			changeGridOption: function(e) {
 				e.preventDefault()
 				e.stopPropagation();
@@ -62,13 +87,16 @@ define([
 				$.cookie('gridOption', name)
 				this.changeActiveGrid()
 				this.resetPosts()
+				if (this.name == "large") {
+					this.createThreeCols()
+				}
 				this.appendPosts(this.collection)
 				this.helpFillUpScreen()
 			},
 			resetPosts: function() {
-				this.$('#siteTable').html(" ")
+				//this.$('#siteTable').html(" ")
+				this.$('#siteTable').empty();
 			},
-
 			/**************Fetching functions ****************/
 			fetchError: function(response, error) {
 				console.log("fetch error, lets retry")
@@ -85,6 +113,11 @@ define([
 					remove: false
 				});
 			},
+			//in our full image homepage view aka"large", we have 3 columns
+			//this function calculates which col is the least height so we can then add the image to that column
+			determineCol: function() {
+
+			},
 			appendPosts: function(models) {
 				console.log(models)
 				models.each(function(model) {
@@ -93,11 +126,19 @@ define([
 							this.$('#siteTable').append(PostViewSmallTpl({
 								model: model.attributes
 							}))
-						} else if (this.gridOption == "normal") {
+						} else if (this.gridOption == "large") {
 
 							var postview = new PostRowView({
 								root: "#siteTable",
-								model: model
+								model: model,
+								gridOption: this.gridOption
+							});
+						} else {
+
+							var postview = new PostRowView({
+								root: "#siteTable",
+								model: model,
+								gridOption: this.gridOption
 							});
 						}
 					}
@@ -121,6 +162,7 @@ define([
 				}
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.helpFillUpScreen()
+				this.resize()
 
 			},
 			/**************Infinite Scroll functions ****************/

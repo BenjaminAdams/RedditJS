@@ -99,7 +99,6 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 					post.set("scoreDown", +score - 1)
 
 					//figure out if we need to use a default thumbnail
-
 					if (post.get('thumbnail') == 'self') {
 						post.set('thumbnail', 'img/self.png')
 					} else if (post.get('thumbnail') == 'nsfw') {
@@ -107,6 +106,11 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 					} else if (post.get('thumbnail') == '' || post.get('thumbnail') == 'default') {
 						post.set('thumbnail', 'img/notsure.png')
 					}
+
+					//figure out a URL that we can embed in an image tag
+					var imgUrl = post.get("url")
+
+					post.set('imgUrl', imgUrl)
 
 					self.count++;
 				}
