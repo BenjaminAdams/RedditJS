@@ -26,6 +26,11 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 			login: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
+
+				this.$('.throbber').css('display', 'inline-block')
+				this.$('.status').html(' ') //clear the status
+				this.$('.status').hide()
+
 				var self = this;
 				var user = this.$(".loginUsername").val()
 				var pw = this.$(".loginPassword").val()
@@ -45,11 +50,16 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 
 				this.api("api/login", 'POST', params, function(data) {
 					console.log(data)
+
 					if (data.json.errors.length > 0) {
-						alert("unable to login")
+						//alert("unable to login")
+						console.log(data.json.errors)
+						this.$('.status').show()
+						this.$('.status').html(data.json.errors[0][1])
+						this.$('.throbber').css('display', 'none')
 
 					} else {
-
+						this.$('.throbber').css('display', 'none')
 						var loginData = data.json.data;
 						console.log(loginData)
 
@@ -57,12 +67,10 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 						$.cookie('reddit_session', loginData.cookie);
 						$.cookie('modhash', loginData.modhash);
 						$.cookie('username', user);
-						//self.setCookie('reddit_session', loginData.cookie, 1);
-						//self.template = LoggedInTmpl;
-						//self.render()
+
 						channel.trigger("login");
 						self.$el.hide()
-						//HeaderView.userbar.showLoggedIn()
+
 					}
 				});
 
@@ -75,8 +83,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 				$.removeCookie('modhash');
 				$.removeCookie('username');
 
-				this.$el.show() //might not need show()
-				//HeaderView.userbar.showLoggedOut()
+				this.$el.show() //shows the login box
 			}
 
 		});

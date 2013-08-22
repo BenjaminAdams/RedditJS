@@ -93,3 +93,8 @@ text-align: center;
 
 
 
+#theLogin .status
+{
+	font-size:10px;
+	color:red;
+}

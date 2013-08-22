@@ -106,6 +106,9 @@ define([
 				e.stopPropagation();
 				var target = e.currentTarget
 				var name = this.$(target).data('name')
+				if (this.gridOption == name) {
+					return; //do nothing if the user already clicked this once
+				}
 				this.gridOption = name
 				$.cookie('gridOption', name)
 				this.changeActiveGrid()

@@ -132,13 +132,12 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 		fixImgur: function(url) {
 			if (this.containsStr("imgur.com", url)) {
 				//check if its a gallery
-				if (this.containsStr("imgur.com/a", url)) {
-					console.log("its a gallery=", url)
+				if (this.containsStr("imgur.com/a", url) == true || this.containsStr("gallery", url) == true) {
 					return false
 				} else {
 					return url + ".jpg"
 				}
-				console.log("i got here!")
+
 			}
 		},
 		containsStr: function(needle, haystack) {

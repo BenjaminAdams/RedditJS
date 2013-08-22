@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', 'view/base-view', 'event/channel'],
-	function($, _, Backbone, Resthub, UserbarTmpl, BaseView, channel) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', 'view/base-view', 'event/channel', 'cookie'],
+	function($, _, Backbone, Resthub, UserbarTmpl, BaseView, channel, Cookie) {
 		var UserbarView = BaseView.extend({
 			events: {
 				//  'keyup #new-todo':     'showTooltip'
@@ -9,9 +9,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 			initialize: function(data) {
 				_.bindAll(this);
 				this.template = UserbarTmpl;
-				//this.model = new SidebarModel(data.subName)
-
-				this.render();
 
 				if (this.checkIfLoggedIn() == true) {
 					this.showLoggedIn()
@@ -21,16 +18,22 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 
 				channel.bind("login", this.showLoggedIn, this);
 
+				this.loggedOut = '<div id="userbar-logged-out"><span class="user">want to join? <a class="login-required" href="#">login or register</a> in seconds</span></div>'
+
 				// this.$() is a shortcut for this.$el.find().
 
 			},
 			showLoggedIn: function() {
-				this.$("#userbar-logged-in").show()
-				this.$("#userbar-logged-out").hide()
+				this.model = new Backbone.Model({
+					username: $.cookie('username'),
+					karma: "123"
+				})
+				this.$el.html(" ")
+				this.render();
 			},
 			showLoggedOut: function() {
-				this.$("#userbar-logged-in").hide()
-				this.$("#userbar-logged-out").show()
+				this.$el.html(this.loggedOut)
+
 			},
 			logout: function(e) {
 				e.preventDefault()
