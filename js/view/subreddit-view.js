@@ -65,14 +65,10 @@ define([
 				this.appendPosts(this.collection)
 			},
 			resetPosts: function() {
-				console.log('resetting posts', this.$('#siteTable'))
 				this.$('#siteTable').html(" ")
 			},
 
 			/**************Fetching functions ****************/
-			loaded: function(response, posts) {
-				this.gotNewPosts(response)
-			},
 			fetchError: function(response, error) {
 				console.log("fetch error, lets retry")
 				if (this.errorRetries < 10) {
@@ -83,31 +79,39 @@ define([
 			},
 			fetchMore: function() {
 				this.collection.fetch({
-					success: this.loaded,
+					success: this.gotNewPosts,
 					error: this.fetchError,
 					remove: false
 				});
 			},
 			appendPosts: function(models) {
+				console.log(models)
 				models.each(function(model) {
+					if (model.get('title') != null) {
+						if (this.gridOption == "small") {
+							this.$('#siteTable').append(PostViewSmallTpl({
+								model: model.attributes
+							}))
+						} else if (this.gridOption == "normal") {
 
-					if (this.gridOption == "small") {
-						this.$('#siteTable').append(PostViewSmallTpl({
-							model: model.attributes
-						}))
-					} else if (this.gridOption == "normal") {
-
-						var postview = new PostRowView({
-							root: "#siteTable",
-							model: model
-						});
+							var postview = new PostRowView({
+								root: "#siteTable",
+								model: model
+							});
+						}
 					}
 				}, this);
 			},
-			gotNewPosts: function(models, test) {
+			gotNewPosts: function(models, res) {
 				this.$('.loading').hide()
 
-				this.appendPosts(models)
+				if (typeof res.data.children.length === 'undefined') {
+					return; //we might have an undefined length?
+				};
+				var newCount = res.data.children.length
+
+				var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
+				this.appendPosts(newModels)
 
 				//fetch more  posts with the After
 				if (this.collection.after == "stop") {
@@ -125,30 +129,16 @@ define([
 			watchScroll: function(e) {
 				var self = this;
 
-				//prevents multiple loadings of the same post set
-				if (this.loading == true) {
+				var triggerPoint = 1500; // 1500px from the bottom     
 
-					return;
-				} else {
+				if ((($(window).scrollTop() + $(window).height()) + triggerPoint >= $(document).height()) && this.loading == false) {
 					this.loading = true
-				}
-
-				var scrollY = this.target.scrollTop() + this.target.height();
-				var docHeight = this.target.get(0).scrollHeight;
-
-				console.log(this.target.scrollTop())
-
-				if (!docHeight) {
-					docHeight = $(document).height();
-				}
-
-				if (scrollY >= docHeight - this.scrollOffset && this.prevScrollY <= scrollY) {
-
+					console.log('loading MOAR')
 					if (this.collection.after != "stop") {
 						this.fetchMore()
 					}
 				}
-				this.prevScrollY = scrollY;
+				//this.prevScrollY = scrollY;
 			}
 
 		});
