@@ -27,9 +27,6 @@ require.config({
             ],
             exports: 'Backbone.Datagrid'
         },
-        'infinite-scroll': {
-            deps: ['backbone']
-        },
         'backbone-paginator': {
             deps: [
                 'backbone'
@@ -86,7 +83,7 @@ require.config({
         console: 'lib/resthub/console',
         //markdown: 'lib/markdown',
         'cookie': 'lib/jquery.cookie',
-        'infinite-scroll': 'lib/infinitescroll'
+        // 'infinite-scroll': 'lib/infinitescroll'
     }
 });
 
