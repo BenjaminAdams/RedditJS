@@ -57,7 +57,7 @@ define([
 				})
 
 				this.comments = new CommentsView({
-					collection: this.collection,
+					collection: this.model.get('replies'),
 					el: "#commentarea"
 					//root: "#commentarea"
 				})

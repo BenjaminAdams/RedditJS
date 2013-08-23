@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'lib/markdown'], function(_, Backbone) {
-	var Single = Backbone.Model.extend({
+define(['underscore', 'backbone', 'model/comment', 'model/base'], function(_, Backbone, CommentModel, BaseModel) {
+	var Single = BaseModel.extend({
 		initialize: function(data) {
 			this.id = data.id
 
@@ -13,6 +13,7 @@ define(['underscore', 'backbone', 'lib/markdown'], function(_, Backbone) {
 			// image:"some img",
 			//  slug: "slug"
 		},
+
 		//so we have the attributes in the root of the model
 		parse: function(response) {
 			var data;
@@ -21,7 +22,8 @@ define(['underscore', 'backbone', 'lib/markdown'], function(_, Backbone) {
 			} else {
 
 				data = response[0].data.children[0].data
-				data.comments = response[1].data.children
+				data.replies = this.parseComments(response[1].data)
+				//data.comments = response[1].data.children
 			}
 
 			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"

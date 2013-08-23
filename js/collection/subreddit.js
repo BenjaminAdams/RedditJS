@@ -53,9 +53,9 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			var models = Array();
 			_.each(response.data.children, function(item) {
 				if (item.data.hidden == false) {
+
 					var singleModel = new SingleModel(item.data.id)
 					item.data = singleModel.parse(item.data)
-					console.log(item.data)
 					item.data.count = self.count
 
 					if ((self.count % 2) == 0) {

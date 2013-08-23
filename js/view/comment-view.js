@@ -1,9 +1,9 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/comments', 'view/comment-view', 'view/base-view', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, commentsTmpl, CommentView, BaseView, channel, Cookie) {
-		var CommentsView = BaseView.extend({
-
-			template: commentsTmpl,
+  'underscore', 'backbone', 'resthub', 'hbs!template/comment', 'view/base-view', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, commentTmpl, BaseView, channel, Cookie) {
+		var CommentView = BaseView.extend({
+			strategy: 'append',
+			template: commentTmpl,
 
 			events: {
 				'click .upArrow': 'upvote',
@@ -16,28 +16,13 @@ define([
 				$(this.el).html('')
 				var self = this;
 				this.collection = options.collection
-				this.template = commentsTmpl;
+				this.template = commentTmpl;
 				this.render();
-
-				this.renderComments(this.collection)
 
 				// this.model.fetch({
 				// 	success: this.loaded,
 				// 	error: this.fetchError
 				// });
-
-			},
-			renderComments: function(collection) {
-				//console.log(collection)
-				collection.each(function(model) {
-					console.log(model)
-					var comment = new CommentView({
-						model: model,
-						root: "#siteTableComments"
-						//root: "#commentarea"
-					})
-
-				})
 			},
 
 			/**************Fetching functions ****************/
@@ -57,5 +42,5 @@ define([
 			},
 
 		});
-		return CommentsView;
+		return CommentView;
 	});
