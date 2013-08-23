@@ -29,41 +29,39 @@ define(['backbone', 'model/post'], function(Backbone, PostModel) {
 		loadDefaultSubreddits: function() {
 
 			this.add({
-				display_name: "AdviceAnimals"
+				display_name: "funny"
 			});
 			this.add({
-				display_name: "announcements"
+				display_name: "pics"
+			});
+
+			this.add({
+				display_name: "aww"
+			});
+			this.add({
+				display_name: "WTF"
+			});
+			this.add({
+				display_name: "gifs"
+			});
+			this.add({
+				display_name: "AdviceAnimals"
+			});
+
+			this.add({
+				display_name: "EarthPorn"
 			});
 			this.add({
 				display_name: "AskReddit"
 			});
 			this.add({
-				display_name: "askscience"
-			});
-			this.add({
-				display_name: "aww"
-			});
-			this.add({
-				display_name: "bestof"
-			});
-			this.add({
-				display_name: "blog"
-			});
-			this.add({
-				display_name: "books"
-			});
-			this.add({
-				display_name: "EarthPorn"
-			});
-			this.add({
 				display_name: "explainlikeimfive"
 			});
-
 			this.add({
 				display_name: "gaming"
 			});
 			this.add({
-				display_name: "gifs"
+				display_name: "bestof"
 			});
 			this.add({
 				display_name: "IAmA"
@@ -81,6 +79,12 @@ define(['backbone', 'model/post'], function(Backbone, PostModel) {
 				display_name: "science"
 			});
 			this.add({
+				display_name: "books"
+			});
+			this.add({
+				display_name: "videos"
+			});
+			this.add({
 				display_name: "technology"
 			});
 			this.add({
@@ -90,13 +94,14 @@ define(['backbone', 'model/post'], function(Backbone, PostModel) {
 				display_name: "todayilearned"
 			});
 			this.add({
-				display_name: "videos"
+				display_name: "askscience"
 			});
+
 			this.add({
 				display_name: "worldnews"
 			});
 			this.add({
-				display_name: "WTF"
+				display_name: "blog"
 			});
 
 		}

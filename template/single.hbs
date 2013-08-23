@@ -1,40 +1,63 @@
+
+
+ 
+  <div class="side"> </div>
+
+
+
+<div class='content' role='main'>
+
+<div id="siteTable" class="sitetable linklisting">
 <div class="thing id-{{model.name}} {{model.evenOrOdd}} link" data-fullname="{{model.name}}" data-ups="{{model.ups}}" data-downs="{{model.downs}}">
        <p class="parent"></p>
        <span class="rank" style="width:3.30ex;">{{model.count}}</span>
 
+
         <div class="midcol {{model.voted}} " style="width:5ex;">
             <div class="arrow login-required upArrow {{model.upmod}}" role='button' aria-label="upvote" tabindex="0"></div>
-
             <div class="score dislikes">
                 {{model.scoreDown}} 
             </div>
-
             <div class="score unvoted">
                 {{model.score}}
             </div>
-
             <div class="score likes">
                 {{model.scoreUp}}
-            </div>
-			
-	<div class="arrow login-required downArrow {{model.downmod}}" role="button" aria-label="downvote" tabindex="0"></div>
-
-
+            </div>        
+          <div class="arrow login-required downArrow {{model.downmod}}" role="button" aria-label="downvote" tabindex="0"></div>
         </div>
 
-		<a class="thumbnail loggedin" {{model.external}} href="{{model.url}}" target="_blank"><img alt="" height="52" src="{{model.thumbnail}}" width="70"></a>
+
+    <a class="thumbnail loggedin" {{model.external}} href="{{model.url}}" target="_blank"><img alt="" height="52" src="{{model.thumbnail}}" width="70"></a>
 
         <div class="entry {{model.voted}}">
             <p class="title">
-	  <a class="title loggedin" {{model.external}} href="{{model.url}}" target="_blank">{{model.title}}</a> 
+      <a class="title loggedin" {{model.external}} href="{{model.url}}" target="_blank">{{model.title}}</a> 
                 <span class="domain">(<a href="/domain/{{model.domain}}/">{{model.domain}}</a>)</span>
             </p>
 
-            <p class="tagline">submitted <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
+             <p class="tagline">submitted <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
 
             <span class="userattrs"></span>to <a href="/r/{{model.subreddit}}/" class="subreddit hover">{{model.subreddit}}</a>
             </p>
-            <ul class="flat-list buttons">
+
+            <div class="expando">
+                <form action="#" class="usertext" onsubmit="return post_form(this, 'editusertext')" id="form-t3_1ktzvz3sr">
+                    <input type="hidden" name="thing_id" value="t3_1ktzvz">
+                    <div class="usertext-body">
+                        <div class="md">
+                            <p>
+                                I recently came back and have a bunch of characters ranging from 55-72 but my server seems pretty dead(maelin/drinal). Has anyone had the experience of restarting on vox from a similar situation? I really like leveling characters and doing the 1.0 epics for them. Are the epic mobs perma-camped because of the growing population? Thanks for any input you guys might have.
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+       
+
+          <ul class="flat-list buttons">
 
                 <li class="first">
                 <a class="comments" href="{{model.permalink}}"  target="_blank">{{model.num_comments}} comments</a>
@@ -64,14 +87,20 @@
                 </li>
             </ul>
 
+
+       
         </div>
-
-        <div class="child"></div>
-
+        <div class="child">
+        </div>
         <div class="clearleft">
             <!--IE6sux-->
         </div>
-
-
-
+    </div>
+    <div class="clearleft">
+        <!--IE6sux-->
+    </div>
 </div>
+</div>
+
+
+

@@ -64,9 +64,15 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 						console.log(loginData)
 
 						// set cookie
-						$.cookie('reddit_session', loginData.cookie);
-						$.cookie('modhash', loginData.modhash);
-						$.cookie('username', user);
+						$.cookie('reddit_session', loginData.cookie, {
+							path: '/'
+						});
+						$.cookie('modhash', loginData.modhash, {
+							path: '/'
+						});
+						$.cookie('username', user, {
+							path: '/'
+						});
 
 						channel.trigger("login");
 						self.$el.hide()
@@ -79,9 +85,15 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 				//e.preventDefault()
 				//e.stopPropagation()
 				console.log("fired a logout event", this)
-				$.removeCookie('reddit_session');
-				$.removeCookie('modhash');
-				$.removeCookie('username');
+				$.removeCookie('reddit_session', {
+					path: '/'
+				});
+				$.removeCookie('modhash', {
+					path: '/'
+				});
+				$.removeCookie('username', {
+					path: '/'
+				});
 
 				this.$el.show() //shows the login box
 			}

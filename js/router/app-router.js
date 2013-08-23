@@ -1,38 +1,55 @@
-define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'event/channel', 'backbone-queryparams'], function(_, Backbone, SubredditView, HeaderView, channel) {
+define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'event/channel', 'backbone-queryparams'],
+    function(_, Backbone, SubredditView, HeaderView, channel) {
 
-    var AppRouter = Backbone.Router.extend({
+        var AppRouter = Backbone.Router.extend({
 
-        initialize: function() {
-            Backbone.history.start({
-                pushState: true,
-                root: "/"
-            });
+            initialize: function() {
+                Backbone.history.start({
+                    pushState: true,
+                    root: "/"
+                });
 
-            this.header = new HeaderView();
+                this.header = new HeaderView();
 
-        },
+            },
+            /*  route for comment page:
+        r/worldnews/comments/1kvql3/orders_to_destroy_guardian_hard_drives_came/
 
-        routes: {
-            '': 'main',
-            'r/:subName(/)': 'subreddit',
-            //  'r/:subName/': 'subreddit'
-        },
+        */
+            routes: {
+                '(:sortOrder)(/)': 'home',
+                'r/:subName(/)': 'subreddit',
+                'r/:subName/:sortOrder': 'subreddit',
+                'r/:subName/comments/:id/:slug(/)': 'comment',
+                //  'r/:subName/': 'subreddit'
+            },
 
-        main: function() {
-            console.debug("Main route activated");
-            subredditView = new SubredditView({
-                subName: "front"
-            });
-        },
+            home: function(sortOrder) {
+                console.debug("Main route activated");
+                subredditView = new SubredditView({
+                    subName: "front",
+                    sortOrder: sortOrder
+                });
+            },
 
-        subreddit: function(subName) {
-            subredditView = new SubredditView({
-                subName: subName
-            });
+            subreddit: function(subName, sortOrder) {
+                subredditView = new SubredditView({
+                    subName: subName,
+                    sortOrder: sortOrder
+                });
 
-        }
+            },
+
+            comment: function(subName, id) {
+                commentView = new CommentView({
+                    subName: subName,
+                    id: id
+                });
+
+            }
+
+        });
+
+        return AppRouter;
+
     });
-
-    return AppRouter;
-
-});

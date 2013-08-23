@@ -1,16 +1,23 @@
-define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
+define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 	var Post = Backbone.Collection.extend({
 		initialize: function(data) {
 			_.bindAll(this);
 			this.after = ""
-			this.subName = data
+			this.subName = data.subName
+			this.sortOrder = data.sortOrder
+			if (typeof this.sortOrder === 'undefined') {
+				this.sortOrder = 'hot' //the default sort order is hot
+			};
+			this.sortOrder = "/" + this.sortOrder //needs to start with a slash to be injected into the URL
+
+			console.log('sort order=', this.sortOrder)
 			this.count = 1
 			this.instanceUrl = this.getUrl()
 
 		},
 		// Reference to this collection's model.
-		model: PostModel,
+		model: SingleModel,
 
 		url: function() {
 
@@ -20,12 +27,10 @@ define(['backbone', 'model/post', "moment"], function(Backbone, PostModel) {
 		getUrl: function() {
 
 			if (this.subName == "front") {
-				return "/api/?url=.json?after=" + this.after + "&cookie=" + $.cookie('reddit_session');
-				//return 'http://api.reddit.com/.json?jsonp=?';		
+				return "/api/?url=" + this.sortOrder + ".json?after=" + this.after + "&cookie=" + $.cookie('reddit_session');
 			} else {
-				console.log('/api/?url=r/' + this.subName + ".json?after=" + this.after + "&cookie=" + $.cookie('reddit_session'))
-				return '/api/?url=r/' + this.subName + ".json?after=" + this.after + "&cookie=" + $.cookie('reddit_session');
-				//return 'http://api.reddit.com/r/'+this.subName+'.json?jsonp=?';
+				console.log('/api/?url=r/' + this.subName + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session'))
+				return '/api/?url=r/' + this.subName + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
 			}
 		},
 
