@@ -52,104 +52,28 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			var self = this;
 			var models = Array();
 			_.each(response.data.children, function(item) {
-				var post = new SingleModel(item.data)
-				if (post.get('hidden') == true) //skip loading this if the user has it hidden
-				{
-					//continue;  //cant use continue in _.each
-				} else {
+				if (item.data.hidden == false) {
+					var singleModel = new SingleModel(item.data.id)
+					item.data = singleModel.parse(item.data)
+					console.log(item.data)
+					item.data.count = self.count
 
-					var timeAgo = moment.unix(post.get("created")).fromNow(true) //"true" removes the "ago"
-					timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
-
-					post.set("timeAgo", timeAgo)
-					post.set("timeUgly", moment.unix(post.get("created")).format())
-					post.set("timePretty", moment.unix(post.get("created")).format("ddd MMM DD HH:mm:ss YYYY") + " UTC") //format Sun Aug 18 12:51:06 2013 UTC
-					//console.log(post)
-
-					post.set("count", self.count)
-					//keep track if this is even or odd
 					if ((self.count % 2) == 0) {
-						post.set("evenOrOdd", "even")
+						item.data.evenOrOdd = "even"
 					} else {
-						post.set("evenOrOdd", "odd")
+						item.data.evenOrOdd = "odd"
 					}
-
-					//so we can have external URLS add data-bypass to the a tag
-					if (post.get("is_self") == false) {
-						post.set("external", "data-bypass")
-					}
-
-					/*keeps track if the user voted for this or not
-						putting the class upmod makes the vote count as an upvote
-						downmod makes the vote show as a downvote
-						leave the classes as "down" and "up" to leave the no vote option
-
-					*/
-					var likes = post.get("likes")
-					if (likes == null) {
-						post.set("voted", "unvoted")
-						post.set('downmod', 'down')
-						post.set('upmod', 'up')
-					} else if (likes === true) {
-						post.set("voted", "likes")
-						post.set('downmod', 'down')
-						post.set('upmod', 'upmod')
-					} else {
-						post.set("voted", "dislikes")
-						post.set('downmod', 'downmod')
-						post.set('upmod', 'up')
-					}
-
-					//We have to print the score out for the upvoted and downvoted values
-					var score = post.get('score');
-					post.set("scoreUp", +score + 1)
-					post.set("scoreDown", +score - 1)
-
-					//figure out if we need to use a default thumbnail
-					if (post.get('thumbnail') == 'self') {
-						post.set('thumbnail', 'img/self.png')
-					} else if (post.get('thumbnail') == 'nsfw') {
-						post.set('thumbnail', 'img/nsfw.png')
-					} else if (post.get('thumbnail') == '' || post.get('thumbnail') == 'default') {
-						post.set('thumbnail', 'img/notsure.png')
-					}
-
-					//figure out a URL that we can embed in an image tag
-					var imgUrl = post.get("url")
-					if (self.checkIsImg(imgUrl) == false) {
-						//URL is NOT an image
-						//try and fix an imgur link?
-						imgUrl = self.fixImgur(imgUrl)
-
-					}
-					post.set('imgUrl', imgUrl)
 
 					self.count++;
+
+					models.push(item.data)
 				}
-				models.push(post)
 			});
 
 			//reset the url to have the new after tag
 			this.instanceUrl = this.getUrl()
 			return models;
 		},
-		checkIsImg: function(url) {
-			return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
-		},
-		fixImgur: function(url) {
-			if (this.containsStr("imgur.com", url)) {
-				//check if its a gallery
-				if (this.containsStr("imgur.com/a", url) == true || this.containsStr("gallery", url) == true) {
-					return false
-				} else {
-					return url + ".jpg"
-				}
-
-			}
-		},
-		containsStr: function(needle, haystack) {
-			return (haystack.indexOf(needle) >= 0)
-		}
 
 	});
 	return Post;

@@ -1,13 +1,15 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view/post-row-view', 'view/sidebar-view', 'view/comments-view', 'model/single', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, singleTmpl, PostRowView, SidebarView, CommentsView, SingleModel, channel, Cookie) {
-		var SingleView = Resthub.View.extend({
+  'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view/post-row-view', 'view/sidebar-view', 'view/comments-view', 'view/base-view', 'model/single', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, singleTmpl, PostRowView, SidebarView, CommentsView, BaseView, SingleModel, channel, Cookie) {
+		var SingleView = BaseView.extend({
 
 			el: $("#main"),
 			template: singleTmpl,
 
 			events: {
-				//'click .tabmenu-right li': 'changeGridOption'
+				'click .upArrow': 'upvote',
+				'click .downArrow': 'downvote',
+				//  'keyup #new-todo':     'showTooltip'
 			},
 
 			initialize: function(options) {

@@ -2,6 +2,7 @@ define(['underscore', 'backbone', 'lib/markdown'], function(_, Backbone) {
 	var Single = Backbone.Model.extend({
 		initialize: function(data) {
 			this.id = data.id
+
 		},
 		url: function() {
 			return "/api/?url=comments/" + this.id + ".json?cookie=" + $.cookie('reddit_session');
@@ -14,8 +15,14 @@ define(['underscore', 'backbone', 'lib/markdown'], function(_, Backbone) {
 		},
 		//so we have the attributes in the root of the model
 		parse: function(response) {
-			var data = response[0].data.children[0].data
-			data.comments = response[1].data.children
+			var data;
+			if (typeof response[0] === 'undefined') {
+				data = response
+			} else {
+
+				data = response[0].data.children[0].data
+				data.comments = response[1].data.children
+			}
 
 			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
 			timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
@@ -25,6 +32,7 @@ define(['underscore', 'backbone', 'lib/markdown'], function(_, Backbone) {
 			data.rname = "/r/" + data.display_name
 			//data.selftextMD = markdown.toHTML(this.decodeHTMLEntities(data.selftext))
 
+			//so we can have external URLS add data-bypass to the a tag
 			data.selftext_html = (typeof data.selftext_html === 'undefined') ? '' : $('<div/>').html(data.selftext_html).text();
 
 			if (data.thumbnail == 'self') {
@@ -35,6 +43,11 @@ define(['underscore', 'backbone', 'lib/markdown'], function(_, Backbone) {
 				data.thumbnail = 'img/notsure.png'
 			}
 
+			/*keeps track if the user voted for this or not
+				putting the class upmod makes the vote count as an upvote
+				downmod makes the vote show as a downvote
+				leave the classes as "down" and "up" to leave the no vote option
+			*/
 			if (data.likes == null) {
 				data.voted = 'unvoted'
 				data.downmod = 'down'
@@ -49,6 +62,21 @@ define(['underscore', 'backbone', 'lib/markdown'], function(_, Backbone) {
 				data.upmod = 'up'
 			}
 
+			//We have to print the score out for the upvoted and downvoted values
+			var score = data.score
+			data.scoreUp = +score + 1
+			data.scoreDown = +score - 1
+
+			//figure out a URL that we can embed in an image tag
+			var imgUrl = data.url
+			if (this.checkIsImg(imgUrl) == false) {
+				//URL is NOT an image
+				//try and fix an imgur link?
+				imgUrl = this.fixImgur(imgUrl)
+
+			}
+			data.imgUrl = imgUrl
+
 			if (data.is_self == false) {
 				data.external = 'data-bypass'
 			}
@@ -57,18 +85,35 @@ define(['underscore', 'backbone', 'lib/markdown'], function(_, Backbone) {
 
 		},
 
-		decodeHTMLEntities: function(str) {
-			var element = document.createElement('div');
-			if (str && typeof str === 'string') {
-				// strip script/html tags
-				str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
-				str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
-				element.innerHTML = str;
-				str = element.textContent;
-				element.textContent = '';
-			}
+		// decodeHTMLEntities: function(str) {
+		// 	var element = document.createElement('div');
+		// 	if (str && typeof str === 'string') {
+		// 		// strip script/html tags
+		// 		str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+		// 		str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+		// 		element.innerHTML = str;
+		// 		str = element.textContent;
+		// 		element.textContent = '';
+		// 	}
 
-			return str;
+		// 	return str;
+		// },
+		checkIsImg: function(url) {
+			return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+		},
+		fixImgur: function(url) {
+			if (this.containsStr("imgur.com", url)) {
+				//check if its a gallery
+				if (this.containsStr("imgur.com/a", url) == true || this.containsStr("gallery", url) == true) {
+					return false
+				} else {
+					return url + ".jpg"
+				}
+
+			}
+		},
+		containsStr: function(needle, haystack) {
+			return (haystack.indexOf(needle) >= 0)
 		}
 
 	});

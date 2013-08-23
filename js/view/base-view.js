@@ -2,6 +2,7 @@ define([
   'underscore', 'backbone', 'resthub', 'cookie'],
 	function(_, Backbone, Resthub, Cookie) {
 		var BaseView = Resthub.View.extend({
+
 			destroy: function() {
 				console.log("destroying a view")
 				this.remove();
@@ -52,6 +53,7 @@ define([
 				});
 			},
 			upvote: function() {
+				console.log('upvoting', this.model)
 				if (this.model.get('likes') == false || this.model.get('likes') == null) {
 					this.vote(1, this.model.get('name'))
 					this.model.set('likes', true)

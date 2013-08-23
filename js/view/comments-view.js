@@ -1,14 +1,14 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/comments', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, commentsTmpl, channel, Cookie) {
-		var CommentsView = Resthub.View.extend({
+  'underscore', 'backbone', 'resthub', 'hbs!template/comments', 'view/base-view', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, commentsTmpl, BaseView, channel, Cookie) {
+		var CommentsView = BaseView.extend({
 
-		// id: "commentarea",
-		// tagName: 'div',
 			template: commentsTmpl,
 
 			events: {
-				//'click .tabmenu-right li': 'changeGridOption'
+				'click .upArrow': 'upvote',
+				'click .downArrow': 'downvote',
+				//  'keyup #new-todo':     'showTooltip'
 			},
 
 			initialize: function(options) {
