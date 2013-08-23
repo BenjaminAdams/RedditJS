@@ -2,31 +2,31 @@
 	<p class="parent">
 
 	</p>
-	<div class="midcol unvoted">
-		<div class="arrow up "  role="button" aria-label="upvote" tabindex="0">
+	<div class="midcol {{model.voted}} ">
+		<div class="arrow {{model.upmod}} "  role="button" aria-label="upvote" tabindex="0">
 		</div>
-		<div class="arrow down "  role="button" aria-label="downvote" tabindex="0">
+		<div class="arrow {{model.downmod}} "  role="button" aria-label="downvote" tabindex="0">
 		</div>
 	</div>
 	<div class="entry unvoted">
 		<div class="collapsed" style="display:none">
 			<a href="#" class="expand" >[+]</a><a class="author gray id-t2_1mmxj" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
 			<span class="userattrs"></span>
-			<span class="score dislikes">0 points</span>
-			<span class="score unvoted">1 point</span>
-			<span class="score likes">2 points</span>
-			<time title="Thu Aug 22 21:59:50 2013 UTC" datetime="2013-08-22T21:59:50+00:00">7 hours</time> ago &nbsp;
-			<a href="#" class="expand">(2 children)</a>
+				<span class="score dislikes">{{mode.scoreDown}}</span>
+				<span class="score unvoted">{{mode.score}}</span>
+				<span class="score likes">{{mode.scoreUp}}</span>
+			<time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">{{model.timeAgo}}</time> ago &nbsp;
+			<a href="#" class="expand">({{model.childrenCount}} {{model.childOrChildren}})</a>
 		</div>
 		<div class="noncollapsed">
 			<p class="tagline">
-				<a href="#" class="expand" onclick="return hidecomment(this)">[–]</a>
-				<a class="author id-t2_1mmxj" href="http://www.reddit.com/user/{{model.author}}" target="_blank">{{model.author}}</a>
+				<a href="#" class="expand" >[–]</a>
+				<a class="author id-t2_1mmxj" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
 				<span class="userattrs"></span>
-				<span class="score dislikes">0 points</span>
-				<span class="score unvoted">1 point</span>
-				<span class="score likes">2 points</span>
-				<time title="Thu Aug 22 21:59:50 2013 UTC" datetime="2013-08-22T21:59:50+00:00">7 hours</time> ago
+					<span class="score dislikes">{{mode.scoreDown}}</span>
+					<span class="score unvoted">{{mode.score}}</span>
+					<span class="score likes">{{mode.scoreUp}}</span>
+				<time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">{{model.timeAgo}}</time> ago
 			</p>
 			<form action="#" class="usertext"  id="form-t1_cbtb7as33m">
 				<input type="hidden" name="thing_id" value="t1_cbtb7as">
@@ -39,10 +39,10 @@
 				</div>
 			</form>
 			<ul class="flat-list buttons">
-				<li class="first"><a href="http://www.reddit.com/r/everquest/comments/1ktzvz/is_vox_worth_restarting/cbtb7as" class="bylink" rel="nofollow">permalink</a></li>
+				<li class="first"><a href="{{model.permalink}}" class="bylink" rel="nofollow">permalink</a></li>
 				<li class="comment-save-button">
 				<form action="/post/save" method="post" class="state-button save-button">
-					<input type="hidden" name="executed" value="unsave"><span><a href="javascript:void(0)" onclick="toggle_save(this)">save</a></span>
+					<input type="hidden" name="executed" value="unsave"><span><a href="#" >save</a></span>
 				</form>
 				</li>
 				<li>
@@ -59,10 +59,10 @@
 					<input type="hidden" name="spam" value="False">
 					<span class="option main active">
 					<a href="#" class="togglebutton" >remove</a></span>
-					<span class="option error">are you sure? <a href="#" class="yes" >yes</a> / <a href="javascript:void(0)" class="no">no</a></span>
+					<span class="option error">are you sure? <a href="#" class="yes" >yes</a> / <a href="#" class="no">no</a></span>
 				</form>
 				</li>
-				<li><a href="/gold?goldtype=gift&amp;months=1&amp;comment=t1_cbtb7as" title="give reddit gold in appreciation of this comment." class="give-gold login-required">give gold</a></li>
+				<li><a  data-bypass href="http://reddit.com/gold?goldtype=gift&amp;months=1&amp;comment=t1_cbtb7as"  target='_blank' title="give reddit gold in appreciation of this comment." class="give-gold login-required">give gold</a></li>
 				<li><a class="" href="#" >reply</a></li>
 			</ul>
 		</div>

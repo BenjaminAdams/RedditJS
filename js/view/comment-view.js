@@ -8,6 +8,8 @@ define([
 			events: {
 				'click .upArrow': 'upvote',
 				'click .downArrow': 'downvote',
+				'click .noncollapsed .expand': "hideThread",
+				'click .collapsed .expand': "showThread"
 				//  'keyup #new-todo':     'showTooltip'
 			},
 
@@ -27,6 +29,26 @@ define([
 				// 	success: this.loaded,
 				// 	error: this.fetchError
 				// });
+			},
+
+			hideThread: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+
+				this.$('.noncollapsed').hide()
+				this.$('.collapsed').show()
+				this.$('.child').hide()
+				this.$('.midcol').hide()
+
+			},
+			showThread: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				this.$('.collapsed').hide()
+				this.$('.noncollapsed').show()
+				this.$('.child').show()
+				this.$('.midcol').show()
+
 			},
 
 			renderChildren: function() {

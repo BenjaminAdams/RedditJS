@@ -23,14 +23,44 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 					data.timeUgly = moment.unix(data.created).format()
 					data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
 
+					data.score = +data.ups + +data.downs
+					data.scoreUp = +data.score + 1
+					data.scoreDown = +data.score - 1
+
+					if (data.likes == null) {
+						data.voted = 'unvoted'
+						data.downmod = 'down'
+						data.upmod = 'up'
+					} else if (data.likes === true) {
+						data.voted = "likes"
+						data.downmod = 'down'
+						data.upmod = 'upmod'
+					} else {
+						data.voted = "dislikes"
+						data.downmod = 'downmod'
+						data.upmod = 'up'
+					}
+
 					data.body_html = (typeof data.body_html === 'undefined') ? '' : $('<div/>').html(data.body_html).text();
+					var linkName = data.link_id.replace('t3_', '')
+					///r/{{model.subreddit}}/comments/{{model.id}}/is_vox_worth_restarting/cbtb7as
+					data.permalink = '/r/' + data.subreddit + '/comments/' + linkName + "#" + data.id
 
 					var singleModel = new Backbone.Model(data)
 					//data.replies = this.parseComments(response[1].data.children)
 					var replies = singleModel.get('replies')
 					if (typeof replies != "undefined" && typeof replies.data != "undefined") {
 						var newComments = self.parseComments(replies.data)
+						singleModel.set('childrenCount', newComments.length)
+						if (newComments.length == 1) {
+							singleModel.set('childOrChildren', 'child')
+						} else {
+							singleModel.set('childOrChildren', 'children')
+						}
 						singleModel.set('replies', newComments)
+					} else {
+						singleModel.set('childOrChildren', 'children')
+						singleModel.set('childrenCount', 0)
 					}
 					comments.add(singleModel)
 				})
