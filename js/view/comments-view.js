@@ -30,7 +30,6 @@ define([
 			renderComments: function(collection) {
 				//console.log(collection)
 				collection.each(function(model) {
-					console.log(model)
 					var comment = new CommentView({
 						model: model,
 						root: "#siteTableComments"
