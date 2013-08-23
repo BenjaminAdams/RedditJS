@@ -44,13 +44,15 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 			var modhash = response.data.modhash;
 			if (typeof modhash == "string" && modhash.length > 5) {
-				$.cookie('modhash', modhash);
+				$.cookie('modhash', modhash, {
+					path: '/'
+				});
 			}
 
 			var self = this;
 			var models = Array();
 			_.each(response.data.children, function(item) {
-				var post = new PostModel(item.data)
+				var post = new SingleModel(item.data)
 				if (post.get('hidden') == true) //skip loading this if the user has it hidden
 				{
 					//continue;  //cant use continue in _.each

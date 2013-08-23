@@ -1,10 +1,10 @@
-define(['underscore', 'backbone'], function(_, Backbone) {
+define(['underscore', 'backbone', 'lib/markdown'], function(_, Backbone) {
 	var Single = Backbone.Model.extend({
 		initialize: function(data) {
 			this.id = data.id
 		},
 		url: function() {
-			return return "/api/?url=comments/" + this.id + ".json&cookie=" + $.cookie('reddit_session');
+			return "/api/?url=comments/" + this.id + ".json?cookie=" + $.cookie('reddit_session');
 		},
 		// Default attributes 
 		defaults: {
@@ -14,20 +14,62 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 		},
 		//so we have the attributes in the root of the model
 		parse: function(response) {
-			data = response.data
+			var data = response[0].data.children[0].data
+			data.comments = response[1].data.children
+
 			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
 			timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
 			data.timeAgo = timeAgo
 			data.timeUgly = moment.unix(data.created).format()
 			data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
 			data.rname = "/r/" + data.display_name
-			//data.description = markdown.toHTML(data.description)
-			data.description_html = (typeof data.selftext_html === 'undefined') ? '' : $('<div/>').html(data.selftext_html).text();
-			//data.description_html = data.description_html.replace("reddit.com","redditjs.com")
-			//localStorage[this.subName] = JSON.stringify(data)
+			//data.selftextMD = markdown.toHTML(this.decodeHTMLEntities(data.selftext))
+
+			data.selftext_html = (typeof data.selftext_html === 'undefined') ? '' : $('<div/>').html(data.selftext_html).text();
+
+			if (data.thumbnail == 'self') {
+				data.thumbnail = 'img/self.png'
+			} else if (data.thumbnail == 'nsfw') {
+				data.thumbnail = 'img/nsfw.png'
+			} else if (data.thumbnail == '' || data.thumbnail == 'default') {
+				data.thumbnail = 'img/notsure.png'
+			}
+
+			if (data.likes == null) {
+				data.voted = 'unvoted'
+				data.downmod = 'down'
+				data.upmod = 'up'
+			} else if (data.likes === true) {
+				data.voted = "likes"
+				data.downmod = 'down'
+				data.upmod = 'upmod'
+			} else {
+				data.voted = "dislikes"
+				data.downmod = 'downmod'
+				data.upmod = 'up'
+			}
+
+			if (data.is_self == false) {
+				data.external = 'data-bypass'
+			}
+
 			return data;
 
 		},
+
+		decodeHTMLEntities: function(str) {
+			var element = document.createElement('div');
+			if (str && typeof str === 'string') {
+				// strip script/html tags
+				str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+				str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+				element.innerHTML = str;
+				str = element.textContent;
+				element.textContent = '';
+			}
+
+			return str;
+		}
 
 	});
 	return Single;

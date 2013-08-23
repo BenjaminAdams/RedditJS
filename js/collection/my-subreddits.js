@@ -1,9 +1,9 @@
-define(['backbone', 'model/post'], function(Backbone, PostModel) {
+define(['backbone', 'model/single'], function(Backbone, SingleModel) {
 	var MySubreddits = Backbone.Collection.extend({
 		initialize: function() {
 
 		},
-		model: PostModel,
+		model: SingleModel,
 		url: function() {
 
 			return "/api/?url=reddits/mine.json?limit=100&cookie=" + $.cookie('reddit_session');
@@ -16,7 +16,7 @@ define(['backbone', 'model/post'], function(Backbone, PostModel) {
 
 			_.each(response.data.children, function(item) {
 				//console.log(item.data)
-				var sub = new PostModel(item.data)
+				var sub = new SingleModel(item.data)
 				//	console.log(sub.attributes)
 				subreddits.push(sub)
 				//console.log(item.data)

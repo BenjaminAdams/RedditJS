@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 'hbs!template/post-row-large', 'model/post', 'view/base-view'],
-    function($, _, Backbone, Resthub, PostRowTmpl, PostRowLargeTmpl, PostModel, BaseView) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 'hbs!template/post-row-large', 'view/base-view'],
+    function($, _, Backbone, Resthub, PostRowTmpl, PostRowLargeTmpl, BaseView) {
         var PostRowView = BaseView.extend({
             strategy: 'append',
 

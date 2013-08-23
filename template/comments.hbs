@@ -1,0 +1,172 @@
+
+	<div class="panestack-title">
+		<span class="title">all 8 comments</span>
+	</div>
+	<div class="menuarea" style='border-bottom: none;'>
+		<div class="spacer">
+			<span class="dropdown-title lightdrop ">sorted by: </span>
+			<div class="dropdown lightdrop " onclick="open_menu(this)" onmouseover="hover_open_menu(this)">
+				<span class="selected">best</span>
+			</div>
+			<div class="drop-choices lightdrop ">
+				<form method="POST" action="http://www.reddit.com/comments/1ktzvz">
+					<input type="hidden" name="sort" value="confidence"><a href="http://www.reddit.com/comments/1ktzvz?sort=confidence" class="choice selected" onclick="$(this).parent().submit(); return false;">best</a>
+				</form>
+				<form method="POST" action="http://www.reddit.com/comments/1ktzvz">
+					<input type="hidden" name="sort" value="top"><a href="http://www.reddit.com/comments/1ktzvz?sort=top" class="choice " onclick="$(this).parent().submit(); return false;">top</a>
+				</form>
+				<form method="POST" action="http://www.reddit.com/comments/1ktzvz">
+					<input type="hidden" name="sort" value="new"><a href="http://www.reddit.com/comments/1ktzvz?sort=new" class="choice " onclick="$(this).parent().submit(); return false;">new</a>
+				</form>
+				<form method="POST" action="http://www.reddit.com/comments/1ktzvz">
+					<input type="hidden" name="sort" value="hot"><a href="http://www.reddit.com/comments/1ktzvz?sort=hot" class="choice " onclick="$(this).parent().submit(); return false;">hot</a>
+				</form>
+				<form method="POST" action="http://www.reddit.com/comments/1ktzvz">
+					<input type="hidden" name="sort" value="controversial"><a href="http://www.reddit.com/comments/1ktzvz?sort=controversial" class="choice " onclick="$(this).parent().submit(); return false;">controversial</a>
+				</form>
+				<form method="POST" action="http://www.reddit.com/comments/1ktzvz">
+					<input type="hidden" name="sort" value="old"><a href="http://www.reddit.com/comments/1ktzvz?sort=old" class="choice " onclick="$(this).parent().submit(); return false;">old</a>
+				</form>
+				<form method="POST" action="http://www.reddit.com/comments/1ktzvz">
+					<input type="hidden" name="sort" value="random"><a href="http://www.reddit.com/comments/1ktzvz?sort=random" class="choice hidden" onclick="$(this).parent().submit(); return false;">random</a>
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+	<form action="#" class="usertext" onsubmit="return post_form(this, 'comment')" id="form-t3_1ktzvzvcx">
+		<input type="hidden" name="thing_id" value="t3_1ktzvz">
+		<div class="usertext-edit" style="">
+			<div>
+				<textarea rows="1" cols="1" name="text"></textarea>
+			</div>
+			<div class="bottom-area">
+				<span class="help-toggle toggle" style=""><a class="option active " href="#" tabindex="100" onclick="return toggle(this, helpon, helpoff)">formatting help</a><a class="option " href="#">hide help</a></span><a href="/wiki/reddiquette" class="reddiquette" target="_blank" tabindex="100">reddiquette</a><span class="error TOO_LONG field-text" style="display:none"></span><span class="error RATELIMIT field-ratelimit" style="display:none"></span><span class="error NO_TEXT field-text" style="display:none"></span><span class="error TOO_OLD field-parent" style="display:none"></span><span class="error DELETED_COMMENT field-parent" style="display:none"></span><span class="error DELETED_LINK field-parent" style="display:none"></span><span class="error USER_BLOCKED field-parent" style="display:none"></span>
+				<div class="usertext-buttons">
+					<button type="submit" onclick="" class="save">save</button><button type="button" onclick="cancel_usertext(this)" class="cancel" style="display:none">cancel</button><span class="status"></span>
+				</div>
+			</div>
+			<div class="markhelp" style="display:none">
+				<p>
+				</p>
+				<p>
+					reddit uses a slightly-customized version of <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> for formatting. See below for some basics, or check <a href="/wiki/commenting">the commenting wiki page</a> for more detailed help and solutions to common issues.
+				</p>
+				<p>
+				</p>
+				<table class="md">
+				<tbody>
+				<tr style="background-color: #ffff99; text-align: center">
+					<td>
+						<em>you type:</em>
+					</td>
+					<td>
+						<em>you see:</em>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						*italics*
+					</td>
+					<td>
+						<em>italics</em>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						**bold**
+					</td>
+					<td>
+						<b>bold</b>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						[reddit!](http://reddit.com)
+					</td>
+					<td>
+						<a href="http://reddit.com">reddit!</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						* item 1<br>
+						* item 2<br>
+						* item 3
+					</td>
+					<td>
+						<ul>
+							<li>item 1</li>
+							<li>item 2</li>
+							<li>item 3</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&gt; quoted text
+					</td>
+					<td>
+						<blockquote>
+							quoted text
+						</blockquote>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Lines starting with four spaces<br>
+						are treated like code:<br>
+						<br>
+						<span class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</span>if 1 * 2 &lt; 3:<br>
+						<span class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>print "hello, world!"<br>
+					</td>
+					<td>
+						Lines starting with four spaces<br>
+						are treated like code:<br>
+						<pre>
+							if 1 * 2 &lt; 3:<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;print "hello, world!"
+						</pre>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						~~strikethrough~~
+					</td>
+					<td>
+						<strike>strikethrough</strike>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						super^script
+					</td>
+					<td>
+						super<sup>script</sup>
+					</td>
+				</tr>
+				</tbody>
+				</table>
+			</div>
+		</div>
+	</form>
+	<div class="gold-form gold-payment cloneable">
+		<div class="roundfield">
+			<button class="close-button">close</button><img src="http://www.redditstatic.com/reddit_gold-70.png" class="gold-logo">
+			<div class="roundfield-content">
+				<p>
+					Want to say thanks to <em>%(recipient)s</em> for this comment? Give them a month of <a href="/gold/about">reddit gold</a>.
+				</p>
+				<p>
+					Please select a payment method.
+				</p>
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="gold-checkout" data-vendor="paypal" target="_blank">
+					<input type="hidden" name="cmd" value="_s-xclick"><input type="hidden" name="custom" value="" class="passthrough"><input type="hidden" name="quantity" value="1"><input type="hidden" name="hosted_button_id" value="HDENEQ8QWLTML"><button type="submit" class="btn gold-button">PayPal</button>
+				</form>
+				<button class="btn coinbase-gold gold-button gold-checkout" data-vendor="coinbase">Bitcoin</button><input type="hidden" name="cbbaseurl" value="https://coinbase.com/checkouts/6d670dea8505cc8805ae2c00294599b2"><button class="btn stripe-gold gold-button">Credit Card</button>
+				<div class="throbber">
+				</div>
+			</div>
+		</div>
+	</div>

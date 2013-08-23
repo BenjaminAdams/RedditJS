@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'event/channel', 'backbone-queryparams'],
-    function(_, Backbone, SubredditView, HeaderView, channel) {
+define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'view/single', 'event/channel', 'backbone-queryparams'],
+    function(_, Backbone, SubredditView, HeaderView, SingleView, channel) {
 
         var AppRouter = Backbone.Router.extend({
 
@@ -20,7 +20,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'ev
                 '(:sortOrder)(/)': 'home',
                 'r/:subName(/)': 'subreddit',
                 'r/:subName/:sortOrder': 'subreddit',
-                'r/:subName/comments/:id/:slug(/)': 'comment',
+                'r/:subName/comments/:id/:slug(/)': 'single',
                 //  'r/:subName/': 'subreddit'
             },
 
@@ -40,8 +40,8 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'ev
 
             },
 
-            comment: function(subName, id) {
-                commentView = new CommentView({
+            single: function(subName, id) {
+                singleView = new SingleView({
                     subName: subName,
                     id: id
                 });

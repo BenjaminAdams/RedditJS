@@ -1,6 +1,7 @@
 define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/base-view', 'view/login-view', 'model/sidebar', 'event/channel', 'cookie'],
 	function($, _, Backbone, Resthub, SidebarTmpl, BaseView, LoginView, SidebarModel, channel, Cookie) {
 		var SidebarView = BaseView.extend({
+			el: ".side",
 			events: {
 				//  'keyup #new-todo':     'showTooltip'
 			},

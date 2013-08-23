@@ -28,7 +28,8 @@ define([
 				//load sidebar
 				this.sidebar = new SidebarView({
 					subName: this.subName,
-					root: ".side"
+
+					//root: ".side"
 				})
 
 				/*grid option:
