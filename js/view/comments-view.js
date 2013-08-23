@@ -21,11 +21,6 @@ define([
 
 				this.renderComments(this.collection)
 
-				// this.model.fetch({
-				// 	success: this.loaded,
-				// 	error: this.fetchError
-				// });
-
 			},
 			renderComments: function(collection) {
 				//console.log(collection)
