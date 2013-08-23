@@ -54,10 +54,15 @@ define([
 					console.log("vote done", data)
 				});
 			},
-			upvote: function() {
+			upvote: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+
 				console.log('upvoting', this.model)
+
 				if (typeof this.model !== 'undefined' && this.model.get('likes') == false || this.model.get('likes') == null) {
 					this.vote(1, this.model.get('name'))
+					var id = this.model.get('id')
 					this.model.set('likes', true)
 					this.model.set('downmod', 'down')
 					this.model.set('upmod', 'upmod')
@@ -65,19 +70,22 @@ define([
 					this.$('.midcol .likes').show()
 					this.$('.midcol .unvoted').hide()
 
-					this.$('.upArrow').addClass('upmod')
-					this.$('.upArrow').removeClass('up')
-					this.$('.downArrow').addClass('down')
-					this.$('.downArrow').removeClass('downmod')
+					this.$('.upArrow' + id).addClass('upmod')
+					this.$('.upArrow' + id).removeClass('up')
+					this.$('.downArrow' + id).addClass('down')
+					this.$('.downArrow' + id).removeClass('downmod')
 
 				} else {
 					this.cancelVote()
 				}
 			},
-			downvote: function() {
+			downvote: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
 				if (this.model.get('likes') == true || this.model.get('likes') == null) {
 
 					this.vote(-1, this.model.get('name'))
+					var id = this.model.get('id')
 					this.model.set('likes', false)
 					this.model.set('downmod', 'downmod')
 					this.model.set('upmod', 'up')
@@ -86,10 +94,10 @@ define([
 					this.$('.midcol .likes').hide()
 					this.$('.midcol .unvoted').hide()
 
-					this.$('.upArrow').addClass('up')
-					this.$('.upArrow').removeClass('upmod')
-					this.$('.downArrow').addClass('downmod')
-					this.$('.downArrow').removeClass('down')
+					this.$('.upArrow' + id).addClass('up')
+					this.$('.upArrow' + id).removeClass('upmod')
+					this.$('.downArrow' + id).addClass('downmod')
+					this.$('.downArrow' + id).removeClass('down')
 
 				} else {
 					this.cancelVote()
@@ -97,6 +105,7 @@ define([
 			},
 			cancelVote: function() {
 				this.vote(0, this.model.get('name'))
+				var id = this.model.get('id')
 				this.model.set('likes', null)
 				this.model.set('downmod', 'down')
 				this.model.set('upmod', 'up')
@@ -104,10 +113,10 @@ define([
 				this.$('.midcol .likes').hide()
 				this.$('.midcol .unvoted').show()
 
-				this.$('.upArrow').addClass('up')
-				this.$('.upArrow').removeClass('upmod')
-				this.$('.downArrow').addClass('down')
-				this.$('.downArrow').removeClass('downmod')
+				this.$('.upArrow' + id).addClass('up')
+				this.$('.upArrow' + id).removeClass('upmod')
+				this.$('.downArrow' + id).addClass('down')
+				this.$('.downArrow' + id).removeClass('downmod')
 			},
 			save: function(id) {
 				var params = {

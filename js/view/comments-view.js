@@ -6,8 +6,8 @@ define([
 			template: commentsTmpl,
 
 			events: {
-				'click .upArrow': 'upvote',
-				'click .downArrow': 'downvote',
+				//'click .upArrow': 'upvote',
+				//'click .downArrow': 'downvote',
 				//  'keyup #new-todo':     'showTooltip'
 			},
 
@@ -30,8 +30,10 @@ define([
 			renderComments: function(collection) {
 				//console.log(collection)
 				collection.each(function(model) {
+					//console.log(model.get('id'))
 					var comment = new CommentView({
 						model: model,
+						id: model.get('id'),
 						root: "#siteTableComments"
 						//root: "#commentarea"
 					})

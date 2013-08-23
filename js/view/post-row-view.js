@@ -3,10 +3,13 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
         var PostRowView = BaseView.extend({
             strategy: 'append',
 
-            events: {
-                'click .upArrow': 'upvote',
-                'click .downArrow': 'downvote',
-                //  'keyup #new-todo':     'showTooltip'
+            events: function() {
+                var _events = {
+                    //    'click .noncollapsed .expand': "hideThread",
+                };
+                _events['click .upArrow' + this.options.id] = "upvote";
+                _events['click .downArrow' + this.options.id] = "downvote";
+                return _events;
             },
 
             initialize: function(data) {

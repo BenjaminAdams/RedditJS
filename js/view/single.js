@@ -5,12 +5,18 @@ define([
 
 			el: $("#main"),
 			template: singleTmpl,
-
-			events: {
-				'click .upArrow': 'upvote',
-				'click .downArrow': 'downvote',
-				//  'keyup #new-todo':     'showTooltip'
+			events: function() {
+				var _events = {};
+				//console.log(this.options.name)
+				_events['click .upArrow' + this.options.id] = "upvote";
+				_events['click .downArrow' + this.options.id] = "downvote";
+				return _events;
 			},
+			// events: {
+			// 	'click .upArrow': 'upvote',
+			// 	'click .downArrow': 'downvote',
+			// 	//  'keyup #new-todo':     'showTooltip'
+			// },
 
 			initialize: function(options) {
 				_.bindAll(this);

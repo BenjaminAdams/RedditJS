@@ -6,9 +6,15 @@ define([
 			el: $("#main"),
 			template: subredditTmpl,
 
-			events: {
-				'click .tabmenu-right li': 'changeGridOption',
-				// 'click a .thing': "clickedInteralLink"
+			events: function() {
+				var _events = {
+					'click .tabmenu-right li': 'changeGridOption',
+
+				};
+				//console.log('click .upArrow' + this.options.id)
+				_events['click .upArrow' + this.options.id] = "upvote";
+				_events['click .downArrow' + this.options.id] = "downvote";
+				return _events;
 			},
 
 			initialize: function(options) {
@@ -158,6 +164,7 @@ define([
 
 							var postview = new PostRowView({
 								root: "#siteTable",
+								id: model.get('id'),
 								model: model,
 								gridOption: this.gridOption
 							});
@@ -166,6 +173,7 @@ define([
 							var postview = new PostRowView({
 								root: "#siteTable",
 								model: model,
+								id: model.get('id'),
 								gridOption: this.gridOption
 							});
 						}

@@ -5,17 +5,26 @@ define([
 			strategy: 'append',
 			template: commentTmpl,
 
-			events: {
-				'click .upArrow': 'upvote',
-				'click .downArrow': 'downvote',
-				'click .noncollapsed .expand': "hideThread",
-				'click .collapsed .expand': "showThread"
-				//  'keyup #new-todo':     'showTooltip'
+			events: function() {
+				var _events = {
+					'click .noncollapsed .expand': "hideThread",
+					'click .collapsed .expand': "showThread"
+				};
+				//console.log('click .upArrow' + this.options.id)
+				_events['click .upArrow' + this.options.id] = "upvote";
+				_events['click .downArrow' + this.options.id] = "downvote";
+				return _events;
 			},
+
+			// events: {
+			// 	'click .downArrow': 'downvote',
+			// 'click .noncollapsed .expand': "hideThread",
+			// 'click .collapsed .expand': "showThread"
+			// 	//  'keyup #new-todo':     'showTooltip'
+			// },
 
 			initialize: function(options) {
 				_.bindAll(this);
-				$(this.el).html('')
 				var self = this;
 				//this.collection = options.collection
 				this.model = options.model
@@ -57,10 +66,11 @@ define([
 					var self = this
 
 					replies.each(function(model) {
-						//console.log(model)
+
 						if (model.get('kind') == 't1') {
 							var comment = new CommentView({
 								model: model,
+								id: model.get('id'),
 								root: "#" + self.name
 								//root: "#commentarea"
 							})

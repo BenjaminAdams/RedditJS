@@ -1,9 +1,9 @@
-<div class="thing id-{{model.name}} {{model.evenOrOdd}} link" data-fullname="{{model.name}}" data-ups="{{model.ups}}" data-downs="{{model.downs}}">
+<div id='{{model.id}}' class="thing id-{{model.name}} {{model.evenOrOdd}} link" data-fullname="{{model.name}}" data-ups="{{model.ups}}" data-downs="{{model.downs}}">
        <p class="parent"></p>
        <span class="rank" style="width:3.30ex;">{{model.count}}</span>
 
         <div class="midcol {{model.voted}} " style="width:5ex;">
-            <div class="arrow login-required upArrow {{model.upmod}}" role='button' aria-label="upvote" tabindex="0"></div>
+            <div data-id='{{model.id}}' class="arrow login-required upArrow{{model.id}} {{model.upmod}}" role='button' aria-label="upvote" tabindex="0"></div>
 
             <div class="score dislikes">
                 {{model.scoreDown}} 
@@ -17,7 +17,7 @@
                 {{model.scoreUp}}
             </div>
 			
-	<div class="arrow login-required downArrow {{model.downmod}}" role="button" aria-label="downvote" tabindex="0"></div>
+	<div data-id='{{model.id}}' class="arrow login-required downArrow{{model.id}} {{model.downmod}}" role="button" aria-label="downvote" tabindex="0"></div>
 
 
         </div>

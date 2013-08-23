@@ -1,11 +1,15 @@
+<div id='{{model.id}}' class="thing id-t1_cbtb7as comment " data-fullname="{{model.name}}" data-ups="{{model.ups}}" data-downs="{{model.downs}}">
+
 <div class="thing id-t1_cbtb7as comment " data-fullname="{{model.name}}" data-ups="{{model.ups}}" data-downs="{{model.downs}}">
+
+
 	<p class="parent">
 
 	</p>
 	<div class="midcol {{model.voted}} ">
-		<div class="arrow upArrow {{model.upmod}} "  role="button" aria-label="upvote" tabindex="0">
+		<div class="arrow upArrow{{model.id}} {{model.upmod}} "  role="button" aria-label="upvote" tabindex="0">
 		</div>
-		<div class="arrow downArrow {{model.downmod}} "  role="button" aria-label="downvote" tabindex="0">
+		<div class="arrow downArrow{{model.id}} {{model.downmod}} "  role="button" aria-label="downvote" tabindex="0">
 		</div>
 	</div>
 	<div class="entry unvoted">
