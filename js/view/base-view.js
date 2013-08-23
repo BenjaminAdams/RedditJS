@@ -48,13 +48,15 @@ define([
 					uh: $.cookie('modhash'),
 				};
 
+				console.log(params)
+
 				this.api("api/vote", 'POST', params, function(data) {
 					console.log("vote done", data)
 				});
 			},
 			upvote: function() {
 				console.log('upvoting', this.model)
-				if (this.model.get('likes') == false || this.model.get('likes') == null) {
+				if (typeof this.model !== 'undefined' && this.model.get('likes') == false || this.model.get('likes') == null) {
 					this.vote(1, this.model.get('name'))
 					this.model.set('likes', true)
 					this.model.set('downmod', 'down')
@@ -106,6 +108,17 @@ define([
 				this.$('.upArrow').removeClass('upmod')
 				this.$('.downArrow').addClass('down')
 				this.$('.downArrow').removeClass('downmod')
+			},
+			save: function(id) {
+				var params = {
+					id: id,
+					dir: dir,
+					uh: $.cookie('modhash'),
+				};
+
+				this.api("api/vote", 'POST', params, function(data) {
+					console.log("vote done", data)
+				});
 			}
 
 		});

@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/comment', 'view/base-view', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, commentTmpl, BaseView, channel, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/base-view', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, commentTmpl, CommentMOAR, BaseView, channel, Cookie) {
 		var CommentView = BaseView.extend({
 			strategy: 'append',
 			template: commentTmpl,
@@ -58,12 +58,22 @@ define([
 
 					replies.each(function(model) {
 						//console.log(model)
-						var comment = new CommentView({
-							model: model,
-							root: "#" + self.name
-							//root: "#commentarea"
-						})
+						if (model.get('kind') == 't1') {
+							var comment = new CommentView({
+								model: model,
+								root: "#" + self.name
+								//root: "#commentarea"
+							})
+						} else {
+							//console.log('its a more:', model)
+							//var MOAR = 'load more comments (2 replies)'
+							//this.$("#" + self.name).html(MOAR)
 
+							this.$("#" + self.name).html(CommentMOAR({
+								model: model.attributes
+							}))
+
+						}
 					})
 
 				}

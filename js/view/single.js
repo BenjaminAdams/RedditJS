@@ -47,7 +47,7 @@ define([
 
 			loaded: function(model, res) {
 				this.$('.loading').hide()
-
+				console.log(model)
 				this.render();
 
 				//load sidebar

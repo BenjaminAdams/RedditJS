@@ -5,7 +5,7 @@ define(['underscore', 'backbone', 'model/comment', 'model/base'], function(_, Ba
 
 		},
 		url: function() {
-			return "/api/?url=comments/" + this.id + ".json?cookie=" + $.cookie('reddit_session');
+			return "/api/?url=comments/" + this.id + ".json&cookie=" + $.cookie('reddit_session');
 		},
 		// Default attributes 
 		defaults: {
