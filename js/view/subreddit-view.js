@@ -12,6 +12,7 @@ define([
 			},
 
 			initialize: function(options) {
+				$(this.el).html('')
 				_.bindAll(this);
 				var self = this;
 				this.subName = options.subName
