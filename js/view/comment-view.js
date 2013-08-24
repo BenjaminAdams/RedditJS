@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/base-view', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, commentTmpl, CommentMOAR, BaseView, channel, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/base-view', 'model/comment', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, commentTmpl, CommentMOAR, BaseView, CommentModel, channel, Cookie) {
 		var CommentView = BaseView.extend({
 			strategy: 'append',
 
@@ -37,7 +37,7 @@ define([
 				}
 				this.render();
 
-				this.renderChildren()
+				this.renderChildren(this.model.get('replies'))
 
 				// this.model.fetch({
 				// 	success: this.loaded,
@@ -47,10 +47,12 @@ define([
 			loadMOAR: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
+				var self = this
 				console.log('loading MOAR')
+				var link_id = this.model.get('link_id')
 				//	url: "/api/?url=api/morechildren&cookie=" + $.cookie('reddit_session');,
 				var params = {
-					link_id: this.model.get('link_id'),
+					link_id: link_id,
 					id: this.id,
 					api_type: 'json',
 					//sort: 'top',
@@ -61,8 +63,28 @@ define([
 
 				this.api("api/morechildren.json", 'POST', params, function(data) {
 					console.log("MOAR done", data)
-					//self.model
+					//this is an awful hack....
+					data.children = data.json.data.things
+					var tmpModel = new CommentModel()
+					var newComments = tmpModel.parseComments(data, link_id)
+					self.reRenderMOAR(newComments)
+
 				});
+			},
+			reRenderMOAR: function(newComments) {
+				if (typeof newComments !== 'undefined' && newComments.length > 0) {
+					//pluck the first model in the collection and set it as this model for reRendering
+					this.model = newComments.at(0)
+					var newComments = newComments.slice(1, newComments.length)
+					newComments = new Backbone.Collection(newComments)
+
+					this.model.set('replies', newComments)
+					//change template back to normal comment template
+					this.template = commentTmpl
+					this.render()
+					this.renderChildren(this.model.get('replies'))
+
+				}
 			},
 
 			hideThread: function(e) {
@@ -85,10 +107,11 @@ define([
 
 			},
 
-			renderChildren: function() {
-				var replies = this.model.get('replies')
+			renderChildren: function(replies) {
+				//var replies = this.model.get('replies')
 				if (typeof replies !== 'undefined' && replies != "" && replies != null) {
 					var self = this
+					console.log(replies)
 
 					replies.each(function(model) {
 						var comment = new CommentView({

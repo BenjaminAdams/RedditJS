@@ -1,8 +1,8 @@
 define(['underscore', 'backbone', 'jquery', 'model/base'], function(_, Backbone, $, BaseModel) {
 	var Comment = BaseModel.extend({
-		initialize: function() {
-			this.self = this
-		},
+		// initialize: function() {
+		// 	this.self = this
+		// },
 
 		url: function() {
 			//http://www.reddit.com/dev/api#POST_api_morechildren
@@ -23,6 +23,7 @@ define(['underscore', 'backbone', 'jquery', 'model/base'], function(_, Backbone,
 				}
 
 				_.each(collection.children, function(item) {
+
 					if (item.kind == 'more') {
 						var data = item.data
 						data.kind = item.kind //either "more" or "t1"
@@ -33,8 +34,7 @@ define(['underscore', 'backbone', 'jquery', 'model/base'], function(_, Backbone,
 						} else {
 							data.replyVerb = 'replies'
 						}
-						//var singleModel = new Backbone.Model(data)
-						var singleModel = new this.self(data)
+						var singleModel = new Backbone.Model(data)
 
 						comments.add(singleModel)
 					} else {
@@ -75,7 +75,7 @@ define(['underscore', 'backbone', 'jquery', 'model/base'], function(_, Backbone,
 						var singleModel = new Backbone.Model(data)
 						//data.replies = this.parseComments(response[1].data.children)
 						var replies = singleModel.get('replies')
-						if (typeof replies != "undefined" && typeof replies.data != "undefined") {
+						if (typeof replies !== "undefined" && replies != null && typeof replies.data !== "undefined") {
 							var newComments = self.parseComments(replies.data, link_id)
 							singleModel.set('childrenCount', newComments.length)
 							if (newComments.length == 1) {
