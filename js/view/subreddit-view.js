@@ -1,7 +1,7 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'view/post-row-view', 'view/sidebar-view', 'collection/subreddit', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowView, SidebarView, SubredditCollection, channel, Cookie) {
-		var SubredditView = Resthub.View.extend({
+  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'view/post-row-view', 'view/sidebar-view', 'view/base-view', 'collection/subreddit', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowView, SidebarView, BaseView, SubredditCollection, channel, Cookie) {
+		var SubredditView = BaseView.extend({
 
 			el: $("#main"),
 			template: subredditTmpl,
@@ -85,19 +85,7 @@ define([
 				this.$('#' + this.gridOption).addClass('selected');
 
 			},
-			//so we resize it does not do a resize for every pixel the user resizes
-			//it has a timeout that fires after the user is done resizing
-			debouncer: function(func, timeout) {
-				var timeoutID, timeout = timeout || 20;
-				return function() {
-					var scope = this,
-						args = arguments;
-					clearTimeout(timeoutID);
-					timeoutID = setTimeout(function() {
-						func.apply(scope, Array.prototype.slice.call(args));
-					}, timeout);
-				}
-			},
+
 			resize: function() {
 				var mobileWidth = 1000; //when to change to mobile CSS
 				if (this.gridOption == "large") {
@@ -152,7 +140,7 @@ define([
 
 			},
 			tryAgain: function() {
-				$(this.el).html('')
+				$('#retry').html('')
 				this.fetchMore();
 			},
 			fetchMore: function() {

@@ -30,14 +30,15 @@
                 <span class="domain">(<a href="/domain/{{model.domain}}/">{{model.domain}}</a>)</span>
             </p>
 
+
+
              <p class="tagline">submitted <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
 
             <span class="userattrs"></span>to <a href="/r/{{model.subreddit}}/" class="subreddit hover">{{model.subreddit}}</a>
             </p>
 
             <div class="expando">
-                <form action="#" class="usertext" onsubmit="return post_form(this, 'editusertext')" id="form-t3_1ktzvz3sr">
-                    <input type="hidden" name="thing_id" value="t3_1ktzvz">
+                <form action="#" class="usertext"  id="form-t3_1ktzvz3sr">
                     <div class="usertext-body">
                     
                               {{{model.selftext_html}}}
@@ -50,8 +51,10 @@
        
 
           <ul class="flat-list buttons">
-
-                <li class="first">
+<li class='first'>
+    <div class="expando-button collapsed video" ></div>
+</li>
+                <li>
                 <a class="comments" href="{{model.permalink}}"  target="_blank">{{model.num_comments}} comments</a>
                 </li>
 
@@ -80,11 +83,10 @@
             </ul>
 
 
-<div class="expando"><div class="usertext-body"><div class="md"><p>
+<div class="expando"><div class="usertext-body"><p>
 {{{model.media_embed.content}}}
 
 </p>
-</div>
 </div></div>
 
 

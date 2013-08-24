@@ -42,6 +42,23 @@ define([
 					error: this.fetchError
 				});
 
+				$(window).resize(this.debouncer(function(e) {
+					self.resize()
+				}));
+
+			},
+			resize: function() {
+				var mobileWidth = 1000; //when to change to mobile CSS
+				//change css of 
+				var docWidth = $(document).width()
+				var newWidth = 0;
+				if (docWidth > mobileWidth) {
+					newWidth = docWidth - 500;
+				} else {
+					newWidth = docWidth - 222;
+				}
+				$('#dynamicWidth').html('<style> .embed img { max-width: ' + newWidth + 'px };   </style>');
+
 			},
 
 			/**************Fetching functions ****************/
@@ -52,7 +69,7 @@ define([
 
 			},
 			tryAgain: function() {
-				$(this.el).html('')
+				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.model.fetch({
 					success: this.loaded,
 					error: this.fetchError
@@ -66,7 +83,8 @@ define([
 				this.$('.loading').hide()
 				console.log(model)
 				this.render();
-
+				$(this.el).append("<style id='dynamicWidth'> </style>")
+				this.resize()
 				//load sidebar
 				this.sidebar = new SidebarView({
 					subName: this.subName,

@@ -38,6 +38,18 @@ define([
 				} else {
 					return false;
 				}
+			}, //so we resize it does not do a resize for every pixel the user resizes
+			//it has a timeout that fires after the user is done resizing
+			debouncer: function(func, timeout) {
+				var timeoutID, timeout = timeout || 20;
+				return function() {
+					var scope = this,
+						args = arguments;
+					clearTimeout(timeoutID);
+					timeoutID = setTimeout(function() {
+						func.apply(scope, Array.prototype.slice.call(args));
+					}, timeout);
+				}
 			},
 			//Can be used to vote on a post or a comment
 			vote: function(dir, id) {

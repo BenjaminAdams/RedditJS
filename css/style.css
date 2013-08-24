@@ -101,13 +101,14 @@ text-align: center;
 }
 
 
-.md img {
+.embed img {
 padding: 0 5px;
 background-color: #fafafa;
 border: 1px solid #369;
 border-radius: 7px;
 display:block;
 padding:5px;
+
 }
 
 
