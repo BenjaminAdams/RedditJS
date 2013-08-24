@@ -10,6 +10,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 				_.bindAll(this);
 				this.template = UserbarTmpl;
 
+				this.loggedOut = '<div id="userbar-logged-out"><span class="user">want to join? <a class="login-required" href="#">login or register</a> in seconds</span></div>'
+
 				if (this.checkIfLoggedIn() == true) {
 					this.showLoggedIn()
 				} else {
@@ -17,8 +19,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 				}
 
 				channel.bind("login", this.showLoggedIn, this);
-
-				this.loggedOut = '<div id="userbar-logged-out"><span class="user">want to join? <a class="login-required" href="#">login or register</a> in seconds</span></div>'
 
 				// this.$() is a shortcut for this.$el.find().
 
@@ -30,10 +30,12 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 				})
 				this.$el.html(" ")
 				this.render();
+
 			},
 			showLoggedOut: function() {
-				this.$el.html(this.loggedOut)
+				//this.$el.html(this.loggedOut)
 
+				$(this.el).html(this.loggedOut)
 			},
 			logout: function(e) {
 				e.preventDefault()

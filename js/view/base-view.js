@@ -51,6 +51,13 @@ define([
 					}, timeout);
 				}
 			},
+			dynamicStylesheet: function(name) {
+				if (this.subName == 'front') {
+					$("#subredditStyle").attr("href", "");
+				} else {
+					$("#subredditStyle").attr("href", "http://www.reddit.com/r/" + this.subName + "/stylesheet");
+				}
+			},
 			//Can be used to vote on a post or a comment
 			vote: function(dir, id) {
 

@@ -24,6 +24,7 @@ define([
 				_.bindAll(this);
 				var self = this;
 				this.subName = options.subName
+				this.dynamicStylesheet(this.subName)
 				this.sortOrder = options.sortOrder
 				this.collection = new SubredditCollection({
 					subName: this.subName,
@@ -32,7 +33,7 @@ define([
 				this.template = subredditTmpl;
 
 				this.render();
-				$(this.el).append("<style id='dynamicWidth'> </style>")
+				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				this.fetchMore();
 
 				//load sidebar
@@ -72,6 +73,7 @@ define([
 				this.resize()
 
 			},
+
 			/**************Routing functions ****************/
 			// clickedInteralLink: function(e) {
 			// 	console.log("I clicked a link yo")

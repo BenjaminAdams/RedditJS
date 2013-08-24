@@ -27,6 +27,7 @@ define([
 
 				var self = this;
 				this.subName = options.subName
+				this.dynamicStylesheet(this.subName)
 				this.id = options.id
 
 				this.model = new SingleModel({
