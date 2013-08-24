@@ -3,7 +3,7 @@ define([
 	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowView, SidebarView, BaseView, SubredditCollection, channel, Cookie) {
 		var SubredditView = BaseView.extend({
 
-			el: $("#main"),
+			el: $(".content"),
 			template: subredditTmpl,
 
 			events: function() {
@@ -38,11 +38,11 @@ define([
 				this.fetchMore();
 
 				//load sidebar
-				this.sidebar = new SidebarView({
-					subName: this.subName,
+				// this.sidebar = new SidebarView({
+				// 	subName: this.subName,
 
-					//root: ".side"
-				})
+				// 	//root: ".side"
+				// })
 
 				/*grid option:
 					normal - the default Reddit styling

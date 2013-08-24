@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'view/single', 'event/channel', 'backbone-queryparams'],
-    function(_, Backbone, SubredditView, HeaderView, SingleView, channel) {
+define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'view/single', 'view/sidebar-view', 'event/channel', 'backbone-queryparams'],
+    function(_, Backbone, SubredditView, HeaderView, SingleView, SidebarView, channel) {
 
         var AppRouter = Backbone.Router.extend({
 
@@ -26,6 +26,10 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
             home: function(sortOrder) {
                 console.debug("Main route activated");
+                this.sidebar = new SidebarView({
+                    subName: 'front',
+                })
+
                 subredditView = new SubredditView({
                     subName: "front",
                     sortOrder: sortOrder
@@ -33,6 +37,11 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
             },
 
             subreddit: function(subName, sortOrder) {
+
+                this.sidebar = new SidebarView({
+                    subName: subName,
+                })
+
                 subredditView = new SubredditView({
                     subName: subName,
                     sortOrder: sortOrder
