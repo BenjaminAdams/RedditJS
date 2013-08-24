@@ -35,18 +35,16 @@ define([
 				} else {
 					this.template = commentTmpl
 				}
+
 				this.render();
 
 				this.renderChildren(this.model.get('replies'))
 
-				// this.model.fetch({
-				// 	success: this.loaded,
-				// 	error: this.fetchError
-				// });
 			},
 			loadMOAR: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
+				$(this.el).html("<div class='loadingS'></div>")
 				var self = this
 				console.log('loading MOAR')
 				var link_id = this.model.get('link_id')
@@ -64,10 +62,16 @@ define([
 				this.api("api/morechildren.json", 'POST', params, function(data) {
 					console.log("MOAR done", data)
 					//this is an awful hack....
-					data.children = data.json.data.things
-					var tmpModel = new CommentModel()
-					var newComments = tmpModel.parseComments(data, link_id)
-					self.reRenderMOAR(newComments)
+					if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
+						data.children = data.json.data.things
+						var tmpModel = new CommentModel()
+						var newComments = tmpModel.parseComments(data, link_id)
+						self.reRenderMOAR(newComments)
+					} else {
+
+						self.render()
+
+					}
 
 				});
 			},
@@ -111,14 +115,16 @@ define([
 				//var replies = this.model.get('replies')
 				if (typeof replies !== 'undefined' && replies != "" && replies != null) {
 					var self = this
-					console.log(replies)
 
 					replies.each(function(model) {
-						var comment = new CommentView({
-							model: model,
-							id: model.get('id'),
-							root: "#" + self.name
-						})
+						var id = model.get('id')
+						if (id != "_") {
+							var comment = new CommentView({
+								model: model,
+								id: id,
+								root: "#" + self.name
+							})
+						}
 
 					})
 

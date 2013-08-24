@@ -8,6 +8,16 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
+.loadingS {
+height: 50px;
+width:50px;
+position:relative;
+left:10px;
+background-image: url('../img/loading.gif');
+background-repeat: no-repeat;
+background-position: center center;
+}
+
 
 #header-bottom-right .separator {
 	margin: 0ex;
