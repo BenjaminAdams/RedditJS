@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'model/comment', 'model/base'], function(_, Backbone, CommentModel, BaseModel) {
-	var Single = BaseModel.extend({
+define(['underscore', 'backbone', 'model/comment', 'model/comment'], function(_, Backbone, CommentModel, CommentModel) {
+	var Single = CommentModel.extend({
 		initialize: function(data) {
 			this.id = data.id
 
@@ -22,7 +22,7 @@ define(['underscore', 'backbone', 'model/comment', 'model/base'], function(_, Ba
 			} else {
 
 				data = response[0].data.children[0].data
-				data.replies = this.parseComments(response[1].data)
+				data.replies = this.parseComments(response[1].data, data.name)
 				//data.comments = response[1].data.children
 			}
 

@@ -79,11 +79,12 @@ define([
 			fetchError: function(response, error) {
 				console.log("fetch error, lets retry")
 
-				$(this.el).html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
+				$(this.el).html("<div id='retry' >  <div class='loading'></div> </div> ")
 
 			},
 			tryAgain: function() {
 				$(this.el).append("<style id='dynamicWidth'> </style>")
+				$(this.el).html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
 				this.model.fetch({
 					success: this.loaded,
 					error: this.fetchError

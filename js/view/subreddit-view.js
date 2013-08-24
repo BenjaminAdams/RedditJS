@@ -152,7 +152,8 @@ define([
 
 			},
 			tryAgain: function() {
-				$('#retry').html('')
+				$('#retry').html("  <div class='loading'></div>  ")
+
 				this.fetchMore();
 			},
 			fetchMore: function() {
