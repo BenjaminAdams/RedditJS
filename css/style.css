@@ -56,8 +56,8 @@ max-height:45px;
 }
 
 .large-img{
-max-width: 85%;
-margin: 0 auto;
+max-width: 98%;
+margin: 1%;
 
   -webkit-box-shadow: 3px 3px 3px #7C7C7C;
     box-shadow: 3px 3px 3px #7C7C7C;
@@ -66,9 +66,13 @@ margin: 0 auto;
 .large-thumb .thing {
 background-color:#EFF7FF;
 border: 1px solid #5f99cf;
-max-width: 90%;
+max-width:100%;
 text-align: left;
 margin: 0px auto 8px auto;
+}
+
+.large-thumblink {
+	text-align: center;
 }
 
 .board-item {
@@ -112,6 +116,15 @@ padding:5px;
 }
 
 
+.expando-button {
+
+}
+
+
+.expando {
+clear:none;
+margin:0px;
+}
 
 #retry {
     position:fixed;
@@ -124,3 +137,5 @@ padding:5px;
 
 
 }
+
+ 

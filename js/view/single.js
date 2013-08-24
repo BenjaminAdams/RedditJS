@@ -7,7 +7,8 @@ define([
 			template: singleTmpl,
 			events: function() {
 				var _events = {
-					'click #retry': 'tryAgain'
+					'click #retry': 'tryAgain',
+					'click .expando-button': 'toggleExpando'
 				};
 				//console.log(this.options.name)
 				_events['click .upArrow' + this.options.id] = "upvote";
@@ -48,6 +49,7 @@ define([
 				}));
 
 			},
+			/**************UI functions ****************/
 			resize: function() {
 				var mobileWidth = 1000; //when to change to mobile CSS
 				//change css of 
@@ -60,6 +62,17 @@ define([
 				}
 				$('#dynamicWidth').html('<style> .embed img { max-width: ' + newWidth + 'px };   </style>');
 
+			},
+			toggleExpando: function() {
+				if ($('.expando-button').hasClass('expanded')) {
+					$('.expando-button').removeClass('expanded')
+					$('.expando-button').addClass('collapsed')
+					$('.embed').hide()
+				} else {
+					$('.expando-button').removeClass('collapsed')
+					$('.expando-button').addClass('expanded')
+					$('.embed').show()
+				}
 			},
 
 			/**************Fetching functions ****************/

@@ -33,7 +33,12 @@ require.config({
             ],
             exports: 'Backbone.Paginator'
         },
-        'bootstrap': {
+        // 'bootstrap': {
+        //     deps: [
+        //         'jquery'
+        //     ]
+        // },
+        'mosaicflow': {
             deps: [
                 'jquery'
             ]
@@ -64,26 +69,28 @@ require.config({
         'backbone-queryparams': 'lib/backbone-queryparams',
         text: 'lib/text',
         i18n: 'lib/i18n',
-        'bootstrap': 'lib/bootstrap',
-        'backbone-validation-orig': 'lib/backbone-validation',
-        'backbone-validation': 'lib/resthub/backbone-validation-ext',
+        //   'bootstrap': 'lib/bootstrap',
+        //   'backbone-validation-orig': 'lib/backbone-validation',
+        //   'backbone-validation': 'lib/resthub/backbone-validation-ext',
         'handlebars-orig': 'lib/handlebars',
         'handlebars': 'lib/resthub/handlebars-helpers',
-        'backbone-datagrid': 'lib/backbone-datagrid',
-        'backbone-paginator': 'lib/backbone-paginator',
-        'backbone-associations': 'lib/backbone-associations',
+        // 'backbone-datagrid': 'lib/backbone-datagrid',
+        //   'backbone-paginator': 'lib/backbone-paginator',
+        //   'backbone-associations': 'lib/backbone-associations',
         'backbone-localstorage': 'lib/backbone-localstorage',
         async: 'lib/async',
-        keymaster: 'lib/keymaster',
+        //   keymaster: 'lib/keymaster',
         hbs: 'lib/resthub/require-handlebars',
         moment: 'lib/moment',
         template: '../template',
         json2: 'lib/json2',
-        jqueryvideo: 'lib/jquery-video/jquery-videoBG',
+        //   jqueryvideo: 'lib/jquery-video/jquery-videoBG',
         console: 'lib/resthub/console',
         //markdown: 'lib/markdown',
         'cookie': 'lib/jquery.cookie',
+        //  'mosaicflow': 'lib/jquery-mosaicflow'
         // 'infinite-scroll': 'lib/infinitescroll'
+        // 'lazy-img': 'lib/jquery.lazy-load',
     }
 });
 

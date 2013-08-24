@@ -79,8 +79,12 @@ define(['underscore', 'backbone', 'model/comment', 'model/base'], function(_, Ba
 			}
 			data.imgUrl = imgUrl
 
+			var expandedOrCollapsed = 'expanded' //values can be expaned or collapsed
+			data.expandHTML = "<li><div class='expando-button " + expandedOrCollapsed + " video'></div></li>"
+
 			if (typeof data.media_embed.content === 'undefined' && data.is_self == false && data.imgUrl != false) {
 				data.media_embed = new Array()
+
 				data.media_embed.content = "<div class='embed'><p><a data-bypass  href='" + data.url + "' target='_blank'> <img src='" + data.imgUrl + "' /> </a></p></div>"
 			} else {
 

@@ -181,6 +181,7 @@ define([
 					}
 				}, this);
 				this.resize()
+
 			},
 			gotNewPosts: function(models, res) {
 				this.$('.loading').hide()

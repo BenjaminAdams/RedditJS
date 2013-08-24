@@ -1,7 +1,4 @@
-define(['router/app-router',], function(AppRouter) {
-    new AppRouter();
-	
+define(['router/app-router'], function(AppRouter) {
+	new AppRouter();
 
-	
-	
 });

@@ -34,6 +34,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				// this.$() is a shortcut for this.$el.find().
 
 			},
+
 			updateHeader: function(model) {
 				this.model = model
 				//this.userbar.render()

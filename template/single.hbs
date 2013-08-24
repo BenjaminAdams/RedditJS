@@ -30,7 +30,7 @@
                 <span class="domain">(<a href="/domain/{{model.domain}}/">{{model.domain}}</a>)</span>
             </p>
 
-
+          {{{model.expandHTML}}} 
 
              <p class="tagline">submitted <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
 
@@ -48,13 +48,13 @@
             </div>
 
 
-       
+
 
           <ul class="flat-list buttons">
-<li class='first'>
-    <div class="expando-button collapsed video" ></div>
-</li>
-                <li>
+
+
+            
+                <li class='first'>
                 <a class="comments" href="{{model.permalink}}"  target="_blank">{{model.num_comments}} comments</a>
                 </li>
 
@@ -80,6 +80,7 @@
                     <span class="option n error">are you sure? <a class="yes" href='#' >yes</a> / <a class="no" href="#" >no</a></span>
                 </span>
                 </li>
+
             </ul>
 
 
