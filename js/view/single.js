@@ -67,11 +67,11 @@ define([
 				if ($('.expando-button').hasClass('expanded')) {
 					$('.expando-button').removeClass('expanded')
 					$('.expando-button').addClass('collapsed')
-					$('.embed').hide()
+					$('.expando').hide()
 				} else {
 					$('.expando-button').removeClass('collapsed')
 					$('.expando-button').addClass('expanded')
-					$('.embed').show()
+					$('.expando').show()
 				}
 			},
 

@@ -33,6 +33,7 @@ define([
 				this.template = subredditTmpl;
 
 				this.render();
+
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				this.fetchMore();
 
@@ -72,6 +73,10 @@ define([
 				}));
 				this.resize()
 
+				setTimeout(function() {
+					self.changeSortOrderCss()
+				}, 100);
+
 			},
 
 			/**************Routing functions ****************/
@@ -86,6 +91,11 @@ define([
 				this.$('#large').removeClass('selected');
 				this.$('#' + this.gridOption).addClass('selected');
 
+			},
+			changeSortOrderCss: function() {
+				channel.trigger("header:updateSortOrder", {
+					sortOrder: this.sortOrder
+				});
 			},
 
 			resize: function() {
