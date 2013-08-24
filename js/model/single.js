@@ -82,7 +82,6 @@ define(['underscore', 'backbone', 'model/comment', 'model/base'], function(_, Ba
 			if (typeof data.media_embed.content === 'undefined' && data.is_self == false && data.imgUrl != false) {
 				data.media_embed = new Array()
 				data.media_embed.content = "<div class='md'><p><a data-bypass  href='" + data.url + "' target='_blank'> <img src='" + data.imgUrl + "' /> </a></p></div>"
-				console.log(data.media_embed.content)
 			} else {
 
 				data.media_embed.content = (typeof data.media_embed.content === 'undefined') ? '' : $('<div/>').html(data.media_embed.content).text();

@@ -19,6 +19,7 @@ define([
 
 			initialize: function(options) {
 				$(this.el).html('')
+
 				_.bindAll(this);
 				var self = this;
 				this.subName = options.subName
@@ -30,6 +31,7 @@ define([
 				this.template = subredditTmpl;
 
 				this.render();
+				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.fetchMore();
 
 				//load sidebar
@@ -106,7 +108,7 @@ define([
 					} else {
 						newWidth = docWidth;
 					}
-					$('#dnamicWidth').html('<style> .large-thumb { width: ' + newWidth + 'px } </style>');
+					$('#dynamicWidth').html('<style> .large-thumb { width: ' + newWidth + 'px } </style>');
 				}
 
 			},
