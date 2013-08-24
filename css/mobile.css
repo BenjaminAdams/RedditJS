@@ -29,9 +29,11 @@ max-width: 85%;
 
 }
 
-#siteTable {
-margin-left: -25px;
+.smallThumb {
+	padding:5px;
+	float:left;
 }
+
 
 .side {
 	display:none;

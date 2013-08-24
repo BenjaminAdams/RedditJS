@@ -6,7 +6,9 @@ define([
 			el: $("#main"),
 			template: singleTmpl,
 			events: function() {
-				var _events = {};
+				var _events = {
+					'click #retry': 'tryAgain'
+				};
 				//console.log(this.options.name)
 				_events['click .upArrow' + this.options.id] = "upvote";
 				_events['click .downArrow' + this.options.id] = "downvote";
@@ -46,6 +48,15 @@ define([
 			fetchError: function(response, error) {
 				console.log("fetch error, lets retry")
 
+				$(this.el).html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
+
+			},
+			tryAgain: function() {
+				$(this.el).html('')
+				this.model.fetch({
+					success: this.loaded,
+					error: this.fetchError
+				});
 			},
 			fetchMore: function() {
 

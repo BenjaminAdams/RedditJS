@@ -20,7 +20,7 @@ background-position: center center;
 
 
 .thumbnailSmall {
-
+	padding:5px;
 	width: 90px !important;
 	height:70px !important;
 }
@@ -108,4 +108,18 @@ border: 1px solid #369;
 border-radius: 7px;
 display:block;
 padding:5px;
+}
+
+
+
+#retry {
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width:30em;
+    height:18em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+
+
 }

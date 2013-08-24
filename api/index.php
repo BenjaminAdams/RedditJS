@@ -1,5 +1,13 @@
 <?PHP
 
+
+//to help debug error handling
+  // header('HTTP/1.0 404 Not Found');
+  //   echo "<h1>404 Not Found</h1>";
+  //   echo "The page that you have requested could not be found.";
+  //   exit();
+
+
 // Script: Simple PHP Proxy: Get external HTML, JSON and more!
 //
 // *Version: 1.6, Last updated: 1/24/2009*

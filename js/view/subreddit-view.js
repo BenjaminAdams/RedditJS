@@ -9,6 +9,7 @@ define([
 			events: function() {
 				var _events = {
 					'click .tabmenu-right li': 'changeGridOption',
+					'click #retry': 'fetchMore'
 
 				};
 				//console.log('click .upArrow' + this.options.id)
@@ -139,12 +140,20 @@ define([
 			},
 			/**************Fetching functions ****************/
 			fetchError: function(response, error) {
-				console.log("fetch error, lets retry")
+				console.log("fetch error, lets retry", this.collection)
 				if (this.errorRetries < 10) {
 					this.loading = false;
 				}
+
+				if (this.collection.length <= 1) {
+					$(this.el).html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
+				}
 				this.errorRetries++;
 
+			},
+			tryAgain: function() {
+				$(this.el).html('')
+				this.fetchMore();
 			},
 			fetchMore: function() {
 				this.collection.fetch({
