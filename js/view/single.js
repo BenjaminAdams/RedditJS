@@ -3,7 +3,7 @@ define([
 	function(_, Backbone, Resthub, singleTmpl, PostRowView, SidebarView, CommentsView, BaseView, SingleModel, channel, Cookie) {
 		var SingleView = BaseView.extend({
 
-			el: $("#main"),
+			el: $(".content"),
 			template: singleTmpl,
 			events: function() {
 				var _events = {
@@ -101,10 +101,10 @@ define([
 				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.resize()
 				//load sidebar
-				this.sidebar = new SidebarView({
-					subName: this.subName,
-					root: ".side"
-				})
+				// this.sidebar = new SidebarView({
+				// 	subName: this.subName,
+				// 	root: ".side"
+				// })
 
 				this.comments = new CommentsView({
 					collection: this.model.get('replies'),

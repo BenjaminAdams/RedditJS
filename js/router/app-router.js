@@ -26,9 +26,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
             home: function(sortOrder) {
                 console.debug("Main route activated");
-                this.sidebar = new SidebarView({
-                    subName: 'front',
-                })
+                this.doSidebar('front');
 
                 subredditView = new SubredditView({
                     subName: "front",
@@ -38,9 +36,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
             subreddit: function(subName, sortOrder) {
 
-                this.sidebar = new SidebarView({
-                    subName: subName,
-                })
+                this.doSidebar(subName);
 
                 subredditView = new SubredditView({
                     subName: subName,
@@ -50,11 +46,19 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
             },
 
             single: function(subName, id) {
+
+                this.doSidebar(subName);
+
                 singleView = new SingleView({
                     subName: subName,
                     id: id
                 });
 
+            },
+            doSidebar: function(subName) {
+                this.sidebar = new SidebarView({
+                    subName: subName,
+                })
             }
 
         });
