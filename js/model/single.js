@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'model/comment', 'model/comment'], function(_, Backbone, CommentModel, CommentModel) {
-	var Single = CommentModel.extend({
+define(['underscore', 'backbone', 'collection/comments'], function(_, Backbone, CommentsCollection) {
+	var Single = Backbone.Model.extend({
 		initialize: function(data) {
 			this.id = data.id
 
@@ -13,7 +13,6 @@ define(['underscore', 'backbone', 'model/comment', 'model/comment'], function(_,
 			// image:"some img",
 			//  slug: "slug"
 		},
-
 		//so we have the attributes in the root of the model
 		parse: function(response) {
 			var data;
@@ -22,8 +21,13 @@ define(['underscore', 'backbone', 'model/comment', 'model/comment'], function(_,
 			} else {
 
 				data = response[0].data.children[0].data
-				data.replies = this.parseComments(response[1].data, data.name)
+				console.log('single model in comment parse', response[1].data.children)
+				data.replies = new CommentsCollection({
+					children: response[1].data.children,
+					link_id: data.name
+				}) //transform the replies into a comment collection
 				//data.comments = response[1].data.children
+
 			}
 
 			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"

@@ -96,7 +96,7 @@ define([
 
 			loaded: function(model, res) {
 				this.$('.loading').hide()
-				console.log(model)
+				console.log("model loaded from single=", model)
 				this.render();
 				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.resize()

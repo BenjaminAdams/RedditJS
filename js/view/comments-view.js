@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/comments', 'view/comment-view', 'view/base-view', 'model/comment', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, commentsTmpl, CommentView, BaseView, CommentModel, channel, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/comments', 'view/comment-view', 'view/base-view', 'collection/comments', 'model/comment', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, commentsTmpl, CommentView, BaseView, CommentCollection, CommentModel, channel, Cookie) {
 		var CommentsView = BaseView.extend({
 
 			template: commentsTmpl,
@@ -12,7 +12,6 @@ define([
 				};
 				//console.log('click .upArrow' + this.options.id)
 				_events['click .upArrow' + this.options.id] = "upvote";
-				console.log('NAME IN EVENTS', this.options.model.get('name'))
 				_events['submit #comment' + this.options.model.get('name')] = "comment";
 				//_events['click .comment' + this.options.name] = "comment";
 				_events['click .MOAR' + this.options.id] = "loadMOAR";
@@ -20,6 +19,7 @@ define([
 			},
 
 			initialize: function(options) {
+				console.log('comments view in it')
 				_.bindAll(this);
 				$(this.el).html('')
 				var self = this;
@@ -34,9 +34,9 @@ define([
 
 			},
 			renderComments: function(collection) {
-				//console.log(collection)
+				console.log('collection in renderComments', collection)
 				collection.each(function(model) {
-					//console.log(model.get('id'))
+					console.log('model in renderComments', model)
 					var comment = new CommentView({
 						model: model,
 						id: model.get('id'),
