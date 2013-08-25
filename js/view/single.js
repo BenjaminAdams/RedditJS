@@ -100,14 +100,10 @@ define([
 				this.render();
 				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.resize()
-				//load sidebar
-				// this.sidebar = new SidebarView({
-				// 	subName: this.subName,
-				// 	root: ".side"
-				// })
 
 				this.comments = new CommentsView({
-					collection: this.model.get('replies'),
+					collection: model.get('replies'),
+					model: this.model,
 					el: "#commentarea"
 					//root: "#commentarea"
 				})

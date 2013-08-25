@@ -37,6 +37,7 @@ define([
 				}
 
 				this.render();
+				console.log("trying to create a new comment view with = ", options)
 
 				this.renderChildren(this.model.get('replies'))
 

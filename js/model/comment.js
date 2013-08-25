@@ -12,7 +12,7 @@ define(['underscore', 'backbone', 'jquery', 'model/base'], function(_, Backbone,
 
 		parseComments: function(collection, link_id) {
 			var self = this;
-			//console.log(collection)
+			//console.log('inside of parse comment', collection)
 
 			//comments.before = collection.before
 			if (typeof collection !== 'undefined' && typeof collection.children !== 'undefined') {
@@ -39,16 +39,20 @@ define(['underscore', 'backbone', 'jquery', 'model/base'], function(_, Backbone,
 						comments.add(singleModel)
 					} else {
 						var data = item.data
-						var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
-						timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
-						data.timeAgo = timeAgo
-						data.timeUgly = moment.unix(data.created).format()
-						data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
+						//these are variables we cant parse sometimes because after a new 
+						//comment is created by the user we have limited data coming back
 
-						data.score = +data.ups + +data.downs
-						data.scoreUp = +data.score + 1
-						data.scoreDown = +data.score - 1
+						if (typeof data.created !== 'undefined') {
+							var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
+							timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
+							data.timeAgo = timeAgo
+							data.timeUgly = moment.unix(data.created).format()
+							data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
 
+							data.score = +data.ups + +data.downs
+							data.scoreUp = +data.score + 1
+							data.scoreDown = +data.score - 1
+						}
 						data.kind = item.kind //either "more" or "t1"
 
 						data.link_id = link_id

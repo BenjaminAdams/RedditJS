@@ -145,8 +145,58 @@ define([
 				};
 
 				this.api("api/vote", 'POST', params, function(data) {
-					console.log("vote done", data)
+					console.log("saving done", data)
 				});
+			},
+			//attempts to create a new comment
+			comment: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var self = this
+
+				var id = this.model.get('name')
+				var text = this.$('#text' + id).val()
+				console.log("text from user input=", text)
+				text = this.sterilize(text) //clean the input
+
+				var params = {
+					api_type: 'json',
+					thing_id: id,
+					text: text,
+					uh: $.cookie('modhash'),
+				};
+				console.log(params)
+
+				this.api("/api/comment", 'POST', params, function(data) {
+					console.log("comment done", data)
+					self.commentCallback(data)
+				});
+			},
+
+			//sterilizes user input 
+			sterilize: function(HTMLString) {
+				HTMLString = HTMLString.replace(/<img /gi, "<imga ");
+				var att, x = 0,
+					y, coll, c = [],
+					probe = document.createElement("div");
+				probe.innerHTML = HTMLString;
+				coll = probe.getElementsByTagName("*");
+				while (coll[x]) coll[x] ? c.push(coll[x++]) : 0;
+				for (x in c)
+					if (/(script|object|embed|iframe)/i.
+						/*you can blacklist more tags here!*/
+						test(c[x].tagName)) {
+						c[x].outerHTML = "";
+					} else {
+						if (c[x].href) /java/.test(coll[x].protocol) ? c[x].href = "#" : 0;
+						att = c[x].attributes;
+						for (y in att)
+							if (att[y])
+								if (/(^on|style)/i.test(att[y].name))
+									c[x].removeAttribute(att[y].name);
+					}
+				c = probe.innerHTML.replace(/imga/gi, "img");
+				return c.replace(/<\/img>/gi, "");
 			}
 
 		});
