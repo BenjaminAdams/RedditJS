@@ -279,7 +279,7 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				e.stopPropagation()
 				this.$('#reportConfirm' + this.model.get('id')).hide()
 				var params = {
-					thing_id: this.model.get('id'),
+					id: this.model.get('name'),
 					uh: $.cookie('modhash'),
 				};
 				console.log(params)
@@ -288,7 +288,56 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 					console.log("report done", data)
 
 				});
-			}
+			},
+			//so users can hide a post/link 
+			hidePost: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				this.$('div[data-fullname=' + this.model.get('name') + ']').hide()
+				var params = {
+					id: this.model.get('name'),
+					uh: $.cookie('modhash'),
+				};
+				console.log(params)
+
+				this.api("/api/hide", 'POST', params, function(data) {
+					console.log("hide done", data)
+
+				});
+			},
+			//so users can hide a post/link 
+			savePost: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				this.$('#save' + this.model.get('id')).hide()
+				this.$('#unsave' + this.model.get('id')).show()
+				var params = {
+					id: this.model.get('name'),
+					uh: $.cookie('modhash'),
+				};
+				console.log(params)
+
+				this.api("/api/save", 'POST', params, function(data) {
+					console.log("save done", data)
+
+				});
+			}, //so users can hide a post/link 
+			unSavePost: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				this.$('#save' + this.model.get('id')).show()
+				this.$('#unsave' + this.model.get('id')).hide()
+				var params = {
+					id: this.model.get('name'),
+					uh: $.cookie('modhash'),
+				};
+				console.log(params)
+
+				this.api("/api/unsave", 'POST', params, function(data) {
+					console.log("unsave done", data)
+
+				});
+			},
 
 		});
 		return BaseView;

@@ -62,14 +62,19 @@
                 <li>
 
                 <span class="state-button save-button" >
-                    <input name="executed" type="hidden" value="unsave" >
-                        <span><a href="#">save</a></span>
+                     {{#if model.saved}}
+                        <span id='unsave{{model.id}}' ><a href='#'>unsave</a></span>
+                        <span id='save{{model.id}}' style='display:none;'><a href="#" >save</a></span>
+                    {{else}}
+                        <span id='unsave{{model.id}}' style='display:none;'><a href='#'>unsave</a></span>
+                        <span id='save{{model.id}}'><a href="#" >save</a></span>
+                    {{/if}}
                 </span>
                 </li>
 
                 <li>
                 <span class="state-button hide-button" >
-                   <span><a href="#">hide</a></span>
+                   <span><a href="#" id='hide{{model.id}}'>hide</a></span>
                 </span>
                 </li>
                 <li>

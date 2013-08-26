@@ -7,6 +7,15 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
                 var _events = {
                     //    'click .noncollapsed .expand': "hideThread",
                 };
+
+                _events['click #report' + this.options.id] = "reportShow";
+                _events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
+                _events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
+
+                _events['click #hide' + this.options.id] = "hidePost"; //user wants to hide this post
+                _events['click #save' + this.options.id] = "savePost"; //user wants to hide this post
+                _events['click #unsave' + this.options.id] = "unSavePost"; //user wants to hide this post
+
                 _events['click .upArrow' + this.options.id] = "upvote";
                 _events['click .downArrow' + this.options.id] = "downvote";
                 return _events;

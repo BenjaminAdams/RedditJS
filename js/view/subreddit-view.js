@@ -9,7 +9,7 @@ define([
 			events: function() {
 				var _events = {
 					//'click .tabmenu-right li': 'changeGridOption',
-					'click #retry': 'fetchMore'
+					'click #retry': 'tryAgain'
 
 				};
 				//console.log('click .upArrow' + this.options.id)
@@ -150,14 +150,15 @@ define([
 					this.loading = false;
 				}
 
-				if (this.collection.length <= 1) {
-					$(this.el).html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
+				if (this.collection.length <= 5) {
+					this.$('#siteTable').html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
 				}
 				this.errorRetries++;
 
 			},
 			tryAgain: function() {
-				$('#retry').html("  <div class='loading'></div>  ")
+				this.$('#siteTable').html("<div class='loading'></div> ")
+				this.$('#retry').remove()
 
 				this.fetchMore();
 			},
