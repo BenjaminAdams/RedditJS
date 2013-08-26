@@ -1,41 +1,49 @@
 define(['backbone', 'model/comment', 'model/comment-more-link'], function(Backbone, CommentModel, CommentMoreLinkModel) {
 	var CommentsCollection = Backbone.Collection.extend({
-		model: CommentModel,
+		//model: CommentModel,
 		initialize: function(options) {
-			this.link_id = options.link_id
+			//this.link_id = options.link_id
 			//console.log('init comments COLLECTION,', options)
-			this.parseJson(options.children)
+			//this.parseJson()
 		},
-
-		parseJson: function(children) {
+		parseAlloldoldold: function() {
 			var self = this;
-			//console.log('inside of parse comment', collection)
-			console.log('children=', children)
-			console.log(typeof children.data)
+			this.each(function(item) {
+				// do stuff
+				newModels.push(self.parseOne(item))
+			});
+
+		},
+		parseAlloldoldold: function() {
+			var self = this;
+			console.log('inside of parse comment', this)
 
 			if (typeof children.data === 'undefined') {
-				_.each(children, function(item) {
+				this.each(function(item) {
 					// do stuff
-					self.parseOne(item)
+					newModels.push(self.parseOne(item))
 				});
-			} else {
-
-				console.log('children.data is an object')
-				this.parseOne(children)
-
 			}
+			console.log('adding new models', newModels)
+			//this.models = newModels
+			this.add(newModels)
+			console.log('this after adding them...=', this) //problem here, 'this' is not correct
 
 		},
 		parseOne: function(item) {
 			console.log('one model in the comments collection', item)
+			console.log('this inside of parse one=', this)
 			item.data.kind = item.kind //set the kind so we know how to parse it
 			if (item.kind == "more") {
 				var newMoreLink = new CommentMoreLinkModel(item.data)
-				this.push(newMoreLink)
+				return newMoreLink
 			} else {
+				console.log("THIS IS A T1", item)
 				var newComment = new CommentModel(item.data)
-				this.push(newComment)
+				console.log("RESPONSE FROM CREATING A T1=", newComment)
+				return newComment
 			}
+			console.log('this inside of parse one AFTER=', this)
 		}
 
 	});

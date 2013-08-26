@@ -1,8 +1,8 @@
-define(['underscore', 'backbone', 'jquery', 'collection/comments'], function(_, Backbone, $, CommentsCollection) {
+define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/comment-more-link', 'model/comment'], function(_, Backbone, $, CommentsCollection, CommentMoreLinkModel, CommentModel) {
 	var CommentModel = Backbone.Model.extend({
 		initialize: function() {
 			//this.self = this
-			//console.log('comment model INIT', this)
+			console.log('comment model INIT', this)
 
 			this.parseThis()
 
@@ -14,17 +14,16 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments'], function(_, 
 			//these are variables we cant parse sometimes because after a new 
 			//comment is created by the user we have limited data coming back
 
-			if (typeof data.created !== 'undefined') {
-				var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
-				timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
-				data.timeAgo = timeAgo
-				data.timeUgly = moment.unix(data.created).format()
-				data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
+			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
+			timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
+			data.timeAgo = timeAgo
+			data.timeUgly = moment.unix(data.created).format()
+			data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
 
-				data.score = +data.ups + +data.downs
-				data.scoreUp = +data.score + 1
-				data.scoreDown = +data.score - 1
-			}
+			data.score = +data.ups + +data.downs
+			data.scoreUp = +data.score + 1
+			data.scoreDown = +data.score - 1
+
 			data.kind = "t1" //either "more" or "t1"
 
 			//data.link_id = link_id
@@ -53,13 +52,30 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments'], function(_, 
 			if (typeof data.replies !== "undefined" && data.replies != null && typeof data.replies.data !== "undefined") {
 				//var newComments = self.parseComments(replies.data, link_id)
 				CommentsCollection = require('collection/comments')
+				CommentModel = require('model/comment')
 
 				console.log('about to declare a collection inside a model', data)
+				var newComments = new CommentsCollection()
+				_.each(data.replies.data.children, function(item) {
+					// do stuff
+					item.data.kind = item.kind
+					if (item.kind == "more") {
+						var newMoreLink = new CommentMoreLinkModel(item.data)
+						newComments.add(newMoreLink)
+					} else {
+						//console.log("THIS IS A T1", item)
+						var newComment = new CommentModel(item.data)
+						console.log("RESPONSE FROM CREATING A T1=", newComment)
+						newComments.add(newComment)
+					}
+				});
 
-				var newComments = new CommentsCollection({
-					children: data.replies.data.children,
-					link_id: data.name
-				})
+				//now parse it in the collection itself
+
+				// var newComments = new CommentsCollection({
+				// 	children: data.replies.data.children,
+				// 	link_id: data.link_id
+				// })
 				data.replies = newComments
 
 				data.childrenCount = newComments.length

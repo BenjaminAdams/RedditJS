@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'jquery', 'collection/comments'], function(_, Backbone, $, CommentsCollection) {
+define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 	var CommentMoreLinkModel = Backbone.Model.extend({
 		initialize: function() {
 			//this.self = this
