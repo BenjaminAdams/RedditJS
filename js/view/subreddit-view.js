@@ -8,7 +8,7 @@ define([
 
 			events: function() {
 				var _events = {
-					'click .tabmenu-right li': 'changeGridOption',
+					//'click .tabmenu-right li': 'changeGridOption',
 					'click #retry': 'fetchMore'
 
 				};
@@ -20,7 +20,6 @@ define([
 
 			initialize: function(options) {
 				$(this.el).html('')
-
 				_.bindAll(this);
 				var self = this;
 				this.subName = options.subName
@@ -35,17 +34,12 @@ define([
 				});
 				this.template = subredditTmpl;
 
+				channel.bind("subreddit:changeGridOption", this.changeGridOption, this);
+
 				this.render();
 
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				this.fetchMore();
-
-				//load sidebar
-				// this.sidebar = new SidebarView({
-				// 	subName: this.subName,
-
-				// 	//root: ".side"
-				// })
 
 				/*grid option:
 					normal - the default Reddit styling
@@ -53,15 +47,12 @@ define([
 					large - full sized images in the page
 				*/
 				this.gridOption = $.cookie('gridOption');
-
-				console.log("page is loading and grid option=", this.gridOption)
 				if (typeof this.gridOption === 'undefined' || this.gridOption == null || this.gridOption == "") {
 					this.gridOption = 'normal'
 				} else if (this.gridOption == "large") {
 					this.resize()
 
 				}
-				this.changeActiveGrid() //so we are highlighting the correct grid option on page load
 
 				$(window).on("scroll", this.watchScroll);
 				//this.target = $("#siteTable"); //the target to test for infinite scroll
@@ -89,13 +80,7 @@ define([
 
 			// },
 			/**************Grid functions ****************/
-			changeActiveGrid: function() {
-				this.$('#normal').removeClass('selected');
-				this.$('#small').removeClass('selected');
-				this.$('#large').removeClass('selected');
-				this.$('#' + this.gridOption).addClass('selected');
 
-			},
 			changeSortOrderCss: function() {
 				channel.trigger("header:updateSortOrder", {
 					sortOrder: this.sortOrder
@@ -118,19 +103,19 @@ define([
 
 			},
 
-			changeGridOption: function(e) {
-				e.preventDefault()
-				e.stopPropagation();
-				var target = e.currentTarget
-				var name = this.$(target).data('name')
-				if (this.gridOption == name) {
+			changeGridOption: function(data) {
+				console.log('changing grid option=', data)
+				if (typeof data.gridOption === 'undefined') {
+					this.gridOption = $.cookie('gridOption');
+				}
+				if (this.gridOption == data.gridOption) {
 					return; //do nothing if the user already clicked this once
 				}
-				this.gridOption = name
-				$.cookie('gridOption', name, {
+				this.gridOption = data.gridOption
+				$.cookie('gridOption', this.gridOption, {
 					path: '/'
 				});
-				this.changeActiveGrid()
+				//this.changeActiveGrid()
 				this.resetPosts()
 				if (this.name == "large") {
 					this.resize()

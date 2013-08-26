@@ -42,14 +42,10 @@ width: 90px;
 
 }
 
-.grid-menu-container {
-	position:relative;
-}
 
 .tabmenu-right {
-position: absolute;
-right: 355px;
-top: -25px;
+position:relative;
+left:150px;
 z-index: 3333;
 }
 

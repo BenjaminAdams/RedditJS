@@ -4,7 +4,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 		var HeaderView = BaseView.extend({
 			el: $("#theHeader"),
 			events: {
-				//  'keyup #new-todo':     'showTooltip'
+				'click .tabmenu-right li': 'changeGridOption'
 			},
 
 			initialize: function(data) {
@@ -26,6 +26,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
 				this.mySubreddits.loadDefaultSubreddits()
 				this.displayMySubreddits()
+				this.changeActiveGrid($.cookie('gridOption'))
+				//this.changeActiveGrid($.cookie('gridOption')) //so we are highlighting the correct grid option on page load
 
 				if (this.checkIfLoggedIn() == true) {
 					console.log('starting to update the subreddits in the header init')
@@ -66,6 +68,24 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 					success: this.displayMySubreddits
 				});
 			},
+
+			changeGridOption: function(e) {
+				e.preventDefault()
+				e.stopPropagation();
+				var id = this.$(e.currentTarget).attr('id')
+				channel.trigger("subreddit:changeGridOption", {
+					gridOption: id
+				});
+				this.changeActiveGrid(id) //so we are highlighting the correct grid option on page load
+
+			},
+			changeActiveGrid: function(id) {
+				this.$('#normal').removeClass('selected');
+				this.$('#small').removeClass('selected');
+				this.$('#large').removeClass('selected');
+				this.$('#' + id).addClass('selected');
+			},
+
 			displayMySubreddits: function(response, subreddits) {
 
 				this.$('#sr-bar').html(" ") //clear the div
