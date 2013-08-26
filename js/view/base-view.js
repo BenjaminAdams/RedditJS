@@ -268,6 +268,28 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				this.$('#mdHelp' + this.model.get('id')).html('')
 			},
 
+			//so users can report spam
+			reportShow: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				this.$('#reportConfirm' + this.model.get('id')).toggle()
+			},
+			reportYes: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				this.$('#reportConfirm' + this.model.get('id')).hide()
+				var params = {
+					thing_id: this.model.get('id'),
+					uh: $.cookie('modhash'),
+				};
+				console.log(params)
+
+				this.api("/api/report", 'POST', params, function(data) {
+					console.log("report done", data)
+
+				});
+			}
+
 		});
 		return BaseView;
 	});

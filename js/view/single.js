@@ -10,7 +10,10 @@ define([
 					'click #retry': 'tryAgain',
 					'click .expando-button': 'toggleExpando'
 				};
-				//console.log(this.options.name)
+				_events['click #report' + this.options.id] = "reportShow";
+				_events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
+				_events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
+
 				_events['click .upArrow' + this.options.id] = "upvote";
 				_events['click .downArrow' + this.options.id] = "downvote";
 				return _events;

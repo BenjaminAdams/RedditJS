@@ -45,21 +45,11 @@
 			<ul class="flat-list buttons">
 				<li class="first"><a href="{{model.permalink}}" class="bylink" rel="nofollow">permalink</a></li>
 				<li>
-				<form class="toggle remove-button " action="#" method="get">
-					<input type="hidden" name="executed" value="spammed">
+				<span class="toggle remove-button">
 					<span class="option main active">
-					<a href="#" class="togglebutton">spam</a></span>
-					<span class="option error">are you sure? <a href="#" class="yes">yes</a> / <a href="#" class="no" >no</a></span>
-				</form>
-				</li>
-				<li>
-				<form class="toggle remove-button " action="#" method="get">
-					<input type="hidden" name="executed" value="removed">
-					<input type="hidden" name="spam" value="False">
-					<span class="option main active">
-					<a href="#" class="togglebutton" >remove</a></span>
-					<span class="option error">are you sure? <a href="#" class="yes" >yes</a> / <a href="#" class="no">no</a></span>
-				</form>
+					<a href="#" id='report{{model.id}}' class="togglebutton">report</a></span>
+					<span id='reportConfirm{{model.id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{model.id}}' class="yes">yes</a> / <a href="#" id='reportConfirmNo{{model.id}}' class="no" >no</a></span>
+				</span>
 				</li>
 				<li><a  data-bypass href="http://reddit.com/gold?goldtype=gift&amp;months=1&amp;comment=t1_cbtb7as"  target='_blank' title="give reddit gold in appreciation of this comment." class="give-gold login-required">give gold</a></li>
 				<li><a id='replyToggle{{model.id}}' href="#" >reply</a></li>

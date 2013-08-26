@@ -10,8 +10,10 @@ define([
 					//'click .noncollapsed .expand': "hideThread",
 					//'click .collapsed .expand': "showThread"
 				};
-				//console.log('click .upArrow' + this.options.id)
-				//_events['click .upArrow' + this.options.id] = "upvote";
+				_events['click #report' + this.options.id] = "reportShow";
+				_events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
+				_events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
+
 				_events['submit #comment' + this.options.model.get('name')] = "comment";
 				//_events['click .comment' + this.options.name] = "comment";
 				//_events['click .MOAR' + this.options.id] = "loadMOAR";

@@ -10,11 +10,16 @@ define([
 					'click .collapsed .expand': "showThread",
 					'click .cancel': 'hideUserInput'
 				};
-				_events['submit #commentreply' + this.options.id] = "comment";
+
+				_events['click #report' + this.options.id] = "reportShow";
+				_events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
+				_events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
+
+				_events['submit #commentreply' + this.options.id] = "comment"; //submits a reply to a comment
 				_events['click .upArrow' + this.options.id] = "upvote";
 				_events['click .downArrow' + this.options.id] = "downvote";
-				_events['click .MOAR' + this.options.id] = "loadMOAR";
-				_events['click #replyToggle' + this.options.id] = "toggleReply";
+				_events['click .MOAR' + this.options.id] = "loadMOAR"; //loads more comments
+				_events['click #replyToggle' + this.options.id] = "toggleReply"; //shows the textarea to input a comment
 				_events['click #mdHelpShow' + this.options.id] = "showMdHelp";
 				_events['click #mdHelpHide' + this.options.id] = "hideMdHelp";
 				return _events;

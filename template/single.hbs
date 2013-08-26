@@ -73,10 +73,10 @@
                 </span>
                 </li>
                 <li>
-                <span class="toggle report-button" >
-                    <input name="executed" type="hidden" value="reported" ><span class="option main active">
-                    <a class="togglebutton" href="#">report</a></span>
-                    <span class="option n error">are you sure? <a class="yes" href='#' >yes</a> / <a class="no" href="#" >no</a></span>
+                <span class="toggle remove-button">
+                    <span class="option main active">
+                    <a href="#" id='report{{model.id}}' class="togglebutton">report</a></span>
+                    <span id='reportConfirm{{model.id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{model.id}}' class="yes">yes</a> / <a href="#" id='reportConfirmNo{{model.id}}' class="no" >no</a></span>
                 </span>
                 </li>
 
