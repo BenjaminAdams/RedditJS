@@ -29,7 +29,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 if (!callback) callback = this[name];
                 var f = function() {
                     //middleware functions
-                    channel.trigger("subreddit:remove")
+                    channel.trigger("subreddit:remove") //clear old subreddit views
 
                     //end middleware functions
                     callback.apply(router, arguments); //call the actual route
