@@ -16,10 +16,14 @@
 		<div class="collapsed" style="display:none">
 			<a href="#" class="expand" >[+]</a><a class="author gray id-t2_1mmxj" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
 			<span class="userattrs"></span>
-				<span class="score dislikes">{{mode.scoreDown}}</span>
-				<span class="score unvoted">{{mode.score}}</span>
-				<span class="score likes">{{mode.scoreUp}}</span>
+				<span class="score dislikes">{{model.scoreDown}} points</span>
+				<span class="score unvoted">{{model.score}} points</span>
+				<span class="score likes">{{model.scoreUp}} points</span>
 			<time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">{{model.timeAgo}}</time> ago &nbsp;
+			  {{#if model.edited}}
+                        			<span>(*lasted edited {{model.editedTimeAgo}} ago)</span>
+
+                   		 {{/if}}
 			<a href="#" class="expand">({{model.childrenCount}} {{model.childOrChildren}})</a>
 		</div>
 		<div class="noncollapsed">
@@ -27,10 +31,14 @@
 				<a href="#" class="expand" >[–]</a>
 				<a class="author id-t2_1mmxj" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
 				<span class="userattrs"></span>
-					<span class="score dislikes">{{mode.scoreDown}}</span>
-					<span class="score unvoted">{{mode.score}}</span>
-					<span class="score likes">{{mode.scoreUp}}</span>
+					<span class="score dislikes">{{model.scoreDown}} points</span>
+					<span class="score unvoted">{{model.score}} points</span>
+					<span class="score likes">{{model.scoreUp}} points</span>
 				<time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">{{model.timeAgo}}</time> ago
+				{{#if model.edited}}
+                        			<span>* (lasted edited {{model.editedTimeAgo}} ago)</span>
+                   			 {{/if}}
+
 			</p>
 			<form action="#" class="usertext"  id="form-t1_cbtb7as33m">
 				<input type="hidden" name="thing_id" value="t1_cbtb7as">

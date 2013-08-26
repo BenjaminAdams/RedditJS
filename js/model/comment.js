@@ -18,6 +18,13 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 			data.timeUgly = moment.unix(data.created).format()
 			data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
 
+			//if the comment is edited format its last edited time
+			if (typeof data.edited !== 'undefined' && data.edited != false) {
+				var timeAgo = moment.unix(data.edited).fromNow(true) //"true" removes the "ago"
+				timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
+				data.editedTimeAgo = timeAgo
+			}
+
 			data.score = +data.ups + +data.downs
 			data.scoreUp = +data.score + 1
 			data.scoreDown = +data.score - 1

@@ -50,8 +50,6 @@ define([
 
 				this.renderChildren(this.model.get('replies'))
 
-				console.log(this.model)
-
 			},
 			loadMOAR: function(e) {
 				e.preventDefault()

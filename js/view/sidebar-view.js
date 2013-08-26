@@ -10,6 +10,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				_.bindAll(this);
 				this.template = SidebarTmpl;
 				this.subName = data.subName
+				this.dynamicStylesheet(this.subName)
 				this.model = new SidebarModel(this.subName)
 
 				if (this.subName == "front") {

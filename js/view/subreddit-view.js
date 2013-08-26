@@ -25,7 +25,7 @@ define([
 				_.bindAll(this);
 				var self = this;
 				this.subName = options.subName
-				this.dynamicStylesheet(this.subName)
+
 				this.sortOrder = options.sortOrder
 				if (typeof this.sortOrder === 'undefined') {
 					this.sortOrder = 'hot'
