@@ -19,13 +19,13 @@ define([
 			},
 
 			initialize: function(options) {
-				console.log('comments view in it')
+				//console.log('comments view in it')
 				_.bindAll(this);
 				$(this.el).html('')
 				var self = this;
 				this.collection = options.collection
 				this.model = options.model
-				console.log('init comments view model=', this.model)
+				//console.log('init comments view model=', this.model)
 				this.template = commentsTmpl;
 
 				this.render();
@@ -34,7 +34,7 @@ define([
 
 			},
 			renderComments: function(collection) {
-				console.log('collection in renderComments', collection)
+				//console.log('collection in renderComments', collection)
 				collection.each(function(model) {
 					console.log('model in renderComments', model)
 					var comment = new CommentView({

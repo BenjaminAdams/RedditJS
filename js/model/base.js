@@ -5,10 +5,13 @@ define(['underscore', 'backbone', 'jquery', 'model/comment-more-link', 'model/co
 
 			CommentModel = require('model/comment') //in order to have nested models inside of models we need to do this
 			CommentsCollection = require('collection/comments') //in cases of recursion its ok!
+
 			var comments = new CommentsCollection()
 			_.each(data.children, function(item) {
 				// do stuff
 				item.data.kind = item.kind
+				console.log("in the each item=", item)
+				//item.data.link_id = parentPageLinkID
 				if (item.kind == "more") {
 					var newMoreLink = new CommentMoreLinkModel(item.data)
 					comments.add(newMoreLink)
@@ -19,6 +22,7 @@ define(['underscore', 'backbone', 'jquery', 'model/comment-more-link', 'model/co
 				}
 
 			});
+			console.log('returning comments = ', comments)
 			return comments
 		},
 

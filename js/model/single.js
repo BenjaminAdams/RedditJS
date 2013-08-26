@@ -16,17 +16,19 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 		//so we have the attributes in the root of the model
 		parse: function(response) {
 			var data;
-			console.log("RESPONSE of single model", response)
+			//console.log("RESPONSE of single model", response)
 			if (typeof response[0] === 'undefined') {
 				data = response
 			} else {
 
 				data = response[0].data.children[0].data
-				console.log('single model in comment parse', response[1].data)
-
+				//console.log('single model in comment parse', response[1].data)
 				//data.replies = new CommentsCollection() //transform the replies into a comment collection
+				//response[1].data.link_id = data.name
+				//response[1].data.kind = response[1].kind
+				console.log('b4 parse comments in single model=', response[1].data)
 				data.replies = this.parseComments(response[1].data)
-				console.log('data.replies=', data.replies)
+				//console.log('data.replies=', data.replies)
 				//data.replies.parseAll()
 
 				// data.replies = new CommentsCollection({
