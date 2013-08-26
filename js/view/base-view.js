@@ -1,5 +1,4 @@
-define([
-  'underscore', 'backbone', 'resthub', 'cookie'],
+define(['underscore', 'backbone', 'resthub', 'cookie'],
 	function(_, Backbone, Resthub, Cookie) {
 		var BaseView = Resthub.View.extend({
 
@@ -50,6 +49,13 @@ define([
 						func.apply(scope, Array.prototype.slice.call(args));
 					}, timeout);
 				}
+			},
+			//smooth scrolling to the top of the screen
+			scrollTop: function() {
+				console.log('scrolltop now')
+				$('html, body').animate({
+					scrollTop: 0
+				}, 600);
 			},
 			dynamicStylesheet: function(name) {
 				if (this.subName == 'front') {

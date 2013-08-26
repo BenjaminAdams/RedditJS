@@ -25,7 +25,7 @@ define([
 				_.bindAll(this);
 
 				$(this.el).html('')
-
+				this.scrollTop()
 				var self = this;
 				this.subName = options.subName
 				this.dynamicStylesheet(this.subName)
@@ -98,6 +98,7 @@ define([
 				this.$('.loading').hide()
 				console.log("model loaded from single=", model)
 				this.render();
+
 				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.resize()
 
