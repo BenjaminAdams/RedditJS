@@ -36,13 +36,13 @@ define([
 				var self = this;
 				this.subName = options.subName
 				this.id = options.id
+				this.template = singleTmpl;
 
 				this.model = new SingleModel({
 					subName: this.subName,
-					id: this.id
+					id: this.id,
+					parseNow: true,
 				});
-
-				this.template = singleTmpl;
 
 				//this.render();
 				this.model.fetch({
@@ -53,12 +53,25 @@ define([
 				$(window).resize(this.debouncer(function(e) {
 					self.resize()
 				}));
+				channel.on("single:remove", this.remove, this);
 
+			},
+			remove: function() {
+				$(window).off('resize', this.debouncer);
+				channel.off("single:remove", this.remove, this);
+				this.undelegateEvents();
+				this.$el.empty();
+				this.stopListening();
+				console.log('**********************removed the single view *********************************')
+
+				//call the superclass remove method
+				//Backbone.View.prototype.remove.apply(this, arguments);
 			},
 			/**************UI functions ****************/
 			resize: function() {
 				var mobileWidth = 1000; //when to change to mobile CSS
 				//change css of 
+				console.log('resizing width of this single')
 				var docWidth = $(document).width()
 				var newWidth = 0;
 				if (docWidth > mobileWidth) {
@@ -103,6 +116,8 @@ define([
 			loaded: function(model, res) {
 				this.$('.loading').hide()
 				console.log("model loaded from single=", model)
+				this.model = model
+				//this.model = model.parseOnce(model.attributes)
 				this.render();
 
 				$(this.el).append("<style id='dynamicWidth'> </style>")

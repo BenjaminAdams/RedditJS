@@ -2,6 +2,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 	var Single = BaseModel.extend({
 		initialize: function(data) {
 			this.id = data.id
+			this.parseNow = data.parseNow
 
 		},
 		url: function() {
@@ -13,10 +14,16 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 			// image:"some img",
 			//  slug: "slug"
 		},
+		parse: function(response) {
+			if (this.parseNow == true) {
+				response = this.parseOnce(response)
+			}
+			return response
+		},
 		//so we have the attributes in the root of the model
 		parseOnce: function(response) {
 			var data;
-			console.log("RESPONSE of single model", response)
+			//console.log("RESPONSE of single model", response)
 			if (typeof response[0] === 'undefined') {
 				data = response
 			} else {
