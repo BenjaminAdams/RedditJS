@@ -122,14 +122,9 @@ padding:5px;
 }
 
 
-.expando-button {
-
-}
-
-
 .expando {
 clear:none;
-margin:0px;
+margin:5px;
 }
 
 #retry {

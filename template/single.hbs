@@ -35,6 +35,7 @@
             <span class="userattrs"></span>to <a href="/r/{{model.subreddit}}/" class="subreddit hover">{{model.subreddit}}</a>
             </p>
 
+  {{#if model.selftext_html}}
             <div class="expando">
                 <form action="#" class="usertext"  id="form-t3_1ktzvz3sr">
                     <div class="usertext-body">
@@ -44,7 +45,7 @@
                     </div>
                 </form>
             </div>
-
+  {{/if}}
 
 
 
@@ -82,12 +83,12 @@
             </ul>
 
 
+  {{#if model.media_embed.content}}
 <div class="expando"><div class="usertext-body"><p>
 {{{model.media_embed.content}}}
-
 </p>
 </div></div>
-
+  {{/if}}
 
 
 
