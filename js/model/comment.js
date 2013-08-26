@@ -1,14 +1,14 @@
-define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/comment-more-link', 'model/comment'], function(_, Backbone, $, CommentsCollection, CommentMoreLinkModel, CommentModel) {
-	var CommentModel = Backbone.Model.extend({
+define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/comment-more-link', 'model/comment', 'model/base'], function(_, Backbone, $, CommentsCollection, CommentMoreLinkModel, CommentModel, BaseModel) {
+	var CommentModel = BaseModel.extend({
 		initialize: function() {
 			//this.self = this
-			console.log('comment model INIT', this)
+			//console.log('comment model INIT', this)
 
 			this.parseThis()
 
 		},
 		parseThis: function() {
-			console.log('inside CommentModel', this)
+			//console.log('inside CommentModel', this)
 			var data = this.attributes
 
 			//these are variables we cant parse sometimes because after a new 
@@ -51,35 +51,23 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 
 			if (typeof data.replies !== "undefined" && data.replies != null && typeof data.replies.data !== "undefined") {
 				//var newComments = self.parseComments(replies.data, link_id)
-				CommentsCollection = require('collection/comments')
-				CommentModel = require('model/comment')
+				// CommentsCollection = require('collection/comments')
+				// CommentModel = require('model/comment')
 
-				console.log('about to declare a collection inside a model', data)
-				var newComments = new CommentsCollection()
-				_.each(data.replies.data.children, function(item) {
-					// do stuff
-					item.data.kind = item.kind
-					if (item.kind == "more") {
-						var newMoreLink = new CommentMoreLinkModel(item.data)
-						newComments.add(newMoreLink)
-					} else {
-						//console.log("THIS IS A T1", item)
-						var newComment = new CommentModel(item.data)
-						console.log("RESPONSE FROM CREATING A T1=", newComment)
-						newComments.add(newComment)
-					}
-				});
-
+				//console.log('about to declare a collection inside a model', data)
+				//var newComments = new CommentsCollection()
+				console.log('datareplies', data.replies)
+				data.replies = this.parseComments(data.replies)
+				//data.replies = newComments
 				//now parse it in the collection itself
 
 				// var newComments = new CommentsCollection({
 				// 	children: data.replies.data.children,
 				// 	link_id: data.link_id
 				// })
-				data.replies = newComments
 
-				data.childrenCount = newComments.length
-				if (newComments.length == 1) {
+				data.childrenCount = data.replies.length
+				if (data.replies.length == 1) {
 					data.childOrChildren = 'child'
 				} else {
 					data.childOrChildren = 'children'

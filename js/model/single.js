@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'collection/comments', 'model/comment-more-link', 'model/comment'], function(_, Backbone, CommentsCollection, CommentMoreLinkModel, CommentModel) {
-	var Single = Backbone.Model.extend({
+define(['underscore', 'backbone', 'collection/comments', 'model/base'], function(_, Backbone, CommentsCollection, BaseModel) {
+	var Single = BaseModel.extend({
 		initialize: function(data) {
 			this.id = data.id
 
@@ -22,23 +22,10 @@ define(['underscore', 'backbone', 'collection/comments', 'model/comment-more-lin
 			} else {
 
 				data = response[0].data.children[0].data
-				console.log('single model in comment parse', response[1].data.children)
+				console.log('single model in comment parse', response[1].data)
 
-				data.replies = new CommentsCollection() //transform the replies into a comment collection
-				_.each(response[1].data.children, function(item) {
-					// do stuff
-					item.data.kind = item.kind
-					if (item.kind == "more") {
-						var newMoreLink = new CommentMoreLinkModel(item.data)
-						data.replies.add(newMoreLink)
-					} else {
-						//console.log("THIS IS A T1", item)
-						var newComment = new CommentModel(item.data)
-						console.log("RESPONSE FROM CREATING A T1=", newComment)
-						data.replies.add(newComment)
-					}
-
-				});
+				//data.replies = new CommentsCollection() //transform the replies into a comment collection
+				data.replies = this.parseComments(response[1].data)
 				console.log('data.replies=', data.replies)
 				//data.replies.parseAll()
 
