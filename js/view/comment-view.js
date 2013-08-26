@@ -37,7 +37,7 @@ define([
 				}
 
 				this.render();
-				console.log("trying to create a new comment view with = ", options)
+				//console.log("trying to create a new comment view with = ", options)
 
 				this.renderChildren(this.model.get('replies'))
 
@@ -47,7 +47,7 @@ define([
 				e.stopPropagation()
 				$(this.el).html("<div class='loadingS'></div>")
 				var self = this
-				console.log('loading MOAR')
+				//console.log('loading MOAR')
 				var link_id = this.model.get('link_id')
 				//	url: "/api/?url=api/morechildren&cookie=" + $.cookie('reddit_session');,
 				var params = {
@@ -59,13 +59,17 @@ define([
 					//uh: $.cookie('modhash'), 
 					byPassAuth: true
 				};
+				console.log('MOAR=', params)
 
 				this.api("api/morechildren.json", 'POST', params, function(data) {
 					console.log("MOAR done", data)
-					//this is an awful hack....
+
 					if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
 						data.children = data.json.data.things
-						var tmpModel = new CommentModel()
+						var tmpModel = new CommentModel({
+							skipParse: true
+						})
+
 						var newComments = tmpModel.parseComments(data, link_id)
 						self.reRenderMOAR(newComments)
 					} else {
@@ -78,6 +82,7 @@ define([
 			},
 			reRenderMOAR: function(newComments) {
 				if (typeof newComments !== 'undefined' && newComments.length > 0) {
+					//console.log('newcomments=', newComments)
 					//pluck the first model in the collection and set it as this model for reRendering
 					this.model = newComments.at(0)
 					var newComments = newComments.slice(1, newComments.length)

@@ -1,16 +1,17 @@
 define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/comment-more-link', 'model/comment', 'model/base'], function(_, Backbone, $, CommentsCollection, CommentMoreLinkModel, CommentModel, BaseModel) {
 	var CommentModel = BaseModel.extend({
-		initialize: function() {
+		initialize: function(options) {
 			//this.self = this
 			//console.log('comment model INIT', this)
 
-			this.parseThis()
-
+			if (typeof options.skipParse === 'undefined') {
+				this.parseThis()
+			}
 		},
 		parseThis: function() {
 			//console.log('inside CommentModel', this)
 			var data = this.attributes
-			console.log('data in start of comment model=', data)
+			//console.log('data in start of comment model=', data)
 			//these are variables we cant parse sometimes because after a new 
 			//comment is created by the user we have limited data coming back
 
@@ -56,8 +57,8 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 
 				//console.log('about to declare a collection inside a model', data)
 				//var newComments = new CommentsCollection()
-				console.log('datareplies', data.replies.data)
-				data.replies = this.parseComments(data.replies.data)
+				//console.log('datareplies', data.replies.data)
+				data.replies = this.parseComments(data.replies.data, data.link_id)
 				//data.replies = newComments
 				//now parse it in the collection itself
 

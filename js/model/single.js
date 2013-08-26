@@ -26,8 +26,8 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				//data.replies = new CommentsCollection() //transform the replies into a comment collection
 				//response[1].data.link_id = data.name
 				//response[1].data.kind = response[1].kind
-				console.log('b4 parse comments in single model=', response[1].data)
-				data.replies = this.parseComments(response[1].data)
+				//console.log('b4 parse comments in single model=', response[1].data)
+				data.replies = this.parseComments(response[1].data, data.name)
 				//console.log('data.replies=', data.replies)
 				//data.replies.parseAll()
 

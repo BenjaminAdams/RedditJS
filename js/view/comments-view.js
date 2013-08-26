@@ -36,7 +36,7 @@ define([
 			renderComments: function(collection) {
 				//console.log('collection in renderComments', collection)
 				collection.each(function(model) {
-					console.log('model in renderComments', model)
+					//console.log('model in renderComments', model)
 					var comment = new CommentView({
 						model: model,
 						id: model.get('id'),
