@@ -41,115 +41,22 @@
 				<textarea rows="1" cols="1" name="text" id='text{{model.name}}'></textarea>
 			</div>
 			<div class="bottom-area">
-				<span class="help-toggle toggle" style=""><a class="option active " href="#" tabindex="100" onclick="return toggle(this, helpon, helpoff)">formatting help</a><a class="option " href="#">hide help</a></span><a href="/wiki/reddiquette" class="reddiquette" target="_blank" tabindex="100">reddiquette</a><span class="error TOO_LONG field-text" style="display:none"></span><span class="error RATELIMIT field-ratelimit" style="display:none"></span><span class="error NO_TEXT field-text" style="display:none"></span><span class="error TOO_OLD field-parent" style="display:none"></span><span class="error DELETED_COMMENT field-parent" style="display:none"></span><span class="error DELETED_LINK field-parent" style="display:none"></span><span class="error USER_BLOCKED field-parent" style="display:none"></span>
+				<span class="help-toggle toggle" style="">
+				<a id="mdHelpShow{{model.id}}"  class="option active " href="#" tabindex="100">formatting help</a>
+				<a id="mdHelpHide{{model.id}}"  class="option " href="#">hide help</a></span>
+				<a href="http://reddit.com/wiki/reddiquette" data-bypass class="reddiquette" target="_blank" tabindex="100">reddiquette</a>
+			
+			<div class="usertext-buttons">
+				<button type="submit" class="save">save</button>
+				<button type="button"  class="cancel" style="">cancel</button>
+				<span class="status"></span>
+			</div>
+	</div>
+	<div id="mdHelp{{model.id}}" class="markhelp" style="display:none">
 
-				<div class="usertext-buttons">
-					<button type="submit"  class="comment{{model.name}}">save</button><button type="button" class="cancel" style="display:none">cancel</button>
-					<span class="status{{model.name}}"></span>
-				</div>
-			</div>
-			<div class="markhelp" style="display:none">
-				<p>
-				</p>
-				<p>
-					reddit uses a slightly-customized version of <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> for formatting. See below for some basics, or check <a href="/wiki/commenting">the commenting wiki page</a> for more detailed help and solutions to common issues.
-				</p>
-				<p>
-				</p>
-				<table class="md">
-				<tbody>
-				<tr style="background-color: #ffff99; text-align: center">
-					<td>
-						<em>you type:</em>
-					</td>
-					<td>
-						<em>you see:</em>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						*italics*
-					</td>
-					<td>
-						<em>italics</em>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						**bold**
-					</td>
-					<td>
-						<b>bold</b>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						[reddit!](http://reddit.com)
-					</td>
-					<td>
-						<a href="http://reddit.com">reddit!</a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						* item 1<br>
-						* item 2<br>
-						* item 3
-					</td>
-					<td>
-						<ul>
-							<li>item 1</li>
-							<li>item 2</li>
-							<li>item 3</li>
-						</ul>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						&gt; quoted text
-					</td>
-					<td>
-						<blockquote>
-							quoted text
-						</blockquote>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Lines starting with four spaces<br>
-						are treated like code:<br>
-						<br>
-						<span class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</span>if 1 * 2 &lt; 3:<br>
-						<span class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>print "hello, world!"<br>
-					</td>
-					<td>
-						Lines starting with four spaces<br>
-						are treated like code:<br>
-						<pre>
-							if 1 * 2 &lt; 3:<br>
-							&nbsp;&nbsp;&nbsp;&nbsp;print "hello, world!"
-						</pre>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						~~strikethrough~~
-					</td>
-					<td>
-						<strike>strikethrough</strike>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						super^script
-					</td>
-					<td>
-						super<sup>script</sup>
-					</td>
-				</tr>
-				</tbody>
-				</table>
-			</div>
+
+
+	</div>
 		</div>
 	</form>
 	<div class="gold-form gold-payment cloneable">

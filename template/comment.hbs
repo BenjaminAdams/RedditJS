@@ -67,14 +67,16 @@
 		</div>
 	</div>
 	<div id='{{model.name}}' class="child{{model.name}} child">
-		
+
 <form action="#" class="usertext cloneable" id="commentreply{{model.id}}" style="display: none;">
-	<div class="usertext-edit" style="width: 500px;"><div><textarea rows="1" cols="1" name="text" style=""></textarea></div>
+	<div class="usertext-edit" style="width: 500px;"><div>
+		<textarea rows="1" cols="1" name="text" id='text{{model.name}}'></textarea>
+	</div>
 	<div class="bottom-area">
 		<span class="help-toggle toggle" style="">
 			<a id="mdHelpShow{{model.id}}"  class="option active " href="#" tabindex="100">formatting help</a>
 			<a id="mdHelpHide{{model.id}}"  class="option " href="#">hide help</a></span>
-			<a href="/wiki/reddiquette" class="reddiquette" target="_blank" tabindex="100">reddiquette</a>
+			<a href="http://reddit.com/wiki/reddiquette" data-bypass class="reddiquette" target="_blank" tabindex="100">reddiquette</a>
 			
 			<div class="usertext-buttons">
 				<button type="submit" class="save">save</button>
