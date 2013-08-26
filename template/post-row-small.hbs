@@ -1,9 +1,1 @@
-
-
-<a id='{{model.id}}' class="thumbnailSmall" 
- {{#if model.embededImg}}
-   href="{{model.permalink}}" 
-{{else}}
- {{model.external}}   href="{{model.url}}" 
-  {{/if}}
-title='{{model.title}}' target="_blank"><img src="{{model.thumbnail}}" ></a>
+<a id='{{model.id}}' class="thumbnailSmall" {{model.external}} href="{{model.url}}" title='{{model.title}}' target="_blank"><img src="{{model.thumbnail}}" ></a>

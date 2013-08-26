@@ -106,6 +106,17 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				data.external = 'data-bypass'
 			}
 
+			//change the users URL link if its an embeded image/video type
+			if (data.embededImg == true) {
+				data.actualUrl = data.url
+				data.url = data.permalink
+				data.external = ''
+			} else {
+				//this is not a post we can embed
+				data.actualUrl = data.url
+				data.external = 'data-bypass'
+			}
+
 			return data;
 
 		},

@@ -20,11 +20,11 @@
         </div>
 
 
-    <a class="thumbnail loggedin" {{model.external}} href="{{model.url}}" target="_blank"><img alt="" height="52" src="{{model.thumbnail}}" width="70"></a>
+    <a class="thumbnail loggedin" data-bypass href="{{model.actualUrl}}" target="_blank"><img alt="" height="52" src="{{model.thumbnail}}" width="70"></a>
 
         <div class="entry {{model.voted}}">
             <p class="title">
-      <a class="title loggedin" {{model.external}} href="{{model.url}}" target="_blank">{{model.title}}</a> 
+      <a class="title loggedin" data-bypass href="{{model.actualUrl}}" target="_blank">{{model.title}}</a> 
                 <span class="domain">(<a href="/domain/{{model.domain}}/">{{model.domain}}</a>)</span>
             </p>
 

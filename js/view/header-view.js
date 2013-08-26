@@ -80,7 +80,9 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 					gridOption: id
 				});
 				this.changeActiveGrid(id) //so we are highlighting the correct grid option on page load
-
+				$.cookie('gridOption', id, {
+					path: '/'
+				});
 			},
 			changeActiveGrid: function(id) {
 				this.$('#normal').removeClass('selected');
