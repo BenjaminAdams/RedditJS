@@ -18,9 +18,9 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 					root: "#header-bottom-right"
 				})
 
-				channel.bind("header:update", this.updateHeader, this);
-				channel.bind("login", this.updateSubreddits, this); //so we update the users subreddits after they login
-				channel.bind("header:updateSortOrder", this.updateSortOrder, this);
+				channel.on("header:update", this.updateHeader, this);
+				channel.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
+				channel.on("header:updateSortOrder", this.updateSortOrder, this);
 
 				//load the subreddits on the top bar
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
@@ -53,13 +53,16 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				this.$(".top").prop("href", model.get('rname') + "/top")
 
 			},
-			updateSortOrder: function(data) {
+			updateSortOrder: function(sortOrder) {
+				if (typeof sortOrder === 'undefined') {
+					sortOrder = 'hot'
+				}
 				this.$('.hot').parent().removeClass('selected');
 				this.$('.new').parent().removeClass('selected');
 				this.$('.rising').parent().removeClass('selected');
 				this.$('.controversial').parent().removeClass('selected');
 				this.$('.top').parent().removeClass('selected');
-				this.$('.' + data.sortOrder).parent().addClass('selected');
+				this.$('.' + sortOrder).parent().addClass('selected');
 			},
 			updateSubreddits: function() {
 				this.mySubreddits.reset()

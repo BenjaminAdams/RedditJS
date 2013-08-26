@@ -17,7 +17,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 					this.$el.show()
 				}
 
-				channel.bind("logout", this.logout, this);
+				channel.on("logout", this.logout, this);
 				//this.model = new SidebarModel(data.subName)
 
 				// this.$() is a shortcut for this.$el.find().

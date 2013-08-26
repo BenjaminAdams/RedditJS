@@ -19,7 +19,9 @@ define([
 			},
 
 			initialize: function(options) {
-				$(this.el).html('')
+				//$(this.el).empty()
+				//this.$el.empty()
+
 				_.bindAll(this);
 				var self = this;
 				this.subName = options.subName
@@ -34,7 +36,8 @@ define([
 				});
 				this.template = subredditTmpl;
 
-				channel.bind("subreddit:changeGridOption", this.changeGridOption, this);
+				channel.on("subreddit:changeGridOption", this.changeGridOption, this);
+				channel.on("subreddit:remove", this.remove, this);
 
 				this.render();
 
@@ -51,10 +54,10 @@ define([
 					this.gridOption = 'normal'
 				} else if (this.gridOption == "large") {
 					this.resize()
-
 				}
 
-				$(window).on("scroll", this.watchScroll);
+				$(window).on("scroll", this.watchScroll); //we will remove this manually on .remove()
+
 				//this.target = $("#siteTable"); //the target to test for infinite scroll
 				this.target = $(window); //the target to test for infinite scroll
 				this.loading = false;
@@ -73,6 +76,21 @@ define([
 				}, 100);
 
 			},
+			//we have to override the remove event because the window.scroll event will not be removed by the garbage collector
+			//cant create infinite scroll without this.
+			remove: function() {
+				$(window).off("scroll", this.watchScroll);
+				$(window).off('resize', this.debouncer);
+				channel.off("subreddit:changeGridOption", this.changeGridOption, this);
+				channel.off("subreddit:remove", this.remove, this);
+				this.undelegateEvents();
+				this.$el.empty();
+				this.stopListening();
+				console.log('**********************removed the view *********************************')
+
+				//call the superclass remove method
+				//Backbone.View.prototype.remove.apply(this, arguments);
+			},
 
 			/**************Routing functions ****************/
 			// clickedInteralLink: function(e) {
@@ -82,9 +100,7 @@ define([
 			/**************Grid functions ****************/
 
 			changeSortOrderCss: function() {
-				channel.trigger("header:updateSortOrder", {
-					sortOrder: this.sortOrder
-				});
+				channel.trigger("header:updateSortOrder", this.sortOrder);
 			},
 
 			resize: function() {

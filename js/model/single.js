@@ -21,21 +21,10 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				data = response
 			} else {
 
+				//set the value for the single reddit post
 				data = response[0].data.children[0].data
-				//console.log('single model in comment parse', response[1].data)
-				//data.replies = new CommentsCollection() //transform the replies into a comment collection
-				//response[1].data.link_id = data.name
-				//response[1].data.kind = response[1].kind
-				//console.log('b4 parse comments in single model=', response[1].data)
+				//set the values for the comments of this post
 				data.replies = this.parseComments(response[1].data, data.name)
-				//console.log('data.replies=', data.replies)
-				//data.replies.parseAll()
-
-				// data.replies = new CommentsCollection({
-				// 	children: response[1].data.children,
-				// 	link_id: data.name
-				// }) //transform the replies into a comment collection
-
 			}
 
 			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
@@ -43,7 +32,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 			data.timeAgo = timeAgo
 			data.timeUgly = moment.unix(data.created).format()
 			data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
-			data.rname = "/r/" + data.display_name
+			data.rname = "/r/" + data.subreddit
 			//data.selftextMD = markdown.toHTML(this.decodeHTMLEntities(data.selftext))
 
 			//so we can have external URLS add data-bypass to the a tag
@@ -115,19 +104,6 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 
 		},
 
-		// decodeHTMLEntities: function(str) {
-		// 	var element = document.createElement('div');
-		// 	if (str && typeof str === 'string') {
-		// 		// strip script/html tags
-		// 		str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
-		// 		str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
-		// 		element.innerHTML = str;
-		// 		str = element.textContent;
-		// 		element.textContent = '';
-		// 	}
-
-		// 	return str;
-		// },
 		checkIsImg: function(url) {
 			return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
 		},

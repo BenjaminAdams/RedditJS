@@ -23,8 +23,24 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 'r/:subName/comments/:id/:slug(/)': 'single',
                 //  'r/:subName/': 'subreddit'
             },
+            //middleware, this will be fired before every route
+            route: function(route, name, callback) {
+                var router = this;
+                if (!callback) callback = this[name];
+                var f = function() {
+                    //middleware functions
+                    channel.trigger("subreddit:remove")
+
+                    //end middleware functions
+                    callback.apply(router, arguments); //call the actual route
+                };
+                return Backbone.Router.prototype.route.call(this, route, name, f);
+            },
 
             home: function(sortOrder) {
+
+                channel.trigger("header:updateSortOrder")
+
                 console.debug("Main route activated");
                 this.doSidebar('front');
 

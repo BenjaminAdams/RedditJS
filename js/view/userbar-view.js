@@ -18,7 +18,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 					this.showLoggedOut()
 				}
 
-				channel.bind("login", this.showLoggedIn, this);
+				channel.on("login", this.showLoggedIn, this);
 
 				// this.$() is a shortcut for this.$el.find().
 

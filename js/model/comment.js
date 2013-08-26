@@ -11,16 +11,6 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 		parseThis: function() {
 			//console.log('inside CommentModel', this)
 			var data = this.attributes
-			//console.log('data in start of comment model=', data)
-			//these are variables we cant parse sometimes because after a new 
-			//comment is created by the user we have limited data coming back
-
-			if (typeof data.created === 'undefined') {
-				//if no timestamp is set, lets change it to be now
-				//var now = moment();
-				//data.created = moment(now, 'x');
-				//data.created = Date.now();
-			}
 
 			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
 			timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
@@ -59,23 +49,10 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 			//data.replies = this.parseComments(response[1].data.children)
 
 			if (typeof data.replies !== "undefined" && data.replies != null && typeof data.replies.data !== "undefined") {
-				//var newComments = self.parseComments(replies.data, link_id)
-				// CommentsCollection = require('collection/comments')
-				// CommentModel = require('model/comment')
 
-				//console.log('about to declare a collection inside a model', data)
-				//var newComments = new CommentsCollection()
-				//console.log('datareplies', data.replies.data)
 				data.replies = this.parseComments(data.replies.data, data.link_id)
-				//data.replies = newComments
-				//now parse it in the collection itself
-
-				// var newComments = new CommentsCollection({
-				// 	children: data.replies.data.children,
-				// 	link_id: data.link_id
-				// })
-
 				data.childrenCount = data.replies.length
+
 				if (data.replies.length == 1) {
 					data.childOrChildren = 'child'
 				} else {
