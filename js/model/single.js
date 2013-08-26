@@ -14,9 +14,9 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 			//  slug: "slug"
 		},
 		//so we have the attributes in the root of the model
-		parse: function(response) {
+		parseOnce: function(response) {
 			var data;
-			//console.log("RESPONSE of single model", response)
+			console.log("RESPONSE of single model", response)
 			if (typeof response[0] === 'undefined') {
 				data = response
 			} else {
@@ -116,6 +116,8 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				data.actualUrl = data.url
 				data.external = 'data-bypass'
 			}
+
+			//console.log(data.media_embed.content)
 
 			return data;
 

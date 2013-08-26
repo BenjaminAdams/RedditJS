@@ -55,7 +55,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 				if (item.data.hidden == false) {
 
 					var singleModel = new SingleModel(item.data.id)
-					item.data = singleModel.parse(item.data)
+					item.data = singleModel.parseOnce(item.data)
 					item.data.count = self.count
 
 					if ((self.count % 2) == 0) {
