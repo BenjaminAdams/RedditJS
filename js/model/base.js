@@ -21,7 +21,7 @@ define(['underscore', 'backbone', 'jquery', 'model/comment-more-link', 'model/co
 				}
 
 			});
-			console.log('returning comments = ', comments)
+
 			return comments
 		},
 

@@ -26,6 +26,9 @@ define([
 				this.subName = options.subName
 				this.dynamicStylesheet(this.subName)
 				this.sortOrder = options.sortOrder
+				if (typeof this.sortOrder === 'undefined') {
+					this.sortOrder = 'hot'
+				}
 				this.collection = new SubredditCollection({
 					subName: this.subName,
 					sortOrder: this.sortOrder
@@ -50,8 +53,9 @@ define([
 					large - full sized images in the page
 				*/
 				this.gridOption = $.cookie('gridOption');
+
 				console.log("page is loading and grid option=", this.gridOption)
-				if (this.gridOption == null || this.gridOption == "") {
+				if (typeof this.gridOption === 'undefined' || this.gridOption == null || this.gridOption == "") {
 					this.gridOption = 'normal'
 				} else if (this.gridOption == "large") {
 					this.resize()
