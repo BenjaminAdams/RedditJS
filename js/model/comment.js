@@ -15,6 +15,13 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 			//these are variables we cant parse sometimes because after a new 
 			//comment is created by the user we have limited data coming back
 
+			if (typeof data.created === 'undefined') {
+				//if no timestamp is set, lets change it to be now
+				//var now = moment();
+				//data.created = moment(now, 'x');
+				//data.created = Date.now();
+			}
+
 			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
 			timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
 			data.timeAgo = timeAgo
@@ -45,6 +52,7 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 
 			data.body_html = (typeof data.body_html === 'undefined') ? '' : $('<div/>').html(data.body_html).text();
 			var linkName = data.link_id.replace('t3_', '')
+
 			///r/{{model.subreddit}}/comments/{{model.id}}/is_vox_worth_restarting/cbtb7as
 			data.permalink = '/r/' + data.subreddit + '/comments/' + linkName + "#" + data.id
 

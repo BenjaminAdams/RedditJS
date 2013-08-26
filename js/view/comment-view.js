@@ -2,7 +2,7 @@ define([
   'underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/base-view', 'model/comment', 'event/channel', 'cookie'],
 	function(_, Backbone, Resthub, commentTmpl, CommentMOAR, BaseView, CommentModel, channel, Cookie) {
 		var CommentView = BaseView.extend({
-			strategy: 'append',
+			//strategy: 'append',
 
 			events: function() {
 				var _events = {
@@ -128,6 +128,7 @@ define([
 							var comment = new CommentView({
 								model: model,
 								id: id,
+								strategy: "append",
 								root: "#" + self.name
 							})
 						}
