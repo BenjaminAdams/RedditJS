@@ -42,6 +42,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 channel.trigger("header:updateSortOrder")
 
                 console.debug("Main route activated");
+
                 this.doSidebar('front');
 
                 subredditView = new SubredditView({
@@ -72,9 +73,11 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
             },
             doSidebar: function(subName) {
-                this.sidebar = new SidebarView({
-                    subName: subName,
-                })
+                if (typeof this.sidebar === 'undefined' || this.sidebar.subName != subName) { //only update sidebar if the subreddit changes
+                    this.sidebar = new SidebarView({
+                        subName: subName,
+                    })
+                }
             }
 
         });
