@@ -105,9 +105,10 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 					if (count != 0) {
 						seperator = '<span class="separator">-</span>';
 					}
-
-					this.$('#sr-bar').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
-					count++;
+					if (model.get('display_name') != "announcements" && model.get('display_name') != "blog") {
+						this.$('#sr-bar').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
+						count++;
+					}
 				})
 
 				this.displayDropChoices()
