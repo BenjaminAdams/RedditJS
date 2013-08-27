@@ -201,6 +201,9 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 					attributes.smallid = attributes.id.replace('t3_', '')
 					attributes.permalink = '/r/' + data.subreddit + '/comments/' + attributes.link_id + "#" + data.id
 
+					attributes.downs = 0
+					attributes.ups = 1
+
 					//clear the users text
 					this.$('#text' + attributes.link_id).val("")
 

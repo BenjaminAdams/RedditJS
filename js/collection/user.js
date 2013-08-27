@@ -50,17 +50,17 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 					item.data.evenOrOdd = "odd"
 				}
 
-				item.data.link_id = item.data.id
+				item.data.link_id = item.data.link_id || item.data.name
 				item.data.url = '/r/' + item.data.subreddit + '/comments/' + item.data.id
 				item.data.is_self = true
 				item.data.media_embed = ''
 				item.data.kind = item.kind
 				item.data.title = item.data.link_title
+				item.data.is_user = true
 
 				//item.data.likes = item.data.likes || false
 
 				var comment = new CommentModel(item.data)
-				console.log(comment.attributes)
 				models.push(comment.attributes)
 
 				self.count++;

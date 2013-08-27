@@ -9,7 +9,6 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 			}
 		},
 		parseThis: function() {
-			//console.log('inside CommentModel', this)
 			var data = this.attributes
 			//console.log('parsing one comment', data)
 

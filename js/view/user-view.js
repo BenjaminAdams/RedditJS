@@ -63,7 +63,7 @@ define([
 
 			/**************Fetching functions ****************/
 			appendPosts: function(models) {
-				console.log(models)
+				//console.log(models)
 				models.each(function(model) {
 
 					var comment = new CommentView({
@@ -72,22 +72,6 @@ define([
 						strategy: "append",
 						root: "#siteTable",
 					})
-
-					// if (model.get('kind') == "t1") {
-
-					// 	var postview = new PostRowView({
-					// 		root: "#siteTable",
-					// 		id: model.get('id'),
-					// 		model: model,
-					// 		gridOption: this.gridOption
-					// 	});
-					// } else {
-					// 	var comment = new CommentView({
-					// 		model: model,
-					// 		strategy: "append",
-					// 		root: "#siteTable",
-					// 	})
-					// }
 
 				}, this);
 
