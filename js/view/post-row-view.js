@@ -44,6 +44,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
                     //I've made the choice here to pass the current model as a global so we do not have to have a long load time
                     //the single post page takes 2-3 seconds to load the get request
                     window.curModel = this.model
+
                 }
 
             }

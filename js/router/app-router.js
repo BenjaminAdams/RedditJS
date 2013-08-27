@@ -4,6 +4,9 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
         var AppRouter = Backbone.Router.extend({
 
             initialize: function() {
+                //what happens if we keep subreddits in a global?
+                window.subs = new Array()
+
                 Backbone.history.start({
                     pushState: true,
                     root: "/"
@@ -37,14 +40,14 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
             home: function(sortOrder) {
 
                 channel.trigger("header:updateSortOrder")
-
                 console.debug("Main route activated");
 
                 this.doSidebar('front');
 
                 subredditView = new SubredditView({
                     subName: "front",
-                    sortOrder: sortOrder
+                    sortOrder: sortOrder,
+                    //  collection: window.subs.get('front')
                 });
             },
 

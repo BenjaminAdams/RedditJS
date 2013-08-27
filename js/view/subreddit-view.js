@@ -25,24 +25,14 @@ define([
 				_.bindAll(this);
 				var self = this;
 				this.subName = options.subName
-
+				this.template = subredditTmpl;
 				this.sortOrder = options.sortOrder
 				if (typeof this.sortOrder === 'undefined') {
 					this.sortOrder = 'hot'
 				}
-				this.collection = new SubredditCollection({
-					subName: this.subName,
-					sortOrder: this.sortOrder
-				});
-				this.template = subredditTmpl;
 
 				channel.on("subreddit:changeGridOption", this.changeGridOption, this);
 				channel.on("subreddit:remove", this.remove, this);
-
-				this.render();
-
-				$(this.el).prepend("<style id='dynamicWidth'> </style>")
-				this.fetchMore();
 
 				/*grid option:
 					normal - the default Reddit styling
@@ -56,7 +46,27 @@ define([
 					this.resize()
 				}
 
-				$(window).on("scroll", this.watchScroll); //we will remove this manually on .remove()
+				this.render();
+
+				$(this.el).prepend("<style id='dynamicWidth'> </style>")
+				console.log("window.subs=", window.subs)
+				if (typeof window.subs[this.subName] === 'undefined') {
+					$(this.el).append("<div class='loading'> </div>")
+					this.collection = new SubredditCollection({
+						subName: this.subName,
+						sortOrder: this.sortOrder
+					});
+					this.fetchMore();
+				} else {
+					console.log('loading collection from memory')
+					this.collection = window.subs[this.subName]
+					this.appendPosts(this.collection)
+					this.fetchMore();
+				}
+
+				$(window).on("scroll", this.watchScroll);
+
+				//we will remove this manually on.remove()
 
 				//this.target = $("#siteTable"); //the target to test for infinite scroll
 				this.target = $(window); //the target to test for infinite scroll
@@ -218,6 +228,7 @@ define([
 				}
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.helpFillUpScreen()
+				window.subs[this.subName] = this.collection
 
 			},
 			/**************Infinite Scroll functions ****************/
