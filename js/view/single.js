@@ -75,7 +75,8 @@ define([
 				var docWidth = $(document).width()
 				var newWidth = 0;
 				if (docWidth > mobileWidth) {
-					newWidth = docWidth - 222;
+					//if the website is in responsive mode
+					newWidth = docWidth - 522;
 				} else {
 					newWidth = docWidth - 222;
 				}
