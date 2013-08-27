@@ -34,6 +34,8 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 			data.timeUgly = moment.unix(data.created).format()
 			data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
 			data.rname = "/r/" + data.display_name
+			data.accounts_active = this.numberWithCommas(data.accounts_active)
+			data.subscribers = this.numberWithCommas(data.subscribers)
 			//data.description = markdown.toHTML(data.description)
 			data.description_html = (typeof data.description_html === 'undefined') ? '' : $('<div/>').html(data.description_html).text();
 			//data.description_html = data.description_html.replace("reddit.com","redditjs.com")
@@ -54,6 +56,11 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 		// 		//Backbone.Model.prototype.fetch.apply(this, arguments);
 		// 	}
 		// },
+
+		numberWithCommas: function(x) {
+			return x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
+		},
+
 		parseSidebar: function() {
 			var sidebarHtml = this.get('description_html');
 			sidebarHtml = (typeof sidebarHtml === 'undefined') ? '' : $('<div/>').html(sidebarHtml).text();

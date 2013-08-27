@@ -80,14 +80,14 @@
                 <h1 class="hover redditname"><a class="hover" href="/r/{{model.display_name}}/">{{model.display_name}}</a></h1>
                 <span class="subscribe-button fancy-toggle-button toggle" data-sr_name="{{model.display_name}}" style="">
                 <a class="option active remove login-required" href="#" tabindex="100">unsubscribe</a>
-                <a class="option add" href="#">subscribe</a></span><span class="subscribers"><span class="number">4,171,335</span>
+                <a class="option add" href="#">subscribe</a></span><span class="subscribers"><span class="number">{{model.subscribers}}</span>
                 <span class="word">readers</span></span>
 
                 <p class="users-online" title="logged-in users viewing this subreddit in the past 15 minutes">
-                <span class="number">11,999</span> <span class="word">users here now</span></p>
+                <span class="number">{{model.accounts_active}}</span> <span class="word">users here now</span></p>
 
-                <form action="#" class="usertext" id="form-t5_2qh0u1et" name="form-t5_2qh0u1et" onsubmit="return post_form(this, 'editusertext')">
-                    <input name="thing_id" type="hidden" value="t5_2qh0u">
+                <form action="#" class="usertext" id="form-{{model.name}}" name="form-{{model.name}}">
+                    <input name="thing_id" type="hidden" value="{{model.name}}">
 
                     <div class="usertext-body">
                         <div class="md">
