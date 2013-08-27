@@ -12,10 +12,6 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 this.header = new HeaderView();
 
             },
-            /*  route for comment page:
-        r/worldnews/comments/1kvql3/orders_to_destroy_guardian_hard_drives_came/
-
-        */
             routes: {
                 '(:sortOrder)(/)': 'home',
                 'r/:subName(/)': 'subreddit',

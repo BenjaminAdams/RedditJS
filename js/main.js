@@ -21,39 +21,35 @@ require.config({
             ],
             exports: 'Backbone'
         },
-        'backbone-datagrid': {
-            deps: [
-                'backbone'
-            ],
-            exports: 'Backbone.Datagrid'
-        },
-        'backbone-paginator': {
-            deps: [
-                'backbone'
-            ],
-            exports: 'Backbone.Paginator'
-        },
+        // 'backbone-datagrid': {
+        //     deps: [
+        //         'backbone'
+        //     ],
+        //     exports: 'Backbone.Datagrid'
+        // },
+        // 'backbone-paginator': {
+        //     deps: [
+        //         'backbone'
+        //     ],
+        //     exports: 'Backbone.Paginator'
+        // },
         // 'bootstrap': {
         //     deps: [
         //         'jquery'
         //     ]
         // },
-        'mosaicflow': {
-            deps: [
-                'jquery'
-            ]
-        },
-        'backbone-associations': {
-            deps: [
-                'backbone'
-            ]
-        },
+
+        // 'backbone-associations': {
+        //     deps: [
+        //         'backbone'
+        //     ]
+        // },
         'keymaster': {
             exports: 'key'
         },
-        'async': {
-            exports: 'async'
-        },
+        // 'async': {
+        //     exports: 'async'
+        // },
         "cookie": ["jquery"]
     },
 
@@ -68,7 +64,7 @@ require.config({
         resthub: 'lib/resthub/resthub',
         'backbone-queryparams': 'lib/backbone-queryparams',
         text: 'lib/text',
-        i18n: 'lib/i18n',
+        //   i18n: 'lib/i18n',
         //   'bootstrap': 'lib/bootstrap',
         //   'backbone-validation-orig': 'lib/backbone-validation',
         //   'backbone-validation': 'lib/resthub/backbone-validation-ext',
@@ -78,7 +74,7 @@ require.config({
         //   'backbone-paginator': 'lib/backbone-paginator',
         //   'backbone-associations': 'lib/backbone-associations',
         'backbone-localstorage': 'lib/backbone-localstorage',
-        async: 'lib/async',
+        //  async: 'lib/async',
         //   keymaster: 'lib/keymaster',
         hbs: 'lib/resthub/require-handlebars',
         moment: 'lib/moment',

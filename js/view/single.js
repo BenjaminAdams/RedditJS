@@ -75,7 +75,7 @@ define([
 				var docWidth = $(document).width()
 				var newWidth = 0;
 				if (docWidth > mobileWidth) {
-					newWidth = docWidth - 500;
+					newWidth = docWidth - 222;
 				} else {
 					newWidth = docWidth - 222;
 				}
