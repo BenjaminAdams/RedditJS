@@ -11,6 +11,7 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 		parseThis: function() {
 			//console.log('inside CommentModel', this)
 			var data = this.attributes
+			//console.log('parsing one comment', data)
 
 			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
 			timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"

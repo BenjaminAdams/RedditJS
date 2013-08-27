@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'view/single', 'view/sidebar-view', 'event/channel', 'backbone-queryparams'],
-    function(_, Backbone, SubredditView, HeaderView, SingleView, SidebarView, channel) {
+define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'view/single', 'view/sidebar-view', 'view/user-view', 'event/channel', 'backbone-queryparams'],
+    function(_, Backbone, SubredditView, HeaderView, SingleView, SidebarView, UserView, channel) {
 
         var AppRouter = Backbone.Router.extend({
 
@@ -20,6 +20,8 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 'r/:subName(/)': 'subreddit',
                 'r/:subName/:sortOrder': 'subreddit',
                 'r/:subName/comments/:id/:slug(/)': 'single',
+                'r/:subName/comments/:id(/)': 'single',
+                'user/:username(/)': 'user'
                 //  'r/:subName/': 'subreddit'
             },
             //middleware, this will be fired before every route
@@ -46,8 +48,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
                 subredditView = new SubredditView({
                     subName: "front",
-                    sortOrder: sortOrder,
-                    //  collection: window.subs.get('front')
+                    sortOrder: sortOrder || 'hot',
                 });
             },
 
@@ -57,7 +58,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
                 subredditView = new SubredditView({
                     subName: subName,
-                    sortOrder: sortOrder
+                    sortOrder: sortOrder || 'hot',
                 });
 
             },
@@ -72,6 +73,15 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 });
 
             },
+
+            user: function(username) {
+                //    this.doSidebar(username);
+
+                userView = new UserView({
+                    subName: username
+                });
+            },
+
             doSidebar: function(subName) {
                 if (typeof this.sidebar === 'undefined' || this.sidebar.subName != subName) { //only update sidebar if the subreddit changes
                     this.sidebar = new SidebarView({

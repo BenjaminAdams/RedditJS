@@ -27,6 +27,7 @@ define([
 				this.subName = options.subName
 				this.template = subredditTmpl;
 				this.sortOrder = options.sortOrder
+				this.subID = this.subName + this.sortOrder
 				if (typeof this.sortOrder === 'undefined') {
 					this.sortOrder = 'hot'
 				}
@@ -50,7 +51,7 @@ define([
 
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				console.log("window.subs=", window.subs)
-				if (typeof window.subs[this.subName] === 'undefined') {
+				if (typeof window.subs[this.subID] === 'undefined') {
 					$(this.el).append("<div class='loading'> </div>")
 					this.collection = new SubredditCollection({
 						subName: this.subName,
@@ -59,14 +60,16 @@ define([
 					this.fetchMore();
 				} else {
 					console.log('loading collection from memory')
-					this.collection = window.subs[this.subName]
+					this.collection = window.subs[this.subID]
 					this.appendPosts(this.collection)
-					this.fetchMore();
+
+					//this.fetchMore();
 				}
 
 				$(window).on("scroll", this.watchScroll);
 
-				//we will remove this manually on.remove()
+				//in small thumbnail mode, its sometimes impossible for the infinite scroll event to fire because there is no scrollbar yet
+				this.helpFillUpScreen();
 
 				//this.target = $("#siteTable"); //the target to test for infinite scroll
 				this.target = $(window); //the target to test for infinite scroll
@@ -228,7 +231,7 @@ define([
 				}
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.helpFillUpScreen()
-				window.subs[this.subName] = this.collection
+				window.subs[this.subID] = this.collection
 
 			},
 			/**************Infinite Scroll functions ****************/

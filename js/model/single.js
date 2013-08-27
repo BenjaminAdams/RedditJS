@@ -22,6 +22,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 		},
 		//so we have the attributes in the root of the model
 		parseOnce: function(response) {
+			//console.log(response)
 			var data;
 			//console.log("RESPONSE of single model", response)
 			if (typeof response[0] === 'undefined') {
