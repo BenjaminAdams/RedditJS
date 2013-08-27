@@ -50,31 +50,18 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 					item.data.evenOrOdd = "odd"
 				}
 
-				if (item.kind == "t1") {
+				item.data.link_id = item.data.id
+				item.data.url = '/r/' + item.data.subreddit + '/comments/' + item.data.id
+				item.data.is_self = true
+				item.data.media_embed = ''
+				item.data.kind = item.kind
+				item.data.title = item.data.link_title
 
-					//URL is not set in user json feed, set it now
-					//http://www.reddit.com/r/gifs/comments/1l6mfy/bullet_through_water_bottle/
-					item.data.url = '/r/' + item.data.subreddit + '/comments/' + item.data.id
-					item.data.is_self = true
-					item.data.media_embed = ''
-					item.data.kind = item.kind
-					item.data.title = item.data.link_title
-					var single = new SingleModel({
-						subName: this.subName,
-						id: item.data.id,
-						parseNow: true
-					});
+				//item.data.likes = item.data.likes || false
 
-					item.data = single.parseOnce(item.data)
-					models.push(item.data)
-					//item.data.count = self.count
-				} else if (item.kind == 't3') {
-					item.data.link_id = item.data.id
-					item.data.kind = item.kind
-					var comment = new CommentModel(item.data)
-
-					models.push(comment.attributes)
-				}
+				var comment = new CommentModel(item.data)
+				console.log(comment.attributes)
+				models.push(comment.attributes)
 
 				self.count++;
 

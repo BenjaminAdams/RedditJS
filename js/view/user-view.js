@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'view/post-row-view', 'view/comment-view', 'view/sidebar-view', 'view/subreddit-view', 'collection/user', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, subredditTmpl, PostRowView, CommentView, SidebarView, SubredditView, UserCollection, channel, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'view/comment-view', 'view/sidebar-view', 'view/subreddit-view', 'collection/user', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, subredditTmpl, CommentView, SidebarView, SubredditView, UserCollection, channel, Cookie) {
 		var UserView = SubredditView.extend({
 
 			el: $(".content"),
@@ -66,21 +66,28 @@ define([
 				console.log(models)
 				models.each(function(model) {
 
-					if (model.get('kind') == "t1") {
+					var comment = new CommentView({
+						model: model,
+						id: model.get('id'),
+						strategy: "append",
+						root: "#siteTable",
+					})
 
-						var postview = new PostRowView({
-							root: "#siteTable",
-							id: model.get('id'),
-							model: model,
-							gridOption: this.gridOption
-						});
-					} else {
-						var comment = new CommentView({
-							model: model,
-							strategy: "append",
-							root: "#siteTable",
-						})
-					}
+					// if (model.get('kind') == "t1") {
+
+					// 	var postview = new PostRowView({
+					// 		root: "#siteTable",
+					// 		id: model.get('id'),
+					// 		model: model,
+					// 		gridOption: this.gridOption
+					// 	});
+					// } else {
+					// 	var comment = new CommentView({
+					// 		model: model,
+					// 		strategy: "append",
+					// 		root: "#siteTable",
+					// 	})
+					// }
 
 				}, this);
 
@@ -105,7 +112,7 @@ define([
 				}
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.helpFillUpScreen()
-				window.subs[this.subID] = this.collection
+				//	window.subs[this.subID] = this.collection
 
 			},
 
