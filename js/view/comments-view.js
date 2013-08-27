@@ -27,14 +27,14 @@ define([
 				_.bindAll(this);
 				$(this.el).html('')
 				var self = this;
-				this.collection = options.collection
-				this.model = options.model
-				//console.log('init comments view model=', this.model)
 				this.template = commentsTmpl;
 
+				this.collection = options.collection
 				this.render();
-
 				this.renderComments(this.collection)
+				console.log('got here')
+				this.model = options.model
+				//console.log('init comments view model=', this.model)
 
 			},
 			renderComments: function(collection) {
@@ -61,6 +61,7 @@ define([
 
 			},
 
+			//called when no model is passed and after the fetch happens
 			loaded: function(model, res) {
 				this.$('.loading').hide()
 

@@ -38,23 +38,35 @@ define([
 				this.id = options.id
 				this.template = singleTmpl;
 
-				this.model = new SingleModel({
-					subName: this.subName,
-					id: this.id,
-					parseNow: true,
-				});
-
-				//this.render();
-				this.model.fetch({
-					success: this.loaded,
-					error: this.fetchError
-				});
+				if (typeof window.curModel === 'undefined') {
+					this.fetchComments(this.loaded)
+				} else {
+					//this is what we do when we pass in a model with out the comments
+					this.model = window.curModel
+					delete window.curModel; //memory management
+					this.renderStuff(this.model);
+					//well now we need to get the comments for this post!
+					this.fetchComments(this.loadComments)
+				}
 
 				$(window).resize(this.debouncer(function(e) {
 					self.resize()
 				}));
 				channel.on("single:remove", this.remove, this);
 
+			},
+			fetchComments: function(callback) {
+				$('#commentarea').html("<div class='loadingS' style='position:relative;left:30%;'></div>")
+				this.comments = new SingleModel({
+					subName: this.subName,
+					id: this.id,
+					parseNow: true,
+				});
+				//this.render();
+				this.comments.fetch({
+					success: callback,
+					error: this.fetchError
+				});
 			},
 			remove: function() {
 				$(window).off('resize', this.debouncer);
@@ -71,7 +83,7 @@ define([
 			resize: function() {
 				var mobileWidth = 1000; //when to change to mobile CSS
 				//change css of 
-				console.log('resizing width of this single')
+
 				var docWidth = $(document).width()
 				var newWidth = 0;
 				if (docWidth > mobileWidth) {
@@ -113,23 +125,28 @@ define([
 			fetchMore: function() {
 
 			},
-
-			loaded: function(model, res) {
-				this.$('.loading').hide()
-				console.log("model loaded from single=", model)
-				this.model = model
-				//this.model = model.parseOnce(model.attributes)
-				this.render();
-
+			renderStuff: function(model) {
+				this.render()
 				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.resize()
 
+			},
+			//if we dont pass in a model we need to render the comments here
+			loadComments: function(model, res) {
+				$('#commentarea').html('')
 				this.comments = new CommentsView({
 					collection: model.get('replies'),
 					model: this.model,
 					el: "#commentarea"
 					//root: "#commentarea"
 				})
+			},
+			loaded: function(model, res) {
+				this.$('.loading').hide()
+				this.model = model
+				//this.model = model.parseOnce(model.attributes)
+				this.renderStuff(model);
+				this.loadComments(model)
 
 			},
 

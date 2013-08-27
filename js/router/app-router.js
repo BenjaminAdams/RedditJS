@@ -65,7 +65,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
                 singleView = new SingleView({
                     subName: subName,
-                    id: id
+                    id: id,
                 });
 
             },
