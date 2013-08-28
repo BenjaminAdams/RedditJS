@@ -188,9 +188,15 @@ define([
 				models.each(function(model) {
 					if (model.get('title') != null) {
 						if (this.gridOption == "small") {
-							this.$('#siteTable').append(PostViewSmallTpl({
-								model: model.attributes
-							}))
+							// this.$('#siteTable').append(PostViewSmallTpl({
+							// 	model: model.attributes
+							// }))
+							var postview = new PostRowView({
+								root: "#siteTable",
+								id: model.get('id'),
+								model: model,
+								gridOption: this.gridOption
+							});
 						} else if (this.gridOption == "large") {
 
 							var postview = new PostRowView({

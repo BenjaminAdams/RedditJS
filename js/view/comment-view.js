@@ -25,13 +25,6 @@ define([
 				return _events;
 			},
 
-			// events: {
-			// 	'click .downArrow': 'downvote',
-			// 'click .noncollapsed .expand': "hideThread",
-			// 'click .collapsed .expand': "showThread"
-			// 	//  'keyup #new-todo':     'showTooltip'
-			// },
-
 			initialize: function(options) {
 				_.bindAll(this);
 				var self = this;

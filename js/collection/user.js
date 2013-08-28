@@ -55,9 +55,15 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 				item.data.is_self = true
 				item.data.media_embed = ''
 				item.data.kind = item.kind
-				item.data.title = item.data.link_title
+
 				item.data.is_user = true
 
+				//for user posts we want the title to be the body html
+				if (typeof item.data.title === 'string') {
+					//do nothing
+				} else {
+					item.data.title = item.data.link_title
+				}
 				//item.data.likes = item.data.likes || false
 
 				var comment = new CommentModel(item.data)

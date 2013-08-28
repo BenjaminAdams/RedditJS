@@ -47,11 +47,22 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 				data.upmod = 'up'
 			}
 
+			//for the user view we can have comments
+			if (typeof data.thumbnail !== 'undefined' && data.thumbnail == 'self') {
+				data.thumbnail = 'img/self.png'
+			} else if (data.thumbnail == 'nsfw') {
+				data.thumbnail = 'img/nsfw.png'
+			} else if (data.thumbnail == '' || data.thumbnail == 'default') {
+				data.thumbnail = 'img/notsure.png'
+			}
+
 			data.body_html = (typeof data.body_html === 'undefined') ? '' : $('<div/>').html(data.body_html).text();
 			var linkName = data.link_id.replace('t3_', '')
 
 			///r/{{model.subreddit}}/comments/{{model.id}}/is_vox_worth_restarting/cbtb7as
-			data.permalink = '/r/' + data.subreddit + '/comments/' + linkName + "#" + data.id
+			//data.permalink = '/r/' + data.subreddit + '/comments/' + linkName + "#" + data.id
+			//TODO: add in the hashtag +data.id later
+			data.permalink = '/r/' + data.subreddit + '/comments/' + linkName
 
 			//data.replies = this.parseComments(response[1].data.children)
 

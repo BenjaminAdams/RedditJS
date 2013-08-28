@@ -33,7 +33,7 @@ define([
 				}
 
 				channel.on("subreddit:remove", this.remove, this);
-
+				this.dynamicStylesheet("blank") //remove the custom subreddit styles
 				this.render();
 
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")

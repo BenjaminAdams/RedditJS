@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 'hbs!template/post-row-large', 'view/base-view'],
-    function($, _, Backbone, Resthub, PostRowTmpl, PostRowLargeTmpl, BaseView) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 'hbs!template/post-row-large', 'hbs!template/post-row-small', 'view/base-view'],
+    function($, _, Backbone, Resthub, PostRowTmpl, PostRowLargeTmpl, PostRowSmallTmpl, BaseView) {
         var PostRowView = BaseView.extend({
             strategy: 'append',
 
@@ -28,8 +28,10 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
 
                 if (this.gridOption == "normal") {
                     this.template = PostRowTmpl
-                } else {
+                } else if (this.gridOption == "large") {
                     this.template = PostRowLargeTmpl
+                } else if (this.gridOption == "small") {
+                    this.template = PostRowSmallTmpl
                 }
 
                 this.render();

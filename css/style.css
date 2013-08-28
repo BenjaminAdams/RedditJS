@@ -34,6 +34,7 @@ background-position: center center;
 	padding:5px;
 	width: 90px !important;
 	height:70px !important;
+	float:left;
 }
 
 .thumbnailSmall img {
