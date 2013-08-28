@@ -21,7 +21,8 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 'r/:subName/:sortOrder': 'subreddit',
                 'r/:subName/comments/:id/:slug(/)': 'single',
                 'r/:subName/comments/:id(/)': 'single',
-                'user/:username(/)': 'user'
+                'user/:username(/)': 'user',
+                'user/:username/:sortOrder(/)': 'user'
                 //  'r/:subName/': 'subreddit'
             },
             //middleware, this will be fired before every route
@@ -74,11 +75,12 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
             },
 
-            user: function(username) {
+            user: function(username, sortOrder) {
                 //    this.doSidebar(username);
 
                 userView = new UserView({
-                    subName: username
+                    subName: username,
+                    sortOrder: sortOrder
                 });
             },
 

@@ -1,22 +1,12 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'view/comment-view', 'view/sidebar-view', 'view/subreddit-view', 'collection/user', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, subredditTmpl, CommentView, SidebarView, SubredditView, UserCollection, channel, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/user', 'view/comment-view', 'view/sidebar-view', 'view/subreddit-view', 'collection/user', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, UserTmpl, CommentView, SidebarView, SubredditView, UserCollection, channel, Cookie) {
 		var UserView = SubredditView.extend({
 
 			el: $(".content"),
-			template: subredditTmpl,
-
-			// events: function() {  //hopefully we can only declare events in the subreddit view and inherit them
-			// 	var _events = {
-			// 		//'click .tabmenu-right li': 'changeGridOption',
-			// 		'click #retry': 'tryAgain'
-
-			// 	};
-			// 	//console.log('click .upArrow' + this.options.id)
-			// 	_events['click .upArrow' + this.options.id] = "upvote";
-			// 	_events['click .downArrow' + this.options.id] = "downvote";
-			// 	return _events;
-			// },
+			events: {
+				'click .dropdown-user': 'toggleDropdown'
+			},
 
 			initialize: function(options) {
 				//$(this.el).empty()
@@ -25,12 +15,16 @@ define([
 				_.bindAll(this);
 				var self = this;
 				this.subName = options.subName
-				this.template = subredditTmpl;
 				this.sortOrder = options.sortOrder
-
 				if (typeof this.sortOrder === 'undefined') {
 					this.sortOrder = 'new'
 				}
+
+				this.model = new Backbone.Model({
+					subName: this.subName,
+					sortOrder: this.sortOrder
+				})
+				this.template = UserTmpl
 
 				channel.on("subreddit:remove", this.remove, this);
 				this.dynamicStylesheet("blank") //remove the custom subreddit styles
@@ -59,6 +53,9 @@ define([
 				}));
 				this.resize()
 
+			},
+			toggleDropdown: function() {
+				this.$('.drop-choices-user').toggle()
 			},
 
 			/**************Fetching functions ****************/

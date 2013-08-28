@@ -153,3 +153,22 @@ color: #9A7D2E!important;
 .singlePostPage {
 	margin-top:38px;
 }
+
+.drop-choices-user {
+position: absolute;
+left: 86px;
+top:5px;
+border: 1px solid gray;
+z-index: 100;
+background-color: #FFF;
+white-space: nowrap;
+line-height: normal;
+margin-top: 1px;
+display: none;
+}
+
+.drop-choices-user a.choice {
+cursor: pointer;
+padding: 2px 3px 1px 3px;
+display: block;
+}

@@ -31,8 +31,12 @@ if ( !$url ) {
   $status = array( 'http_code' => 'ERROR' );
   
 } else {
-  $url = "http://www.reddit.com/" . $url;
+  // $url = "http://www.reddit.com/" . $url;
+  $url = "http://api.reddit.com/" . $url;
   $ch = curl_init( $url );
+
+  // echo $url;
+  // exit;
   
   if ( strtolower($_SERVER['REQUEST_METHOD']) == 'post' ) {
     curl_setopt( $ch, CURLOPT_POST, true );

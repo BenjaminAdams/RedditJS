@@ -22,7 +22,12 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 		},
 		getUrl: function() {
 			//http://api.reddit.com/user/armastevs.json
-			return '/api/?url=user/' + this.subName + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+			if (this.after.length < 3) {
+
+				return '/api/?url=user/' + this.subName + ".json?sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+			} else {
+				return '/api/?url=user/' + this.subName + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+			}
 		},
 		parse: function(response) {
 			//set the after for pagination
