@@ -22,7 +22,8 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 'r/:subName/comments/:id/:slug(/)': 'single',
                 'r/:subName/comments/:id(/)': 'single',
                 'user/:username(/)': 'user',
-                'user/:username/:sortOrder(/)': 'user'
+                'user/:username/:sortOrder(/)': 'user',
+                'message/compose/:username(/)': 'message'
                 //  'r/:subName/': 'subreddit'
             },
             //middleware, this will be fired before every route
@@ -83,6 +84,9 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     subName: username,
                     sortOrder: sortOrder
                 });
+            },
+            message: function(username) {
+
             },
 
             doSidebar: function(subName) {

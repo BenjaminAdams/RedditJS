@@ -10,8 +10,9 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 		},
 		//so we have the attributes in the root of the model
 		parse: function(response) {
+			console.log(response)
 			data = response.data
-			console.log(data)
+
 			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
 			timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
 			data.timeAgo = timeAgo

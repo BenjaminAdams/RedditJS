@@ -192,9 +192,18 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 					attributes.author = $.cookie('username');
 
 					//this if statement will only fire during a comment callback
-					attributes.body_html = attributes.contentHTML
+					if (typeof attributes.body_html === 'undefined' && typeof attributes.contentHTML === 'string') {
+						attributes.body_html = attributes.contentHTML
+					}
+
 					attributes.name = attributes.id
-					attributes.link_id = attributes.link
+					if (typeof attributes.link === 'undefined') {
+						attributes.link_id = this.model.get('name')
+
+					} else {
+						attributes.link_id = attributes.link
+					}
+
 					attributes.likes = true
 					attributes.subreddit = this.model.get('subreddit')
 					attributes.smallid = attributes.id.replace('t1_', '')
