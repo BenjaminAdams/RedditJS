@@ -1,6 +1,5 @@
-define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'view/post-row-view', 'view/sidebar-view', 'view/base-view', 'collection/subreddit', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowView, SidebarView, BaseView, SubredditCollection, channel, Cookie) {
+define(['view/subreddit-view'],
+	function(SubredditView) {
 		var SubredditView = BaseView.extend({
 
 			el: $(".content"),
@@ -40,18 +39,13 @@ define([
 				this.render();
 
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
-				if (typeof window.subs[this.subID] === 'undefined') {
-					$(this.el).append("<div class='loading'> </div>")
-					this.collection = new SubredditCollection({
-						subName: this.subName,
-						sortOrder: this.sortOrder
-					});
-					this.fetchMore();
-				} else {
-					console.log('loading collection from memory')
-					this.collection = window.subs[this.subID]
-					this.appendPosts(this.collection)
-				}
+
+				$(this.el).append("<div class='loading'> </div>")
+				this.collection = new SubredditCollection({
+					subName: this.subName,
+					sortOrder: this.sortOrder
+				});
+				this.fetchMore();
 
 				$(window).on("scroll", this.watchScroll);
 
@@ -98,20 +92,7 @@ define([
 
 			// },
 			/**************Grid functions ****************/
-			/*grid option:
-					normal - the default Reddit styling
-					small - small thumbnails in the page
-					large - full sized images in the page
-			*/
-			initGridOption: function() {
 
-				this.gridOption = $.cookie('gridOption');
-				if (typeof this.gridOption === 'undefined' || this.gridOption == null || this.gridOption == "") {
-					this.gridOption = 'normal'
-				} else if (this.gridOption == "large") {
-					this.resize()
-				}
-			},
 			changeSortOrderCss: function() {
 				channel.trigger("header:updateSortOrder", this.sortOrder);
 			},

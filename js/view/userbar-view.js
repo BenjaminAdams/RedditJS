@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', 'view/base-view', 'event/channel', 'cookie'],
-	function($, _, Backbone, Resthub, UserbarTmpl, BaseView, channel, Cookie) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', 'view/base-view', 'model/user-about', 'event/channel', 'cookie'],
+	function($, _, Backbone, Resthub, UserbarTmpl, BaseView, UserModel, channel, Cookie) {
 		var UserbarView = BaseView.extend({
 			events: {
 				//  'keyup #new-todo':     'showTooltip'
@@ -14,6 +14,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 
 				if (this.checkIfLoggedIn() == true) {
 					this.showLoggedIn()
+					this.getMyStatus() //fetches user karma count and mail status
 				} else {
 					this.showLoggedOut()
 				}
@@ -30,6 +31,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 				})
 				this.$el.html(" ")
 				this.render();
+				this.getMyStatus()
 
 			},
 			showLoggedOut: function() {
@@ -42,7 +44,18 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 				e.stopPropagation()
 				channel.trigger("logout");
 				this.showLoggedOut()
-			}
+			},
+			getMyStatus: function() {
+				if (this.me instanceof Backbone.Model == false) {
+					this.me = new UserModel($.cookie('username'));
+					this.me.fetch({
+						success: this.setMyStatus
+					})
+				}
+			},
+			setMyStatus: function(model) {
+				this.$('#userkarma').html(model.get('uglyKarma'))
+			},
 
 		});
 		return UserbarView;

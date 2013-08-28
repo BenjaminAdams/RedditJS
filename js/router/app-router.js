@@ -23,8 +23,11 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 'r/:subName/comments/:id(/)': 'single',
                 'user/:username(/)': 'user',
                 'user/:username/:sortOrder(/)': 'user',
-                'message/compose/:username(/)': 'message'
-                //  'r/:subName/': 'subreddit'
+                'message/compose/:username(/)': 'message',
+                'subreddits(/)': 'subreddits',
+                'search(/)': 'search',
+                'search/:q(/)': 'search',
+
             },
             //middleware, this will be fired before every route
             route: function(route, name, callback) {
@@ -86,6 +89,13 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 });
             },
             message: function(username) {
+
+            },
+
+            subreddits: function() {
+
+            },
+            search: function() {
 
             },
 

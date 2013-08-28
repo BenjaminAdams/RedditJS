@@ -4,7 +4,9 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 		var HeaderView = BaseView.extend({
 			el: $("#theHeader"),
 			events: {
-				'click .tabmenu-right li': 'changeGridOption'
+				'click .tabmenu-right li': 'changeGridOption',
+				'click .drop-down-header-toggle': 'toggleDropdown',
+				'click .drop-down-header a': 'toggleDropdown' //will close the menu after the user makes a selection
 			},
 
 			initialize: function(data) {
@@ -32,10 +34,14 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				if (this.checkIfLoggedIn() == true) {
 					console.log('starting to update the subreddits in the header init')
 					this.updateSubreddits()
+
 				}
 
 				// this.$() is a shortcut for this.$el.find().
 
+			},
+			toggleDropdown: function() {
+				this.$('.drop-down-header').toggle()
 			},
 
 			updateHeader: function(model) {
@@ -70,6 +76,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				this.mySubreddits.fetch({
 					success: this.displayMySubreddits
 				});
+
 			},
 
 			changeGridOption: function(e) {
@@ -126,7 +133,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				//add the edit subscriptions button
 				this.$('.drop-choices').append('<a class="choice bottom-option" href="/subreddits/">edit subscriptions</a>')
 
-			}
+			},
 
 		});
 		//return new HeaderView();

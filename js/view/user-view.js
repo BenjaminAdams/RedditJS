@@ -5,7 +5,7 @@ define([
 
 			el: $(".content"),
 			events: {
-				//'click .dropdown-user': 'toggleDropdown'
+				'click .dropdown-user': 'toggleDropdown'
 			},
 
 			initialize: function(options) {

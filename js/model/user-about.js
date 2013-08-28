@@ -21,6 +21,7 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 			if (typeof data.comment_karma !== 'undefined') {
 				data.comment_karma = this.numberWithCommas(data.comment_karma) || 0
 			}
+			data.uglyKarma = data.link_karma
 			data.link_karma = this.numberWithCommas(data.link_karma)
 
 			return data;

@@ -18,6 +18,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 					this.render()
 					this.loadLoginView()
 					channel.trigger("header:update", this.model);
+					this.$('.titlebox').hide()
 
 				} else { //only fetch sidebar info if on the front page
 					this.model.fetch({

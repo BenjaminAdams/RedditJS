@@ -1,11 +1,11 @@
    <div id="userbar-logged-in" >
         <span class="user"><a href="/user/{{model.username}}/">{{model.username}}</a>
-            (<span class="userkarma" title="link karma">{{model.karma}}</span>)</span>
+            (<span id='userkarma' class="userkarma" title="link karma">{{model.karma}}</span>)</span>
 
             <span class="separator">|</span>
-            <a class="nohavemail" href="http://www.reddit.com/message/inbox/" id="mail" title="no new mail">messages</a>
+            <a class="nohavemail" href="/message/inbox/" id="mail" title="no new mail">messages</a>
             <span class="separator">|</span>
-            <a class="nohavemail" href="http://www.reddit.com/message/moderator/" id="modmail" title="no new mod mail">mod messages</a>
+            <a class="nohavemail" href="/message/moderator/" id="modmail" title="no new mod mail">mod messages</a>
             <span class="separator">|</span>
 
         <ul class="flat-list hover">
@@ -14,8 +14,8 @@
             </li>
         </ul><span class="separator">|</span>
 
-        <form action="http://www.reddit.com/logout" class="logout hover" method="post">
-            <input name="dest" type="hidden" value="/r/javascript"><a href="#">logout</a>
+        <form class="logout hover" >
+                <a href="#">logout</a>
         </form>
     </div>
 
