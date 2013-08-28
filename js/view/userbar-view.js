@@ -55,6 +55,12 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 			},
 			setMyStatus: function(model) {
 				this.$('#userkarma').html(model.get('uglyKarma'))
+				if (model.get('has_mail') == true) {
+					this.$('#mail').removeClass('nohavemail').addClass('havemail')
+				}
+				if (model.get('has_mail') == true) {
+					this.$('#has_mod_mail').removeClass('nohavemail').addClass('havemail')
+				}
 			},
 
 		});
