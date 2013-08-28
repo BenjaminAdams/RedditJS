@@ -1,0 +1,78 @@
+<div class="spacer">
+  <div class="titlebox">
+    <h1>
+      {{model.name}}
+    </h1>
+    <div>
+      <span class="fancy-toggle-button toggle" style="">
+{{#if model.is_friend}}
+        <a class="option add add-friend" href="#" tabindex="100">
+          + friends
+        </a>
+        <a class="option remove active remove-friend" href="#">
+          - friends
+        </a>
+{{else}}
+        <a class="option add active add-friend" href="#" tabindex="100">
+          + friends
+        </a>
+        <a class="option remove remove-friend" href="#">
+          - friends
+        </a>
+{{/if}}
+
+
+      </span>
+    </div>
+    <span class="karma">
+       {{model.link_karma}}
+    </span>
+    link karma
+    <br>
+    <span class="karma comment-karma">
+      {{model.comment_karma}}
+    </span>
+    comment karma
+    <div class="giftgold">
+      <a href="http://reddit.com/gold?goldtype=gift&amp;recipient={{model.name}}">
+        give reddit gold to {{model.name}} to show your appreciation
+      </a>
+    </div>
+    <div class="bottom">
+      <img src="/img/mailgray.png">
+      
+      <a href="http://www.reddit.com/message/compose/?to={{model.name}}">
+        send message
+      </a>
+      <span class="age">
+        redditor for 
+        <time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">
+         {{model.timeAgo}}
+        </time>
+      </span>
+    </div>
+    <div class="clear">
+    </div>
+  </div>
+</div>
+<div class="spacer">
+  <div class="sidecontentbox trophy-area ">
+    <a class="helplink" href="/wiki/awards">
+      what's this?
+    </a>
+    <div class="title">
+      <h1>
+        TROPHY CASE
+      </h1>
+    </div>
+    <ul class="content">
+      <li>
+        <div class="dust">
+          dust
+        </div>
+        <table class="trophy-table">
+        </table>
+      </li>
+    </ul>
+  </div>
+</div>

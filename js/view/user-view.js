@@ -1,11 +1,11 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/user', 'view/comment-view', 'view/sidebar-view', 'view/subreddit-view', 'collection/user', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, UserTmpl, CommentView, SidebarView, SubredditView, UserCollection, channel, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/user', 'view/comment-view', 'view/subreddit-view', 'collection/user', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, UserTmpl, CommentView, SubredditView, UserCollection, channel, Cookie) {
 		var UserView = SubredditView.extend({
 
 			el: $(".content"),
 			events: {
-				'click .dropdown-user': 'toggleDropdown'
+				//'click .dropdown-user': 'toggleDropdown'
 			},
 
 			initialize: function(options) {
@@ -27,7 +27,6 @@ define([
 				this.template = UserTmpl
 
 				channel.on("subreddit:remove", this.remove, this);
-				this.dynamicStylesheet("blank") //remove the custom subreddit styles
 				this.render();
 
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")

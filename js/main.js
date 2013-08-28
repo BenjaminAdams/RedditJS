@@ -53,7 +53,7 @@ require.config({
         "cookie": ["jquery"]
     },
 
-    //urlArgs: 'appversion=345345345',
+    urlArgs: 'appversion=3455',
 
     // Libraries
     paths: {
@@ -92,3 +92,4 @@ require.config({
 
 // Load our app module and pass it to our definition function
 require(['console', 'app']);
+//require(['app']);

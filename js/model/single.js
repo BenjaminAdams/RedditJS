@@ -116,7 +116,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				data.url = data.permalink
 			} else if (data.embededImg == true) {
 				//change the users URL link if its an embeded image/video type
-				data.actualUrl = data.permalink
+				data.actualUrl = data.url
 				data.url = data.permalink
 				data.external = ''
 			} else {
