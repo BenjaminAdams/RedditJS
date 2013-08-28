@@ -92,6 +92,10 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				});
 			},
 			changeActiveGrid: function(id) {
+				if (typeof id === 'undefined' || id == null || id == "") {
+					id = 'normal'
+				}
+
 				this.$('#normal').removeClass('selected');
 				this.$('#small').removeClass('selected');
 				this.$('#large').removeClass('selected');

@@ -92,11 +92,6 @@ define([
 				//Backbone.View.prototype.remove.apply(this, arguments);
 			},
 
-			/**************Routing functions ****************/
-			// clickedInteralLink: function(e) {
-			// 	console.log("I clicked a link yo")
-
-			// },
 			/**************Grid functions ****************/
 			/*grid option:
 					normal - the default Reddit styling
@@ -106,11 +101,14 @@ define([
 			initGridOption: function() {
 
 				this.gridOption = $.cookie('gridOption');
+				console.log('gridopt=', this.gridOption)
 				if (typeof this.gridOption === 'undefined' || this.gridOption == null || this.gridOption == "") {
 					this.gridOption = 'normal'
 				} else if (this.gridOption == "large") {
 					this.resize()
 				}
+				channel.trigger("header:changeActiveGridCss", this.gridOption);
+
 			},
 			changeSortOrderCss: function() {
 				channel.trigger("header:updateSortOrder", this.sortOrder);
