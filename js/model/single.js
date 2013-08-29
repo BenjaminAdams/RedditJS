@@ -73,6 +73,12 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				data.upmod = 'up'
 			}
 
+			//comments or plural comments
+			if (typeof data.num_comments !== 'undefined' && data.num_comments == 1) {
+				data.commentsPlural = 'comment'
+			} else {
+				data.commentsPlural = 'comments'
+			}
 			//We have to print the score out for the upvoted and downvoted values
 			var score = data.score
 			data.scoreUp = +score + 1
