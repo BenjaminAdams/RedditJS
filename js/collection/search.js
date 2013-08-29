@@ -1,41 +1,44 @@
 define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
-	var SubredditCollection = Backbone.Collection.extend({
+	var SearchCollection = Backbone.Collection.extend({
 		initialize: function(data) {
 			_.bindAll(this);
 			this.after = ""
-			this.subName = data.subName
 			this.sortOrder = data.sortOrder
+			this.searchQ = data.searchQ
 			if (typeof this.sortOrder === 'undefined') {
 				this.sortOrder = 'hot' //the default sort order is hot
 			};
-			this.sortOrder = "/" + this.sortOrder //needs to start with a slash to be injected into the URL
 
-			console.log('sort order=', this.sortOrder)
+			this.timeFrame = data.timeFrame
+			if (typeof this.timeFrame === 'undefined') {
+				this.timeFrame = 'month' //the default sort order is hot
+			};
 			this.count = 1
 			this.instanceUrl = this.getUrl()
 
 		},
-		// Reference to this collection's model.
 		model: SingleModel,
-
 		url: function() {
 
 			return this.instanceUrl //keeps a dynamic URL so we can give it a new "after"
+
 		},
 
 		getUrl: function() {
+			//this works http://www.reddit.com/search.json?q=test&after=t3_18irx&sort=hot&t=week
+			//console.log('/api/?url=search.json&t=' + this.timeFrame + '&syntax=plain&after=' + this.after + "&sort=" + this.sortOrder + '&q=' + this.searchQ)
+			return 'http://www.reddit.com/search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&jsonp=?"
+			//return '/api/?url=search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame
+			// return '/api/?url=search.json?q=' + this.searchQ + '&t=' + this.timeFrame + '&syntax=plain&after=' + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
 
-			if (this.subName == "front") {
-				return "/api/?url=" + this.sortOrder + ".json?after=" + this.after + "&cookie=" + $.cookie('reddit_session');
-			} else {
-				console.log('/api/?url=r/' + this.subName + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session'))
-				return '/api/?url=r/' + this.subName + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
-			}
+			//jsonp search? 
+			//http://www.reddit.com/search.json?q=test&after=t3_18irx&sort=hot&t=week&jsonp=?
+
 		},
-
 		parse: function(response) {
 			//set the after for pagination
+			console.log(response)
 			this.after = response.data.after;
 
 			if (this.after == "" || this.after == null) {
@@ -80,5 +83,5 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 
 	});
-	return SubredditCollection;
+	return SearchCollection;
 });

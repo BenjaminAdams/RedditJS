@@ -40,6 +40,7 @@ define([
 				this.render();
 
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
+				console.log("window.subs=", window.subs)
 				if (typeof window.subs[this.subID] === 'undefined') {
 					$(this.el).append("<div class='loading'> </div>")
 					this.collection = new SubredditCollection({
@@ -51,6 +52,8 @@ define([
 					console.log('loading collection from memory')
 					this.collection = window.subs[this.subID]
 					this.appendPosts(this.collection)
+
+					//this.fetchMore();
 				}
 
 				$(window).on("scroll", this.watchScroll);
@@ -92,23 +95,24 @@ define([
 				//Backbone.View.prototype.remove.apply(this, arguments);
 			},
 
+			/**************Routing functions ****************/
+			// clickedInteralLink: function(e) {
+			// 	console.log("I clicked a link yo")
+
+			// },
 			/**************Grid functions ****************/
-			/*grid option:
+			initGridOption: function() {
+				/*grid option:
 					normal - the default Reddit styling
 					small - small thumbnails in the page
 					large - full sized images in the page
-			*/
-			initGridOption: function() {
-
+				*/
 				this.gridOption = $.cookie('gridOption');
-				console.log('gridopt=', this.gridOption)
 				if (typeof this.gridOption === 'undefined' || this.gridOption == null || this.gridOption == "") {
 					this.gridOption = 'normal'
 				} else if (this.gridOption == "large") {
 					this.resize()
 				}
-				channel.trigger("header:changeActiveGridCss", this.gridOption);
-
 			},
 			changeSortOrderCss: function() {
 				channel.trigger("header:updateSortOrder", this.sortOrder);

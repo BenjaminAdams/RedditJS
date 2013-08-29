@@ -3,7 +3,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 		var SidebarView = BaseView.extend({
 			el: ".side",
 			events: {
-				//  'keyup #new-todo':     'showTooltip'
+				'submit #search': 'gotoSearch'
 			},
 
 			initialize: function(data) {
@@ -26,6 +26,16 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 					});
 				}
 				// this.$() is a shortcut for this.$el.find().
+
+			},
+			gotoSearch: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var q = encodeURIComponent(this.$('.sidebarSearch').val())
+				console.log('user searched for ', q)
+				Backbone.history.navigate('/search/' + q, {
+					trigger: true
+				})
 
 			},
 			loaded: function(response, sidebar) {

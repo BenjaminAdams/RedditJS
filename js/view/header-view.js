@@ -125,17 +125,17 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				this.displayDropChoices()
 			},
 			displayDropChoices: function() {
-				this.$('.drop-choices').html(" ") //clear the div
+				this.$('.drop-down-header').html(" ") //clear the div
 
 				//format:  <a class="choice" href="/r/AdviceAnimals/">AdviceAnimals</a>
 
 				this.mySubreddits.each(function(model) {
 					//this.$('.drop-choices').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
-					this.$('.drop-choices').append('<a class="choice" href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a>')
+					this.$('.drop-down-header').append('<a class="choice" href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a>')
 				})
 
 				//add the edit subscriptions button
-				this.$('.drop-choices').append('<a class="choice bottom-option" href="/subreddits/">edit subscriptions</a>')
+				this.$('.drop-down-header').append('<a class="choice bottom-option" href="/subreddits/">edit subscriptions</a>')
 
 			},
 

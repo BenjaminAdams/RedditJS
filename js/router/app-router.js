@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'view/single', 'view/sidebar-view', 'view/user-sidebar-view', 'view/user-view', 'event/channel', 'backbone-queryparams'],
-    function(_, Backbone, SubredditView, HeaderView, SingleView, SidebarView, UserSidebarView, UserView, channel) {
+define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'view/search-view', 'view/single', 'view/sidebar-view', 'view/user-sidebar-view', 'view/user-view', 'event/channel', 'backbone-queryparams'],
+    function(_, Backbone, SubredditView, HeaderView, SearchView, SingleView, SidebarView, UserSidebarView, UserView, channel) {
 
         var AppRouter = Backbone.Router.extend({
 
@@ -25,8 +25,10 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 'user/:username/:sortOrder(/)': 'user',
                 'message/compose/:username(/)': 'message',
                 'subreddits(/)': 'subreddits',
-                'search(/)': 'search',
+                'search': 'search',
                 'search/:q(/)': 'search',
+                'search/:q/:timeFrame(/)': 'search',
+                'search/:q/:timeFrame/:sortOrder(/)': 'search',
 
             },
             //middleware, this will be fired before every route
@@ -50,7 +52,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
                 this.doSidebar('front');
 
-                subredditView = new SubredditView({
+                var subredditView = new SubredditView({
                     subName: "front",
                     sortOrder: sortOrder || 'hot',
                 });
@@ -60,7 +62,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
                 this.doSidebar(subName);
 
-                subredditView = new SubredditView({
+                var subredditView = new SubredditView({
                     subName: subName,
                     sortOrder: sortOrder || 'hot',
                 });
@@ -71,7 +73,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
                 this.doSidebar(subName);
 
-                singleView = new SingleView({
+                var singleView = new SingleView({
                     subName: subName,
                     id: id,
                 });
@@ -83,7 +85,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     username: username,
                 })
 
-                userView = new UserView({
+                var userView = new UserView({
                     subName: username,
                     sortOrder: sortOrder
                 });
@@ -95,8 +97,15 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
             subreddits: function() {
 
             },
-            search: function() {
+            search: function(searchQ, timeFrame, sortOrder) {
 
+                this.doSidebar('front');
+
+                var search = new SearchView({
+                    searchQ: searchQ,
+                    timeFrame: timeFrame,
+                    sortOrder: sortOrder,
+                });
             },
 
             doSidebar: function(subName) {

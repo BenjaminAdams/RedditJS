@@ -44,16 +44,16 @@ require.config({
         //         'backbone'
         //     ]
         // },
-        'keymaster': {
-            exports: 'key'
-        },
+        // 'keymaster': {
+        //     exports: 'key'
+        // },
         // 'async': {
         //     exports: 'async'
         // },
         "cookie": ["jquery"]
     },
 
-    urlArgs: 'appversion=3455',
+    // urlArgs: 'appversion=3455',
 
     // Libraries
     paths: {
@@ -75,7 +75,7 @@ require.config({
         //   'backbone-associations': 'lib/backbone-associations',
         'backbone-localstorage': 'lib/backbone-localstorage',
         //  async: 'lib/async',
-        //   keymaster: 'lib/keymaster',
+        //      keymaster: 'lib/keymaster',
         hbs: 'lib/resthub/require-handlebars',
         moment: 'lib/moment',
         template: '../template',

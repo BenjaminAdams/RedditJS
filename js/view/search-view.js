@@ -1,20 +1,18 @@
-define(['view/subreddit-view'],
-	function(SubredditView) {
-		var SubredditView = BaseView.extend({
+define(['view/subreddit-view', 'collection/search', 'hbs!template/search', 'event/channel', ],
+	function(SubredditView, SearchCollection, SearchTmpl, channel) {
+		var SearchView = SubredditView.extend({
 
 			el: $(".content"),
-			template: subredditTmpl,
+			template: SearchTmpl,
 
 			events: function() {
-				var _events = {
-					//'click .tabmenu-right li': 'changeGridOption',
-					'click #retry': 'tryAgain'
-
-				};
-				//console.log('click .upArrow' + this.options.id)
-				_events['click .upArrow' + this.options.id] = "upvote";
-				_events['click .downArrow' + this.options.id] = "downvote";
-				return _events;
+				return _.extend({}, SubredditView.prototype.events, {
+					'submit .searchMain': 'gotoSearch',
+					'click .drop-sort-order': 'toggleSort',
+					'click .drop-sort-orderA': 'toggleSort',
+					'click .drop-time-frame': 'toggleTimeFrame',
+					'click .drop-time-frameA': 'toggleTimeFrame',
+				});
 			},
 
 			initialize: function(options) {
@@ -23,14 +21,27 @@ define(['view/subreddit-view'],
 
 				_.bindAll(this);
 				var self = this;
-				this.subName = options.subName
-				this.template = subredditTmpl;
+				this.template = SearchTmpl;
+				this.subName = "Search"
+				this.searchQ = decodeURIComponent(options.searchQ);
+				this.timeFrame = options.timeFrame
+
+				if (typeof this.timeFrame === 'undefined') {
+					this.timeFrame = 'month' //the default sort order is hot
+				};
 				this.sortOrder = options.sortOrder
-				this.subID = this.subName + this.sortOrder
+
 				if (typeof this.sortOrder === 'undefined') {
-					this.sortOrder = 'hot'
+					this.sortOrder = 'relevance'
 				}
 
+				this.model = new Backbone.Model({
+					searchQ: this.searchQ,
+					timeFrame: this.timeFrame,
+					sortOrder: this.sortOrder
+				})
+
+				this.subID = this.subName + this.sortOrder
 				channel.on("subreddit:changeGridOption", this.changeGridOption, this);
 				channel.on("subreddit:remove", this.remove, this);
 
@@ -41,9 +52,10 @@ define(['view/subreddit-view'],
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 
 				$(this.el).append("<div class='loading'> </div>")
-				this.collection = new SubredditCollection({
-					subName: this.subName,
-					sortOrder: this.sortOrder
+				this.collection = new SearchCollection({
+					timeFrame: this.timeFrame,
+					sortOrder: this.sortOrder,
+					searchQ: this.searchQ
 				});
 				this.fetchMore();
 
@@ -70,141 +82,24 @@ define(['view/subreddit-view'],
 				}, 100);
 
 			},
-			//we have to override the remove event because the window.scroll event will not be removed by the garbage collector
-			//cant create infinite scroll without this.
-			remove: function() {
-				$(window).off("scroll", this.watchScroll);
-				$(window).off('resize', this.debouncer);
-				channel.off("subreddit:changeGridOption", this.changeGridOption, this);
-				channel.off("subreddit:remove", this.remove, this);
-				this.undelegateEvents();
-				this.$el.empty();
-				this.stopListening();
-				console.log('**********************removed the view *********************************')
-
-				//call the superclass remove method
-				//Backbone.View.prototype.remove.apply(this, arguments);
+			toggleSort: function(e) {
+				//e.preventDefault()
+				//e.stopPropagation()
+				this.$('.drop-sort-orderA').toggle()
+				this.$('.drop-time-frameA').hide()
+			},
+			toggleTimeFrame: function(e) {
+				//e.preventDefault()
+				//e.stopPropagation()
+				this.$('.drop-time-frameA').toggle()
+				this.$('.drop-sort-orderA').hide()
 			},
 
-			/**************Routing functions ****************/
-			// clickedInteralLink: function(e) {
-			// 	console.log("I clicked a link yo")
-
-			// },
-			/**************Grid functions ****************/
-
-			changeSortOrderCss: function() {
-				channel.trigger("header:updateSortOrder", this.sortOrder);
-			},
-
-			resize: function() {
-				var mobileWidth = 1000; //when to change to mobile CSS
-				if (this.gridOption == "large") {
-					//change css of 
-					var docWidth = $(document).width()
-					var newWidth = 0;
-					if (docWidth > mobileWidth) {
-						newWidth = docWidth - 355;
-					} else {
-						newWidth = docWidth;
-					}
-					$('#dynamicWidth').html('<style> .large-thumb { width: ' + newWidth + 'px } </style>');
-				}
-
-			},
-
-			changeGridOption: function(data) {
-				console.log('changing grid option=', data)
-				if (typeof data.gridOption === 'undefined') {
-					this.gridOption = $.cookie('gridOption');
-				}
-				if (this.gridOption == data.gridOption) {
-					return; //do nothing if the user already clicked this once
-				}
-				this.gridOption = data.gridOption
-				$.cookie('gridOption', this.gridOption, {
-					path: '/'
-				});
-				//this.changeActiveGrid()
-				this.resetPosts()
-				if (this.name == "large") {
-					this.resize()
-				}
-				this.appendPosts(this.collection)
-				this.helpFillUpScreen()
-			},
-			resetPosts: function() {
-				//this.$('#siteTable').html(" ")
-				this.$('#siteTable').empty();
-			},
-			/**************Fetching functions ****************/
-			fetchError: function(response, error) {
-				console.log("fetch error, lets retry", this.collection)
-				if (this.errorRetries < 10) {
-					this.loading = false;
-				}
-
-				if (this.collection.length <= 5) {
-					this.$('#siteTable').html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
-				}
-				this.errorRetries++;
-
-			},
-			tryAgain: function() {
-				this.$('#siteTable').html("<div class='loading'></div> ")
-				this.$('#retry').remove()
-
-				this.fetchMore();
-			},
-			fetchMore: function() {
-				this.collection.fetch({
-					success: this.gotNewPosts,
-					error: this.fetchError,
-					remove: false
-				});
-			},
-
-			appendPosts: function(models) {
-				console.log(models)
-				models.each(function(model) {
-					if (model.get('title') != null) {
-						if (this.gridOption == "small") {
-							// this.$('#siteTable').append(PostViewSmallTpl({
-							// 	model: model.attributes
-							// }))
-							var postview = new PostRowView({
-								root: "#siteTable",
-								id: model.get('id'),
-								model: model,
-								gridOption: this.gridOption
-							});
-						} else if (this.gridOption == "large") {
-
-							var postview = new PostRowView({
-								root: "#siteTable",
-								id: model.get('id'),
-								model: model,
-								gridOption: this.gridOption
-							});
-						} else {
-
-							var postview = new PostRowView({
-								root: "#siteTable",
-								model: model,
-								id: model.get('id'),
-								gridOption: this.gridOption
-							});
-						}
-					}
-				}, this);
-				this.resize()
-
-			},
 			gotNewPosts: function(models, res) {
 				this.$('.loading').hide()
 
 				if (typeof res.data.children.length === 'undefined') {
-					return; //we might have an undefined length?
+					return;
 				};
 				var newCount = res.data.children.length
 
@@ -218,30 +113,25 @@ define(['view/subreddit-view'],
 				}
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.helpFillUpScreen()
-				window.subs[this.subID] = this.collection
+				//window.subs[this.subID] = this.collection
 
 			},
-			/**************Infinite Scroll functions ****************/
-			watchScroll: function(e) {
-				var self = this;
 
-				var triggerPoint = 1500; // 1500px from the bottom     
-
-				if ((($(window).scrollTop() + $(window).height()) + triggerPoint >= $(document).height()) && this.loading == false) {
-					this.loading = true
-					console.log('loading MOAR')
-					if (this.collection.after != "stop") {
-						this.fetchMore()
-					}
-				}
-				//this.prevScrollY = scrollY;
-			},
 			helpFillUpScreen: function() {
 				if (this.collection.length < 301 && this.gridOption == 'small') {
 					this.watchScroll()
 				}
-			}
+			},
+			gotoSearch: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var q = encodeURIComponent(this.$('.mainQ').val())
+				Backbone.history.navigate('/search/' + q, {
+					trigger: true
+				})
+
+			},
 
 		});
-		return SubredditView;
+		return SearchView;
 	});
