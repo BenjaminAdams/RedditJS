@@ -1,16 +1,6 @@
-<div id='MOAR{{model.id}}' class="sitetable listing">
-	<div class="thing morechildren">
-		<div class="entry unvoted">
-			<div class="collapsed" style="display:none">
-			</div>
-			<div class="noncollapsed">
-				<span class="morecomments">
-				<a data-id='{{model.id}}' data-children='{{model.children}}' style="font-size: smaller; font-weight: bold" class="button MOAR "  href="#" >load more comments<span class="gray">&nbsp;({{model.childrenCount}} {{model.replyVerb}})</span></a></span>
-				<ul class="flat-list buttons">
-				</ul>
-			</div>
+<div id='MOAR{{model.id}}' class="sitetable listing ">
+		<div class="entry unvoted morecomments">
+		<a data-id='{{model.id}}' data-children='{{model.children}}'  class="button MOAR "  href="#" >load more comments
+			<span class="gray">&nbsp;({{model.childrenCount}} {{model.replyVerb}})</span></a>
 		</div>
-		<div class="child"></div>
-	</div>
-
 </div>

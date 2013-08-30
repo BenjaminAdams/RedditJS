@@ -23,7 +23,7 @@ define([
 
 				};
 
-				_events['submit #comment' + this.options.model.get('name')] = "comment";
+				//_events['submit #comment' + this.options.model.get('name')] = "comment";
 
 				return _events;
 			},
@@ -303,12 +303,10 @@ define([
 
 				//show loading msg
 				var parent = this.$('#MOAR' + id)
-				console.log('#MOAR' + id)
-				console.log('parent=', parent)
 				this.$(parent).html("<div class='loadingS'></div>")
 
 				this.api("api/morechildren.json", 'POST', params, function(data) {
-					console.log("MOAR done", data)
+					//console.log("MOAR done", data)
 
 					if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
 						data.children = data.json.data.things
