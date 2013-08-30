@@ -23,7 +23,7 @@ define([
 
 				};
 
-				//_events['submit #comment' + this.options.model.get('name')] = "comment";
+				_events['submit #comment' + this.options.model.get('name')] = "comment";
 
 				return _events;
 			},

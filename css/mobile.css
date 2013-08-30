@@ -23,7 +23,11 @@ z-index: 100;
 }
 */
 
-.entry {
+#main {
+	min-width:400px;
+}
+
+.singlePostPage .entry {
 overflow: visible;
 }
 

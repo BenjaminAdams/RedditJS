@@ -185,7 +185,7 @@ define([
 			},
 
 			appendPosts: function(models) {
-				console.log(models)
+				this.start = new Date();
 				models.each(function(model) {
 					if (model.get('title') != null) {
 						if (this.gridOption == "small") {
@@ -218,10 +218,12 @@ define([
 					}
 				}, this);
 				this.resize()
+				this.end = new Date();;
+				console.log("end of subreddit parse=", this.end - this.start)
 
 			},
 			gotNewPosts: function(models, res) {
-				this.start = new Date();
+
 				this.$('.loading').hide()
 
 				if (typeof res.data.children.length === 'undefined') {
@@ -240,8 +242,6 @@ define([
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.helpFillUpScreen()
 				window.subs[this.subID] = this.collection
-				this.end = new Date();;
-				console.log("end of subreddit parse=", this.end - this.start)
 
 			},
 			/**************Infinite Scroll functions ****************/

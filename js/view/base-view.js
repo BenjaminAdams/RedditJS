@@ -175,10 +175,10 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 
 				this.api("/api/comment", 'POST', params, function(data) {
 					console.log("comment done", data)
-					self.commentCallback(data)
+					self.commentMainCallback(data)
 				});
 			}, //callback after trying to write a comment
-			commentCallback: function(data) {
+			commentMainCallback: function(data) {
 				console.log('callback comment=', data)
 				CommentModel = require('model/comment') //in order to have nested models inside of models we need to do this
 				CommentView = require('view/comment-view') //in cases of recursion its ok!
