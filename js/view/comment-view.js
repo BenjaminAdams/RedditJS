@@ -26,6 +26,7 @@ define([
 			},
 
 			initialize: function(options) {
+
 				_.bindAll(this);
 				var self = this;
 				//this.collection = options.collection
@@ -39,7 +40,6 @@ define([
 				}
 
 				this.render();
-				//console.log("trying to create a new comment view with = ", options)
 
 				this.renderChildren(this.model.get('replies'))
 

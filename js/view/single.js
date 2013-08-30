@@ -88,7 +88,7 @@ define([
 				var newWidth = 0;
 				if (docWidth > mobileWidth) {
 					//if the website is in responsive mode
-					newWidth = docWidth - 522;
+					newWidth = docWidth - 622;
 				} else {
 					newWidth = docWidth - 222;
 				}
@@ -142,12 +142,14 @@ define([
 				})
 			},
 			loaded: function(model, res) {
+				this.start = new Date();
 				this.$('.loading').hide()
 				this.model = model
 				//this.model = model.parseOnce(model.attributes)
 				this.renderStuff(model);
 				this.loadComments(model)
-
+				this.end = new Date();;
+				console.log(this.end - this.start)
 			},
 
 		});

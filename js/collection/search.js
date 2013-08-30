@@ -11,9 +11,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			};
 
 			this.timeFrame = data.timeFrame
-			if (typeof this.timeFrame === 'undefined') {
-				this.timeFrame = 'month' //the default sort order is hot
-			};
+
 			this.count = 1
 			this.instanceUrl = this.getUrl()
 

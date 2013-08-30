@@ -25,7 +25,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 'user/:username/:sortOrder(/)': 'user',
                 'message/compose/:username(/)': 'message',
                 'subreddits(/)': 'subreddits',
-                'search': 'search',
+                'search(/)': 'search',
                 'search/:q(/)': 'search',
                 'search/:q/:timeFrame(/)': 'search',
                 'search/:q/:timeFrame/:sortOrder(/)': 'search',

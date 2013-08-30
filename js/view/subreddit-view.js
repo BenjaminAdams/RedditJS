@@ -19,8 +19,7 @@ define([
 			},
 
 			initialize: function(options) {
-				//$(this.el).empty()
-				//this.$el.empty()
+
 				this.$('#siteTable').empty()
 				_.bindAll(this);
 				var self = this;

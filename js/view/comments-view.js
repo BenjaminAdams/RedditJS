@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/comments', 'view/comment-view', 'view/base-view', 'collection/comments', 'model/comment', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, commentsTmpl, CommentView, BaseView, CommentCollection, CommentModel, channel, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/comments', 'view/comment-view', 'hbs!template/comment', 'view/base-view', 'collection/comments', 'model/comment', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, commentsTmpl, CommentView, commentTmpl, BaseView, CommentCollection, CommentModel, channel, Cookie) {
 		var CommentsView = BaseView.extend({
 
 			template: commentsTmpl,
@@ -8,17 +8,11 @@ define([
 			events: function() {
 				var _events = {
 					//'click .noncollapsed .expand': "hideThread",
-					//'click .collapsed .expand': "showThread"
+					'click .upArrow': "upvoteComment",
+					'click .downArrow': "downvoteComment"
 				};
-				_events['click #report' + this.options.id] = "reportShow";
-				_events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
-				_events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
-
 				_events['submit #comment' + this.options.model.get('name')] = "comment";
-				//_events['click .comment' + this.options.name] = "comment";
-				//_events['click .MOAR' + this.options.id] = "loadMOAR";
-				_events['click #mdHelpShow' + this.options.model.get('id')] = "showMdHelp";
-				_events['click #mdHelpHide' + this.options.model.get('id')] = "hideMdHelp";
+
 				return _events;
 			},
 
@@ -31,23 +25,88 @@ define([
 
 				this.collection = options.collection
 				this.render();
-				this.renderComments(this.collection)
-				console.log('got here')
+				this.renderComments(this.collection, '#commentarea')
 				this.model = options.model
 				//console.log('init comments view model=', this.model)
 
 			},
-			renderComments: function(collection) {
-				//console.log('collection in renderComments', collection)
+			upvoteComment: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+
+				var target = this.$(e.currentTarget)
+				console.log('upvoting', target)
+				var id = target.parent().parent().attr('id');
+
+				var likes = this.$(".upArrow" + id).hasClass('upmod')
+				console.log(".upArrow" + id, likes)
+				if (likes == false) {
+					this.vote(1, "t1_" + id)
+
+					this.$('.midcol' + id).removeClass('dislikes unvoted').addClass('likes')
+
+					this.$('.upArrow' + id).addClass('upmod')
+					this.$('.upArrow' + id).removeClass('up')
+					this.$('.downArrow' + id).addClass('down')
+					this.$('.downArrow' + id).removeClass('downmod')
+
+				} else {
+					this.cancelVoteComment(id)
+				}
+			},
+			cancelVoteComment: function(id) {
+				this.vote(0, "t1_" + id)
+
+				this.$('.midcol' + id).removeClass('dislikes likes').addClass('unvoted')
+
+				this.$('.upArrow' + id).addClass('up')
+				this.$('.upArrow' + id).removeClass('upmod')
+				this.$('.downArrow' + id).addClass('down')
+				this.$('.downArrow' + id).removeClass('downmod')
+
+			},
+			downvoteComment: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+
+				var target = this.$(e.currentTarget)
+				console.log('downvoting', target)
+				var id = target.parent().parent().attr('id');
+
+				var dislikes = this.$(".downArrow" + id).hasClass('downmod')
+				console.log(".downArrow" + id, dislikes)
+				if (dislikes == false) {
+					this.vote(-1, "t1_" + id)
+
+					this.$('.midcol' + id).removeClass('likes unvoted').addClass('dislikes')
+
+					this.$('.upArrow' + id).addClass('up')
+					this.$('.upArrow' + id).removeClass('upmod')
+					this.$('.downArrow' + id).addClass('downmod')
+					this.$('.downArrow' + id).removeClass('down')
+
+				} else {
+					this.cancelVoteComment(id)
+				}
+			},
+			renderComments: function(collection, selector) {
+				var self = this;
 				collection.each(function(model) {
 					//console.log('model in renderComments', model)
-					var comment = new CommentView({
-						model: model,
-						id: model.get('id'),
-						strategy: "append",
-						root: "#siteTableComments"
-						//root: "#commentarea"
-					})
+					// var comment = new CommentView({
+					// 	model: model,
+					// 	id: model.get('id'),
+					// 	strategy: "append",
+					// 	root: "#siteTableComments"
+					// 	//root: "#commentarea"
+					// })
+					this.$(selector).append(commentTmpl({
+						model: model.attributes
+					}))
+					var replies = model.get('replies')
+					if (typeof replies !== 'undefined' && replies != "" && replies != null) {
+						self.renderComments(replies, '#' + model.get('name'))
+					}
 
 				})
 			},
