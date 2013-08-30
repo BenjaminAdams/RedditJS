@@ -14,7 +14,7 @@
 			<a href='{{model.permalink}}'><img src='{{model.thumbnail}}' class='thumbnail'/></a>
 		{{/if}}
 	<div class="entry unvoted">
-		<div class="collapsed" style="display:none">
+		<div class="collapsed collapsed{{model.id}}" style="display:none">
 			<a href="#" class="expand" >[+]</a>
 				 {{#if model.is_user}}
 				 	<a href='{{model.permalink}}' style='height:65px;' class='title'>{{model.title}}</a>
@@ -30,7 +30,7 @@
                    		 {{/if}}
 			<a href="#" class="expand">({{model.childrenCount}} {{model.childOrChildren}})</a>
 		</div>
-		<div class="noncollapsed">
+		<div class="noncollapsed noncollapsed{{model.id}}">
 			<p class="tagline">
 				<a href="#" class="expand" >[–]</a>
 				 {{#if model.is_user}}
@@ -77,7 +77,7 @@
 			</ul>
 		</div>
 	</div>
-	<div id='{{model.name}}' class="child{{model.name}} child">
+	<div id='{{model.name}}' class="child{{model.name}} child child{{model.id}}">
 
 <form action="#" class="usertext cloneable" id="commentreply{{model.id}}" style="display: none;">
 	<div class="usertext-edit" style="width: 500px;"><div>

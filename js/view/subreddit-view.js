@@ -221,6 +221,7 @@ define([
 
 			},
 			gotNewPosts: function(models, res) {
+				this.start = new Date();
 				this.$('.loading').hide()
 
 				if (typeof res.data.children.length === 'undefined') {
@@ -239,6 +240,8 @@ define([
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.helpFillUpScreen()
 				window.subs[this.subID] = this.collection
+				this.end = new Date();;
+				console.log("end of subreddit parse=", this.end - this.start)
 
 			},
 			/**************Infinite Scroll functions ****************/

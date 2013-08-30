@@ -7,7 +7,8 @@ define([
 
 			events: function() {
 				var _events = {
-					//'click .noncollapsed .expand': "hideThread",
+					'click .noncollapsed .expand': "hideThread",
+					'click .collapsed .expand': "showThread",
 					'click .upArrow': "upvoteComment",
 					'click .downArrow': "downvoteComment"
 				};
@@ -88,6 +89,32 @@ define([
 				} else {
 					this.cancelVoteComment(id)
 				}
+			},
+			hideThread: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+
+				var target = this.$(e.currentTarget)
+				var id = target.parent().parent().parent().parent().attr('id');
+
+				this.$('.noncollapsed' + id).hide()
+				this.$('.collapsed' + id).show()
+				this.$('.child' + id).hide()
+				this.$('.midcol' + id).hide()
+
+			},
+			showThread: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+
+				var target = this.$(e.currentTarget)
+				var id = target.parent().parent().parent().attr('id');
+
+				this.$('.collapsed' + id).hide()
+				this.$('.noncollapsed' + id).show()
+				this.$('.child' + id).show()
+				this.$('.midcol' + id).show()
+
 			},
 			renderComments: function(collection, selector) {
 				var self = this;
