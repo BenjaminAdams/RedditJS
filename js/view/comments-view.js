@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/comments', 'view/comment-view', 'hbs!template/comment', 'view/base-view', 'collection/comments', 'model/comment', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, commentsTmpl, CommentView, commentTmpl, BaseView, CommentCollection, CommentModel, channel, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/comments', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/base-view', 'collection/comments', 'model/comment', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, commentsTmpl, commentTmpl, CommentMOAR, BaseView, CommentCollection, CommentModel, channel, Cookie) {
 		var CommentsView = BaseView.extend({
 
 			template: commentsTmpl,
@@ -18,7 +18,9 @@ define([
 					'click .reportConfirmYes': 'reportYes',
 					'click .reportConfirmNo': 'reportShow',
 					'submit .commentreply': 'commentReply',
-					'click .cancelComment': 'cancelComment'
+					'click .cancelComment': 'cancelComment',
+					'click .MOAR': "loadMOAR"
+
 				};
 
 				_events['submit #comment' + this.options.model.get('name')] = "comment";
@@ -32,12 +34,14 @@ define([
 				$(this.el).html('')
 				var self = this;
 				this.template = commentsTmpl;
+				this.commentMOAR = CommentMOAR
+				this.commentONE = commentTmpl
 
 				this.collection = options.collection
 				this.render();
 				this.renderComments(this.collection, '#commentarea')
 				this.model = options.model
-				//console.log('init comments view model=', this.model)
+				console.log('init comments view model=', this.model)
 
 			},
 			upvoteComment: function(e) {
@@ -271,18 +275,88 @@ define([
 				var id = target.data('id')
 				this.$('#commentreply' + id).hide()
 			},
+
+			loadMOAR: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var self = this
+
+				var target = this.$(e.currentTarget)
+				var id = target.data('id')
+
+				var children = target.data('children')
+
+				//console.log('loading MOAR')
+				var link_id = this.model.get('name')
+				//	url: "/api/?url=api/morechildren&cookie=" + $.cookie('reddit_session');,
+				var params = {
+					link_id: link_id,
+					id: id,
+					api_type: 'json',
+					//sort: 'top',
+					children: children,
+					//uh: $.cookie('modhash'), 
+					byPassAuth: true
+				};
+
+				console.log('MOAR=', params)
+
+				//show loading msg
+				var parent = this.$('#MOAR' + id)
+				console.log('#MOAR' + id)
+				console.log('parent=', parent)
+				this.$(parent).html("<div class='loadingS'></div>")
+
+				this.api("api/morechildren.json", 'POST', params, function(data) {
+					console.log("MOAR done", data)
+
+					if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
+						data.children = data.json.data.things
+						var tmpModel = new CommentModel({
+							skipParse: true
+						})
+
+						var newComments = tmpModel.parseComments(data, link_id)
+						this.$(parent).html('') //clear the loading msg
+						self.renderComments(newComments, '#MOAR' + id)
+					} else {
+
+						self.render()
+
+					}
+
+				});
+			},
+			// reRenderMOAR: function(newComments) {
+			// 	if (typeof newComments !== 'undefined' && newComments.length > 0) {
+			// 		//console.log('newcomments=', newComments)
+			// 		//pluck the first model in the collection and set it as this model for reRendering
+			// 		this.model = newComments.at(0)
+			// 		var newComments = newComments.slice(1, newComments.length)
+			// 		newComments = new Backbone.Collection(newComments)
+
+			// 		this.model.set('replies', newComments)
+			// 		//change template back to normal comment template
+			// 		this.template = commentTmpl
+			// 		this.render()
+			// 		this.renderChildren(this.model.get('replies'))
+
+			// 	}
+			// },
+
 			renderComments: function(collection, selector) {
 				var self = this;
 				collection.each(function(model) {
-					//console.log('model in renderComments', model)
-					// var comment = new CommentView({
-					// 	model: model,
-					// 	id: model.get('id'),
-					// 	strategy: "append",
-					// 	root: "#siteTableComments"
-					// 	//root: "#commentarea"
-					// })
-					this.$(selector).append(commentTmpl({
+					var template = ""
+					if (model.get('kind') == 'more') {
+						var children = model.get('children').join(",")
+						model.set('children', children)
+						template = self.commentMOAR
+					} else {
+						template = self.commentONE
+					}
+
+					this.$(selector).append(template({
 						model: model.attributes
 					}))
 					var replies = model.get('replies')

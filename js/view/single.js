@@ -37,6 +37,7 @@ define([
 				this.subName = options.subName
 				this.id = options.id
 				this.template = singleTmpl;
+				this.resize()
 
 				if (typeof window.curModel === 'undefined') {
 					this.fetchComments(this.loaded)
@@ -133,6 +134,7 @@ define([
 			},
 			//if we dont pass in a model we need to render the comments here
 			loadComments: function(model, res) {
+
 				$('#commentarea').html('')
 				this.comments = new CommentsView({
 					collection: model.get('replies'),
@@ -140,6 +142,7 @@ define([
 					el: "#commentarea"
 					//root: "#commentarea"
 				})
+
 			},
 			loaded: function(model, res) {
 				this.start = new Date();
@@ -148,7 +151,7 @@ define([
 				//this.model = model.parseOnce(model.attributes)
 				this.renderStuff(model);
 				this.loadComments(model)
-				this.end = new Date();;
+				this.end = new Date();
 				console.log(this.end - this.start)
 			},
 
