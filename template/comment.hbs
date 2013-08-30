@@ -30,7 +30,7 @@
                    		 {{/if}}
 			<a href="#" class="expand">({{model.childrenCount}} {{model.childOrChildren}})</a>
 		</div>
-		<div class="noncollapsed noncollapsed{{model.id}}">
+	<div class="noncollapsed noncollapsed{{model.id}}">
 			<p class="tagline">
 				<a href="#" class="expand" >[–]</a>
 				 {{#if model.is_user}}
@@ -73,7 +73,7 @@
 				</span>
 				</li>
 				<li><a  data-bypass href="http://reddit.com/gold?goldtype=gift&amp;months=1&amp;comment={{model.name}}"  target='_blank' title="give reddit gold in appreciation of this comment." class="give-gold login-required">give gold</a></li>
-				<li><a id='replyToggle{{model.id}}' href="#" >reply</a></li>
+				<li><a data-id='{{model.id}}' class='replyToggle' href="#" >reply</a></li>
 			</ul>
 		</div>
 	</div>
@@ -84,9 +84,9 @@
 		<textarea rows="1" cols="1" name="text" id='text{{model.name}}'></textarea>
 	</div>
 	<div class="bottom-area">
-		<span class="help-toggle toggle" style="">
-			<a id="mdHelpShow{{model.id}}"  class="option active " href="#" tabindex="100">formatting help</a>
-			<a id="mdHelpHide{{model.id}}"  class="option " href="#">hide help</a></span>
+		<span data-id='{{model.id}}' class="help-toggle toggle" style="">
+			<a id="mdHelpShow{{model.id}}"  class="option active mdHelpShow" href="#" tabindex="100">formatting help</a>
+			<a id="mdHelpHide{{model.id}}"  class="option mdHelpHide" href="#">hide help</a></span>
 			<a href="http://reddit.com/wiki/reddiquette" data-bypass class="reddiquette" target="_blank" tabindex="100">reddiquette</a>
 			
 			<div class="usertext-buttons">

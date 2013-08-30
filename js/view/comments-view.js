@@ -10,8 +10,12 @@ define([
 					'click .noncollapsed .expand': "hideThread",
 					'click .collapsed .expand': "showThread",
 					'click .upArrow': "upvoteComment",
-					'click .downArrow': "downvoteComment"
+					'click .downArrow': "downvoteComment",
+					'click .replyToggle': 'toggleReply', //shows the textarea to input a comment
+					'click .mdHelpShow': 'showMdHelp',
+					'click .mdHelpHide': 'hideMdHelp',
 				};
+
 				_events['submit #comment' + this.options.model.get('name')] = "comment";
 
 				return _events;
@@ -116,6 +120,38 @@ define([
 				this.$('.midcol' + id).show()
 
 			},
+
+			//shows the comment reply textbox
+			toggleReply: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+
+				var target = this.$(e.currentTarget)
+				var id = target.data('id')
+
+				this.$('#commentreply' + id).toggle()
+			},
+			showMdHelp: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var target = this.$(e.currentTarget)
+				var id = target.parent().data('id')
+
+				var mdHelp = '<p></p><p>reddit uses a slightly-customized version of <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> for formatting. See below for some basics, or check <a href="/wiki/commenting">the commenting wiki page</a> for more detailed help and solutions to common issues.</p><p></p><table class="md"><tbody><tr style="background-color: #ffff99;text-align: center"><td><em>you type:</em></td><td><em>you see:</em></td></tr><tr><td>*italics*</td><td><em>italics</em></td></tr><tr><td>**bold**</td><td><b>bold</b></td></tr><tr><td>[reddit!](http://reddit.com)</td><td><a href="http://reddit.com">reddit!</a></td></tr><tr><td>* item 1<br>* item 2<br>* item 3</td><td><ul><li>item 1</li><li>item 2</li><li>item 3</li></ul></td></tr><tr><td>>quoted text</td><td><blockquote>quoted text</blockquote></td></tr><tr><td>Lines starting with four spaces<br>are treated like code:<br><br><span class="spaces">    </span>if 1 * 2 <3:<br><span class="spaces">        </span>print "hello, world!"<br></td><td>Lines starting with four spaces<br>are treated like code:<br><pre>if 1 * 2 <3:<br>    print "hello, world!"</pre></td></tr><tr><td>~~strikethrough~~</td><td><strike>strikethrough</strike></td></tr><tr><td>super^script</td><td>super<sup>script</sup></td></tr></tbody></table></div></div></form>'
+				this.$('#mdHelp' + id).html(mdHelp).show()
+				this.$('#mdHelpShow' + id).hide()
+				this.$('#mdHelpHide' + id).show()
+			},
+			hideMdHelp: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var target = this.$(e.currentTarget)
+				var id = target.parent().data('id')
+				this.$('#mdHelpShow' + id).show()
+				this.$('#mdHelpHide' + id).hide()
+				this.$('#mdHelp' + id).html('')
+			},
+
 			renderComments: function(collection, selector) {
 				var self = this;
 				collection.each(function(model) {
