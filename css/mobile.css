@@ -23,6 +23,18 @@ z-index: 100;
 }
 */
 
+.entry {
+overflow: visible;
+}
+
+.comment .child, .comment .showreplies {
+margin-left: 0px;
+}
+.comment, .content .details {
+margin-left: 3px;
+}
+
+
 .large-thumb .thing {
 
 max-width: 85%;
