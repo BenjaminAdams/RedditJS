@@ -63,13 +63,13 @@
 					</div>
 				</div>
 			</form>
-			<ul class="flat-list buttons">
+			<ul class="flat-list buttons" >
 				<li class="first"><a href="{{model.permalink}}" class="bylink" rel="nofollow">permalink</a></li>
 				<li>
-				<span class="toggle remove-button">
+				<span class="toggle remove-button" data-id='{{model.id}}'>
 					<span class="option main active">
-					<a href="#" id='report{{model.id}}' class="togglebutton">report</a></span>
-					<span id='reportConfirm{{model.id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{model.id}}' class="yes">yes</a> / <a href="#" id='reportConfirmNo{{model.id}}' class="no" >no</a></span>
+					<a href="#" id='report{{model.id}}' class="togglebutton report">report</a></span>
+					<span id='reportConfirm{{model.id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{model.id}}' class="yes reportConfirmYes">yes</a> / <a href="#" id='reportConfirmNo{{model.id}}' class="no reportConfirmNo" >no</a></span>
 				</span>
 				</li>
 				<li><a  data-bypass href="http://reddit.com/gold?goldtype=gift&amp;months=1&amp;comment={{model.name}}"  target='_blank' title="give reddit gold in appreciation of this comment." class="give-gold login-required">give gold</a></li>
@@ -79,9 +79,9 @@
 	</div>
 	<div id='{{model.name}}' class="child{{model.name}} child child{{model.id}}">
 
-<form action="#" class="usertext cloneable" id="commentreply{{model.id}}" style="display: none;">
+<form action="#" class="usertext cloneable commentreply" id="commentreply{{model.id}}" data-id='{{model.id}}' style="display: none;">
 	<div class="usertext-edit" style="width: 500px;"><div>
-		<textarea rows="1" cols="1" name="text" id='text{{model.name}}'></textarea>
+		<textarea rows="1" cols="1" name="text" id='text{{model.id}}'></textarea>
 	</div>
 	<div class="bottom-area">
 		<span data-id='{{model.id}}' class="help-toggle toggle" style="">
@@ -91,10 +91,11 @@
 			
 			<div class="usertext-buttons">
 				<button type="submit" class="save">save</button>
-				<button type="button"  class="cancel" style="">cancel</button>
-				<span class="status"></span>
+				<button type="button"  class="cancel cancelComment" data-id='{{model.id}}' style="">cancel</button>
+				<span class="status{{model.id}}"></span>
 			</div>
 	</div>
+</form>
 	<div id="mdHelp{{model.id}}" class="markhelp" style="display:none">
 
 

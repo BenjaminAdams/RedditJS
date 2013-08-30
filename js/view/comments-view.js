@@ -14,6 +14,11 @@ define([
 					'click .replyToggle': 'toggleReply', //shows the textarea to input a comment
 					'click .mdHelpShow': 'showMdHelp',
 					'click .mdHelpHide': 'hideMdHelp',
+					'click .report': 'reportShow',
+					'click .reportConfirmYes': 'reportYes',
+					'click .reportConfirmNo': 'reportShow',
+					'submit .commentreply': 'commentReply',
+					'click .cancelComment': 'cancelComment'
 				};
 
 				_events['submit #comment' + this.options.model.get('name')] = "comment";
@@ -151,7 +156,121 @@ define([
 				this.$('#mdHelpHide' + id).hide()
 				this.$('#mdHelp' + id).html('')
 			},
+			//so users can report spam
+			reportShow: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var target = this.$(e.currentTarget)
+				var id = target.parent().parent().data('id')
+				this.$('#reportConfirm' + id).toggle()
+			},
+			reportYes: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var target = this.$(e.currentTarget)
+				var id = target.parent().parent().data('id')
 
+				this.$('#reportConfirm' + id).hide()
+
+				var params = {
+					id: "t1_" + id,
+					uh: $.cookie('modhash'),
+				};
+				console.log(params)
+
+				this.api("/api/report", 'POST', params, function(data) {
+					console.log("report done", data)
+
+				});
+			},
+			commentReply: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var self = this
+
+				var target = this.$(e.currentTarget)
+				var id = target.data('id')
+
+				var text = this.$('#text' + id).val()
+				console.log("text from user input=", text)
+				text = this.sterilize(text) //clean the input
+
+				var params = {
+					api_type: 'json',
+					thing_id: "t1_" + id,
+					text: text,
+					uh: $.cookie('modhash'),
+				};
+				console.log(params)
+
+				this.api("/api/comment", 'POST', params, function(data) {
+					console.log("comment done", data)
+					self.commentCallback(data, id)
+				});
+			}, //callback after trying to write a comment
+			commentCallback: function(data, id) {
+				console.log('callback comment=', data)
+				CommentModel = require('model/comment') //in order to have nested models inside of models we need to do this
+				//CommentView = require('view/comment-view') //in cases of recursion its ok!
+
+				//post comment to have the new ID from this data 
+				if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
+					//status{{model.name}}
+					this.$('.status' + id).html('<span class="success">success!</span>')
+					//data.json.data.things[0].data.link_id = this.model.get('name')
+					var attributes = data.json.data.things[0].data
+					attributes.author = $.cookie('username');
+
+					//this if statement will only fire during a comment callback
+					if (typeof attributes.body_html === 'undefined' && typeof attributes.contentHTML === 'string') {
+						attributes.body_html = attributes.contentHTML
+					}
+
+					attributes.name = attributes.id
+					if (typeof attributes.link === 'undefined') {
+						attributes.link_id = this.model.get('name')
+
+					} else {
+						attributes.link_id = attributes.link
+					}
+
+					attributes.likes = true
+					attributes.subreddit = this.model.get('subreddit')
+					attributes.smallid = attributes.id.replace('t1_', '')
+					attributes.smallid = attributes.id.replace('t3_', '')
+					attributes.permalink = '/r/' + data.subreddit + '/comments/' + attributes.link_id + "#" + data.id
+
+					attributes.downs = 0
+					attributes.ups = 1
+
+					//clear the users text
+					this.$('#text' + id).val("")
+					this.$('#commentreply' + id).hide()
+
+					var newModel = new CommentModel(attributes) //shouldn't have to input this data into the model twice
+					this.hideUserInput()
+					//child{{model.name}}
+					// var comment = new CommentView({
+					// 	model: newModel,
+					// 	id: newModel.get('id'),
+					// 	strategy: "prepend",
+					// 	root: ".child" + this.model.get('name') //append this comment to the end of this at the child
+					// })		
+					this.$('.child' + id).prepend(commentTmpl({
+						model: newModel.attributes
+					}))
+
+				} else {
+					this.$('.status' + id).html('error ' + data)
+				}
+			}, //hides the comment reply textbox
+			cancelComment: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var target = this.$(e.currentTarget)
+				var id = target.data('id')
+				this.$('#commentreply' + id).hide()
+			},
 			renderComments: function(collection, selector) {
 				var self = this;
 				collection.each(function(model) {
