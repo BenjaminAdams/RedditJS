@@ -175,10 +175,10 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 
 				this.api("/api/comment", 'POST', params, function(data) {
 					console.log("comment done", data)
-					self.commentMainCallback(data)
+					self.commentCallback(data)
 				});
 			}, //callback after trying to write a comment
-			commentMainCallback: function(data) {
+			commentCallback: function(data) {
 				console.log('callback comment=', data)
 				CommentModel = require('model/comment') //in order to have nested models inside of models we need to do this
 				CommentView = require('view/comment-view') //in cases of recursion its ok!
@@ -263,6 +263,22 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				c = probe.innerHTML.replace(/imga/gi, "img");
 				return c.replace(/<\/img>/gi, "");
 			}, //shows the user markdown help 
+			showMdHelp: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+
+				var mdHelp = '<p></p><p>reddit uses a slightly-customized version of <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> for formatting. See below for some basics, or check <a href="/wiki/commenting">the commenting wiki page</a> for more detailed help and solutions to common issues.</p><p></p><table class="md"><tbody><tr style="background-color: #ffff99;text-align: center"><td><em>you type:</em></td><td><em>you see:</em></td></tr><tr><td>*italics*</td><td><em>italics</em></td></tr><tr><td>**bold**</td><td><b>bold</b></td></tr><tr><td>[reddit!](http://reddit.com)</td><td><a href="http://reddit.com">reddit!</a></td></tr><tr><td>* item 1<br>* item 2<br>* item 3</td><td><ul><li>item 1</li><li>item 2</li><li>item 3</li></ul></td></tr><tr><td>>quoted text</td><td><blockquote>quoted text</blockquote></td></tr><tr><td>Lines starting with four spaces<br>are treated like code:<br><br><span class="spaces">    </span>if 1 * 2 <3:<br><span class="spaces">        </span>print "hello, world!"<br></td><td>Lines starting with four spaces<br>are treated like code:<br><pre>if 1 * 2 <3:<br>    print "hello, world!"</pre></td></tr><tr><td>~~strikethrough~~</td><td><strike>strikethrough</strike></td></tr><tr><td>super^script</td><td>super<sup>script</sup></td></tr></tbody></table></div></div></form>'
+				this.$('#mdHelp' + this.model.get('id')).html(mdHelp).show()
+				this.$('#mdHelpShow' + this.model.get('id')).hide()
+				this.$('#mdHelpHide' + this.model.get('id')).show()
+			},
+			hideMdHelp: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				this.$('#mdHelpShow' + this.model.get('id')).show()
+				this.$('#mdHelpHide' + this.model.get('id')).hide()
+				this.$('#mdHelp' + this.model.get('id')).html('')
+			},
 
 			//so users can report spam
 			reportShow: function(e) {

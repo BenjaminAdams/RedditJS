@@ -83,7 +83,6 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 			}
 
 			this.attributes = data
-
 		},
 
 	});

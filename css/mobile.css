@@ -23,11 +23,7 @@ z-index: 100;
 }
 */
 
-#main {
-	min-width:400px;
-}
-
-.singlePostPage .entry {
+.entry {
 overflow: visible;
 }
 
@@ -37,7 +33,6 @@ margin-left: 0px;
 .comment, .content .details {
 margin-left: 3px;
 }
-
 
 .large-thumb .thing {
 

@@ -14,7 +14,7 @@ It then creates the output in the `target` folder
 
 
 
-####RedditJS is built with:
+####RedditJS is built with :
  * Backbone.js <https://github.com/jashkenas/backbone>
  * Underscore.js <https://github.com/jashkenas/underscore>
  * Require.js <http://requirejs.org/>

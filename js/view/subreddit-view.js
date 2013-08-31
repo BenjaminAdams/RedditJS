@@ -19,7 +19,8 @@ define([
 			},
 
 			initialize: function(options) {
-
+				//$(this.el).empty()
+				//this.$el.empty()
 				this.$('#siteTable').empty()
 				_.bindAll(this);
 				var self = this;
@@ -185,7 +186,7 @@ define([
 			},
 
 			appendPosts: function(models) {
-				this.start = new Date();
+				console.log(models)
 				models.each(function(model) {
 					if (model.get('title') != null) {
 						if (this.gridOption == "small") {
@@ -218,12 +219,9 @@ define([
 					}
 				}, this);
 				this.resize()
-				this.end = new Date();;
-				console.log("end of subreddit parse=", this.end - this.start)
 
 			},
 			gotNewPosts: function(models, res) {
-
 				this.$('.loading').hide()
 
 				if (typeof res.data.children.length === 'undefined') {

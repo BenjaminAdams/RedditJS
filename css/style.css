@@ -19,6 +19,12 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
+.panestack-title {
+margin: 10px 10px 0 10px;
+padding-bottom: 3px;
+border-bottom: 1px dotted #808080;
+}
+
 
 #header-bottom-right .separator {
 	margin: 0ex;
@@ -201,17 +207,4 @@ display: none;
 
 .usertext-edit {
 	margin-left:15px;
-}
-
-
-.morecomments {
-font-size: 12px;
- font-weight: bold;
- margin:20px;
-}
-
-.panestack-title {
-margin: 10px 10px 0 10px;
-padding-bottom: 3px;
-border-bottom: 1px dotted #808080;
 }
