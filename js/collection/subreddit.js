@@ -38,9 +38,9 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 				//if user is NOT logged in, use jsonp request
 				if (this.subName == "front") {
 
-					return "http://api.reddit.com/" + this.sortOrder + ".json?&after=" + this.after + "&jsonp=?"
+					return "http://api.reddit.com/" + this.sortOrder + ".json?after=" + this.after + "&jsonp=?"
 				} else {
-					return "http://api.reddit.com/" + this.sortOrder + ".json?&after=" + this.after + "&jsonp=?"
+					return "http://api.reddit.com/r/" + this.subName + "/" + this.sortOrder + ".json?after=" + this.after + "&jsonp=?"
 					//return '/api/?url=r/' + this.subName + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
 				}
 			}
