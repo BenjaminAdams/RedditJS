@@ -9,7 +9,8 @@ define([
 			events: function() {
 				var _events = {
 					//'click .tabmenu-right li': 'changeGridOption',
-					'click #retry': 'tryAgain'
+					'click #retry': 'tryAgain',
+					'click .thumbnailSmall': 'gotoSingle'
 
 				};
 				//console.log('click .upArrow' + this.options.id)
@@ -97,11 +98,13 @@ define([
 				//Backbone.View.prototype.remove.apply(this, arguments);
 			},
 
-			/**************Routing functions ****************/
-			// clickedInteralLink: function(e) {
-			// 	console.log("I clicked a link yo")
+			gotoSingle: function(e) {
+				var name = this.$(e.currentTarget).data('id')
+				window.curModel = this.collection.findWhere({
+					name: name
+				})
+			},
 
-			// },
 			/**************Grid functions ****************/
 			initGridOption: function() {
 				/*grid option:
@@ -192,6 +195,7 @@ define([
 				models.each(function(model) {
 					if (model.get('title') != null) {
 						if (this.gridOption == "small") {
+							//its faster to just render the template with no view
 							this.$('#siteTable').append(PostViewSmallTpl({
 								model: model.attributes
 							}))

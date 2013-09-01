@@ -32,7 +32,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				//this.changeActiveGrid($.cookie('gridOption')) //so we are highlighting the correct grid option on page load
 
 				if (this.checkIfLoggedIn() == true) {
-					console.log('starting to update the subreddits in the header init')
 					this.updateSubreddits()
 
 				}
