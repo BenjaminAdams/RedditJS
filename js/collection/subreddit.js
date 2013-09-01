@@ -9,7 +9,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			if (typeof this.sortOrder === 'undefined') {
 				this.sortOrder = 'hot' //the default sort order is hot
 			};
-			this.sortOrder = "/" + this.sortOrder //needs to start with a slash to be injected into the URL
+			//this.sortOrder = "/" + this.sortOrder //needs to start with a slash to be injected into the URL
 
 			console.log('sort order=', this.sortOrder)
 			this.count = 1
@@ -26,12 +26,25 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 		getUrl: function() {
 
-			if (this.subName == "front") {
-				return "/api/?url=" + this.sortOrder + ".json?after=" + this.after + "&cookie=" + $.cookie('reddit_session');
+			var username = $.cookie('username')
+			if (typeof username !== "undefined") {
+				if (this.subName == "front") {
+					return "/api/?url=" + this.sortOrder + ".json?after=" + this.after + "&cookie=" + $.cookie('reddit_session');
+				} else {
+
+					return '/api/?url=r/' + this.subName + "/" + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+				}
 			} else {
-				console.log('/api/?url=r/' + this.subName + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session'))
-				return '/api/?url=r/' + this.subName + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+				//if user is NOT logged in, use jsonp request
+				if (this.subName == "front") {
+
+					return "http://api.reddit.com/" + this.sortOrder + ".json?&after=" + this.after + "&jsonp=?"
+				} else {
+					return "http://api.reddit.com/" + this.sortOrder + ".json?&after=" + this.after + "&jsonp=?"
+					//return '/api/?url=r/' + this.subName + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+				}
 			}
+
 		},
 
 		parse: function(response) {

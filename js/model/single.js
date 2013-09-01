@@ -6,7 +6,13 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 
 		},
 		url: function() {
-			return "/api/?url=comments/" + this.id + ".json&cookie=" + $.cookie('reddit_session');
+			var username = $.cookie('username')
+			if (typeof username !== "undefined") {
+				return "/api/?url=comments/" + this.id + ".json&cookie=" + $.cookie('reddit_session');
+			} else {
+				//use jsonp if user is not logged in
+				return "http://api.reddit.com/comments/" + this.id + ".json?jsonp=?"
+			}
 		},
 		// Default attributes 
 		defaults: {
