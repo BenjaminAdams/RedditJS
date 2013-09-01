@@ -52,7 +52,9 @@ define([
 					console.log('loading collection from memory')
 					this.collection = window.subs[this.subID]
 					this.appendPosts(this.collection)
-
+					if (typeof this.collection !== 'undefined') {
+						$(window).scrollTop(this.collection.scroll)
+					}
 					//this.fetchMore();
 				}
 
@@ -245,8 +247,11 @@ define([
 			/**************Infinite Scroll functions ****************/
 			watchScroll: function(e) {
 				var self = this;
-
 				var triggerPoint = 1500; // 1500px from the bottom     
+
+				//keep the scrollheight in the collection so when we return to it, we can auto-move to it
+				//bad?
+				this.collection.scroll = $(window).scrollTop()
 
 				if ((($(window).scrollTop() + $(window).height()) + triggerPoint >= $(document).height()) && this.loading == false) {
 					this.loading = true
