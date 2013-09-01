@@ -1,57 +1,6 @@
 <div class="spacer">
             <form action="/search" id="search" name="search">
                 <input class='sidebarSearch' name="q" placeholder="search reddit" type="text">
-
-                <div class="infobar" id="searchexpando" style="display: none;">
-                    <label><input name="restrict_sr" type="checkbox">limit my
-                    search to /r/{{model.display_name}}</label>
-
-                    <div id="moresearchinfo">
-                        <a href="#" id="search_hidemore">[-]</a>
-
-                        <p>use the following search parameters to narrow your
-                        results:</p>
-
-                        <dl>
-                            <dt>subreddit:<em>subreddit</em></dt>
-
-                            <dd>find submissions in "subreddit"</dd>
-
-                            <dt>author:<em>username</em></dt>
-
-                            <dd>find submissions by "username"</dd>
-
-                            <dt>site:<em>example.com</em></dt>
-
-                            <dd>find submissions from "example.com"</dd>
-
-                            <dt>url:<em>text</em></dt>
-
-                            <dd>search for "text" in url</dd>
-
-                            <dt>selftext:<em>text</em></dt>
-
-                            <dd>search for "text" in self post contents</dd>
-
-                            <dt>self:yes (or self:no)</dt>
-
-                            <dd>include (or exclude) self posts</dd>
-
-                            <dt>nsfw:yes (or nsfw:no)</dt>
-
-                            <dd>include (or exclude) results marked as NSFW</dd>
-                        </dl>
-
-                        <p>e.g. <code>subreddit:aww site:imgur.com dog</code></p>
-
-                        <p><a href="http://www.reddit.com/wiki/search">see the
-                        search faq for details.</a></p>
-                    </div>
-
-                    <p><a href="http://www.reddit.com/wiki/search" id=
-                    "search_showmore">advanced search: by author,
-                    subreddit...</a></p>
-                </div>
             </form>
         </div>
 
@@ -66,8 +15,7 @@
         <div class="spacer">
             <div class="sidebox submit submit-link">
                 <div class="morelink">
-                    <a class="login-required" href=
-                    "http://www.reddit.com/r/{{model.display_name}}/submit">Submit a new link</a>
+                    <a class="login-required" href="http://www.reddit.com/r/{{model.display_name}}/submit">Submit a new link</a>
 
                     <div class="nub"></div>
                 </div>
@@ -77,8 +25,12 @@
         <div class="spacer">
             <div class="titlebox">
                 <h1 class="hover redditname"><a class="hover" href="/r/{{model.display_name}}/">{{model.display_name}}</a></h1>
-                <span class="subscribe-button fancy-toggle-button toggle" data-sr_name="{{model.display_name}}" style="">
-                <a class="option active remove login-required" href="#" tabindex="100">unsubscribe</a>
+                <span class="subscribe-button fancy-toggle-button toggle" data-sr_name="{{model.display_name}}" >
+                {{#if model.user_is_subscriber}}
+                        <a class="option active remove" href="#" tabindex="100">unsubscribe</a>
+                {{else}}
+                        <a class="option active add login-required" href="#" tabindex="100">subscribe</a>
+                {{/if}}
                 <a class="option add" href="#">subscribe</a></span><span class="subscribers"><span class="number">{{model.subscribers}}</span>
                 <span class="word">readers</span></span>
 

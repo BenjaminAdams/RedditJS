@@ -32,7 +32,8 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 			},
 			checkIfLoggedIn: function() {
 				var username = $.cookie('username')
-				if (typeof username == "string" && username.length > 2) {
+				console.log('username=', username)
+				if (typeof username !== "undefined") {
 					return true;
 				} else {
 					return false;
@@ -78,54 +79,58 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				this.api("api/vote", 'POST', params, function(data) {
 					console.log("vote done", data)
 				});
+
 			},
 			upvote: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
 
-				console.log('upvoting', this.model)
+				if (this.checkIfLoggedIn() == true) {
+					if (typeof this.model !== 'undefined' && this.model.get('likes') == false || this.model.get('likes') == null) {
+						console.log('upvoting', this.model)
+						this.vote(1, this.model.get('name'))
+						var id = this.model.get('id')
+						this.model.set('likes', true)
+						this.model.set('downmod', 'down')
+						this.model.set('upmod', 'upmod')
+						this.$('.midcol .dislikes').hide()
+						this.$('.midcol .likes').show()
+						this.$('.midcol .unvoted').hide()
 
-				if (typeof this.model !== 'undefined' && this.model.get('likes') == false || this.model.get('likes') == null) {
-					this.vote(1, this.model.get('name'))
-					var id = this.model.get('id')
-					this.model.set('likes', true)
-					this.model.set('downmod', 'down')
-					this.model.set('upmod', 'upmod')
-					this.$('.midcol .dislikes').hide()
-					this.$('.midcol .likes').show()
-					this.$('.midcol .unvoted').hide()
+						this.$('.upArrow' + id).addClass('upmod')
+						this.$('.upArrow' + id).removeClass('up')
+						this.$('.downArrow' + id).addClass('down')
+						this.$('.downArrow' + id).removeClass('downmod')
 
-					this.$('.upArrow' + id).addClass('upmod')
-					this.$('.upArrow' + id).removeClass('up')
-					this.$('.downArrow' + id).addClass('down')
-					this.$('.downArrow' + id).removeClass('downmod')
-
-				} else {
-					this.cancelVote()
+					} else {
+						this.cancelVote()
+					}
 				}
 			},
 			downvote: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				if (this.model.get('likes') == true || this.model.get('likes') == null) {
+				if (this.checkIfLoggedIn() == true) {
+					if (this.model.get('likes') == true || this.model.get('likes') == null) {
 
-					this.vote(-1, this.model.get('name'))
-					var id = this.model.get('id')
-					this.model.set('likes', false)
-					this.model.set('downmod', 'downmod')
-					this.model.set('upmod', 'up')
+						this.vote(-1, this.model.get('name'))
+						var id = this.model.get('id')
+						this.model.set('likes', false)
+						this.model.set('downmod', 'downmod')
+						this.model.set('upmod', 'up')
 
-					this.$('.midcol .dislikes').show()
-					this.$('.midcol .likes').hide()
-					this.$('.midcol .unvoted').hide()
+						this.$('.midcol .dislikes').show()
+						this.$('.midcol .likes').hide()
+						this.$('.midcol .unvoted').hide()
 
-					this.$('.upArrow' + id).addClass('up')
-					this.$('.upArrow' + id).removeClass('upmod')
-					this.$('.downArrow' + id).addClass('downmod')
-					this.$('.downArrow' + id).removeClass('down')
+						this.$('.upArrow' + id).addClass('up')
+						this.$('.upArrow' + id).removeClass('upmod')
+						this.$('.downArrow' + id).addClass('downmod')
+						this.$('.downArrow' + id).removeClass('down')
 
-				} else {
-					this.cancelVote()
+					} else {
+						this.cancelVote()
+					}
 				}
 			},
 			cancelVote: function() {

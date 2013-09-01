@@ -3,7 +3,9 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 		var SidebarView = BaseView.extend({
 			el: ".side",
 			events: {
-				'submit #search': 'gotoSearch'
+				'submit #search': 'gotoSearch',
+				'click .add': 'subscribe',
+				'click .remove': 'unsubscribe'
 			},
 
 			initialize: function(data) {
@@ -28,6 +30,38 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				// this.$() is a shortcut for this.$el.find().
 
 			},
+			subscribe: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var target = this.$(e.currentTarget)
+				target.removeClass('add').addClass('remove').html('unsubscribe')
+
+				var params = {
+					action: 'sub',
+					sr: this.model.get('name'),
+					uh: $.cookie('modhash'),
+				};
+
+				this.api("api/subscribe", 'POST', params, function(data) {
+					console.log("vote done", data)
+				});
+
+			},
+			unsubscribe: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				var target = this.$(e.currentTarget)
+				target.removeClass('remove').addClass('add').html('subscribe')
+				var params = {
+					action: 'unsub',
+					sr: this.model.get('name'),
+					uh: $.cookie('modhash'),
+				};
+				this.api("api/subscribe", 'POST', params, function(data) {
+					console.log("vote done", data)
+				});
+			},
+
 			gotoSearch: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
