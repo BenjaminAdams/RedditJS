@@ -27,9 +27,10 @@
                 <h1 class="hover redditname"><a class="hover" href="/r/{{model.display_name}}/">{{model.display_name}}</a></h1>
                 <span class="subscribe-button fancy-toggle-button toggle" data-sr_name="{{model.display_name}}" >
                 {{#if model.user_is_subscriber}}
-                        <a class="option active remove" href="#" tabindex="100">unsubscribe</a>
+                               <a class="option active remove" href="#" tabindex="100">unsubscribe</a>
                 {{else}}
-                        <a class="option active add login-required" href="#" tabindex="100">subscribe</a>
+                              <a class="option active add" href="#" tabindex="100">subscribe</a>    
+                    
                 {{/if}}
                 <a class="option add" href="#">subscribe</a></span><span class="subscribers"><span class="number">{{model.subscribers}}</span>
                 <span class="word">readers</span></span>

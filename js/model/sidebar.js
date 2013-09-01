@@ -9,11 +9,21 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 		},
 
 		url: function() {
-			if (this.subName == "front") {
-				//KEEP THIS IS A JSONP REQUEST!!
-				return 'http://api.reddit.com/.json?jsonp=?';
-			} else { //KEEP THIS IS A JSONP REQUEST!!
-				return "http://api.reddit.com/r/" + this.subName + "/about.json?jsonp=?"
+			var username = $.cookie('username')
+			if (typeof username !== "undefined") {
+				if (this.subName == "front") {
+
+					return 'http://api.reddit.com/.json?jsonp=?';
+				} else {
+					return "/api/?url=r/" + this.subName + "/about.json&cookie=" + $.cookie('reddit_session');
+				}
+			} else {
+
+				if (this.subName == "front") {
+					return 'http://api.reddit.com/.json?jsonp=?';
+				} else {
+					return "http://api.reddit.com/r/" + this.subName + "/about.json?jsonp=?"
+				}
 			}
 		},
 
@@ -43,19 +53,6 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 			return data;
 
 		},
-		//keep sidebar in local storage if we already got it once
-		// fetch: function(options) {
-		// 	if (localStorage && localStorage[this.subName]) {
-		// 		// do some stuff
-		// 		var sidebarStuff = JSON.parse(localStorage[this.subName])
-		// 		console.log(sidebarStuff)
-		// 		this.set(sidebarStuff)
-		// 	} else {
-		// 		this.constructor.__super__.fetch.apply(this, arguments);
-		// 		// Or (less flexible)
-		// 		//Backbone.Model.prototype.fetch.apply(this, arguments);
-		// 	}
-		// },
 
 		numberWithCommas: function(x) {
 			return x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");

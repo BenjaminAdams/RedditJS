@@ -39,6 +39,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				var params = {
 					action: 'sub',
 					sr: this.model.get('name'),
+					sr_name: this.model.get('name'),
 					uh: $.cookie('modhash'),
 				};
 
