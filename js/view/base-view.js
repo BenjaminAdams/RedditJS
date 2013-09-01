@@ -31,8 +31,8 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				}
 			},
 			checkIfLoggedIn: function() {
-			var username = $.cookie('username')
-			if (typeof username !== "undefined") {
+				var username = $.cookie('username')
+				if (typeof username !== "undefined") {
 					return true;
 				} else {
 					return false;
@@ -55,7 +55,7 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				console.log('scrolltop now')
 				$('html, body').animate({
 					scrollTop: 0
-				}, 600);
+				}, 150);
 			},
 			dynamicStylesheet: function(name) {
 				if (this.subName == 'front') {

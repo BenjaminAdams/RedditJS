@@ -188,19 +188,19 @@ define([
 			},
 
 			appendPosts: function(models) {
-				console.log(models)
+				this.start = new Date()
 				models.each(function(model) {
 					if (model.get('title') != null) {
 						if (this.gridOption == "small") {
-							// this.$('#siteTable').append(PostViewSmallTpl({
-							// 	model: model.attributes
-							// }))
-							var postview = new PostRowView({
-								root: "#siteTable",
-								id: model.get('id'),
-								model: model,
-								gridOption: this.gridOption
-							});
+							this.$('#siteTable').append(PostViewSmallTpl({
+								model: model.attributes
+							}))
+							// var postview = new PostRowView({
+							// 	root: "#siteTable",
+							// 	id: model.get('id'),
+							// 	model: model,
+							// 	gridOption: this.gridOption
+							// });
 						} else if (this.gridOption == "large") {
 
 							var postview = new PostRowView({
@@ -220,6 +220,8 @@ define([
 						}
 					}
 				}, this);
+				this.end = new Date()
+				console.log('single=', this.end - this.start)
 				this.resize()
 
 			},

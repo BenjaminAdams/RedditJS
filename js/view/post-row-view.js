@@ -3,22 +3,16 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
         var PostRowView = BaseView.extend({
             strategy: 'append',
 
-            events: function() {
-                var _events = {
-                    'click a': "gotoSingle",
-                };
-
-                _events['click #report' + this.options.id] = "reportShow";
-                _events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
-                _events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
-
-                _events['click #hide' + this.options.id] = "hidePost"; //user wants to hide this post
-                _events['click #save' + this.options.id] = "savePost"; //user wants to hide this post
-                _events['click #unsave' + this.options.id] = "unSavePost"; //user wants to hide this post
-
-                _events['click .upArrow' + this.options.id] = "upvote";
-                _events['click .downArrow' + this.options.id] = "downvote";
-                return _events;
+            events: {
+                'click a': "gotoSingle",
+                'click .upArrow': 'upvote',
+                'click .downArrow': 'downvote',
+                'click .save': 'savePost',
+                'click .unsave': 'unSavePost',
+                'click .hide': 'hidePost',
+                'click .report': 'reportShow',
+                'click .reportConfirmYes': 'reportYes',
+                'click .reportConfirmNo': 'reportShow'
             },
 
             initialize: function(data) {
@@ -49,7 +43,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
 
                 }
 
-            }
+            },
 
         });
         return PostRowView;
