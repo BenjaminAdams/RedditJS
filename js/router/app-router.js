@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'view/search-view', 'view/single', 'view/sidebar-view', 'view/user-sidebar-view', 'view/user-view', 'event/channel', 'backbone-queryparams'],
-    function(_, Backbone, SubredditView, HeaderView, SearchView, SingleView, SidebarView, UserSidebarView, UserView, channel) {
+define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'view/search-view', 'view/single', 'view/sidebar-view', 'event/channel', 'backbone-queryparams'],
+    function(_, Backbone, SubredditView, HeaderView, SearchView, SingleView, SidebarView, channel) {
 
         var AppRouter = Backbone.Router.extend({
 
@@ -81,14 +81,17 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
             },
 
             user: function(username, sortOrder) {
-                this.sidebar = new UserSidebarView({
-                    username: username,
-                })
+                require(['view/user-sidebar-view', 'view/user-view'], function(UserView, UserSidebarView) {
+                    this.sidebar = new UserSidebarView({
+                        username: username,
+                    })
 
-                var userView = new UserView({
-                    subName: username,
-                    sortOrder: sortOrder
+                    var userView = new UserView({
+                        subName: username,
+                        sortOrder: sortOrder
+                    });
                 });
+
             },
             message: function(username) {
 
