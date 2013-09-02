@@ -50,7 +50,9 @@ require.config({
         // 'async': {
         //     exports: 'async'
         // },
-        "cookie": ["jquery"]
+        "cookie": ["jquery"],
+        isotope: ["jquery"],
+
     },
 
     urlArgs: 'appversion=23',
@@ -87,6 +89,8 @@ require.config({
         //  'mosaicflow': 'lib/jquery-mosaicflow'
         // 'infinite-scroll': 'lib/infinitescroll'
         // 'lazy-img': 'lib/jquery.lazy-load',
+        //  masonry: 'lib/masonry.min'
+        isotope: 'lib/isotope'
     }
 });
 

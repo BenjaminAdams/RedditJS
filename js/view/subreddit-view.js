@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'hbs!template/post-row-grid', 'view/post-row-view', 'view/sidebar-view', 'view/base-view', 'collection/subreddit', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowGrid, PostRowView, SidebarView, BaseView, SubredditCollection, channel, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'hbs!template/post-row-grid', 'view/post-row-view', 'view/sidebar-view', 'view/base-view', 'collection/subreddit', 'event/channel', 'cookie', 'isotope'],
+	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowGrid, PostRowView, SidebarView, BaseView, SubredditCollection, channel, Cookie, Isotope) {
 		var SubredditView = BaseView.extend({
 
 			el: $(".content"),
@@ -37,6 +37,7 @@ define([
 				channel.on("subreddit:remove", this.remove, this);
 
 				this.render();
+
 				this.initGridOption();
 
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
@@ -107,6 +108,7 @@ define([
 
 			/**************Grid functions ****************/
 			initGridOption: function() {
+				var self = this
 				/*grid option:
 					normal - the default Reddit styling
 					small - small thumbnails in the page
@@ -117,10 +119,26 @@ define([
 					this.gridOption = 'normal'
 				} else if (this.gridOption == "large") {
 					this.resize()
-				} else if (this.gridOption == 'grid') {
-					this.setupBlocks()
+				}
+
+				this.isotopeStart()
+
+			},
+			isotopeStart: function() {
+				var self = this
+				if (this.gridOption == 'grid') {
+
+					$('.side').hide()
+					self.$('#siteTable').isotope({
+						itemSelector: '.block'
+					});
+					self.$('#siteTable').isotope('reloadItems');
+				} else {
+					$('.side').show()
+					this.$('#siteTable').isotope('destroy')
 				}
 			},
+
 			changeSortOrderCss: function() {
 				channel.trigger("header:updateSortOrder", this.sortOrder);
 			},
@@ -137,13 +155,12 @@ define([
 						newWidth = docWidth;
 					}
 					$('#dynamicWidth').html('<style> .large-thumb { width: ' + newWidth + 'px } </style>');
-				} else if (this.gridOption == 'grid') {
-					this.setupBlocks()
 				}
 
 			},
 
 			changeGridOption: function(data) {
+				var self = this
 				console.log('changing grid option=', data)
 				if (typeof data.gridOption === 'undefined') {
 					this.gridOption = $.cookie('gridOption');
@@ -151,50 +168,20 @@ define([
 				if (this.gridOption == data.gridOption) {
 					return; //do nothing if the user already clicked this once
 				}
+
 				this.gridOption = data.gridOption
 				$.cookie('gridOption', this.gridOption, {
 					path: '/'
 				});
+				this.isotopeStart()
 				//this.changeActiveGrid()
 				this.resetPosts()
 				if (this.name == "large") {
 					this.resize()
-				} else if (this.name == 'grid') {
-					this.setupBlocks()
 				}
+
 				this.appendPosts(this.collection)
 				this.helpFillUpScreen()
-			},
-			//for the grid layout
-			setupBlocks: function() {
-				console.log('setting up grid')
-				this.margin = 20; //space between grids
-				this.windowWidth = $(window).width();
-				this.colWidth = $('.block').outerWidth();
-				this.blocks = [];
-				this.colCount = Math.floor(this.windowWidth / (this.colWidth + this.margin * 2));
-				for (var i = 0; i < this.colCount; i++) {
-					this.blocks.push(this.margin);
-				}
-				this.positionBlocks();
-			},
-			positionBlocks: function() {
-				var self = this
-				$('.block').each(function() {
-					var min = self.getLeastTallColumn(self.blocks);
-					var index = $.inArray(min, self.blocks);
-					var leftPos = self.margin + (index * (self.colWidth + self.margin));
-					$(this).css({
-						'left': leftPos + 'px',
-						'top': min + 'px'
-					});
-					self.blocks[index] = min + $(this).outerHeight() + self.margin;
-				});
-			},
-			getLeastTallColumn: function(array) {
-
-				return Math.min.apply(Math, array);
-
 			},
 			resetPosts: function() {
 				//this.$('#siteTable').html(" ")
@@ -228,9 +215,12 @@ define([
 			},
 
 			appendPosts: function(models) {
+				var self = this
 				this.start = new Date()
+				var count = 0;
 				models.each(function(model) {
 					if (model.get('title') != null) {
+						count++;
 						if (this.gridOption == "small") {
 							//its faster to just render the template with no view
 							this.$('#siteTable').append(PostViewSmallTpl({
@@ -243,9 +233,25 @@ define([
 							// 	gridOption: this.gridOption
 							// });
 						} else if (this.gridOption == 'grid') {
-							this.$('#siteTable').append(PostRowGrid({
+
+							var newPost = $(PostRowGrid({
 								model: model.attributes
 							}))
+							var method = 'appended'
+							if (count < 5) {
+								method = 'insert'
+							}
+							newPost.imagesLoaded(function() {
+								//self.$('#siteTable').isotope(method, $(newPost));
+								if (self.$('#siteTable').hasClass('isotope')) {
+									self.$('#siteTable').append(newPost).isotope(method, newPost);
+								}
+								//self.$('#siteTable').append(newPost).isotope('insert', newPost);
+							});
+
+							// this.$('#siteTable').append(PostRowGrid({
+							// 	model: model.attributes
+							// }))
 						} else if (this.gridOption == "large") {
 
 							var postview = new PostRowView({
@@ -266,6 +272,7 @@ define([
 					}
 				}, this);
 
+				//this.isotopeStart()
 				this.end = new Date()
 				console.log('single=', this.end - this.start)
 				this.resize()

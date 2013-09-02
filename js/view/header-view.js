@@ -98,6 +98,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				this.$('#normal').removeClass('selected');
 				this.$('#small').removeClass('selected');
 				this.$('#large').removeClass('selected');
+				this.$('#grid').removeClass('selected');
 				this.$('#' + id).addClass('selected');
 			},
 
