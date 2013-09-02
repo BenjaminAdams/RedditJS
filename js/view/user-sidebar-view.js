@@ -10,7 +10,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/user-sideba
 				_.bindAll(this);
 				this.template = UserSidebarTmpl;
 				this.username = data.username
-				//this.dynamicStylesheet(" ")
+				this.dynamicStylesheet('paristexas') //setting this to a subreddit that does not have a stylesheet
 				this.model = new UserAboutModel(this.username)
 
 				this.model.fetch({
@@ -20,7 +20,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/user-sideba
 			},
 			loaded: function(response, sidebar) {
 				this.render()
-				console.log('usersidebar model=', this.model.attributes)
+				//console.log('usersidebar model=', this.model.attributes)
 			},
 			addFriend: function(e) {
 				e.preventDefault()

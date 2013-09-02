@@ -14,7 +14,7 @@ define([
 
 				_.bindAll(this);
 				var self = this;
-				this.subName = options.subName
+				this.subName = options.username
 				this.sortOrder = options.sortOrder
 				if (typeof this.sortOrder === 'undefined') {
 					this.sortOrder = 'new'
@@ -59,7 +59,7 @@ define([
 
 			/**************Fetching functions ****************/
 			appendPosts: function(models) {
-				//console.log(models)
+				console.log('userposts=', models)
 				models.each(function(model) {
 
 					var comment = new CommentView({

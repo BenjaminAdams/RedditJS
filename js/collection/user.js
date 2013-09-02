@@ -23,7 +23,7 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 		getUrl: function() {
 			//http://api.reddit.com/user/armastevs.json
 			if (this.after.length < 3) {
-
+				console.log('/api/?url=user/' + this.subName + ".json?sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session'))
 				return '/api/?url=user/' + this.subName + ".json?sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
 			} else {
 				return '/api/?url=user/' + this.subName + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
