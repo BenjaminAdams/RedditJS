@@ -8,6 +8,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/user-sideba
 			},
 			initialize: function(data) {
 				_.bindAll(this);
+				console.log('data=', data)
 				this.template = UserSidebarTmpl;
 				this.username = data.username
 				this.dynamicStylesheet('paristexas') //setting this to a subreddit that does not have a stylesheet

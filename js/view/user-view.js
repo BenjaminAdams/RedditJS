@@ -11,17 +11,19 @@ define([
 			initialize: function(options) {
 				//$(this.el).empty()
 				//this.$el.empty()
-
+				console.log('options=', options)
 				_.bindAll(this);
 				var self = this;
-				this.subName = options.username
+				this.username = options.username
 				this.sortOrder = options.sortOrder
+
 				if (typeof this.sortOrder === 'undefined') {
 					this.sortOrder = 'new'
 				}
 
+				//this model is to pass data into the template
 				this.model = new Backbone.Model({
-					subName: this.subName,
+					username: this.username,
 					sortOrder: this.sortOrder
 				})
 				this.template = UserTmpl
@@ -34,7 +36,7 @@ define([
 				$(this.el).append("<div class='loading'> </div>")
 
 				this.collection = new UserCollection({
-					subName: this.subName,
+					username: this.username,
 					sortOrder: this.sortOrder
 				});
 				this.fetchMore();

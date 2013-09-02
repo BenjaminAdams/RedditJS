@@ -4,7 +4,7 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 		initialize: function(data) {
 			_.bindAll(this);
 			this.after = ""
-			this.subName = data.subName
+			this.username = data.username
 			this.sortOrder = data.sortOrder
 			if (typeof this.sortOrder === 'undefined') {
 				this.sortOrder = 'new' //the default sort order is hot
@@ -23,10 +23,10 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 		getUrl: function() {
 			//http://api.reddit.com/user/armastevs.json
 			if (this.after.length < 3) {
-				console.log('/api/?url=user/' + this.subName + ".json?sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session'))
-				return '/api/?url=user/' + this.subName + ".json?sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+				console.log('/api/?url=user/' + this.username + ".json?sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session'))
+				return '/api/?url=user/' + this.username + ".json?sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
 			} else {
-				return '/api/?url=user/' + this.subName + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+				return '/api/?url=user/' + this.username + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
 			}
 		},
 		parse: function(response) {

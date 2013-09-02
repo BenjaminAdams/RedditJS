@@ -53,7 +53,7 @@ require.config({
         "cookie": ["jquery"]
     },
 
-    urlArgs: 'appversion=2',
+    urlArgs: 'appversion=23',
 
     // Libraries
     paths: {

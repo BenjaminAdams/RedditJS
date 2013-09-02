@@ -81,17 +81,17 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
             },
 
             user: function(username, sortOrder) {
-
-                require(['view/user-sidebar-view', 'view/user-view'], function(UserView, UserSidebarView) {
-                    this.sidebar = new UserSidebarView({
+                var self = this
+                require(['view/user-sidebar-view', 'view/user-view'], function(UserSidebarView, UserView) {
+                    self.sidebar = new UserSidebarView({
                         username: username,
                     })
+                    console.log('in router =', username + " " + sortOrder)
                     var userView = new UserView({
-                        subName: username,
+                        username: username,
                         sortOrder: sortOrder
                     });
                 });
-
             },
             message: function(username) {
 
