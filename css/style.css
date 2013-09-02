@@ -208,3 +208,27 @@ display: none;
 .usertext-edit {
 	margin-left:15px;
 }
+
+
+
+
+.block {
+	position: absolute;
+	background: #fff;
+	padding: 5px;
+	width: 300px;
+	border: 1px solid #ddd;
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.block img {
+	max-width:295px;
+}
