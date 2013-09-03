@@ -40,6 +40,11 @@ define([
 
 				this.initGridOption();
 
+				this.removed = false
+				this.imgsLoaded = 0
+				this.imgAry = new Array()
+				console.log('INIT subreddit')
+
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				console.log("window.subs=", window.subs)
 				if (typeof window.subs[this.subID] === 'undefined') {
@@ -86,6 +91,31 @@ define([
 			//we have to override the remove event because the window.scroll event will not be removed by the garbage collector
 			//cant create infinite scroll without this.
 			remove: function() {
+				var self = this
+				// this.$('#siteTable img').unbind();
+				// this.$(".block").each(function() {
+				// 	console.log(this)
+				// 	$(this).unbind('load.imagesLoaded')
+				// 	$(this).unbind('.imagesLoaded')
+				// 	$(this).off()
+				// 	$(this).unbind()
+				// 	$(this).remove()
+				// })
+
+				for (id in this.imgAry) {
+					//console.log($(id))
+					//console.log(self.imgAry[id])
+					//console.log('prev object', $(fn).prevObject)
+					//$(fn).remove()
+					//$(fn).prevObject.disable();
+					//self.imgAry[id].disable()
+					self.imgAry[id].remove()
+				}
+
+				this.removed = true
+				this.imgAry = null
+				this.imgAry = new Array()
+
 				$(window).off("scroll", this.watchScroll);
 				$(window).off('resize', this.debouncer);
 				channel.off("subreddit:changeGridOption", this.changeGridOption, this);
@@ -126,19 +156,38 @@ define([
 			},
 			isotopeStart: function() {
 				var self = this
+
 				if (this.gridOption == 'grid') {
 
 					$('.side').hide()
-					self.$('#siteTable').isotope({
-						itemSelector: '.block'
-					});
-					self.$('#siteTable').isotope('reloadItems');
+					$('#siteTable img').unbind('.imagesLoaded');
+					//calculate how many columns we will have
+					var colCount = Math.floor($(document).width() / 301)
+					console.log('doc width= ', $(document).width())
+					console.log('cols=', colCount)
+
+					for (var i = 0; i < colCount; i++) {
+						self.$('#siteTable').append('<div class="column"> </div>')
+					}
+
 				} else {
 					$('.side').show()
-					this.$('#siteTable').isotope('destroy')
+					this.$('#siteTable').html('')
 				}
 			},
-
+			shortestCol: function() {
+				var shortest = null
+				var count = 0
+				this.$('.column').each(function() {
+					if (shortest == null) {
+						shortest = $(this)
+					} else if ($(this).height() < shortest.height()) {
+						//console.log($(this).height(), shortest.height())
+						shortest = $(this)
+					}
+				});
+				return shortest;
+			},
 			changeSortOrderCss: function() {
 				channel.trigger("header:updateSortOrder", this.sortOrder);
 			},
@@ -154,7 +203,7 @@ define([
 					} else {
 						newWidth = docWidth;
 					}
-					$('#dynamicWidth').html('<style> .large-thumb { width: ' + newWidth + 'px } </style>');
+					$('#dynamicWidth ').html(' < style > .large - thumb {width: ' + newWidth + 'px} < /style>');
 				}
 
 			},
@@ -166,20 +215,22 @@ define([
 					this.gridOption = $.cookie('gridOption');
 				}
 				if (this.gridOption == data.gridOption) {
-					return; //do nothing if the user already clicked this once
+					return;
+					//do nothingif the user already clicked this once
 				}
 
 				this.gridOption = data.gridOption
 				$.cookie('gridOption', this.gridOption, {
 					path: '/'
 				});
-				this.isotopeStart()
+
 				//this.changeActiveGrid()
 				this.resetPosts()
+
 				if (this.name == "large") {
 					this.resize()
 				}
-
+				this.isotopeStart()
 				this.appendPosts(this.collection)
 				this.helpFillUpScreen()
 			},
@@ -213,14 +264,16 @@ define([
 					remove: false
 				});
 			},
-
-			appendPosts: function(models) {
+			appendPosts: function(collection) {
+				console.log(collection)
 				var self = this
 				this.start = new Date()
 				var count = 0;
-				models.each(function(model) {
+				var countSelfs = 0
+				collection.each(function(model) {
+
 					if (model.get('title') != null) {
-						count++;
+
 						if (this.gridOption == "small") {
 							//its faster to just render the template with no view
 							this.$('#siteTable').append(PostViewSmallTpl({
@@ -237,17 +290,37 @@ define([
 							var newPost = $(PostRowGrid({
 								model: model.attributes
 							}))
-							var method = 'appended'
-							if (count < 5) {
-								method = 'insert'
+
+							if (model.get('imgUrl')) {
+								count++;
+								//var $img = $('<img/>').bind('load error', this.appendBlock).attr('src', model.get('imgUrl')).appendTo(col);
+								self.imgAry[model.get('id')] = $('<img/>').one('load.imgloaded', function() {
+									console.log(++self.imgsLoaded, self.subID)
+
+									var col = self.shortestCol()
+									col.append(newPost);
+
+								}).attr('src', model.get('imgUrl'));
+							} else {
+								countSelfs++;
+								//do not add self posts or links
+								//var col = self.shortestCol()
+								//col.append(newPost);
 							}
-							newPost.imagesLoaded(function() {
-								//self.$('#siteTable').isotope(method, $(newPost));
-								if (self.$('#siteTable').hasClass('isotope')) {
-									self.$('#siteTable').append(newPost).isotope(method, newPost);
-								}
-								//self.$('#siteTable').append(newPost).isotope('insert', newPost);
-							});
+							// newPost.imagesLoaded(function() {
+							// 	//self.$('#siteTable').isotope(method, $(newPost));
+							// 	var colCount = self.$('#siteTable').children('.column').length
+							// 	if (colCount != 0) {
+
+							// 		//console.log(model.get('title'))
+							// 		var col = self.shortestCol()
+							// 		col.append(newPost);
+							// 		//var $img = $('<img/>').bind('load error', superFunction).attr('src', imageSrc).appendTo(container);
+
+							// 	}
+
+							// 	//self.$('#siteTable').append(newPost).isotope('insert', newPost);
+							// })
 
 							// this.$('#siteTable').append(PostRowGrid({
 							// 	model: model.attributes
@@ -272,10 +345,16 @@ define([
 					}
 				}, this);
 
-				//this.isotopeStart()
 				this.end = new Date()
 				console.log('single=', this.end - this.start)
 				this.resize()
+
+				if (this.gridOption == 'grid' && count == 0 && countSelfs > 0) {
+					//if the grid image finder did not find any images, we need to find some more!
+					console.log('found no images, searching for more')
+					this.$('.column:first-child').html('<div style="margin:20% 20%;font-size:20px;">no images found, switch views to see self posts and links</div>')
+
+				}
 
 			},
 			gotNewPosts: function(models, res) {
