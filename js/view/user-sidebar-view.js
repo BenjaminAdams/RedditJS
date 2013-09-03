@@ -18,6 +18,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/user-sideba
 					success: this.loaded
 				});
 
+				this.$el.show()
+
 			},
 			loaded: function(response, sidebar) {
 				this.render()

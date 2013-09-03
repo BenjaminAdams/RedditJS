@@ -94,7 +94,12 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 });
             },
             message: function(username) {
-
+                console.log('msgview', username)
+                require(['view/message-view'], function(MessageView) {
+                    var messageView = new MessageView({
+                        username: username,
+                    });
+                });
             },
 
             subreddits: function() {
