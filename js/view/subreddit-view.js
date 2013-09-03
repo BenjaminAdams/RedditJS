@@ -92,29 +92,8 @@ define([
 			//cant create infinite scroll without this.
 			remove: function() {
 				var self = this
-				// this.$('#siteTable img').unbind();
-				// this.$(".block").each(function() {
-				// 	console.log(this)
-				// 	$(this).unbind('load.imagesLoaded')
-				// 	$(this).unbind('.imagesLoaded')
-				// 	$(this).off()
-				// 	$(this).unbind()
-				// 	$(this).remove()
-				// })
 
-				for (id in this.imgAry) {
-					//console.log($(id))
-					//console.log(self.imgAry[id])
-					//console.log('prev object', $(fn).prevObject)
-					//$(fn).remove()
-					//$(fn).prevObject.disable();
-					//self.imgAry[id].disable()
-					self.imgAry[id].remove()
-				}
-
-				this.removed = true
-				this.imgAry = null
-				this.imgAry = new Array()
+				this.removePendingGrid()
 
 				$(window).off("scroll", this.watchScroll);
 				$(window).off('resize', this.debouncer);
@@ -127,6 +106,14 @@ define([
 
 				//call the superclass remove method
 				//Backbone.View.prototype.remove.apply(this, arguments);
+			},
+			//the image callback from waiting it to be loaded before being display
+			//this needs to get removed or it will add images everywhere
+			removePendingGrid: function() {
+				var self = this
+				for (id in this.imgAry) {
+					self.imgAry[id].remove()
+				}
 			},
 
 			gotoSingle: function(e) {
@@ -151,10 +138,10 @@ define([
 					this.resize()
 				}
 
-				this.isotopeStart()
+				this.gridViewSetup()
 
 			},
-			isotopeStart: function() {
+			gridViewSetup: function() {
 				var self = this
 
 				if (this.gridOption == 'grid') {
@@ -173,6 +160,7 @@ define([
 				} else {
 					$('.side').show()
 					this.$('#siteTable').html('')
+					this.resize()
 				}
 			},
 			shortestCol: function() {
@@ -195,6 +183,7 @@ define([
 			resize: function() {
 				var mobileWidth = 1000; //when to change to mobile CSS
 				if (this.gridOption == "large") {
+					$('.side').hide()
 					//change css of 
 					var docWidth = $(document).width()
 					var newWidth = 0;
@@ -210,7 +199,6 @@ define([
 
 			changeGridOption: function(data) {
 				var self = this
-				console.log('changing grid option=', data)
 				if (typeof data.gridOption === 'undefined') {
 					this.gridOption = $.cookie('gridOption');
 				}
@@ -218,6 +206,7 @@ define([
 					return;
 					//do nothingif the user already clicked this once
 				}
+				this.removePendingGrid()
 
 				this.gridOption = data.gridOption
 				$.cookie('gridOption', this.gridOption, {
@@ -230,7 +219,7 @@ define([
 				if (this.name == "large") {
 					this.resize()
 				}
-				this.isotopeStart()
+				this.gridViewSetup()
 				this.appendPosts(this.collection)
 				this.helpFillUpScreen()
 			},
