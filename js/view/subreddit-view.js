@@ -40,10 +40,7 @@ define([
 
 				this.initGridOption();
 
-				this.removed = false
-				this.imgsLoaded = 0
 				this.imgAry = new Array()
-				console.log('INIT subreddit')
 
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				console.log("window.subs=", window.subs)
@@ -254,7 +251,6 @@ define([
 				});
 			},
 			appendPosts: function(collection) {
-				console.log(collection)
 				var self = this
 				this.start = new Date()
 				var count = 0;
@@ -284,7 +280,6 @@ define([
 								count++;
 								//var $img = $('<img/>').bind('load error', this.appendBlock).attr('src', model.get('imgUrl')).appendTo(col);
 								self.imgAry[model.get('id')] = $('<img/>').one('load.imgloaded', function() {
-									console.log(++self.imgsLoaded, self.subID)
 
 									var col = self.shortestCol()
 									col.append(newPost);
