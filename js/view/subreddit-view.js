@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'hbs!template/post-row-grid', 'view/post-row-view', 'view/sidebar-view', 'view/base-view', 'collection/subreddit', 'event/channel', 'cookie', 'isotope'],
-	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowGrid, PostRowView, SidebarView, BaseView, SubredditCollection, channel, Cookie, Isotope) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'hbs!template/post-row-grid', 'view/post-row-view', 'view/sidebar-view', 'view/base-view', 'collection/subreddit', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowGrid, PostRowView, SidebarView, BaseView, SubredditCollection, channel, Cookie) {
 		var SubredditView = BaseView.extend({
 
 			el: $(".content"),
@@ -282,8 +282,9 @@ define([
 								self.imgAry[model.get('id')] = $('<img/>').one('load.imgloaded', function() {
 
 									var col = self.shortestCol()
-									col.append(newPost);
-
+									if (col) {
+										col.append(newPost);
+									}
 								}).attr('src', model.get('imgUrl'));
 							} else {
 								countSelfs++;
@@ -381,7 +382,7 @@ define([
 				//this.prevScrollY = scrollY;
 			},
 			helpFillUpScreen: function() {
-				if (this.collection.length < 301 && this.gridOption == 'small') {
+				if (this.collection.length < 301 && (this.gridOption == 'small' || this.gridOption == 'grid')) {
 					this.watchScroll()
 				}
 			}

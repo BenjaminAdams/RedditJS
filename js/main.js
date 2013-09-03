@@ -51,7 +51,7 @@ require.config({
         //     exports: 'async'
         // },
         "cookie": ["jquery"],
-        isotope: ["jquery"],
+        //  isotope: ["jquery"],
 
     },
 
@@ -90,7 +90,7 @@ require.config({
         // 'infinite-scroll': 'lib/infinitescroll'
         // 'lazy-img': 'lib/jquery.lazy-load',
         //  masonry: 'lib/masonry.min'
-        isotope: 'lib/isotope'
+        //    isotope: 'lib/isotope'
     }
 });
 
