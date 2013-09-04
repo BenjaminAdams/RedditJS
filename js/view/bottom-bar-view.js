@@ -18,6 +18,7 @@
  			initialize: function(options) {
  				//$(this.el).empty()
  				this.$el.empty()
+ 				this.$el.css('left', 0) //sets the position to the start of the bar
 
  				_.bindAll(this);
  				var self = this;
