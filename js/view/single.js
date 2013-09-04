@@ -41,6 +41,7 @@ define([
 				if (typeof window.curModel === 'undefined') {
 					this.fetchComments(this.loaded)
 				} else {
+					console.log('loading a model from memory')
 					//this is what we do when we pass in a model with out the comments
 					this.model = window.curModel
 					delete window.curModel; //memory management

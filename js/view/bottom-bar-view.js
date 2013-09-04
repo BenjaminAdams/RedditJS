@@ -8,7 +8,8 @@
 
  			events: {
  				'mousemove': 'scrollBottomBar',
- 				'mouseleave': 'stopScrolling'
+ 				'mouseleave': 'stopScrolling',
+ 				'click .thumbnailSmall': 'gotoSingle'
  				//'click .tabmenu-right li': 'changeGridOption',
  				//'click #retry': 'tryAgain',
  				//'click .thumbnailSmall': 'gotoSingle'
@@ -134,9 +135,13 @@
  				var self = this
  				this.$el.show()
  				collection.each(function(model) {
- 					var str = '<a data-id="' + model.get('name') + '" class="thumbnailSmall" ' + model.get('external') + ' href="' + model.get('url') + '" target="_blank"><img src="' + model.get('thumbnail') + '" ></a>'
- 					this.$('#bottom-bar').append(str)
+ 					var thumbnail = model.get('thumbnail')
+ 					console.log(thumbnail)
+ 					if (typeof thumbnail !== 'undefined') {
 
+ 						var str = '<a data-id="' + model.get('name') + '" class="thumbnailSmall" ' + model.get('external') + ' href="' + model.get('url') + '" target="_blank"><img src="' + model.get('thumbnail') + '" ></a>'
+ 						this.$('#bottom-bar').append(str)
+ 					}
  					// this.$('#bottom-bar').append(PostViewSmallTpl({
  					// 	model: model.attributes
  					// }))
@@ -167,6 +172,13 @@
  				window.subs[this.subID] = this.collection
 
  			},
+ 			gotoSingle: function(e) {
+ 				var name = this.$(e.currentTarget).data('id')
+ 				window.curModel = this.collection.findWhere({
+ 					name: name
+ 				})
+ 			},
+
  		});
  		return SubredditView;
  	});
