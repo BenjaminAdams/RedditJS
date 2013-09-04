@@ -40,9 +40,12 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     channel.trigger("subreddit:remove") //clear old subreddit views
                     channel.trigger("single:remove") //clear old subreddit views
 
-                    if (name != 'single') {
+                    if (name != 'single') { //hide the bottom bar if not in single view
                         $("#bottom-bar").hide()
                     }
+
+                    $('#imgCache').empty() //flush the image thumbnail cache
+
                     //end middleware functions
                     callback.apply(router, arguments); //call the actual route
                 };

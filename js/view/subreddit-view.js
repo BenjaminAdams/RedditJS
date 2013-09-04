@@ -109,6 +109,8 @@ define([
 			removePendingGrid: function() {
 				var self = this
 				for (id in this.imgAry) {
+					//console.log(self.imgAry[id])
+					//delete self.imgAry[id]
 					self.imgAry[id].remove()
 				}
 			},
@@ -272,6 +274,10 @@ define([
 							// });
 						} else if (this.gridOption == 'grid') {
 
+							if (model.get('thumbnail') != 'undefined') {
+								$('#imgCache').append('<img src="' + model.get('thumbnail') + '" />')
+							}
+
 							var newPost = $(PostRowGrid({
 								model: model.attributes
 							}))
@@ -279,37 +285,24 @@ define([
 							if (model.get('imgUrl')) {
 								count++;
 								//var $img = $('<img/>').bind('load error', this.appendBlock).attr('src', model.get('imgUrl')).appendTo(col);
-								self.imgAry[model.get('id')] = $('<img/>').one('load.imgloaded', function() {
+								self.imgAry[model.get('id')] = $('<img/>').one('load', function() {
 
 									var col = self.shortestCol()
 									if (col) {
 										col.append(newPost);
 									}
+
 								}).attr('src', model.get('imgUrl'));
+
 							} else {
 								countSelfs++;
 								//do not add self posts or links
 								//var col = self.shortestCol()
 								//col.append(newPost);
 							}
-							// newPost.imagesLoaded(function() {
-							// 	//self.$('#siteTable').isotope(method, $(newPost));
-							// 	var colCount = self.$('#siteTable').children('.column').length
-							// 	if (colCount != 0) {
 
-							// 		//console.log(model.get('title'))
-							// 		var col = self.shortestCol()
-							// 		col.append(newPost);
-							// 		//var $img = $('<img/>').bind('load error', superFunction).attr('src', imageSrc).appendTo(container);
+							//$('<img/>').attr('src', model.get('thumbnail')); //preload thumbnails
 
-							// 	}
-
-							// 	//self.$('#siteTable').append(newPost).isotope('insert', newPost);
-							// })
-
-							// this.$('#siteTable').append(PostRowGrid({
-							// 	model: model.attributes
-							// }))
 						} else if (this.gridOption == "large") {
 
 							var postview = new PostRowView({
@@ -383,6 +376,10 @@ define([
 			},
 			helpFillUpScreen: function() {
 				if (this.collection.length < 301 && (this.gridOption == 'small' || this.gridOption == 'grid')) {
+					this.watchScroll()
+				}
+
+				if (this.collection.length < 55 && this.gridOption == 'grid') {
 					this.watchScroll()
 				}
 			}

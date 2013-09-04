@@ -1,4 +1,9 @@
 
+#main {
+   padding-bottom:100px;
+}
+
+
 .loading {
 height: 50px;
 position:relative;
@@ -252,7 +257,7 @@ margin:3px 3px 0px 0px;
 }
 
 
-
+/* Bottom bar */
 #bottom-bar {
 position:fixed;
 bottom:0px;
@@ -275,4 +280,8 @@ padding: 0px 0px 5px 5px;
   -moz-opacity: 0.18;
   -khtml-opacity: 0.18;
   opacity: 0.18;
+}
+
+#imgCache {
+  display:none;
 }
