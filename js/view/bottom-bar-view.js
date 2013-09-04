@@ -52,6 +52,7 @@
  				var self = this
  				if (this.scrolling == false) {
  					this.scrolling = true
+ 					clearTimeout(this.userLeftTimeout)
  					var currentLeft = $('#bottom-bar').css('left').replace('px', '')
  					console.log('curleft=', currentLeft)
  					var centerScreen = $(document).width() / 2
@@ -64,6 +65,11 @@
  					} else {
  						//$('#bottom-bar').css('left', '-=10');
  						this.setScrollInt('right', '-=5', e.clientX)
+ 					}
+
+ 					//toggle transparency only if it does not exist
+ 					if (this.$el.hasClass("transparent")) {
+ 						this.$el.removeClass('transparent')
  					}
 
  					setTimeout(function() {
@@ -99,7 +105,16 @@
  				}
  			},
  			stopScrolling: function() {
+ 				var self = this
  				this.setScrollInt('stop')
+
+ 				this.userLeftTimeout = setTimeout(function() {
+ 					if (!self.$el.hasClass("transparent")) {
+ 						self.$el.addClass('transparent')
+ 					}
+
+ 				}, 1500);
+
  			},
  			fetchMore: function() {
  				this.collection.fetch({

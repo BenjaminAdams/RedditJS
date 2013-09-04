@@ -265,5 +265,14 @@ display:none;
 background-color:#CEE3F8;
 border-top: 1px solid #5F99CF;
 border-bottom: 1px solid #5F99CF;
-padding-bottom:2px;
+padding: 0px 0px 5px 5px;
+}
+
+.transparent {
+    zoom: 1; /* gives the object layout */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=18)";
+  filter: alpha(opacity=18);
+  -moz-opacity: 0.18;
+  -khtml-opacity: 0.18;
+  opacity: 0.18;
 }
