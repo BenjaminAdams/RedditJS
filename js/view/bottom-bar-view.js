@@ -25,6 +25,9 @@
  				this.sortOrder = 'hot'
  				this.subID = this.subName + this.sortOrder
 
+ 				this.loading = false; //keeps track if we are loading more posts or not
+ 				this.scrolling = false; //timer for when the users movement over the bottom bar
+ 				this.guessedWidth = 0 //calculated later by how many posts are in the scrollbar
  				//this.render();
 
  				if (typeof window.subs[this.subID] === 'undefined') {
@@ -42,10 +45,6 @@
  					//this.fetchMore();
  				}
 
- 				this.loading = false;
- 				this.scrolling = false; //timer for when the users movement over the bottom bar
- 				this.guessedWidth = 0 //calculated later by how many posts are in the scrollbar
-
  			},
  			//only scroll every few milaseconds in an interval
  			scrollBottomBar: function(e) {
@@ -54,8 +53,8 @@
  					this.scrolling = true
  					clearTimeout(this.userLeftTimeout)
  					var currentLeft = $('#bottom-bar').css('left').replace('px', '')
- 					console.log('curleft=', currentLeft)
  					var centerScreen = $(document).width() / 2
+
  					if (centerScreen > e.clientX) {
  						//if (currentLeft < 0) {
  						//only scroll left when not at the start
@@ -95,9 +94,13 @@
  						if (direction == 'left' && currentLeft < 0) {
  							$('#bottom-bar').css('left', amount);
  						} else if (direction == 'right') {
- 							console.log('gw=', self.guessedWidth)
+
  							if (self.guessedWidth < currentLeft) {
  								$('#bottom-bar').css('left', amount);
+ 							} else {
+ 								if (self.loading == false) {
+ 									self.fetchMore()
+ 								}
  							}
  						}
 
@@ -117,10 +120,14 @@
 
  			},
  			fetchMore: function() {
- 				this.collection.fetch({
- 					success: this.gotNewPosts,
- 					remove: false
- 				});
+ 				if (this.loading == false) {
+ 					console.log('fetching MOAR')
+ 					this.loading = true
+ 					this.collection.fetch({
+ 						success: this.gotNewPosts,
+ 						remove: false
+ 					});
+ 				}
  			},
  			appendPosts: function(collection) {
  				var self = this
@@ -128,12 +135,16 @@
  				collection.each(function(model) {
  					var str = '<a data-id="' + model.get('name') + '" class="thumbnailSmall" ' + model.get('external') + ' href="' + model.get('url') + '" target="_blank"><img src="' + model.get('thumbnail') + '" ></a>'
  					this.$('#bottom-bar').append(str)
+
  					// this.$('#bottom-bar').append(PostViewSmallTpl({
  					// 	model: model.attributes
  					// }))
  				})
  				this.guessedWidth = -(this.collection.length * 87)
 
+ 			},
+ 			show: function() {
+ 				this.$el.show()
  			},
  			gotNewPosts: function(models, res) {
 

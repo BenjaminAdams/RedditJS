@@ -81,10 +81,14 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     id: id,
                 });
 
-                this.bottomBar = new BottomBarView({
-                    subName: subName,
-                    id: id,
-                })
+                if (typeof this.bottomBar === 'undefined' || this.bottomBar.subName != subName) { //only update btm bar if the subreddit changes
+                    this.bottomBar = new BottomBarView({
+                        subName: subName,
+                        id: id,
+                    })
+                } else {
+                    this.bottomBar.show()
+                }
 
             },
 
