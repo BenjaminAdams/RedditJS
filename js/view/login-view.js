@@ -2,8 +2,9 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 	function($, _, Backbone, Resthub, BaseView, LogInTmpl, channel, Cookie) {
 		var LoginView = BaseView.extend({
 			events: {
-				'click .theLoginBtn': 'login',
+				//'click .theLoginBtn': 'login',
 				//'click .logout': 'logout',
+				'submit #login_login-main': 'login',
 			},
 			initialize: function(data) {
 				_.bindAll(this);
@@ -17,9 +18,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 				}
 
 				channel.on("logout", this.logout, this);
-				//this.model = new SidebarModel(data.subName)
-
-				// this.$() is a shortcut for this.$el.find().
 
 			},
 			login: function(e) {
