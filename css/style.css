@@ -250,3 +250,20 @@ margin:3px 3px 0px 0px;
 	display: inline-block;
 	vertical-align: top;
 }
+
+
+
+#bottom-bar {
+position:fixed;
+bottom:0px;
+left:1px;
+height:70px;
+width: 99999px;
+overflow: hidden;
+
+display:none;
+background-color:#CEE3F8;
+border-top: 1px solid #5F99CF;
+border-bottom: 1px solid #5F99CF;
+padding-bottom:2px;
+}

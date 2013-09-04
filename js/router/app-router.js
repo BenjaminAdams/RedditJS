@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'view/search-view', 'view/single', 'view/sidebar-view', 'event/channel', 'backbone-queryparams'],
-    function(_, Backbone, SubredditView, HeaderView, SearchView, SingleView, SidebarView, channel) {
+define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'view/search-view', 'view/single', 'view/sidebar-view', 'view/bottom-bar-view', 'event/channel', 'backbone-queryparams'],
+    function(_, Backbone, SubredditView, HeaderView, SearchView, SingleView, SidebarView, BottomBarView, channel) {
 
         var AppRouter = Backbone.Router.extend({
 
@@ -40,6 +40,9 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     channel.trigger("subreddit:remove") //clear old subreddit views
                     channel.trigger("single:remove") //clear old subreddit views
 
+                    if (name != 'single') {
+                        $("#bottom-bar").hide()
+                    }
                     //end middleware functions
                     callback.apply(router, arguments); //call the actual route
                 };
@@ -77,6 +80,11 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     subName: subName,
                     id: id,
                 });
+
+                this.bottomBar = new BottomBarView({
+                    subName: subName,
+                    id: id,
+                })
 
             },
 
