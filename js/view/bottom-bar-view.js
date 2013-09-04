@@ -7,7 +7,8 @@
  			//template: subredditTmpl,
 
  			events: {
- 				'mousemove': 'scrollBottomBar'
+ 				'mousemove': 'scrollBottomBar',
+ 				'mouseleave': 'stopScrolling'
  				//'click .tabmenu-right li': 'changeGridOption',
  				//'click #retry': 'tryAgain',
  				//'click .thumbnailSmall': 'gotoSingle'
@@ -23,8 +24,6 @@
  				this.subName = options.subName
  				this.sortOrder = 'hot'
  				this.subID = this.subName + this.sortOrder
-
- 				this.scrolling = false
 
  				//this.render();
 
@@ -44,6 +43,8 @@
  				}
 
  				this.loading = false;
+ 				this.scrolling = false; //timer for when the users movement over the bottom bar
+ 				this.guessedWidth = 0 //calculated later by how many posts are in the scrollbar
 
  			},
  			//only scroll every few milaseconds in an interval
@@ -51,25 +52,54 @@
  				var self = this
  				if (this.scrolling == false) {
  					this.scrolling = true
- 					var currentLeft = $('#bottom-bar').css('left')
-
- 					currentLeft = currentLeft.replace('px', '')
+ 					var currentLeft = $('#bottom-bar').css('left').replace('px', '')
  					console.log('curleft=', currentLeft)
  					var centerScreen = $(document).width() / 2
  					if (centerScreen > e.clientX) {
- 						if (currentLeft < 0) {
- 							$('#bottom-bar').css('left', '+=10');
- 						}
+ 						//if (currentLeft < 0) {
+ 						//only scroll left when not at the start
+ 						//$('#bottom-bar').css('left', '+=10');
+ 						this.setScrollInt('left', '+=5', e.clientX)
+ 						//}
  					} else {
- 						$('#bottom-bar').css('left', '-=10');
+ 						//$('#bottom-bar').css('left', '-=10');
+ 						this.setScrollInt('right', '-=5', e.clientX)
  					}
 
  					setTimeout(function() {
  						self.scrolling = false
 
- 					}, 20);
+ 					}, 35);
  				}
 
+ 			},
+ 			setScrollInt: function(direction, amount, clientX) {
+ 				var self = this
+ 				clearInterval(this.curInterval);
+ 				if (direction == 'stop') {
+ 					return;
+ 				}
+ 				var docWidthMiddle = $(document).width() / 2
+ 				var bounds = docWidthMiddle * .65
+ 				var leftThreshold = docWidthMiddle - bounds
+ 				var rightThreshold = docWidthMiddle + bounds
+ 				if ((direction == 'left' && clientX < leftThreshold) || (direction == 'right' && clientX > rightThreshold)) {
+ 					this.curInterval = setInterval(function() {
+ 						var currentLeft = $('#bottom-bar').css('left').replace('px', '')
+ 						if (direction == 'left' && currentLeft < 0) {
+ 							$('#bottom-bar').css('left', amount);
+ 						} else if (direction == 'right') {
+ 							console.log('gw=', self.guessedWidth)
+ 							if (self.guessedWidth < currentLeft) {
+ 								$('#bottom-bar').css('left', amount);
+ 							}
+ 						}
+
+ 					}, 10);
+ 				}
+ 			},
+ 			stopScrolling: function() {
+ 				this.setScrollInt('stop')
  			},
  			fetchMore: function() {
  				this.collection.fetch({
@@ -87,6 +117,7 @@
  					// 	model: model.attributes
  					// }))
  				})
+ 				this.guessedWidth = -(this.collection.length * 87)
 
  			},
  			gotNewPosts: function(models, res) {
