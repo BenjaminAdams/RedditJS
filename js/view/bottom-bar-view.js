@@ -27,8 +27,9 @@
  				this.sortOrder = 'hot'
  				this.subID = this.subName + this.sortOrder
  				this.selectedID = false;
- 				channel.on("bottombar:selected", this.selected, this); //when the user focuses on a single post page
+ 				this.pixelsOfOneImg = 88
 
+ 				channel.on("bottombar:selected", this.selected, this); //when the user focuses on a single post page
  				channel.trigger("single:giveBtnBarID"); //ask the single view to give you the btm bar ID to make active
 
  				this.loading = false; //keeps track if we are loading more posts or not
@@ -63,6 +64,31 @@
  				//$('a[data-attribute=true]')
  				this.$('.selectedBtmBar').removeClass('selectedBtmBar')
  				this.$('#' + name).addClass('selectedBtmBar')
+
+ 				//move the btm bar to the active ID
+ 				if (typeof this.collection !== "undefined" && this.collection.length > 15) {
+ 					//find the active model's index in the collection
+ 					//gets its index, multiply it by how wide it is
+ 					console.log(this.collection)
+ 					var count = 0
+ 					var foundIndex = 0
+ 					_.each(this.collection.models, function(model) {
+
+ 						if (model.get('name') == name) {
+ 							foundIndex = count;
+ 						}
+ 						count++;
+ 					});
+ 					console.log('found idnex=', foundIndex)
+ 					var centerScreen = $(document).width() / 2
+ 					//var model = this.collection.at(id)
+ 					var leftPos = (foundIndex * this.pixelsOfOneImg) - (centerScreen - (this.pixelsOfOneImg * 3)) //make the selected index appear in the center
+ 					console.log('new left pos=', leftPos)
+ 					//rotate the bar to the active img
+ 					if (foundIndex > 15) {
+ 						this.$el.css('left', -leftPos)
+ 					}
+ 				}
 
  			},
  			//only scroll every few milaseconds in an interval
@@ -162,7 +188,7 @@
  					// 	model: model.attributes
  					// }))
  				})
- 				this.guessedWidth = -(this.collection.length * 88)
+ 				this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
 
  			},
  			show: function() {
