@@ -29,3 +29,5 @@ It then creates the output in the `target` folder
  * Reddit API <http://www.reddit.com/dev/api/>
  * Resthub <http://resthub.org/2/backbone-stack.html>
 
+
+[Hire me to build your next Backbone webapp](mailto:armastevs@gmail.com)
