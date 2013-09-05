@@ -30,4 +30,4 @@ It then creates the output in the `target` folder
  * Resthub <http://resthub.org/2/backbone-stack.html>
 
 #### Thanks
-[Hire me to build your next Backbone webapp](mailto:armastevs@gmail.com)
+[Hire me to build your next webapp](mailto:armastevs@gmail.com)
