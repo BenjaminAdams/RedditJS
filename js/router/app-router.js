@@ -23,7 +23,8 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 'r/:subName/comments/:id(/)': 'single',
                 'user/:username(/)': 'user',
                 'user/:username/:sortOrder(/)': 'user',
-                'message/compose/:username(/)': 'message',
+                'message/compose/:username(/)': 'compose',
+                'message/:type': 'message',
                 'subreddits(/)': 'subreddits',
                 'search': 'search',
                 'search/:q(/)': 'search',
@@ -108,10 +109,10 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     });
                 });
             },
-            message: function(username) {
-                console.log('msgview', username)
-                require(['view/message-view'], function(MessageView) {
-                    var messageView = new MessageView({
+            compose: function(username) {
+                console.log('compose view', username)
+                require(['view/compose-view'], function(ComposeView) {
+                    var composeView = new ComposeView({
                         username: username,
                     });
                 });

@@ -1,6 +1,6 @@
  define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'collection/subreddit'],
- 	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, SubredditCollection) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'collection/subreddit', 'event/channel'],
+ 	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, SubredditCollection, channel) {
  		var SubredditView = Resthub.View.extend({
 
  			el: $("#bottom-bar"),
@@ -26,6 +26,10 @@
  				this.subName = options.subName
  				this.sortOrder = 'hot'
  				this.subID = this.subName + this.sortOrder
+ 				this.selectedID = false;
+ 				channel.on("bottombar:selected", this.selected, this); //when the user focuses on a single post page
+
+ 				channel.trigger("single:giveBtnBarID"); //ask the single view to give you the btm bar ID to make active
 
  				this.loading = false; //keeps track if we are loading more posts or not
  				this.scrolling = false; //timer for when the users movement over the bottom bar
@@ -39,13 +43,26 @@
  						sortOrder: this.sortOrder
  					});
  					this.fetchMore();
+ 					// this.selected(this.selectedID) //we either select the active post onload or when the user's page finally loads
  				} else {
  					console.log('loading collection from memory')
  					this.collection = window.subs[this.subID]
  					this.appendPosts(this.collection)
+ 					this.selected(this.selectedID)
 
- 					//this.fetchMore();
  				}
+
+ 			},
+ 			//when the user goes to a single post page, that ID will become selected in the bottom bar
+ 			//only trigger this function after we have the entire subreddit data
+ 			selected: function(name) {
+ 				this.selectedID = name
+
+ 				//console.log('data=', data)
+ 				console.log('name', name)
+ 				//$('a[data-attribute=true]')
+ 				this.$('.selectedBtmBar').removeClass('selectedBtmBar')
+ 				this.$('#' + name).addClass('selectedBtmBar')
 
  			},
  			//only scroll every few milaseconds in an interval
@@ -138,7 +155,7 @@
 
  					if (typeof thumbnail !== 'undefined') {
 
- 						var str = '<a data-id="' + model.get('name') + '" class="thumbnailSmall" ' + model.get('external') + ' href="' + model.get('url') + '" target="_blank"><img src="' + model.get('thumbnail') + '" ></a>'
+ 						var str = '<a id="' + model.get('name') + '" data-id="' + model.get('name') + '" class="thumbnailSmall" ' + model.get('external') + ' href="' + model.get('url') + '" target="_blank"><img src="' + model.get('thumbnail') + '" ></a>'
  						this.$('#bottom-bar').append(str)
  					}
  					// this.$('#bottom-bar').append(PostViewSmallTpl({
@@ -169,6 +186,7 @@
  				this.loading = false; //turn the flag on to go ahead and fetch more!
 
  				window.subs[this.subID] = this.collection
+ 				this.selected(this.selectedID)
 
  			},
  			gotoSingle: function(e) {
@@ -176,6 +194,7 @@
  				window.curModel = this.collection.findWhere({
  					name: name
  				})
+ 				this.selected(name) //using the router to goto the selected link, pre selecting this post before we travel there
  			},
 
  		});

@@ -273,6 +273,10 @@ border-bottom: 1px solid #5F99CF;
 padding: 0px 0px 5px 5px;
 }
 
+.selectedBtmBar {
+  border: 3px solid #5F99CF;
+}
+
 .transparent {
     zoom: 1; /* gives the object layout */
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=18)";

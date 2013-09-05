@@ -1,9 +1,15 @@
-define(['underscore', 'backbone', 'resthub', 'hbs!template/message', 'view/base-view'],
-	function(_, Backbone, Resthub, MessageTmpl, BaseView) {
-		var MessageView = BaseView.extend({
+/* Compose-view.js
+
+Sends an outgoing to message to another reddit user
+
+*/
+
+define(['underscore', 'backbone', 'resthub', 'hbs!template/compose', 'view/base-view'],
+	function(_, Backbone, Resthub, ComposeTmpl, BaseView) {
+		var ComposeView = BaseView.extend({
 			//strategy: 'append',
 			el: $(".content"),
-			template: MessageTmpl,
+			template: ComposeTmpl,
 			events: {
 				'submit #compose-message': "sendMsg",
 
@@ -49,5 +55,5 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/message', 'view/base-
 			},
 
 		});
-		return MessageView;
+		return ComposeView;
 	});

@@ -38,8 +38,11 @@ define([
 				this.id = options.id
 				this.template = singleTmpl;
 
+				this.triggerID()
+
 				if (typeof window.curModel === 'undefined') {
 					this.fetchComments(this.loaded)
+
 				} else {
 					console.log('loading a model from memory')
 					//this is what we do when we pass in a model with out the comments
@@ -48,12 +51,14 @@ define([
 					this.renderStuff(this.model);
 					//well now we need to get the comments for this post!
 					this.fetchComments(this.loadComments)
+
 				}
 
 				$(window).resize(this.debouncer(function(e) {
 					self.resize()
 				}));
 				channel.on("single:remove", this.remove, this);
+				channel.on("single:giveBtnBarID", this.triggerID, this);
 
 			},
 			fetchComments: function(callback) {
@@ -63,11 +68,13 @@ define([
 					id: this.id,
 					parseNow: true,
 				});
+
 				//this.render();
 				this.comments.fetch({
 					success: callback,
 					error: this.fetchError
 				});
+
 			},
 			remove: function() {
 				$(window).off('resize', this.debouncer);
@@ -106,6 +113,9 @@ define([
 					$('.expando-button').addClass('expanded')
 					$('.expando').show()
 				}
+			},
+			triggerID: function() {
+				channel.trigger("bottombar:selected", "t3_" + this.id);
 			},
 
 			/**************Fetching functions ****************/
@@ -148,6 +158,7 @@ define([
 				//this.model = model.parseOnce(model.attributes)
 				this.renderStuff(model);
 				this.loadComments(model)
+				console.log('before activiating btm bar=', model)
 
 			},
 
