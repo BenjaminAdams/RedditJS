@@ -24,7 +24,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 'user/:username(/)': 'user',
                 'user/:username/:sortOrder(/)': 'user',
                 'message/compose/:username(/)': 'compose',
-                'message/:type': 'message',
+                'message/:type(/)': 'inbox',
                 'subreddits(/)': 'subreddits',
                 'search': 'search',
                 'search/:q(/)': 'search',
@@ -117,7 +117,14 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     });
                 });
             },
-
+            inbox: function(type) {
+                console.log('msg view, type= ', type)
+                require(['view/inbox-view'], function(InboxView) {
+                    var inboxView = new InboxView({
+                        type: type
+                    });
+                });
+            },
             subreddits: function() {
 
             },

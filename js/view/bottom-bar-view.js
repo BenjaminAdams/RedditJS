@@ -82,7 +82,7 @@
  					console.log('found idnex=', foundIndex)
  					var centerScreen = $(document).width() / 2
  					//var model = this.collection.at(id)
- 					var leftPos = (foundIndex * this.pixelsOfOneImg) - (centerScreen - (this.pixelsOfOneImg * 3)) //make the selected index appear in the center
+				var leftPos = (foundIndex * this.pixelsOfOneImg) - (centerScreen - (this.pixelsOfOneImg * 3)) //make the selected index appear in the center
  					console.log('new left pos=', leftPos)
  					//rotate the bar to the active img
  					if (foundIndex > 15) {

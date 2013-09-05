@@ -10,35 +10,11 @@ all
 
 define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbone, SingleModel, CommentModel) {
 
-	/*              example detail:
-	// body: asdasdasdasdasd
-	// was_comment: false
-	// first_message: null
-	// name: t4_13g95s
-	// first_message_name: null
-	// created: 1378417702
-	// dest: armastevs
-	// author: faketestuser
-	// created_utc: 1378388902
-	// body_html: <!-- SC_OFF --><div class="md"><p>asdasdasdasdasd</p> </div><!-- SC_ON -->
-	// subreddit: null
-	// parent_id: null
-	// context:
-	// replies:
-	// new: true
-	// id: 13g95s
-	 subject: asdasdasd
-	*/
-
 	var User = Backbone.Collection.extend({
 		initialize: function(data) {
 			_.bindAll(this);
 			this.after = ""
-			this.username = data.username
-			this.sortOrder = data.sortOrder
-			if (typeof this.sortOrder === 'undefined') {
-				this.sortOrder = 'new' //the default sort order is hot
-			}
+			this.type = data.type
 
 			this.count = 1
 			this.instanceUrl = this.getUrl()
@@ -53,12 +29,33 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 		getUrl: function() {
 			//http://api.reddit.com/user/armastevs.json
 			if (this.after.length < 3) {
+				return '/api/?url=message/' + this.type + ".json?after=" + this.after + "&cookie=" + $.cookie('reddit_session');
+
+			} else {
 
 				return '/api/?url=message/' + this.type + ".json&cookie=" + $.cookie('reddit_session');
-			} else {
-				'/api/?url=message/' + this.type + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
 			}
 		},
+
+		/*              example detail:
+	// body: asdasdasdasdasd
+	// was_comment: false
+	// first_message: null
+	// name: t4_13g95s
+	// first_message_name: null
+	// created: 1378417702
+	// dest: armastevs
+	// author: faketestuser
+	// created_utc: 1378388902
+	// body_html: <!-- SC_OFF --><div class="md"><p>asdasdasdasdasd</p> </div><!-- SC_ON -->
+	// subreddit: null
+	// parent_id: null
+	// context:
+	// replies:
+	// new: true   //if the message is unread or not
+	// id: 13g95s
+	 subject: asdasdasd
+	*/
 		parse: function(response) {
 			//set the after for pagination
 			this.after = response.data.after;
@@ -85,26 +82,15 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 					item.data.evenOrOdd = "odd"
 				}
 
-				item.data.link_id = item.data.link_id || item.data.name
-				item.data.url = '/r/' + item.data.subreddit + '/comments/' + item.data.id
-				item.data.is_self = true
-				item.data.media_embed = ''
-				item.data.kind = item.kind
+				item.data.body_html = (typeof item.data.body_html === 'undefined') ? '' : $('<div/>').html(item.data.body_html).text();
 
-				item.data.is_user = true
+				var timeAgo = moment.unix(item.data.created).fromNow(true) //"true" removes the "ago"
+				timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
+				item.data.timeAgo = timeAgo
+				item.data.timeUgly = moment.unix(data.created).format()
+				item.data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
 
-				//for user posts we want the title to be the body html
-				if (typeof item.data.title === 'string') {
-					//do nothing
-				} else {
-					item.data.title = item.data.link_title
-				}
-				//item.data.likes = item.data.likes || false
-
-				var comment = new CommentModel(item.data)
-				models.push(comment.attributes)
-
-				self.count++;
+				models.push(item.data)
 
 			});
 

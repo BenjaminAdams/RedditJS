@@ -7,54 +7,64 @@ all
 
 
 */
-define(['underscore', 'backbone', 'resthub', 'hbs!template/inbox-item', 'view/base-view', 'collection/inbox'],
-	function(_, Backbone, Resthub, InboxTmpl, BaseView, InboxCollection) {
+define(['underscore', 'backbone', 'resthub', 'hbs!template/inbox', 'view/inbox-item-view', 'view/base-view', 'collection/inbox'],
+	function(_, Backbone, Resthub, InboxTmpl, InboxItemView, BaseView, InboxCollection) {
 		var InboxView = BaseView.extend({
 			//strategy: 'append',
 			el: $(".content"),
 			template: InboxTmpl,
 			events: {
 				'submit #compose-message': "sendMsg",
+				'click #retry': 'tryAgain',
 
 			},
 
 			initialize: function(options) {
 				_.bindAll(this);
-				//this.template = MessageTmpl
-				this.model = new Backbone.Model({
-					username: options.username
-				})
+				this.$el.empty()
+				this.type = options.type
 				this.render();
+				this.selectActive()
+
+				this.collection = new InboxCollection({
+					type: this.type
+				})
+				this.fetchMore()
 
 			},
-			sendMsg: function(e) {
-				e.preventDefault()
-				e.stopPropagation();
-				var self = this;
-				var msgTxt = this.$('#msgTxt').val()
-				var msgSendTo = this.$('#to').val()
-				var msgSubject = this.$('#subject').val()
+			selectActive: function() {
+				this.$('.selected').removeClass('selected')
+				this.$('#' + this.type).addClass('selected')
+			},
+			fetchError: function() {
+				this.$('#siteTable').html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
+			},
+			tryAgain: function() {
+				this.$('#siteTable').html("<div class='loading'></div> ")
+				this.$('#retry').remove()
 
-				var params = {
-					to: msgSendTo,
-					text: msgTxt,
-					subject: msgSubject,
-					uh: $.cookie('modhash'),
-				};
-				console.log(params)
-
-				this.api("/api/compose", 'POST', params, function(data) {
-					console.log("msg  done", data)
-					if (data.jquery.length > 18) {
-						this.$('.status').html("Message sent")
-						self.$('#msgTxt').val('')
-						self.$('#to').val('')
-						self.$('#subject').val('')
-					} else {
-						this.$('.error').html('failed to send message')
-					}
-
+				this.fetchMore();
+			},
+			fetchMore: function() {
+				this.collection.fetch({
+					success: this.gotNewPosts,
+					error: this.fetchError
 				});
+			},
+			gotNewPosts: function(collection) {
+				var self = this
+				if (collection.length < 1) {
+					//this.$('#siteTable').html("there doesn't seem to be anything here")
+				}
+				collection.each(function(model) {
+					// this.$('#siteTable').append(InboxItemTmpl({
+					// 	model: model.attributes
+					// }))
+					var itemView = new InboxItemView({
+						root: "#siteTable",
+						model: model
+					});
+				})
 			},
 
 		});

@@ -1,22 +1,16 @@
-<div class=" thing id-t4_13g95s recipient message-parent even message">
+<div id='{{model.name}}' class="thing recipient message-parent even message">
   <p class="parent">
   </p>
   <p class="subject">
     <span class="correspondent rounded">
-      <a class="author id-t2_ckx97" href="{{model.username}}" target="_blank">
-        faketestuser
+      <a class="author" href="/user/{{model.author}}" target="_blank">
+        {{model.author}}
       </a>
       <span class="userattrs">
       </span>
     </span>
-    asdasdasd
+           {{model.subject}}
     <br>
-    <a class="expand-btn" href="#">
-      expand all
-    </a>
-    <a class="expand-btn" href="#">
-      collapse all
-    </a>
   </p>
   <p>
   </p>
@@ -24,72 +18,67 @@
   </div>
   <div class="entry unvoted">
     <div class="collapsed" style="display:none">
-      <a href="#" class="expand" onclick="return showcomment(this)">
-        [+]&nbsp;
+      <a href="#" class="expand">
+        [+]
       </a>
       <span class="head">
         from 
         <b>
-          <a class="author id-t2_ckx97" href="http://www.reddit.com/user/faketestuser" target="_blank">
-            faketestuser
+          <a class="author" href="/user/faketestuser" target="_blank">
+           {{model.author}}
           </a>
           <span class="userattrs">
           </span>
         </b>
         sent 
-        <time title="Thu Sep 5 13:48:22 2013 UTC" datetime="2013-09-05T13:48:22+00:00">
-          18 minutes
+        <time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">
+          {{model.timeAgo}}
         </time>
         ago
       </span>
     </div>
     <div class="noncollapsed">
       <p class="tagline">
-        <a href="#" class="expand" onclick="return hidecomment(this)">
+        <a href="#" class="expand" >
           [–]&nbsp;
         </a>
         <span class="head">
           from 
           <b>
-            <a class="author id-t2_ckx97" href="http://www.reddit.com/user/faketestuser" target="_blank">
-              faketestuser
+            <a class="author" href="/user/{{model.username}}" target="_blank">
+              {{model.author}}
             </a>
             <span class="userattrs">
             </span>
           </b>
           sent 
-          <time title="Thu Sep 5 13:48:22 2013 UTC" datetime="2013-09-05T13:48:22+00:00">
-            18 minutes
-          </time>
+        <time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">
+          {{model.timeAgo}}
+        </time>
           ago
         </span>
       </p>
       <div class="md">
         <p>
-          asdasdasdasdasd
+          {{{model.body_html}}}
         </p>
       </div>
       <ul class="flat-list buttons">
-        <li class="first">
-          <a href="http://www.reddit.com/message/messages/13g95s" class="bylink" rel="nofollow">
-            permalink
-          </a>
-        </li>
+
         <li>
-          <form class="toggle report-button " action="#" method="get">
-            <input type="hidden" name="executed" value="reported">
+          <form class="first toggle report-button" action="#" method="get">
             <span class="option main active">
-              <a href="#" class="togglebutton" onclick="return toggle(this)">
+              <a href="#" class="togglebutton togglebuttonReport">
                 report
               </a>
             </span>
-            <span class="option error">
+            <span class="reportOption option error">
               are you sure?  
-              <a href="#" class="yes">
+              <a href="#" class="yes yesReport">
                 yes
               </a>
               / 
-              <a href="#" class="no">
+              <a href="#" class="no noReport">
                 no
               </a>
             </span>
@@ -99,17 +88,17 @@
           <form class="toggle block-button " action="#" method="get">
             <input type="hidden" name="executed" value="blocked">
             <span class="option main active">
-              <a href="#" class="togglebutton">
+              <a href="#" class="togglebutton togglebuttonBlock">
                 block user
               </a>
             </span>
-            <span class="option error">
+            <span class="blockOption option error">
               are you sure?  
-              <a href="#" class="yes">
+              <a href="#" class="yes yesBlock">
                 yes
               </a>
               / 
-              <a href="#" class="no">
+              <a href="#" class="no noBlock">
                 no
               </a>
             </span>
