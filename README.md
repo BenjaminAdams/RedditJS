@@ -1,10 +1,10 @@
 ##RedditJS.com
-The code that powers <http://RedditJS.com/>
+The code that powers <http://redditJS.com/>
 
 #Features
- * Data Cache:  Only have to load up the subreddit once.  Once the subreddit is loaded, it will pull the subreddit/single post from memory. (Benefit for both Reddit's server and you!  Only fetch once.)
- * Unique Views:  View an entire subreddit in a new way.  View thumbnails only, full images, and large grid mode.  (more to come)
- * Do **everything** you normally can on Reddit.  Vote/save/hide posts.  Comment, Mail, Search all without having to refresh your browser.
+ * **Data Cache:**  Only have to load up the subreddit once.  Once the subreddit is loaded, it will pull the subreddit/single post from memory. (Benefit for both Reddit's server and you!  Only fetch once.)
+ * **Unique Views:**  View an entire subreddit in a new way.  View thumbnails only, full images, and large grid mode.  (more to come)
+ * **Do everything** you normally can on Reddit.  Vote/save/hide posts.  Comment, Mail, Search all without having to refresh your browser.
 
 ####How to build with the r.js optimizer
 
@@ -22,6 +22,7 @@ It then creates the output in the `target` folder
  * Backbone.js <https://github.com/jashkenas/backbone>
  * Underscore.js <https://github.com/jashkenas/underscore>
  * Require.js <http://requirejs.org/>
+ * Handlebars <http://handlebarsjs.com/>
  * jQuery <http://jquery.com/>
  * Reddit API <http://www.reddit.com/dev/api/>
 
