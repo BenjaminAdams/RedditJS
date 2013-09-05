@@ -18,7 +18,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
             routes: {
                 '(:sortOrder)(/)': 'home',
                 'r/:subName(/)': 'subreddit',
-                'r/:subName/:sortOrder': 'subreddit',
+                'r/:subName/:sortOrder(/)': 'subreddit',
                 'r/:subName/comments/:id/:slug(/)': 'single',
                 'r/:subName/comments/:id(/)': 'single',
                 'user/:username(/)': 'user',

@@ -97,12 +97,10 @@
  							$('#bottom-bar').css('left', amount);
  						} else if (direction == 'right') {
 
- 							if (self.guessedWidth < currentLeft) {
+ 							if ((self.guessedWidth > currentLeft - 1000) && self.loading == false) {
+ 								self.fetchMore()
+ 							} else if (self.guessedWidth < currentLeft) {
  								$('#bottom-bar').css('left', amount);
- 							} else {
- 								if (self.loading == false) {
- 									self.fetchMore()
- 								}
  							}
  						}
 
@@ -134,9 +132,10 @@
  			appendPosts: function(collection) {
  				var self = this
  				this.$el.show()
+ 				console.log(collection)
  				collection.each(function(model) {
  					var thumbnail = model.get('thumbnail')
- 					console.log(thumbnail)
+
  					if (typeof thumbnail !== 'undefined') {
 
  						var str = '<a data-id="' + model.get('name') + '" class="thumbnailSmall" ' + model.get('external') + ' href="' + model.get('url') + '" target="_blank"><img src="' + model.get('thumbnail') + '" ></a>'
@@ -146,7 +145,7 @@
  					// 	model: model.attributes
  					// }))
  				})
- 				this.guessedWidth = -(this.collection.length * 87)
+ 				this.guessedWidth = -(this.collection.length * 88)
 
  			},
  			show: function() {

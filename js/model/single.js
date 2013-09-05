@@ -152,6 +152,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				if (this.containsStr("imgur.com/a", url) == true || this.containsStr("gallery", url) == true) {
 					return false
 				} else {
+					//return url + "l.jpg"  //add l to the end of the img url to give it a better preview
 					return url + ".jpg"
 				}
 

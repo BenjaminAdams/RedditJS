@@ -23,6 +23,8 @@ define([
 				//$(this.el).empty()
 				//this.$el.empty()
 				this.$('#siteTable').empty()
+				this.$el.empty()
+
 				_.bindAll(this);
 				var self = this;
 				this.subName = options.subName
@@ -84,6 +86,8 @@ define([
 					self.changeSortOrderCss()
 				}, 100);
 
+				this.countAllImgs = 0 //delete this later
+
 			},
 			//we have to override the remove event because the window.scroll event will not be removed by the garbage collector
 			//cant create infinite scroll without this.
@@ -109,9 +113,10 @@ define([
 			removePendingGrid: function() {
 				var self = this
 				for (id in this.imgAry) {
-					//console.log(self.imgAry[id])
+					//console.log('deleting', self.imgAry[id])
 					//delete self.imgAry[id]
 					self.imgAry[id].remove()
+					//delete self.imgAry[id]
 				}
 			},
 
@@ -155,6 +160,8 @@ define([
 					for (var i = 0; i < colCount; i++) {
 						self.$('#siteTable').append('<div class="column"> </div>')
 					}
+
+					this.$('#siteTable').append('<div id="fullImgCache"></div>')
 
 				} else {
 					$('.side').show()
@@ -252,6 +259,17 @@ define([
 					remove: false
 				});
 			},
+			appendOne: function(model) {
+				console.log('got here omg', model)
+				var newPost = $(PostRowGrid({
+					model: model.attributes
+				}))
+				var col = this.shortestCol()
+				if (col) {
+					col.append(newPost);
+				}
+
+			},
 			appendPosts: function(collection) {
 				var self = this
 				this.start = new Date()
@@ -278,21 +296,28 @@ define([
 								$('#imgCache').append('<img src="' + model.get('thumbnail') + '" />')
 							}
 
-							var newPost = $(PostRowGrid({
-								model: model.attributes
-							}))
-
 							if (model.get('imgUrl')) {
 								count++;
+
+								var newPost = $(PostRowGrid({
+									model: model.attributes
+								}))
+								var col = self.shortestCol()
+								if (col) {
+									col.append(newPost);
+								}
 								//var $img = $('<img/>').bind('load error', this.appendBlock).attr('src', model.get('imgUrl')).appendTo(col);
-								self.imgAry[model.get('id')] = $('<img/>').one('load', function() {
+								//self.imgAry[model.get('id')] = $('<img/>').one('load', this.appendOne).attr('src', model.get('imgUrl'));
 
-									var col = self.shortestCol()
-									if (col) {
-										col.append(newPost);
-									}
+								// self.imgAry[model.get('id')] = self.$('#fullImgCache').append('<img/>').one('load', function() {
+								// 	console.log(self.countAllImgs++)
+								// 	var col = self.shortestCol()
+								// 	if (col) {
+								// 		col.append(newPost);
+								// 	}
 
-								}).attr('src', model.get('imgUrl'));
+								// }).attr('src', model.get('imgUrl'));
+								//self.imgAry[model.get('id')].attr('src', model.get('imgUrl'));
 
 							} else {
 								countSelfs++;
