@@ -24,9 +24,10 @@
       <span class="head">
         from 
         <b>
-          <a class="author" href="/user/faketestuser" target="_blank">
+          <a class="author" href="/user/{{model.author}}" target="_blank">
            {{model.author}}
           </a>
+      
           <span class="userattrs">
           </span>
         </b>
@@ -43,11 +44,14 @@
           [–]&nbsp;
         </a>
         <span class="head">
-          from 
+          from
           <b>
-            <a class="author" href="/user/{{model.username}}" target="_blank">
+            <a class="author" href="/user/{{model.author}}" target="_blank">
               {{model.author}}
-            </a>
+            </a>to
+        <a class="author" href="/user/{{model.dest}}" target="_blank">
+           {{model.dest}}
+          </a>
             <span class="userattrs">
             </span>
           </b>
@@ -106,7 +110,6 @@
         </li>
         <li class="unread">
           <form action="/post/unread" method="post" class="state-button unread-button">
-            <input type="hidden" name="executed" value="unread">
             <span>
               <a href="#">
                 mark unread
@@ -115,7 +118,7 @@
           </form>
         </li>
         <li>
-          <a class="" href="#">
+          <a href="/message/compose/{{model.author}}">
             reply
           </a>
         </li>

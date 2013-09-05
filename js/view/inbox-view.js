@@ -53,8 +53,8 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/inbox', 'view/inbox-i
 			},
 			gotNewPosts: function(collection) {
 				var self = this
-				if (collection.length < 1) {
-					//this.$('#siteTable').html("there doesn't seem to be anything here")
+				if (collection.length <= 0) {
+					this.$('#siteTable').html("<div class='error'>there doesn't seem to be anything here</div>")
 				}
 				collection.each(function(model) {
 					// this.$('#siteTable').append(InboxItemTmpl({

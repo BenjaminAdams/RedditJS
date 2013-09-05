@@ -26,6 +26,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/inbox-item', 'view/ba
 				'click .yesBlock': "blockYes", //user clicks yes to report 
 				'click .noBlock': "blockShow", //user decides not to report this link/comment
 				'click .new': 'markRead',
+				'click .unread-button': 'markUnread'
 			},
 
 			initialize: function(options) {
@@ -120,7 +121,23 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/inbox-item', 'view/ba
 					console.log("msg read done", data)
 
 				});
-			}
+			},
+			//marks the mail unread
+			markUnread: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				this.selector.addClass('new')
+				var params = {
+					id: this.model.get('name'),
+					uh: $.cookie('modhash'),
+				};
+				console.log(params)
+
+				this.api("/api/unread_message", 'POST', params, function(data) {
+					console.log("msg read done", data)
+
+				});
+			},
 
 		});
 		return InboxItemView;
