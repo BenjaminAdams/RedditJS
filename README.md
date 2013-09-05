@@ -1,4 +1,4 @@
-##RedditJS.com
+##RedditJS
 The code that powers [redditJS.com](http://www.redditjs.com)
 
 #Features
