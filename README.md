@@ -1,5 +1,5 @@
 ##RedditJS.com
-The code that powers <http://redditJS.com/>
+The code that powers [redditJS.com](http://www.redditjs.com)
 
 #Features
  * **Data Cache:**  Only have to load up the subreddit once.  Once the subreddit is loaded, it will pull the subreddit/single post from memory. (Benefit for both Reddit's server and you!  Only fetch once.)
