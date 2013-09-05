@@ -27,7 +27,5 @@ It then creates the output in the `target` folder
  * Handlebars <http://handlebarsjs.com/>
  * jQuery <http://jquery.com/>
  * Reddit API <http://www.reddit.com/dev/api/>
-
-
-RESThub Backbone stack documentation <http://resthub.org/2/backbone-stack.html>
+ * Resthub <http://resthub.org/2/backbone-stack.html>
 
