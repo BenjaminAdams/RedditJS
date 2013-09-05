@@ -39,7 +39,7 @@ define([
 				channel.on("subreddit:remove", this.remove, this);
 
 				this.render();
-
+				this.imagesAdded = 0; //keeps a total of how many images we are loading
 				this.initGridOption();
 
 				this.imgAry = new Array()
@@ -112,11 +112,13 @@ define([
 			//this needs to get removed or it will add images everywhere
 			removePendingGrid: function() {
 				var self = this
+				console.log('deleting', self.imgAry)
 				for (id in this.imgAry) {
-					//console.log('deleting', self.imgAry[id])
 					//delete self.imgAry[id]
-					self.imgAry[id].remove()
+					//self.imgAry[id].remove()
 					//delete self.imgAry[id]
+					//trying it in a settimeout
+					clearTimeout(self.imgAry[id]);
 				}
 			},
 
@@ -275,6 +277,7 @@ define([
 				this.start = new Date()
 				var count = 0;
 				var countSelfs = 0
+
 				collection.each(function(model) {
 
 					if (model.get('title') != null) {
@@ -292,32 +295,33 @@ define([
 							// });
 						} else if (this.gridOption == 'grid') {
 
-							if (model.get('thumbnail') != 'undefined') {
-								$('#imgCache').append('<img src="' + model.get('thumbnail') + '" />')
-							}
+							// if (model.get('thumbnail') != 'undefined') {
+							// 	$('#imgCache').append('<img src="' + model.get('thumbnail') + '" />')
+							// }
 
 							if (model.get('imgUrl')) {
 								count++;
-
+								self.imagesAdded++
 								var newPost = $(PostRowGrid({
 									model: model.attributes
 								}))
-								var col = self.shortestCol()
-								if (col) {
-									col.append(newPost);
+								if (count < 11) {
+
+									var col = self.shortestCol()
+									if (col) {
+										col.append(newPost);
+									}
+								} else {
+
+									var timeout = count * 350
+									self.imgAry[model.get('id')] = setTimeout(function() {
+										self.imagesAdded--;
+										var col = self.shortestCol()
+										if (col) {
+											col.append(newPost);
+										}
+									}, timeout);
 								}
-								//var $img = $('<img/>').bind('load error', this.appendBlock).attr('src', model.get('imgUrl')).appendTo(col);
-								//self.imgAry[model.get('id')] = $('<img/>').one('load', this.appendOne).attr('src', model.get('imgUrl'));
-
-								// self.imgAry[model.get('id')] = self.$('#fullImgCache').append('<img/>').one('load', function() {
-								// 	console.log(self.countAllImgs++)
-								// 	var col = self.shortestCol()
-								// 	if (col) {
-								// 		col.append(newPost);
-								// 	}
-
-								// }).attr('src', model.get('imgUrl'));
-								//self.imgAry[model.get('id')].attr('src', model.get('imgUrl'));
 
 							} else {
 								countSelfs++;
@@ -383,6 +387,12 @@ define([
 			},
 			/**************Infinite Scroll functions ****************/
 			watchScroll: function(e) {
+
+				if (this.imagesAdded > 5) {
+					//console.log('not loading more')
+					return;
+				}
+
 				var self = this;
 				var triggerPoint = 1500; // 1500px from the bottom     
 
@@ -400,11 +410,12 @@ define([
 				//this.prevScrollY = scrollY;
 			},
 			helpFillUpScreen: function() {
-				if (this.collection.length < 301 && (this.gridOption == 'small' || this.gridOption == 'grid')) {
+				if (this.collection.length < 301 && (this.gridOption == 'small')) {
 					this.watchScroll()
 				}
 
 				if (this.collection.length < 55 && this.gridOption == 'grid') {
+
 					this.watchScroll()
 				}
 			}
