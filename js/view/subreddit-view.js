@@ -111,14 +111,18 @@ define([
 			//the image callback from waiting it to be loaded before being display
 			//this needs to get removed or it will add images everywhere
 			removePendingGrid: function() {
-				var self = this
-				console.log('deleting', self.imgAry)
-				for (id in this.imgAry) {
-					//delete self.imgAry[id]
-					//self.imgAry[id].remove()
-					//delete self.imgAry[id]
-					//trying it in a settimeout
-					clearTimeout(self.imgAry[id]);
+				if (this.gridOption == 'grid') {
+					var self = this
+					//console.log('deleting', self.imgAry)
+					for (id in this.imgAry) {
+						//delete self.imgAry[id]
+						//self.imgAry[id].remove()
+						//delete self.imgAry[id]
+						//trying it in a settimeout
+						console.log('deleting', self.imgAry[id])
+						clearTimeout(self.imgAry[id]);
+					}
+					window.stop() //prevents new images from being downloaded
 				}
 			},
 
@@ -313,8 +317,9 @@ define([
 									}
 								} else {
 
-									var timeout = count * 350
+									var timeout = count * 370
 									self.imgAry[model.get('id')] = setTimeout(function() {
+										console.log(self.subID)
 										self.imagesAdded--;
 										var col = self.shortestCol()
 										if (col) {
