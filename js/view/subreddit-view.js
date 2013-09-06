@@ -111,19 +111,19 @@ define([
 			//the image callback from waiting it to be loaded before being display
 			//this needs to get removed or it will add images everywhere
 			removePendingGrid: function() {
-				if (this.gridOption == 'grid') {
-					var self = this
-					//console.log('deleting', self.imgAry)
-					for (id in this.imgAry) {
-						//delete self.imgAry[id]
-						//self.imgAry[id].remove()
-						//delete self.imgAry[id]
-						//trying it in a settimeout
-						console.log('deleting', self.imgAry[id])
-						clearTimeout(self.imgAry[id]);
-					}
-					window.stop() //prevents new images from being downloaded
+
+				var self = this
+				//console.log('deleting', self.imgAry)
+				for (id in this.imgAry) {
+					//delete self.imgAry[id]
+					//self.imgAry[id].remove()
+					//delete self.imgAry[id]
+					//trying it in a settimeout
+					console.log('deleting', self.imgAry[id])
+					clearTimeout(self.imgAry[id]);
 				}
+				window.stop() //prevents new images from being downloaded
+
 			},
 
 			gotoSingle: function(e) {
@@ -317,7 +317,7 @@ define([
 									}
 								} else {
 
-									var timeout = count * 370
+									var timeout = count * 310
 									self.imgAry[model.get('id')] = setTimeout(function() {
 										console.log(self.subID)
 										self.imagesAdded--;
@@ -393,10 +393,11 @@ define([
 			/**************Infinite Scroll functions ****************/
 			watchScroll: function(e) {
 
-				if (this.imagesAdded > 5) {
-					//console.log('not loading more')
-					return;
-				}
+				//no longer need this because the setInterval trick combined with window.stop() is good enough to handle a large amount of full sized pictures
+				// if (this.imagesAdded > 5) {  
+				// 	//console.log('not loading more')
+				// 	return;
+				// }
 
 				var self = this;
 				var triggerPoint = 1500; // 1500px from the bottom     
