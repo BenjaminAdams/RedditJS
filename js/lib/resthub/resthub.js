@@ -1,12 +1,14 @@
 define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'], function(_, Backbone, $) {
 
-    var Resthub = { };
+    var Resthub = {};
 
     Resthub.VERSION = '2.1.2';
 
     // Avoid GET caching issues with Internet Explorer
     if (XMLHttpRequest) {
-        $.ajaxSetup({ cache: false });
+        $.ajaxSetup({
+            cache: false
+        });
     }
 
     Resthub.Validation = (function() {
@@ -89,7 +91,9 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
                     // To manage a constraint with a requirement to false, we add a required false
                     // constraint to the current property if no true requirement was originally expressed
                     if (!required) {
-                        prop.push({required: false});
+                        prop.push({
+                            required: false
+                        });
                     }
 
                     validation[propKey] = prop;
@@ -258,7 +262,7 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
         var constraintMessage = function(propKey, constraint, messages) {
             var msg = constraint.message;
 
-            var msgPropKey = 'validation.' + propKey + '.' +  constraint.type + '.message';
+            var msgPropKey = 'validation.' + propKey + '.' + constraint.type + '.message';
             var msgKey = 'validation.' + constraint.type + '.message';
 
             if (messages) {
@@ -330,8 +334,7 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
         };
 
         var sizeValidator = function(value, min, max, msg) {
-            if (!(_.isNull(value) || _.isUndefined(value) || (_.isString(value) && value === ''))
-                && (!(_.isString(value) || _.isArray(value)) || (value.length < min || value.length > max))) {
+            if (!(_.isNull(value) || _.isUndefined(value) || (_.isString(value) && value === '')) && (!(_.isString(value) || _.isArray(value)) || (value.length < min || value.length > max))) {
                 return msg;
             }
         };
@@ -387,13 +390,13 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
         ResthubValidation._trim = String.prototype.trim ?
             function(text) {
                 return text === null ? '' : String.prototype.trim.call(text);
-            } :
+        } :
             function(text) {
                 var trimLeft = /^\s+/,
                     trimRight = /\s+$/;
 
                 return text === null ? '' : text.toString().replace(trimLeft, '').replace(trimRight, '');
-            };
+        };
 
         // retrieves validation constraints from server
         ResthubValidation.synchronize = function(model, errorCallback, successCallback) {
@@ -415,12 +418,14 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
 
                 var msgs = {};
                 synchronizedClasses[model.prototype.className] = true;
-                $.getJSON(ResthubValidation.options.apiUrl + '/' + model.prototype.className, {locale: locale})
+                $.getJSON(ResthubValidation.options.apiUrl + '/' + model.prototype.className, {
+                    locale: locale
+                })
                     .success(_.bind(function(resp) {
                         buildValidation(resp, model, _.extend(msgs, ResthubValidation.messages, model.prototype.messages));
                         if (successCallback && _.isFunction(successCallback)) successCallback();
                     }, this))
-                    .error(function (resp) {
+                    .error(function(resp) {
                         synchronizedClasses[model.prototype.className] = false;
                         if (errorCallback && _.isFunction(errorCallback)) errorCallback(resp);
                         else ResthubValidation.options.errorCallback(resp);
@@ -428,7 +433,7 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
             }
         };
 
-        ResthubValidation.options.errorCallback = function (resp) {
+        ResthubValidation.options.errorCallback = function(resp) {
             console.error("error calling server : status code " + resp.status + " and text '" + resp.statusText + "'");
         };
 
@@ -482,7 +487,7 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
             // Context provided as a context object
             if (typeof this.context === 'object') {
                 _.extend(context, this.context);
-            // Dynamic context provided as a function
+                // Dynamic context provided as a function
             } else if (_.isFunction(this.context)) {
                 // Merge the result of this.context() into context
                 _.extend(context, this.context());
@@ -511,7 +516,7 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
                         } else {
                             _.extend(context[key], this[key]);
                         }
-                        
+
                     }
 
             }, this);
@@ -523,12 +528,12 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
                 } else {
                     _.extend(context['model'], jsonModel);
                 }
-                
+
             }
 
             if (context instanceof Backbone.Collection) {
-                  // Create or merge
-                  if (typeof context['collection'] === "undefined") {
+                // Create or merge
+                if (typeof context['collection'] === "undefined") {
                     context['collection'] = jsonCollection;
                 } else {
                     _.extend(context['collection'], jsonCollection);
@@ -568,7 +573,7 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
 
             Resthub.View.__super__.delegateEvents.apply(this, arguments);
             if (!(events || (events = getValue(this, 'events')))) return;
-            
+
             _.each(events, _.bind(function(method, key) {
                 if (key.indexOf(this.globalEventsIdentifier) != 0) return;
                 if (!_.isFunction(method)) method = this[method];
@@ -648,8 +653,7 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
                         var checkboxes = form.find("input[type='checkbox'][name='" + name + "']");
                         if (checkboxes.length > 1) {
                             attributes[name] = [];
-                        }
-                        else if (checkboxes.length === 1) {
+                        } else if (checkboxes.length === 1) {
                             attributes[name] = "false";
                         }
                     }
@@ -666,14 +670,15 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
             });
 
             if (model) {
-                model.set(attributes, {validate: true});
+                model.set(attributes, {
+                    validate: true
+                });
             }
 
             return this;
         }
 
     });
-
 
     // Backbone.History extension
     // --------------------------
@@ -702,6 +707,20 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
                         Backbone.history.navigate(href, true);
                     }
                 });
+
+                $(window.document).on('click', 'a[href]:not(.outBoundLink)', function(evt) {
+
+                    var protocol = this.protocol + '//';
+                    var href = this.href;
+                    href = href.slice(protocol.length);
+                    href = href.slice(href.indexOf("/") + 1);
+
+                    if (href.slice(protocol.length) !== protocol) {
+                        evt.preventDefault();
+                        Backbone.history.navigate(href, true);
+                    }
+                });
+
             }
 
             return ret;

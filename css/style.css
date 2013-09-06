@@ -303,3 +303,26 @@ border: 1px solid #808080;
 font-size: larger;
 list-style: none;
 }
+
+
+.hoverImgView {
+float:left;
+margin-left:30px;
+
+}
+
+.hoverImgView img {
+max-width: 90%;
+padding:5px;
+  display:block;
+}
+
+.hoverImgView  h3 {
+background-color:#CEE3F8;
+color:#5F99CF;
+max-width:90%;
+text-align: center;
+break:both;
+
+}
+

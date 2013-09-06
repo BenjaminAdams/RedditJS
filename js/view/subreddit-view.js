@@ -119,9 +119,10 @@ define([
 					//self.imgAry[id].remove()
 					//delete self.imgAry[id]
 					//trying it in a settimeout
-					console.log('deleting', self.imgAry[id])
+					//console.log('deleting', self.imgAry[id])
 					clearTimeout(self.imgAry[id]);
 				}
+				//*window.stop() is !important!  It floods the grid view if not set to trigger between page views
 				window.stop() //prevents new images from being downloaded
 
 			},

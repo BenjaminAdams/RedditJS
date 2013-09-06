@@ -1,6 +1,6 @@
 define([
-  'underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/base-view', 'model/comment', 'event/channel', 'cookie'],
-	function(_, Backbone, Resthub, commentTmpl, CommentMOAR, BaseView, CommentModel, channel, Cookie) {
+  'underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/base-view', 'model/comment', 'event/channel', 'cookie'],
+	function(_, Backbone, Resthub, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, channel, Cookie) {
 		var CommentView = BaseView.extend({
 			//strategy: 'append',
 
@@ -8,9 +8,11 @@ define([
 				var _events = {
 					'click .noncollapsed .expand': "hideThread",
 					'click .collapsed .expand': "showThread",
-					'click .cancel': 'hideUserInput'
+					'click .cancel': 'hideUserInput',
+
 				};
 
+				_events['mouseover #' + this.options.id + ' .outBoundLink'] = "commentLink";
 				_events['click #report' + this.options.id] = "reportShow";
 				_events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
 				_events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
@@ -40,6 +42,15 @@ define([
 
 				this.render();
 				//console.log("trying to create a new comment view with = ", options)
+
+				//add data-external and a special class to any link in a comment
+				//once the links have the class outBoundLink on them, they will no longer trigger the hover view
+				this.$('.hoverImgParent a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
+				//$(target).attr("data-bypass", "data-bypass"); //makes the link external to be clickable
+				// this.$('.usertext-body a').each(function(index) {
+				// 	console.log('adding one link')
+				// 	$(this).addClass = 'outBoundLink'
+				// });
 
 				this.renderChildren(this.model.get('replies'))
 
@@ -123,6 +134,61 @@ define([
 				e.preventDefault()
 				e.stopPropagation()
 				this.$('#commentreply' + this.model.get('id')).toggle()
+			},
+			commentLink: function(e) {
+				console.log('hovering over a comment')
+				e.preventDefault()
+				e.stopPropagation()
+				var target = $(e.currentTarget)
+
+				var url = $(target).attr("href")
+				//check if the url is an image we can embed
+				if (this.checkIsImg(url) == false) {
+					//URL is NOT an image
+					//try and fix an imgur link?
+					url = this.fixImgur(url)
+
+				}
+				if (url != false) {
+
+					var ahrefDescription = $(target).text()
+					if (!ahrefDescription) {
+						ahrefDescription = url
+					}
+
+					$(target).css('float', 'left')
+					var originalText = $('#' + this.options.id + ' .outBoundLink').text()
+					//display the image if it exists
+					//maybe create an image view?
+					console.log('hovering over an img', url)
+					var hoverImgView = new HoverImgView({
+						el: target,
+						url: url,
+						ahrefDescription: ahrefDescription,
+						originalText: originalText
+
+					});
+
+				}
+			},
+			checkIsImg: function(url) {
+				return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+			},
+			fixImgur: function(url) {
+				if (this.containsStr("imgur.com", url)) {
+					//check if its a gallery
+					if (this.containsStr("imgur.com/a", url) == true || this.containsStr("gallery", url) == true) {
+						return false
+					} else {
+						//return url + "l.jpg"  //add l to the end of the img url to give it a better preview
+						return url + ".jpg"
+					}
+
+				}
+				return false;
+			},
+			containsStr: function(needle, haystack) {
+				return (haystack.indexOf(needle) >= 0)
 			},
 
 			renderChildren: function(replies) {
