@@ -708,18 +708,18 @@ define(['underscore', 'backbone', 'jquery', 'lib/resthub/jquery-event-destroyed'
                     }
                 });
 
-                $(window.document).on('click', 'a[href]:not(.outBoundLink)', function(evt) {
+                // $(window.document).on('click', 'a[href]:not(.outBoundLink)', function(evt) {
 
-                    var protocol = this.protocol + '//';
-                    var href = this.href;
-                    href = href.slice(protocol.length);
-                    href = href.slice(href.indexOf("/") + 1);
+                //     var protocol = this.protocol + '//';
+                //     var href = this.href;
+                //     href = href.slice(protocol.length);
+                //     href = href.slice(href.indexOf("/") + 1);
 
-                    if (href.slice(protocol.length) !== protocol) {
-                        evt.preventDefault();
-                        Backbone.history.navigate(href, true);
-                    }
-                });
+                //     if (href.slice(protocol.length) !== protocol) {
+                //         evt.preventDefault();
+                //         Backbone.history.navigate(href, true);
+                //     }
+                // });
 
             }
 

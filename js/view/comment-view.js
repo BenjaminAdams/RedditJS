@@ -43,17 +43,15 @@ define([
 				this.render();
 				//console.log("trying to create a new comment view with = ", options)
 
-				//add data-external and a special class to any link in a comment
-				//once the links have the class outBoundLink on them, they will no longer trigger the hover view
-				this.$('.hoverImgParent a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
-				//$(target).attr("data-bypass", "data-bypass"); //makes the link external to be clickable
-				// this.$('.usertext-body a').each(function(index) {
-				// 	console.log('adding one link')
-				// 	$(this).addClass = 'outBoundLink'
-				// });
+				this.addOutboundLink()
 
 				this.renderChildren(this.model.get('replies'))
 
+			},
+			//add data-external and a special class to any link in a comment
+			//once the links have the class outBoundLink on them, they will no longer trigger the hover view
+			addOutboundLink: function() {
+				this.$('.hoverImgParent a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
 			},
 			loadMOAR: function(e) {
 				e.preventDefault()
@@ -106,7 +104,7 @@ define([
 					this.template = commentTmpl
 					this.render()
 					this.renderChildren(this.model.get('replies'))
-
+					this.addOutboundLink()
 				}
 			},
 
@@ -139,56 +137,41 @@ define([
 				console.log('hovering over a comment')
 				e.preventDefault()
 				e.stopPropagation()
-				var target = $(e.currentTarget)
+				if (window.twoSecDelay != true) {
+					var target = $(e.currentTarget)
 
-				var url = $(target).attr("href")
-				//check if the url is an image we can embed
-				if (this.checkIsImg(url) == false) {
-					//URL is NOT an image
-					//try and fix an imgur link?
-					url = this.fixImgur(url)
+					var url = $(target).attr("href")
+					//check if the url is an image we can embed
+					if (this.checkIsImg(url) == false) {
+						//URL is NOT an image
+						//try and fix an imgur link?
+						url = this.fixImgur(url)
 
-				}
-				if (url != false) {
-
-					var ahrefDescription = $(target).text()
-					if (!ahrefDescription) {
-						ahrefDescription = url
 					}
+					if (url != false) {
 
-					$(target).css('float', 'left')
-					var originalText = $('#' + this.options.id + ' .outBoundLink').text()
-					//display the image if it exists
-					//maybe create an image view?
-					console.log('hovering over an img', url)
-					var hoverImgView = new HoverImgView({
-						el: target,
-						url: url,
-						ahrefDescription: ahrefDescription,
-						originalText: originalText
+						var ahrefDescription = $(target).text()
+						if (!ahrefDescription) {
+							ahrefDescription = url
+						}
 
-					});
+						//$(target).css('float', 'left')
+						var originalText = $('#' + this.options.id + ' .outBoundLink').text()
+						var originalHtml = this.$('#' + this.options.id + ' .outBoundLink').parent().parent().html()
+						//display the image if it exists
+						//maybe create an image view?
+						console.log('hovering over an img', originalHtml)
+						var hoverImgView = new HoverImgView({
+							el: target.parent().parent(),
+							url: url,
+							ahrefDescription: ahrefDescription,
+							originalText: originalText,
+							originalHtml: originalHtml
 
-				}
-			},
-			checkIsImg: function(url) {
-				return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
-			},
-			fixImgur: function(url) {
-				if (this.containsStr("imgur.com", url)) {
-					//check if its a gallery
-					if (this.containsStr("imgur.com/a", url) == true || this.containsStr("gallery", url) == true) {
-						return false
-					} else {
-						//return url + "l.jpg"  //add l to the end of the img url to give it a better preview
-						return url + ".jpg"
+						});
+
 					}
-
 				}
-				return false;
-			},
-			containsStr: function(needle, haystack) {
-				return (haystack.indexOf(needle) >= 0)
 			},
 
 			renderChildren: function(replies) {

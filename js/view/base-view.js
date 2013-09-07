@@ -306,6 +306,25 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 
 				});
 			},
+			checkIsImg: function(url) {
+				return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+			},
+			fixImgur: function(url) {
+				if (this.containsStr("imgur.com", url)) {
+					//check if its a gallery
+					if (this.containsStr("imgur.com/a", url) == true || this.containsStr("gallery", url) == true) {
+						return false
+					} else {
+						//return url + "l.jpg"  //add l to the end of the img url to give it a better preview
+						return url + ".jpg"
+					}
+
+				}
+				return false;
+			},
+			containsStr: function(needle, haystack) {
+				return (haystack.indexOf(needle) >= 0)
+			},
 			//so users can hide a post/link 
 			hidePost: function(e) {
 				e.preventDefault()

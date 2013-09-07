@@ -1,6 +1,5 @@
-<span class='hoverImgView'>
-	<span class='close'>close</span>
-	<h3>{{model.ahrefDescription}}</h3>
-	<p>{{model.originalText}}</p>
-	<a data-bypass href='{{model.url}}'> <img src='{{model.url}}'   /> </a>
-</span>
+<div class='hoverImgView'>
+	<h3><span class='close'>X</span> <a data-bypass class='ahrefDescription' href='{{model.url}}' target='_blank'>{{model.ahrefDescription}} </a></h3>
+	<p>{{{model.originalHtml}}}</p>
+	<a data-bypass href='{{model.url}}' target='_blank'> <img src='{{model.url}}'   /> </a>
+</div>
