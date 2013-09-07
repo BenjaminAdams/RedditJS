@@ -97,3 +97,9 @@ require.config({
 // Load our app module and pass it to our definition function
 require(['console', 'app']);
 //require(['app']);
+
+if (!String.prototype.trim) {
+    String.prototype.trim = function() {
+        return this.replace(/^\s+|\s+$/g, '');
+    };
+}
