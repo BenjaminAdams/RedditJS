@@ -392,7 +392,7 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				// 	return false;
 
 				// }
-			}
+			},
 
 		});
 		return BaseView;

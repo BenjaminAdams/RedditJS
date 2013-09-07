@@ -37,9 +37,18 @@ define([
 				//console.log('init comments view model=', this.model)
 
 			},
+
+			/**************Fetching functions ****************/
+			fetchError: function(response, error) {
+				console.log("fetch error, lets retry")
+
+			},
+			fetchMore: function() {
+
+			},
 			renderComments: function(collection) {
 				//console.log('collection in renderComments', collection)
-				this.start = new Date()
+
 				collection.each(function(model) {
 					//console.log('model in renderComments', model)
 					var comment = new CommentView({
@@ -51,16 +60,6 @@ define([
 					})
 
 				})
-				this.end = new Date()
-				console.log('cmnts=', this.end - this.start)
-			},
-
-			/**************Fetching functions ****************/
-			fetchError: function(response, error) {
-				console.log("fetch error, lets retry")
-
-			},
-			fetchMore: function() {
 
 			},
 

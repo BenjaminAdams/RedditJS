@@ -100,11 +100,15 @@ define([
 					var newComments = newComments.slice(1, newComments.length)
 					newComments = new Backbone.Collection(newComments)
 
-					this.model.set('replies', newComments)
+					//this.model.set('replies', newComments)
 					//change template back to normal comment template
 					this.template = commentTmpl
+					this.$el.empty()
 					this.render()
-					this.renderChildren(this.model.get('replies'))
+
+					this.renderOtherReplyComments(newComments)
+					var replies = this.model.get('replies')
+					this.renderChildren(replies)
 					this.addOutboundLink()
 				}
 			},
@@ -161,7 +165,9 @@ define([
 						//$(target).css('float', 'left')
 						var originalText = $('#' + this.options.id + ' .outBoundLink:first').parent().parent().text().trim()
 						var originalHtml = this.$('#' + this.options.id + ' .outBoundLink:first').parent().parent().html()
-						url = $(target).attr("href") //in case it was a youtube video we should reset the url link to pass into the view
+						if (youtubeID == true) {
+							url = $(target).attr("href") //in case it was a youtube video we should reset the url link to pass into the view
+						}
 						//display the image if it exists
 						//maybe create an image view?
 						//console.log('hovering over an img', originalText)
@@ -187,17 +193,35 @@ define([
 					replies.each(function(model) {
 						var id = model.get('id')
 						if (id != "_") {
+
 							var comment = new CommentView({
 								model: model,
 								id: id,
 								strategy: "append",
 								root: "#" + self.name
+
 							})
 						}
 
 					})
 
 				}
+			},
+			renderOtherReplyComments: function(collection) {
+				console.log('other replies', collection)
+				var self = this
+				collection.each(function(model) {
+					//console.log('model in renderComments', model)
+					var comment = new CommentView({
+						model: model,
+						id: model.get('id'),
+						strategy: "append",
+						root: ".child" + model.get('parent_id')
+						//root: "#commentarea"
+					})
+
+				})
+
 			},
 			/**************Fetching functions ****************/
 			fetchError: function(response, error) {
