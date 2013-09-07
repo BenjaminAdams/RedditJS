@@ -12,7 +12,7 @@ define([
 
 				};
 
-				_events['mouseover #' + this.options.id + ' .outBoundLink'] = "commentLink";
+				_events['mouseover #' + this.options.id + ' .outBoundLink'] = "commentLinkHover";
 				_events['click #report' + this.options.id] = "reportShow";
 				_events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
 				_events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
@@ -52,6 +52,7 @@ define([
 			//once the links have the class outBoundLink on them, they will no longer trigger the hover view
 			addOutboundLink: function() {
 				this.$('.hoverImgParent a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
+				this.$('.hoverImgParent a').attr('target', '_blank');
 			},
 			loadMOAR: function(e) {
 				e.preventDefault()
@@ -133,11 +134,11 @@ define([
 				e.stopPropagation()
 				this.$('#commentreply' + this.model.get('id')).toggle()
 			},
-			commentLink: function(e) {
-				console.log('hovering over a comment')
+			commentLinkHover: function(e) {
+				//console.log('hovering over a comment')
 				e.preventDefault()
 				e.stopPropagation()
-				if (window.twoSecDelay != true) {
+				if (window.Delay != true) {
 					var target = $(e.currentTarget)
 
 					var url = $(target).attr("href")
@@ -156,8 +157,8 @@ define([
 						}
 
 						//$(target).css('float', 'left')
-						var originalText = $('#' + this.options.id + ' .usertext-body').text()
-						var originalHtml = this.$('#' + this.options.id + ' .outBoundLink').parent().parent().html()
+						var originalText = $('#' + this.options.id + ' .outBoundLink:first').parent().parent().text().trim()
+						var originalHtml = this.$('#' + this.options.id + ' .outBoundLink:first').parent().parent().html()
 						//display the image if it exists
 						//maybe create an image view?
 						console.log('hovering over an img', originalText)

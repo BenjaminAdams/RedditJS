@@ -232,7 +232,8 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 					})
 
 				} else {
-					this.$('.status' + this.model.get('name')).html('error ' + data)
+					//this.$('.status' + this.model.get('name')).html('error ' + data)
+					this.$('.status' + this.model.get('name')).html('<div class="error">' + data.json.errors[0][1] + '</div>')
 				}
 			}, //hides the comment reply textbox
 			hideUserInput: function(e) {

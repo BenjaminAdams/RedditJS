@@ -21,8 +21,9 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 
 				console.log('original text=', this.originalText)
 				console.log('ahrefdesc=', this.ahrefDescription)
+				console.log('number of links in this string=', (this.originalHtml.split("href").length - 1))
 
-				if (this.originalText == this.ahrefDescription) {
+				if (this.originalText == this.ahrefDescription && (this.originalHtml.split("href").length - 1) == 1) {
 					//no point in showing the same string twice
 					console.log('removing display html')
 					this.displayHtml = ''
@@ -44,12 +45,12 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 				e.preventDefault()
 				e.stopPropagation()
 
-				window.twoSecDelay = true //we have to have a delay on the closing of this because the users mouse will be right on the link and it will just reopen
+				window.Delay = true //we have to have a delay on the closing of this because the users mouse will be right on the link and it will just reopen
 				setTimeout(function() {
-					window.twoSecDelay = false
-				}, 2000)
+					window.Delay = false
+				}, 1500)
 
-				console.log('closing', this.originalHtml)
+				//console.log('closing', this.originalHtml)
 				this.$el.html(this.originalHtml)
 			},
 			render: function() {
@@ -61,26 +62,30 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 
 				var target = $(e.currentTarget)
 				var url = $(target).attr("href")
-				if (url == this.url) {
+				if (url == this.url || window.Delay == true) {
 					return; //do not process if already have the same selected img
 				}
-				console.log("NEW img selected")
+				//console.log("NEW img hover", url)
 				if (this.checkIsImg(url) == false) {
 					//URL is NOT an image
 					//try and fix an imgur link?
 					url = this.fixImgur(url)
 
 				}
+
 				if (url != false) {
 					this.url = url
-					this.$('img').attr('href', this.url)
 
-					if (!this.ahrefDescription) {
-						this.ahrefDescription = this.url
-					}
+					this.ahrefDescription = $(target).text()
 
-					this.$('ahrefDescription').attr('href', this.url)
-					this.$('ahrefDescription').text('test')
+					this.$('.imgPreview').attr('href', this.url)
+					this.$('.imgPreview img').attr('src', this.url)
+					this.$('.ahrefDescription').attr('href', this.url)
+					this.$('.ahrefDescription').html(this.ahrefDescription)
+					window.Delay = true //delay the user from switching images because it could hover over a lot at once
+					setTimeout(function() {
+						window.Delay = false
+					}, 300)
 
 				}
 
