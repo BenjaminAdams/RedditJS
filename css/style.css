@@ -317,7 +317,14 @@ position: relative;
 max-width: 90%;
 padding:5px;
   display:block;
+  margin: 10px auto;
 }
+
+.hoverImgView .youtubeEmbed {
+text-align: center;
+margin: 20px 0;
+}
+
 
 .hoverImgView  h3 {
 background-color:#CEE3F8;

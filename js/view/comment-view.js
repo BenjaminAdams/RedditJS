@@ -142,6 +142,7 @@ define([
 					var target = $(e.currentTarget)
 
 					var url = $(target).attr("href")
+					var youtubeID = this.youtubeChecker(url);
 					//check if the url is an image we can embed
 					if (this.checkIsImg(url) == false) {
 						//URL is NOT an image
@@ -149,7 +150,8 @@ define([
 						url = this.fixImgur(url)
 
 					}
-					if (url != false) {
+
+					if (url != false || youtubeID != false) {
 
 						var ahrefDescription = $(target).text()
 						if (!ahrefDescription) {
@@ -159,6 +161,7 @@ define([
 						//$(target).css('float', 'left')
 						var originalText = $('#' + this.options.id + ' .outBoundLink:first').parent().parent().text().trim()
 						var originalHtml = this.$('#' + this.options.id + ' .outBoundLink:first').parent().parent().html()
+						url = $(target).attr("href") //in case it was a youtube video we should reset the url link to pass into the view
 						//display the image if it exists
 						//maybe create an image view?
 						//console.log('hovering over an img', originalText)
@@ -167,7 +170,8 @@ define([
 							url: url,
 							ahrefDescription: ahrefDescription,
 							originalText: originalText,
-							originalHtml: originalHtml
+							originalHtml: originalHtml,
+							youtubeID: youtubeID
 
 						});
 
