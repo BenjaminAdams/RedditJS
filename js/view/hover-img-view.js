@@ -27,7 +27,6 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 
 				if (this.originalText == this.ahrefDescription && (this.originalHtml.split("href").length - 1) == 1) {
 					//no point in showing the same string twice
-					console.log('removing display html')
 					this.displayHtml = ''
 				}
 

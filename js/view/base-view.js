@@ -376,15 +376,22 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				});
 			},
 			youtubeChecker: function(url) {
-				var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-				var match = url.match(regExp);
-				if (match && match[7].length == 11) {
-					return match[7];
+				var splitOne = url.split(/v\/|v=|youtu\.be\//)[1]
+				if (typeof splitOne !== 'undefined') {
+					return splitOne.split(/[?&]/)[0];
 				} else {
-					console.log('not a youtube video')
-					return false;
-
+					return false
 				}
+				//var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+				//var regExp = /^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/
+				// var match = url.match(regExp);
+				// if (match && match[3].length == 11) {
+				// 	return match[3];
+				// } else {
+				// 	console.log('not a youtube video')
+				// 	return false;
+
+				// }
 			}
 
 		});
