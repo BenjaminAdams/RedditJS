@@ -95,7 +95,7 @@ define([
 				var self = this
 
 				this.removePendingGrid()
-
+				window.stop() //prevents new images from being downloaded
 				$(window).off("scroll", this.watchScroll);
 				$(window).off('resize', this.debouncer);
 				channel.off("subreddit:changeGridOption", this.changeGridOption, this);
@@ -123,7 +123,6 @@ define([
 					clearTimeout(self.imgAry[id]);
 				}
 				//*window.stop() is !important!  It floods the grid view if not set to trigger between page views
-				window.stop() //prevents new images from being downloaded
 
 			},
 

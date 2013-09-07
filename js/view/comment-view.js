@@ -161,7 +161,7 @@ define([
 						var originalHtml = this.$('#' + this.options.id + ' .outBoundLink:first').parent().parent().html()
 						//display the image if it exists
 						//maybe create an image view?
-						console.log('hovering over an img', originalText)
+						//console.log('hovering over an img', originalText)
 						var hoverImgView = new HoverImgView({
 							el: target.parent().parent(),
 							url: url,

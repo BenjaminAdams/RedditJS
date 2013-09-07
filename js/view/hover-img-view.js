@@ -19,9 +19,9 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 				this.originalHtml = options.originalHtml
 				this.displayHtml = this.originalHtml //we do not want to display the original HTML if its only a single link in the comment
 
-				console.log('original text=', this.originalText)
-				console.log('ahrefdesc=', this.ahrefDescription)
-				console.log('number of links in this string=', (this.originalHtml.split("href").length - 1))
+				// console.log('original text=', this.originalText)
+				// console.log('ahrefdesc=', this.ahrefDescription)
+				// console.log('number of links in this string=', (this.originalHtml.split("href").length - 1))
 
 				if (this.originalText == this.ahrefDescription && (this.originalHtml.split("href").length - 1) == 1) {
 					//no point in showing the same string twice

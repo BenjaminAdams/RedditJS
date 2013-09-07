@@ -30,6 +30,8 @@
  				this.pixelsOfOneImg = 88
 
  				channel.on("bottombar:selected", this.selected, this); //when the user focuses on a single post page
+ 				channel.on("btmbar:remove", this.remove, this); //clears everthing in this view
+ 				$(window).bind('keydown', this.keyPress); //remove this later!
  				channel.trigger("single:giveBtnBarID"); //ask the single view to give you the btm bar ID to make active
 
  				this.loading = false; //keeps track if we are loading more posts or not
@@ -53,6 +55,31 @@
 
  				}
 
+ 			},
+
+ 			remove: function() {
+ 				$(window).unbind('keydown', this.keyPress);
+ 				channel.off("single:remove", this.remove, this);
+ 				this.undelegateEvents();
+ 				this.$el.empty();
+ 				this.stopListening();
+ 				console.log('********removed the btm bar **')
+
+ 				//call the superclass remove method
+ 				//Backbone.View.prototype.remove.apply(this, arguments);
+ 			},
+ 			keyPress: function(e) {
+ 				console.log('keydown', e.which)
+
+ 				if (e.target.tagName.toLowerCase() !== 'input' && e.target.tagName.toLowerCase() !== 'textarea') {
+
+ 					if (e.which == 39) //right key
+ 					{
+ 						console.log('right keypress')
+ 					} else if (e.which == 37) { //left key
+ 						console.log('left keypress')
+ 					}
+ 				}
  			},
  			//when the user goes to a single post page, that ID will become selected in the bottom bar
  			//only trigger this function after we have the entire subreddit data
@@ -82,7 +109,7 @@
  					console.log('found idnex=', foundIndex)
  					var centerScreen = $(document).width() / 2
  					//var model = this.collection.at(id)
-				var leftPos = (foundIndex * this.pixelsOfOneImg) - (centerScreen - (this.pixelsOfOneImg * 3)) //make the selected index appear in the center
+ 					var leftPos = (foundIndex * this.pixelsOfOneImg) - (centerScreen - (this.pixelsOfOneImg * 3)) //make the selected index appear in the center
  					console.log('new left pos=', leftPos)
  					//rotate the bar to the active img
  					if (foundIndex > 15) {

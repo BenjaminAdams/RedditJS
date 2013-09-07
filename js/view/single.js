@@ -38,7 +38,7 @@ define([
 				this.subName = options.subName
 				this.id = options.id
 				this.template = singleTmpl;
-				$(document).bind('keypress', this.keyPress, this); //remove this later!
+
 				this.triggerID()
 
 				if (typeof window.curModel === 'undefined') {
@@ -62,19 +62,6 @@ define([
 				channel.on("single:giveBtnBarID", this.triggerID, this);
 
 			},
-			keyPress: function(e) {
-				console.log('keypress', e.which)
-
-				if (e.target.tagName.toLowerCase() !== 'input' && e.target.tagName.toLowerCase() !== 'textarea') {
-
-					if (e.which == 39) //right key
-					{
-						console.log('right keypress')
-					} else if (e.which == 37) { //left key
-						console.log('left keypress')
-					}
-				}
-			},
 
 			fetchComments: function(callback) {
 				$('#commentarea').html("<div class='loadingS' style='position:relative;left:30%;'></div>")
@@ -92,7 +79,7 @@ define([
 
 			},
 			remove: function() {
-				$(document).unbind('keypress', 'keyPress');
+				$(window).unbind('keydown', this.keyPress);
 				$(window).off('resize', this.debouncer);
 				channel.off("single:remove", this.remove, this);
 				this.undelegateEvents();

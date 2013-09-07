@@ -42,7 +42,9 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     channel.trigger("single:remove") //clear old subreddit views
 
                     if (name != 'single') { //hide the bottom bar if not in single view
-                        $("#bottom-bar").hide()
+                        //    $("#bottom-bar").hide()
+                        channel.trigger("btmbar:remove")
+
                     }
 
                     $('#imgCache').empty() //flush the image thumbnail cache
