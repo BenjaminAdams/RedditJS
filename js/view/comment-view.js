@@ -156,11 +156,11 @@ define([
 						}
 
 						//$(target).css('float', 'left')
-						var originalText = $('#' + this.options.id + ' .outBoundLink').text()
+						var originalText = $('#' + this.options.id + ' .usertext-body').text()
 						var originalHtml = this.$('#' + this.options.id + ' .outBoundLink').parent().parent().html()
 						//display the image if it exists
 						//maybe create an image view?
-						console.log('hovering over an img', originalHtml)
+						console.log('hovering over an img', originalText)
 						var hoverImgView = new HoverImgView({
 							el: target.parent().parent(),
 							url: url,
