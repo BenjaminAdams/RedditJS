@@ -69,14 +69,25 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				data.voted = 'unvoted'
 				data.downmod = 'down'
 				data.upmod = 'up'
+
+				var score = data.score
+				data.scoreUp = +score + 1
+				data.scoreDown = +score - 1
+
 			} else if (data.likes === true) {
 				data.voted = "likes"
 				data.downmod = 'down'
 				data.upmod = 'upmod'
+				var score = data.score - 1
+				data.scoreUp = +score + 1
+				data.scoreDown = +score - 1
 			} else {
 				data.voted = "dislikes"
 				data.downmod = 'downmod'
 				data.upmod = 'up'
+				var score = data.score + 1
+				data.scoreUp = +score + 2
+				data.scoreDown = +score - 1
 			}
 
 			//comments or plural comments
@@ -86,9 +97,6 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				data.commentsPlural = 'comments'
 			}
 			//We have to print the score out for the upvoted and downvoted values
-			var score = data.score
-			data.scoreUp = +score + 1
-			data.scoreDown = +score - 1
 
 			//figure out a URL that we can embed in an image tag
 			var imgUrl = data.url

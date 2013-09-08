@@ -71,7 +71,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/submit', 'view/base-v
 				this.$('.link-button').parent().removeClass('selected')
 				this.$('#text-field').show()
 				this.$('#url-field').hide()
-				this.type = 'text'
+				this.type = 'self'
 			},
 			changeSubreddit: function(e) {
 				e.preventDefault()
@@ -187,7 +187,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/submit', 'view/base-v
 					//detect if the link we submitted was good and went through
 					if (typeof data !== 'undefined' && typeof data.json !== 'undefined') {
 
-						if ($.isEmptyObject(data.json.errors) == false) {
+						if (data.json.errors.length > 0) {
 							//error checking
 							if (typeof data.json.errors[0] === 'undefined') {
 								self.$('.status').html('Unable to submit')
@@ -196,7 +196,10 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/submit', 'view/base-v
 								self.$('.status').html(errorMsg)
 							}
 
-						} else if (typeof typeof data.json.data !== 'undefined' && typeof data.json.data.url !== 'undefined') { //means we have a good link!
+						} else if (typeof data.json.data === 'undefined') {
+							self.$('.status').html('Unable to submit')
+
+						} else if (typeof data.json.data.url !== 'undefined') { //means we have a good link!
 							//post was good
 							var newUrl = data.json.data.url.replace('http://www.reddit.com', '')
 							var newUrl = newUrl.replace('http://reddit.com', '') //for good measure in case reddit.com does not have a www
