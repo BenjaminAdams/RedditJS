@@ -56,14 +56,14 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 
 				var bgImg = $('#header').css('background-image')
 
-				var border = $('.tabmenu li a').css('border')
+				//var border = $('.tabmenu li a').css('border')
 				var color = $('.tabmenu li a').css('color')
-				var linkColor = $('.tabmenu li.selected a').css('color')
+				var linkColor = $('#header-bottom-right').css('background-color')
 				//this.$('.hoverImgView').css('color', color)
 
-				this.$('h3').css('background-image', bgImg, 'important')
-				this.$('h3').css('color', linkColor, 'important')
-				this.$('h3').css('border', border, 'important')
+				this.$('.imgTitle').css('background-image', bgImg, 'important')
+				this.$('.imgTitle a').css('color', linkColor, 'important')
+				//this.$('h3').css('border', border, 'important')
 
 				var headerImg = $('#header-img').attr('src')
 				if (typeof headerImg !== 'undefined') {
@@ -73,25 +73,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 					// });
 					$('.hoverImgView').append("<style>.hoverImgView::after{ content:'';background:url(" + headerImg + ") no-repeat bottom right; opacity:0.3;top:0;left:0;right:0;bottom:0;position:absolute;z-index:-1; }</style>");
 
-					// content: "";
-					// background: url(http://subtlepatterns.com/patterns/bo_play_pattern.png);
-					// opacity: 0.5;
-					// top: 0;
-					// left: 0;
-					// bottom: 0;
-					// right: 0;
-					// position: absolute;
-					// z-index: -1; 
-
 				}
-				// this.$('.hoverImgView').css('background-image', 'http://thumbs.reddit.com/t5_2qi0e.png')
-				// this.$('.hoverImgView').css('background-position', 'right bottom')
-				// this.$('.hoverImgView').css('background-repeat', 'no-repeat')
-
-				//.tabmenu li a and .tabmenu li.selected a
-				// color: #000;
-				// background-color: #F0F0F0;
-				// border: 1px solid #000;
 
 			},
 			closeImg: function(e) {

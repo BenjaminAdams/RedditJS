@@ -334,7 +334,7 @@ padding-bottom: 20px;
 }
 
 
-.hoverImgView  h3 {
+.hoverImgView  .imgTitle {
 background-color:#CEE3F8;
 color:#5F99CF;
 padding:4px;
