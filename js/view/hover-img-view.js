@@ -47,23 +47,45 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 
 				this.render();
 				this.$el.removeClass('outBoundLink')
+				this.loadImg()
 
 				//add the background image in the custom CSS of from the header
 				this.addHeaderGBimg()
 
 			},
+			loadImg: function() {
+				console.log('loading img', this.url)
+				console.log('ytid=', this.youtubeID)
+				var self = this
+				this.$('.imgPreview').html('<img src="img/loading.gif" />')
+				if (this.youtubeID == false) {
+
+					$('<img src="' + this.url + '" />')
+						.load(function() {
+							console.log('loaded img')
+
+							self.$('.imgPreview').html(this)
+						}).error(function() {
+							console.log("ERROR loading img")
+							this.$('.imgPreview').html('<img src="img/sad-icon.png" />')
+						});
+
+				}
+			},
 			addHeaderGBimg: function() {
 
 				var bgImg = $('#header').css('background-image')
 
-				//var border = $('.tabmenu li a').css('border')
-				var color = $('.tabmenu li a').css('color')
-				var linkColor = $('#header-bottom-right').css('background-color')
-				//this.$('.hoverImgView').css('color', color)
+				if (bgImg != 'none') {
+					//var border = $('.tabmenu li a').css('border')
+					var color = $('.tabmenu li a').css('color')
+					var linkColor = $('.tabmenu li.selected a').css('color')
+					//this.$('.hoverImgView').css('color', color)
 
-				this.$('.imgTitle').css('background-image', bgImg, 'important')
-				this.$('.imgTitle a').css('color', linkColor, 'important')
-				//this.$('h3').css('border', border, 'important')
+					this.$('.imgTitle').css('background-image', bgImg, 'important')
+					this.$('.imgTitle a').css('color', linkColor, 'important')
+					//this.$('h3').css('border', border, 'important')
+				}
 
 				var headerImg = $('#header-img').attr('src')
 				if (typeof headerImg !== 'undefined') {
@@ -71,7 +93,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 					// $('.hoverImgView').css({
 					// 	background: 'url(' + headerImg + ')  no-repeat bottom right'
 					// });
-					$('.hoverImgView').append("<style>.hoverImgView::after{ content:'';background:url(" + headerImg + ") no-repeat bottom right; opacity:0.3;top:0;left:0;right:0;bottom:0;position:absolute;z-index:-1; }</style>");
+					$('.hoverImgView').append("<style>.hoverImgView::after{ content:'';background:url(" + headerImg + ") no-repeat bottom right; opacity:0.15;top:0;left:0;right:0;bottom:0;position:absolute;z-index:-1; }</style>");
 
 				}
 
@@ -123,6 +145,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 						this.$('.youtubeEmbed').html(this.buildYoutubeEmbed())
 
 					} else {
+						this.youtubeID = false
 						this.$('.imgPreview').show()
 						this.$('.youtubeEmbed').html('')
 						this.$('.imgPreview').attr('href', this.url)
