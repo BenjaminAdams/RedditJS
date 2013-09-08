@@ -57,8 +57,9 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 				console.log('loading img', this.url)
 				console.log('ytid=', this.youtubeID)
 				var self = this
-				this.$('.imgPreview').html('<img src="img/loading.gif" />')
+
 				if (this.youtubeID == false) {
+					this.$('.imgPreview').html('<img src="img/loading.gif" />')
 
 					$('<img src="' + this.url + '" />')
 						.load(function() {
@@ -67,7 +68,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 							self.$('.imgPreview').html(this)
 						}).error(function() {
 							console.log("ERROR loading img")
-							this.$('.imgPreview').html('<img src="img/sad-icon.png" />')
+							self.$('.imgPreview').html('<img src="img/sad-icon.png" />')
 						});
 
 				}
@@ -125,7 +126,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 					return; //do not process if already have the same selected img
 				}
 				var youtubeID = this.youtubeChecker(url);
-				//console.log("NEW img hover", url)
+
 				if (this.checkIsImg(url) == false) {
 					//URL is NOT an image
 					//try and fix an imgur link?
@@ -149,7 +150,8 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 						this.$('.imgPreview').show()
 						this.$('.youtubeEmbed').html('')
 						this.$('.imgPreview').attr('href', this.url)
-						this.$('.imgPreview img').attr('src', this.url)
+						//this.$('.imgPreview img').attr('src', this.url)
+						this.loadImg()
 					}
 					this.$('.ahrefDescription').attr('href', this.url)
 					this.$('.ahrefDescription').html(this.ahrefDescription)

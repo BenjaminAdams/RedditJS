@@ -146,8 +146,12 @@ define([
 					var target = $(e.currentTarget)
 
 					var url = $(target).attr("href")
+
 					var youtubeID = this.youtubeChecker(url);
 					//check if the url is an image we can embed
+					if (youtubeID == false) {
+						url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
+					}
 					if (this.checkIsImg(url) == false) {
 						//URL is NOT an image
 						//try and fix an imgur link?

@@ -92,6 +92,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 
 			//figure out a URL that we can embed in an image tag
 			var imgUrl = data.url
+
 			if (this.checkIsImg(imgUrl) == false) {
 				//URL is NOT an image
 				//try and fix an imgur link?
@@ -153,6 +154,10 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 					return false
 				} else {
 					//return url + "l.jpg"  //add l to the end of the img url to give it a better preview
+
+					//first remove query parameters from the url
+					url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
+
 					return url + ".jpg"
 				}
 

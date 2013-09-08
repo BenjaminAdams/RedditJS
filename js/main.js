@@ -98,8 +98,14 @@ require.config({
 require(['console', 'app']);
 //require(['app']);
 
-if (!String.prototype.trim) {
+if (typeof String.prototype.trim === 'undefined') {
     String.prototype.trim = function() {
         return this.replace(/^\s+|\s+$/g, '');
+    };
+}
+
+if (typeof String.prototype.contains === 'undefined') {
+    String.prototype.contains = function(it) {
+        return this.indexOf(it) != -1;
     };
 }
