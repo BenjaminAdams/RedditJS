@@ -123,6 +123,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				})
 
 				this.displayDropChoices()
+				channel.trigger("submit:subreddits");
 			},
 			displayDropChoices: function() {
 				this.$('.drop-down-header').html(" ") //clear the div

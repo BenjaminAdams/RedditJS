@@ -1,0 +1,186 @@
+  <form  id="" class="pretty-form sharelink" style="display:none">
+    <div class="clearleft">
+      <!--IEsux-->
+    </div>
+    
+  </form>
+  <h1>
+    submit to reddit
+  </h1>
+  <form class="submit content"  id="newlink" method="post">
+    <ul class="tabmenu formtab ">
+      <li class="selected">
+        <a href="#" class="link-button">
+          link
+        </a>
+      </li>
+      <li class="">
+        <a href="#" class="text-button">
+          text
+        </a>
+      </li>
+    </ul>
+    <div class="formtabs-content">
+      <div class="spacer">
+        <div id="link-desc" class="infobar" style="display: block;">
+          You are submitting a link. The key to a successful submission is interesting content and a descriptive title.
+        </div>
+        <div id="text-desc" class="infobar" style="display: none;">
+          You are submitting a text-based post. Speak your mind. A title is required, but expanding further in the text field is not. Beginning your title with "vote up if" is violation of intergalactic law.
+        </div>
+      </div>
+      <div class="spacer">
+        <div class="roundfield " id="title-field">
+          <span class="title">
+            title
+          </span>
+          
+          <div class="roundfield-content">
+            <textarea name="title" rows="2" id='title'></textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="spacer">
+        <div class="roundfield " id="url-field" style="display: block;">
+          <span class="title">
+            url
+          </span>
+          
+          <div class="roundfield-content">
+            <input id="url" name="url" type="url" value="">
+
+            <div class="error NO_URL field-url" style="display:none">
+            </div>
+            <div class="error BAD_URL field-url" style="display:none">
+            </div>
+            <div class="error DOMAIN_BANNED field-url" style="display:none">
+            </div>
+            <div class="error ALREADY_SUB field-url" style="display:none">
+            </div>
+            <span class="error NO_LINKS field-sr" style="display:none">
+            </span>
+            <span class="error NO_SELFS field-sr" style="display:none">
+            </span>
+            <div id="suggest-title">
+              <span class="title-status">
+              </span>
+              <button type="button" tabindex="100" id='suggestTitle'>
+                suggest title
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spacer">
+        <div class="roundfield " id="text-field" style="display: none;">
+          <span class="title">
+            text
+          </span>
+          
+          <span class="gray">
+            (optional)
+          </span>
+          <div class="roundfield-content">
+
+            <div class="usertext">
+              <div class="usertext-edit" style="margin-left:0px;">
+                <div>
+                  <textarea rows="1" cols="1" name="text" id='submitTxt'></textarea>
+                </div>
+                <div class="bottom-area">
+                  <span class="help-toggle toggle" style="">
+                     		<a id="mdHelpShow"  class="option active " href="#" tabindex="100">formatting help</a>
+			<a id="mdHelpHide"  class="option" style='display:none;' href="#">hide help</a></span>
+                 
+  
+                  </span>
+                  <a data-bypass href="http://reddit.com/wiki/reddiquette" class="reddiquette" target="_blank" tabindex="100">
+                    reddiquette
+                  </a>
+                  <span class="error TOO_LONG field-text" style="display:none">
+                  </span>
+                  <span class="error RATELIMIT field-ratelimit" style="display:none">
+                  </span>
+                  <span class="error NO_TEXT field-text" style="display:none">
+                  </span>
+                  <span class="error TOO_OLD field-parent" style="display:none">
+                  </span>
+                  <span class="error DELETED_COMMENT field-parent" style="display:none">
+                  </span>
+                  <span class="error DELETED_LINK field-parent" style="display:none">
+                  </span>
+                  <span class="error USER_BLOCKED field-parent" style="display:none">
+                  </span>
+                  <div class="usertext-buttons">
+                    <button type="submit" onclick="" class="save" style="display:none" disabled="disabled">
+                      save
+                    </button>
+                    <button type="button" onclick="cancel_usertext(this)" class="cancel" style="display:none" disabled="disabled">
+                      cancel
+                    </button>
+                  </div>
+                </div>
+                <div id='mdHelp' class="markhelp" style="display:none">
+               
+
+  </div>
+  </div>
+  </div>
+
+  </span>
+  </div>
+  </div>
+  </div>
+  <div class="spacer">
+    <div class="roundfield " id="reddit-field">
+      <span class="title">
+        choose a subreddit
+      </span>
+      
+      <div class="roundfield-content">
+        <div id="sr-autocomplete-area">
+          <input id="sr-autocomplete" name="sr" type="text" value='{{model.subName}}'>
+          <ul id="sr-drop-down">
+            <li class="sr-name-row">
+              nothin
+            </li>
+          </ul>
+        </div>
+        
+
+        <div id="suggested-reddits">
+          <h3>
+            popular choices
+          </h3>
+          <ul>
+      
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  </div>
+  <div class="roundfield info-notice" title="why a brick? read to the bottom of the rules page to find out!">
+    please be mindful of reddit's 
+    <a data-bypass href="http://www.reddit.com/rules" target="_blank">
+      few rules
+    </a>
+    and practice 
+    <a data-bypass href="http://www.reddit.com/wiki/reddiquette" target="_blank">
+      good reddiquette
+    </a>
+    .
+  </div>
+  <input name="resubmit" id='resubmit' value="" type="hidden">
+  <div class="spacer">
+
+    <button class="btn" name="submit" value="form" type="submit">submit</button>
+    <span class="status error"></span>
+
+  </div>
+  </form>
+
+
+  </div>

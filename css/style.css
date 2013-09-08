@@ -359,3 +359,6 @@ background-position: 0 -613px;
 background-repeat: no-repeat;
 }
 
+.error {
+  color:red;
+}

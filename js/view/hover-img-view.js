@@ -54,8 +54,6 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 
 			},
 			loadImg: function() {
-				console.log('loading img', this.url)
-				console.log('ytid=', this.youtubeID)
 				var self = this
 
 				if (this.youtubeID == false) {
@@ -121,6 +119,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 
 				var target = $(e.currentTarget)
 				var url = $(target).attr("href")
+				console.log(url, this.url)
 
 				if (url == this.url || window.Delay == true) {
 					return; //do not process if already have the same selected img

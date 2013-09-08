@@ -17,6 +17,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 
 				if (this.subName == "front") {
 					//this.model.set('header_img', 'img/logo.png')
+					this.model.set('isFront', true)
 					this.render()
 					this.loadLoginView()
 					channel.trigger("header:update", this.model);
@@ -77,7 +78,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				this.render()
 				this.loadLoginView()
 				channel.trigger("header:update", this.model);
-
+				channel.trigger('submit:type', this.model.get('submission_type'))
 				//HeaderView.updateHeader(this.model)
 
 			},

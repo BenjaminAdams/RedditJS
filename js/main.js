@@ -55,7 +55,7 @@ require.config({
 
     },
 
-    urlArgs: 'appversion=23',
+    // urlArgs: 'appversion=23',
 
     // Libraries
     paths: {

@@ -169,7 +169,7 @@ define([
 						//$(target).css('float', 'left')
 						var originalText = $('#' + this.options.id + ' .outBoundLink:first').parent().parent().text().trim()
 						var originalHtml = this.$('#' + this.options.id + ' .outBoundLink:first').parent().parent().html()
-						if (youtubeID == true) {
+						if (youtubeID) {
 							url = $(target).attr("href") //in case it was a youtube video we should reset the url link to pass into the view
 						}
 						//display the image if it exists

@@ -16,11 +16,14 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
             },
             routes: {
+                'r/:subName/submit(/)': 'submit',
+                'submit(/)': 'submit',
                 '(:sortOrder)(/)': 'home',
                 'r/:subName(/)': 'subreddit',
                 'r/:subName/:sortOrder(/)': 'subreddit',
                 'r/:subName/comments/:id/:slug(/)': 'single',
                 'r/:subName/comments/:id(/)': 'single',
+
                 'user/:username(/)': 'user',
                 'user/:username/:sortOrder(/)': 'user',
                 'message/compose/:username(/)': 'compose',
@@ -44,6 +47,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     if (name != 'single') { //hide the bottom bar if not in single view
                         //    $("#bottom-bar").hide()
                         channel.trigger("btmbar:remove")
+                        this.bottomBar = null;
 
                     }
 
@@ -87,7 +91,9 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     id: id,
                 });
 
-                if (typeof this.bottomBar === 'undefined' || this.bottomBar.subName != subName) { //only update btm bar if the subreddit changes
+                console.log('btn bar=', this.bottomBar)
+
+                if ((typeof this.bottomBar === 'undefined' || this.bottomBar == null) || this.bottomBar.subName != subName) { //only update btm bar if the subreddit changes
                     this.bottomBar = new BottomBarView({
                         subName: subName,
                         id: id,
@@ -138,6 +144,14 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     searchQ: searchQ,
                     timeFrame: timeFrame,
                     sortOrder: sortOrder,
+                });
+            },
+            submit: function(subName) {
+                this.doSidebar(subName);
+                require(['view/submit-view'], function(SubmitView) {
+                    var SubmitView = new SubmitView({
+                        subName: subName
+                    });
                 });
             },
 
