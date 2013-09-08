@@ -45,7 +45,7 @@ define([
 				this.imgAry = new Array()
 
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
-				console.log("window.subs=", window.subs)
+				//console.log("window.subs=", window.subs)
 				if (typeof window.subs[this.subID] === 'undefined') {
 					$(this.el).append("<div class='loading'> </div>")
 					this.collection = new SubredditCollection({
@@ -160,8 +160,6 @@ define([
 					$('#siteTable img').unbind('.imagesLoaded');
 					//calculate how many columns we will have
 					var colCount = Math.floor($(document).width() / 301)
-					console.log('doc width= ', $(document).width())
-					console.log('cols=', colCount)
 
 					for (var i = 0; i < colCount; i++) {
 						self.$('#siteTable').append('<div class="column"> </div>')
@@ -316,16 +314,20 @@ define([
 										col.append(newPost);
 									}
 								} else {
+									//check if image is cached
+									//var img = new Image()
+									//img.src = model.get('imgUrl');
 
 									var timeout = count * 310
 									self.imgAry[model.get('id')] = setTimeout(function() {
-										console.log(self.subID)
+
 										self.imagesAdded--;
 										var col = self.shortestCol()
 										if (col) {
 											col.append(newPost);
 										}
 									}, timeout);
+
 								}
 
 							} else {

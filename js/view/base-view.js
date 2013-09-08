@@ -378,6 +378,9 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				});
 			},
 			youtubeChecker: function(url) {
+
+				//TODO: this type of link not working: http://youtu.be/YEZtgWIntpA?t=1m12s
+
 				if (!url.contains('youtube')) {
 					return false
 				}
