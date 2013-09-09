@@ -14,6 +14,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			console.log('sort order=', this.sortOrder)
 			this.count = 1
 			this.instanceUrl = this.getUrl()
+			console.log(this.instanceUrl)
 
 		},
 		// Reference to this collection's model.
@@ -27,20 +28,22 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		getUrl: function() {
 
 			var username = $.cookie('username')
+			var linkCount = window.settings.get('linkCount')
+
 			if (typeof username !== "undefined") {
 				if (this.subName == "front") {
-					return "/api/?url=" + this.sortOrder + ".json?after=" + this.after + "&cookie=" + $.cookie('reddit_session');
+					return "/api/?url=" + this.sortOrder + ".json&after=" + this.after + "&limit=" + linkCount + "&cookie=" + $.cookie('reddit_session');
 				} else {
 
-					return '/api/?url=r/' + this.subName + "/" + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+					return '/api/?url=r/' + this.subName + "/" + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
 				}
 			} else {
 				//if user is NOT logged in, use jsonp request
 				if (this.subName == "front") {
 
-					return "http://api.reddit.com/" + this.sortOrder + ".json?after=" + this.after + "&jsonp=?"
+					return "http://api.reddit.com/" + this.sortOrder + ".json&after=" + this.after + "&limit=" + linkCount + "&jsonp=?"
 				} else {
-					return "http://api.reddit.com/r/" + this.subName + "/" + this.sortOrder + ".json?after=" + this.after + "&jsonp=?"
+					return "http://api.reddit.com/r/" + this.subName + "/" + this.sortOrder + ".json&after=" + this.after + "&limit=" + linkCount + "&jsonp=?"
 					//return '/api/?url=r/' + this.subName + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
 				}
 			}
@@ -49,6 +52,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 		parse: function(response) {
 			//set the after for pagination
+			console.log(response)
 			this.after = response.data.after;
 
 			if (this.after == "" || this.after == null) {
@@ -89,6 +93,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 			//reset the url to have the new after tag
 			this.instanceUrl = this.getUrl()
+
 			return models;
 		},
 

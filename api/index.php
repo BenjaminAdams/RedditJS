@@ -32,10 +32,16 @@ if ( !$url ) {
   
 } else {
   // $url = "http://www.reddit.com/" . $url;
-  $url = "http://api.reddit.com/" . $url;
+  //$url = "http://api.reddit.com/" . $url;
+  $qryParams = str_replace("url=". $url,  '', $_SERVER['QUERY_STRING']);
+  $qryParams = ltrim($qryParams, '&');
+  $url = "http://api.reddit.com/" . $url . '?'. $qryParams;
   $ch = curl_init( $url );
 
-  // echo $url;
+   //echo $url;
+   //parse_str($_GET['QUERY_STRING'], $output);
+   //echo $output;
+ // echo $_SERVER['QUERY_STRING'];
   // exit;
   
   if ( strtolower($_SERVER['REQUEST_METHOD']) == 'post' ) {

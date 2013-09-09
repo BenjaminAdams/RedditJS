@@ -4,9 +4,10 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
         var AppRouter = Backbone.Router.extend({
 
             initialize: function() {
-
                 //load settings
+
                 window.settings = new Backbone.Model()
+                this.loadSettingsFromCookies()
 
                 //what happens if we keep subreddits in a global?
                 window.subs = new Array()
@@ -51,7 +52,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     //check if user is a reddit gold subscriber
                     if (window.settings.get('gold') != true && $.cookie('username') != 'armastevs') {
 
-                        $('.content').html('redditJS is for reddit gold members only.')
+                        $('.content').html('redditJS is for reddit gold members only, coming soon =)')
                         return;
                     }
 
@@ -186,6 +187,20 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                         subName: subName,
                     })
                 }
+            },
+            loadSettingsFromCookies: function() {
+                var params = {
+                    btmbar: $.cookie('btmbar') ? $.cookie('btmbar') : false,
+                    cmtLoad: $.cookie('cmtLoad') ? $.cookie('cmtLoad') : false,
+                    customCSS: $.cookie('customCSS') ? $.cookie('customCSS') : false,
+                    hideSidebar: $.cookie('hideSidebar') ? $.cookie('hideSidebar') : false,
+                    infin: $.cookie('infin') ? $.cookie('infin') : false,
+                    linkCount: $.cookie('linkCount') ? $.cookie('linkCount') : '100',
+
+                };
+                console.log('settings params=', params)
+                window.settings.set(params)
+                console.log(window.settings)
             }
 
         });
