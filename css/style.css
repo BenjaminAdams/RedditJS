@@ -362,3 +362,15 @@ background-repeat: no-repeat;
 .error {
   color:red;
 }
+
+
+.preftable { 
+display: table-row-group;
+vertical-align: middle;
+border-color: inherit;
+}
+
+.preftable th {
+  max-width:169px;
+white-space:normal;
+}

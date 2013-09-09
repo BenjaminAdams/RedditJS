@@ -4,6 +4,10 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
         var AppRouter = Backbone.Router.extend({
 
             initialize: function() {
+
+                //load settings
+                window.settings = new Backbone.Model()
+
                 //what happens if we keep subreddits in a global?
                 window.subs = new Array()
 
@@ -18,6 +22,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
             routes: {
                 'r/:subName/submit(/)': 'submit',
                 'submit(/)': 'submit',
+                'prefs(/)': 'prefs',
                 '(:sortOrder)(/)': 'home',
                 'r/:subName(/)': 'subreddit',
                 'r/:subName/:sortOrder(/)': 'subreddit',
@@ -41,6 +46,15 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 if (!callback) callback = this[name];
                 var f = function() {
                     //middleware functions
+                    console.log('usr=', $.cookie('username'))
+
+                    //check if user is a reddit gold subscriber
+                    if (window.settings.get('gold') != true && $.cookie('username') != 'armastevs') {
+
+                        $('.content').html('redditJS is for reddit gold members only.')
+                        return;
+                    }
+
                     channel.trigger("subreddit:remove") //clear old subreddit views
                     channel.trigger("single:remove") //clear old subreddit views
 
@@ -155,6 +169,17 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 });
             },
 
+            prefs: function() {
+                require(['view/prefs'], function(PrefsView) {
+                    var PrefsView = new PrefsView();
+                });
+            },
+
+            /*   Util functions
+             
+             
+             */
+            //displays the sidebar for that subreddit if its not already created
             doSidebar: function(subName) {
                 if (typeof this.sidebar === 'undefined' || this.sidebar.subName != subName) { //only update sidebar if the subreddit changes
                     this.sidebar = new SidebarView({
