@@ -6,7 +6,7 @@ define(['backbone', 'model/single'], function(Backbone, SingleModel) {
 		model: SingleModel,
 		url: function() {
 
-			return "/api/?url=reddits/mine.json?limit=100&cookie=" + $.cookie('reddit_session');
+			return "/api/?url=reddits/mine.json&limit=100&cookie=" + $.cookie('reddit_session');
 
 		},
 

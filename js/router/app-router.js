@@ -189,18 +189,37 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 }
             },
             loadSettingsFromCookies: function() {
-                var params = {
-                    btmbar: $.cookie('btmbar') ? $.cookie('btmbar') : false,
-                    cmtLoad: $.cookie('cmtLoad') ? $.cookie('cmtLoad') : false,
-                    customCSS: $.cookie('customCSS') ? $.cookie('customCSS') : false,
-                    hideSidebar: $.cookie('hideSidebar') ? $.cookie('hideSidebar') : false,
-                    infin: $.cookie('infin') ? $.cookie('infin') : false,
-                    linkCount: $.cookie('linkCount') ? $.cookie('linkCount') : '100',
+                var checkboxes = new Array("btmbar", "cmtLoad", "customCSS", "hideSidebar", "infin");
+                var selectboxes = new Array('linkCount')
 
-                };
-                console.log('settings params=', params)
-                window.settings.set(params)
-                console.log(window.settings)
+                for (i in checkboxes) {
+
+                    if (typeof $.cookie(checkboxes[i]) === 'undefined' || $.cookie(checkboxes[i]) == 'false') {
+                        window.settings.set(checkboxes[i], false)
+                    } else {
+                        window.settings.set(checkboxes[i], true)
+                    }
+                }
+
+                for (i in selectboxes) {
+                    if (typeof $.cookie(selectboxes[i]) === 'undefined' || $.cookie(selectboxes[i]) == 'false') {
+                        window.settings.set(selectboxes[i], 100)
+                    } else {
+                        window.settings.set(selectboxes[i], $.cookie(selectboxes[i]))
+                    }
+                }
+                // var params = {
+                //     btmbar: $.cookie('btmbar') ? true : false,
+                //     cmtLoad: $.cookie('cmtLoad') ? true : false,
+                //     customCSS: $.cookie('customCSS') ? true : false,
+                //     hideSidebar: $.cookie('hideSidebar') ? true : false,
+                //     infin: $.cookie('infin') ? true : false,
+                //     linkCount: $.cookie('linkCount') ? $.cookie('linkCount') : '100',
+
+                // };
+                //console.log('settings params=', params)
+                //    window.settings.set(params)
+                //  console.log(window.settings)
             }
 
         });

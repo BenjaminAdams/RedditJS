@@ -10,7 +10,8 @@ define([
 				var _events = {
 					//'click .tabmenu-right li': 'changeGridOption',
 					'click #retry': 'tryAgain',
-					'click .thumbnailSmall': 'gotoSingle'
+					'click .thumbnailSmall': 'gotoSingle',
+					'click .nextprev': 'fetchMore'
 
 				};
 				//console.log('click .upArrow' + this.options.id)
@@ -60,6 +61,7 @@ define([
 					if (typeof this.collection !== 'undefined') {
 						$(window).scrollTop(this.collection.scroll)
 					}
+					this.showMoarBtn()
 					//this.fetchMore();
 				}
 
@@ -71,6 +73,7 @@ define([
 				//this.target = $("#siteTable"); //the target to test for infinite scroll
 				this.target = $(window); //the target to test for infinite scroll
 				this.loading = false;
+
 				this.scrollOffset = 1000;
 				this.prevScrollY = 0; //makes sure you are not checking when the user scrolls upwards
 				this.errorRetries = 0; //keeps track of how many errors we will retry after
@@ -242,6 +245,7 @@ define([
 				console.log("fetch error, lets retry", this.collection)
 				if (this.errorRetries < 10) {
 					this.loading = false;
+					this.showMoarBtn()
 				}
 
 				if (this.collection.length <= 5) {
@@ -251,12 +255,16 @@ define([
 
 			},
 			tryAgain: function() {
+				this.$('.loading').hide()
 				this.$('#siteTable').html("<div class='loading'></div> ")
 				this.$('#retry').remove()
 
 				this.fetchMore();
 			},
 			fetchMore: function() {
+
+				this.loading = true
+				this.hideMoarBtn()
 				this.collection.fetch({
 					success: this.gotNewPosts,
 					error: this.fetchError,
@@ -388,36 +396,39 @@ define([
 					$(window).off("scroll", this.watchScroll);
 				}
 				this.loading = false; //turn the flag on to go ahead and fetch more!
+				this.showMoarBtn()
 				this.helpFillUpScreen()
 				window.subs[this.subID] = this.collection
 
 			},
 			/**************Infinite Scroll functions ****************/
 			watchScroll: function(e) {
+				if (window.settings.get('infin') == false) {
+					//no longer need this because the setInterval trick combined with window.stop() is good enough to handle a large amount of full sized pictures
+					// if (this.imagesAdded > 5) {  
+					// 	//console.log('not loading more')
+					// 	return;
+					// }
 
-				//no longer need this because the setInterval trick combined with window.stop() is good enough to handle a large amount of full sized pictures
-				// if (this.imagesAdded > 5) {  
-				// 	//console.log('not loading more')
-				// 	return;
-				// }
+					var self = this;
+					var triggerPoint = 1500; // 1500px from the bottom     
 
-				var self = this;
-				var triggerPoint = 1500; // 1500px from the bottom     
+					//keep the scrollheight in the collection so when we return to it, we can auto-move to it
+					//bad?
+					this.collection.scroll = $(window).scrollTop()
 
-				//keep the scrollheight in the collection so when we return to it, we can auto-move to it
-				//bad?
-				this.collection.scroll = $(window).scrollTop()
+					if ((($(window).scrollTop() + $(window).height()) + triggerPoint >= $(document).height()) && this.loading == false) {
 
-				if ((($(window).scrollTop() + $(window).height()) + triggerPoint >= $(document).height()) && this.loading == false) {
-					this.loading = true
-					console.log('loading MOAR')
-					if (this.collection.after != "stop") {
-						this.fetchMore()
+						console.log('loading MOAR')
+						if (this.collection.after != "stop") {
+							this.fetchMore()
+						}
 					}
+					//this.prevScrollY = scrollY;
 				}
-				//this.prevScrollY = scrollY;
 			},
 			helpFillUpScreen: function() {
+
 				if (this.collection.length < 301 && (this.gridOption == 'small')) {
 					this.watchScroll()
 				}
@@ -426,6 +437,15 @@ define([
 
 					this.watchScroll()
 				}
+
+			},
+			showMoarBtn: function() {
+				//var moarBtn = '<p class="nextprev btmCenter"><a href="#" rel="next">MOAR ›</a></p>'
+				//this.$el.append(moarBtn)
+				this.$('.nextprev').show()
+			},
+			hideMoarBtn: function() {
+				this.$('.nextprev').hide()
 			}
 
 		});

@@ -20,7 +20,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/prefs', 'view/base-vi
 				this.$el.empty()
 
 				this.model = window.settings
-
+				console.log('padding in model', this.model)
 				this.render();
 				this.showSettings()
 
@@ -34,7 +34,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/prefs', 'view/base-vi
 					//console.log('name =' + item, 'value=' + window.settings.attributes[item])
 					var input = self.$('#' + item)
 					var type = input.prop('type')
-					console.log(input.prop('type'))
+					//console.log(input.prop('type'))
 					if (type == 'checkbox') {
 						//console.log(window.settings.attributes[item])
 						input.prop('checked', self.stringToBoolean(window.settings.attributes[item]));

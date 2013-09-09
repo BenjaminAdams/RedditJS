@@ -374,3 +374,21 @@ border-color: inherit;
   max-width:169px;
 white-space:normal;
 }
+
+
+.btmCenter {
+position: relative;
+top:33px;
+left: 48%;
+font-size: 16px;
+clear: both;
+width:64px;
+cursor: pointer;
+text-decoration: none;
+color: #369;
+  padding: 1px 4px;
+background: #EEE;
+border: 1px solid #DDD;
+border-radius: 3px;
+}
+
