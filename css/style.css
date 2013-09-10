@@ -392,3 +392,16 @@ border: 1px solid #DDD;
 border-radius: 3px;
 }
 
+.orange {
+color:#ff8b60;
+}
+
+.purple {
+color:#9494ff;
+}
+
+
+/* When the user expands an img on the subreddit screen */
+.link img {
+  max-width:65%;
+}

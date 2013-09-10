@@ -14,6 +14,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				_.bindAll(this);
 				this.template = HeaderTmpl;
 				this.mySubreddits = new MySubredditsCollection()
+				this.mySubreddits.loadDefaultSubreddits()
 				//this.model = new SidebarModel()
 				console.log("I should only render the header once")
 				this.render();
@@ -27,7 +28,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 
 				//load the subreddits on the top bar
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
-				this.mySubreddits.loadDefaultSubreddits()
+
 				this.displayMySubreddits()
 				this.changeActiveGrid($.cookie('gridOption'))
 				//this.changeActiveGrid($.cookie('gridOption')) //so we are highlighting the correct grid option on page load
@@ -120,6 +121,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				//   Every Subreddit after the first one has a seperator:  
 				//			<li><span class="separator">-</span><a href= "/r/funny/">funny</a></li>
 
+				window.subreddits = this.mySubreddits
 				var seperator = '';
 				var count = 0;
 				this.mySubreddits.each(function(model) {

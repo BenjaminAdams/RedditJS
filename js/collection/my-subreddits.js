@@ -104,6 +104,8 @@ define(['backbone', 'model/single'], function(Backbone, SingleModel) {
 				display_name: "blog"
 			});
 
+			window.subreddits = this
+
 		}
 
 	});

@@ -21,6 +21,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
             },
             routes: {
+                'r/myrandom(/)': 'myrandom',
                 'r/:subName/submit(/)': 'submit',
                 'submit(/)': 'submit',
                 'prefs(/)': 'prefs',
@@ -191,6 +192,23 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     var PrefsView = new PrefsView();
                 });
 
+            },
+            //loads a random subreddit that the user is subscribed to
+            myrandom: function() {
+                var self = this
+                setTimeout(function() {
+
+                    if (typeof window.subreddits !== 'undefined' && window.subreddits.length > 14) {
+                        var rand = window.subreddits.at(Math.floor((Math.random() * window.subreddits.length)))
+                        // this.subreddit(rand.get('display_name'))
+                        Backbone.history.navigate('r/' + rand.get('display_name'), {
+                            trigger: true
+                        })
+                    } else {
+                        self.myrandom() //have to wait for the subreddits to load first, this is incredibly ugly, but I have to wait for the subreddit data to load.  Maybe store data in localstorage?
+                    }
+
+                }, 100)
             },
 
             /*   Util functions

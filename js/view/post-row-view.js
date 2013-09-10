@@ -12,7 +12,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
                 'click .hide': 'hidePost',
                 'click .report': 'reportShow',
                 'click .reportConfirmYes': 'reportYes',
-                'click .reportConfirmNo': 'reportShow'
+                'click .reportConfirmNo': 'reportShow',
+                'click .expando-button': 'toggleExpando',
             },
 
             initialize: function(data) {
@@ -43,6 +44,19 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
 
                 }
 
+            },
+            toggleExpando: function() {
+                if (this.$('.expando-button').hasClass('expanded')) {
+                    this.$('.expando-button').removeClass('expanded')
+                    this.$('.expando-button').addClass('collapsed')
+                    this.$('.postRowContent').html('').hide()
+                } else {
+                    this.$('.expando-button').removeClass('collapsed')
+                    this.$('.expando-button').addClass('expanded')
+                    var str = '<div class="expando"><div class="usertext-body"><p>' + this.model.get('media_embed').content + '</p></div></div>'
+                    console.log(str)
+                    this.$('.postRowContent').html(str).show()
+                }
             },
 
         });

@@ -27,7 +27,9 @@
 
           {{{model.expandHTML}}} 
 
-             <p class="tagline">submitted <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
+             <p class="tagline">
+                 <span>{{model.score}}(<span class='orange'>{{model.ups}}</span>/<span class='purple'>{{model.downs}}</span>)</span>
+                submitted <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
 
          {{#if model.author_flair_css_class}}<span class="flair flair-{{model.author_flair_css_class}}" title=""></span>{{/if}}
             
@@ -36,7 +38,7 @@
 
   {{#if model.selftext_html}}
             <div class="expando">
-                <form action="#" class="usertext"  id="form-t3_1ktzvz3sr">
+                <form action="#" class="usertext" >
                     <div class="usertext-body">
                     
                               {{{model.selftext_html}}}
@@ -53,7 +55,7 @@
 
             
                 <li class='first'>
-                <a class="comments" href="{{model.permalink}}"  target="_blank">{{model.num_comments}} comments</a>
+                    <a class="comments" href="{{model.permalink}}"  target="_blank">{{model.num_comments}} comments</a>
                 </li>
 
                 <li class="share">

@@ -55,6 +55,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 			},
 			setMyStatus: function(model) {
 				this.$('#userkarma').html(model.get('uglyKarma'))
+				this.$('#userCommentkarma').html(model.get('comment_karma'))
 				if (model.get('has_mail') == true) {
 					this.$('#mail').removeClass('nohavemail').addClass('havemail')
 				}

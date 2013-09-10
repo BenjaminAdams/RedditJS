@@ -406,6 +406,7 @@ define([
 				window.subs[this.subID] = this.collection
 
 			},
+
 			/**************Infinite Scroll functions ****************/
 			watchScroll: function(e) {
 				if (window.settings.get('infin') == true) {

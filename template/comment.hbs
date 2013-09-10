@@ -42,13 +42,13 @@
 				 	<a href='{{model.permalink}}' class='title'>{{model.title}}</a>
 				 {{/if}}
 				<a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
-				<span class="flair flair-{{model.author_flair_css_class}}" title=""></span>
-				<span class="userattrs"></span>
-					<span class="score dislikes">{{model.scoreDown}} points</span>
-					<span class="score unvoted">{{model.score}} points</span>
-					<span class="score likes">{{model.scoreUp}} points</span>
+				 {{#if model.author_flair_css_class}}<span class="flair flair-{{model.author_flair_css_class}}" title=""></span>{{/if}}
 
+				
 
+					
+		<span class="score">{{model.score}}(<span class='orange'>{{model.ups}}</span>/<span class='purple'>{{model.downs}}</span>)</span>
+				
 
 				<time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">{{model.timeAgo}}</time> ago
 				{{#if model.edited}}				

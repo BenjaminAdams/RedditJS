@@ -27,8 +27,10 @@
 	  <a class="title loggedin" {{model.external}} href="{{model.url}}" target="_blank">{{model.title}}</a> 
                 <span class="domain">(<a href="/domain/{{model.domain}}/">{{model.domain}}</a>)</span>
             </p>
-
-            <p class="tagline">submitted <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
+                {{#if model.embededImg}} <li><div class='expando-button collapsed video'></div></li> {{/if}}
+            <p class="tagline">
+            <span>{{model.score}}(<span class='orange'>{{model.ups}}</span>/<span class='purple'>{{model.downs}}</span>)</span>
+                submitted <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
             {{#if model.author_flair_css_class}}<span class="flair flair-{{model.author_flair_css_class}}" title=""></span>{{/if}}
             <span class="userattrs"></span>to <a href="/r/{{model.subreddit}}/" class="subreddit hover">{{model.subreddit}}</a>
             </p>
@@ -66,6 +68,12 @@
                 </span>
                 </li>
             </ul>
+
+<div class="expando"><div class="usertext-body"><p>
+    <span class='postRowContent'> </span>
+</p>
+</div></div>
+
 
         </div>
 
