@@ -52,7 +52,16 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     //check if user is a reddit gold subscriber
                     if (window.settings.get('gold') != true && $.cookie('username') != 'armastevs') {
 
-                        $('.content').html('redditJS is for reddit gold members only, coming soon =)')
+                        //  $('.content').html('redditJS is for reddit gold members only, coming soon =)')
+
+                        require(['view/login-popup-view'], function(LoginPopupView) {
+
+                            var loginPopupView = new LoginPopupView({
+                                el: "#popupWindow"
+                            })
+
+                        });
+
                         return;
                     }
 
@@ -73,6 +82,11 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 };
                 return Backbone.Router.prototype.route.call(this, route, name, f);
             },
+
+            /***************************
+            Route Functions
+
+            ***************************/
 
             home: function(sortOrder) {
 
@@ -106,15 +120,15 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     id: id,
                 });
 
-                console.log('btn bar=', this.bottomBar)
-
-                if ((typeof this.bottomBar === 'undefined' || this.bottomBar == null) || this.bottomBar.subName != subName) { //only update btm bar if the subreddit changes
-                    this.bottomBar = new BottomBarView({
-                        subName: subName,
-                        id: id,
-                    })
-                } else {
-                    this.bottomBar.show()
+                if (window.settings.get('btmbar') == true) {
+                    if ((typeof this.bottomBar === 'undefined' || this.bottomBar == null) || this.bottomBar.subName != subName) { //only update btm bar if the subreddit changes
+                        this.bottomBar = new BottomBarView({
+                            subName: subName,
+                            id: id,
+                        })
+                    } else {
+                        this.bottomBar.show()
+                    }
                 }
 
             },
@@ -171,9 +185,12 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
             },
 
             prefs: function() {
+                this.doSidebar('front');
                 require(['view/prefs'], function(PrefsView) {
+
                     var PrefsView = new PrefsView();
                 });
+
             },
 
             /*   Util functions
@@ -189,21 +206,21 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 }
             },
             loadSettingsFromCookies: function() {
-                var checkboxes = new Array("btmbar", "cmtLoad", "customCSS", "hideSidebar", "infin");
+                var checkboxes = new Array("btmbar", "cmtLoad", "customCSS", "showSidebar", "infin");
                 var selectboxes = new Array('linkCount')
 
                 for (i in checkboxes) {
 
-                    if (typeof $.cookie(checkboxes[i]) === 'undefined' || $.cookie(checkboxes[i]) == 'false') {
-                        window.settings.set(checkboxes[i], false)
-                    } else {
+                    if (typeof $.cookie(checkboxes[i]) === 'undefined' || $.cookie(checkboxes[i]) == 'true') {
                         window.settings.set(checkboxes[i], true)
+                    } else {
+                        window.settings.set(checkboxes[i], false)
                     }
                 }
 
                 for (i in selectboxes) {
-                    if (typeof $.cookie(selectboxes[i]) === 'undefined' || $.cookie(selectboxes[i]) == 'false') {
-                        window.settings.set(selectboxes[i], 100)
+                    if (typeof $.cookie(selectboxes[i]) === 'undefined') {
+                        window.settings.set(selectboxes[i], 25)
                     } else {
                         window.settings.set(selectboxes[i], $.cookie(selectboxes[i]))
                     }
@@ -212,7 +229,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 //     btmbar: $.cookie('btmbar') ? true : false,
                 //     cmtLoad: $.cookie('cmtLoad') ? true : false,
                 //     customCSS: $.cookie('customCSS') ? true : false,
-                //     hideSidebar: $.cookie('hideSidebar') ? true : false,
+                //     hideSidebar: $.cookie('showSidebar') ? true : false,
                 //     infin: $.cookie('infin') ? true : false,
                 //     linkCount: $.cookie('linkCount') ? $.cookie('linkCount') : '100',
 

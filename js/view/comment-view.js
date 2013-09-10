@@ -142,49 +142,51 @@ define([
 				//console.log('hovering over a comment')
 				e.preventDefault()
 				e.stopPropagation()
-				if (window.Delay != true) {
-					var target = $(e.currentTarget)
+				if (window.settings.get('cmtLoad') == true) {
+					if (window.Delay != true) {
+						var target = $(e.currentTarget)
 
-					var url = $(target).attr("href")
+						var url = $(target).attr("href")
 
-					var youtubeID = this.youtubeChecker(url);
-					//check if the url is an image we can embed
-					if (youtubeID == false) {
-						url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
-					}
-					if (this.checkIsImg(url) == false) {
-						//URL is NOT an image
-						//try and fix an imgur link?
-						url = this.fixImgur(url)
+						var youtubeID = this.youtubeChecker(url);
+						//check if the url is an image we can embed
+						if (youtubeID == false) {
+							url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
+						}
+						if (this.checkIsImg(url) == false) {
+							//URL is NOT an image
+							//try and fix an imgur link?
+							url = this.fixImgur(url)
 
-					}
-
-					if (url != false || youtubeID != false) {
-
-						var ahrefDescription = $(target).text()
-						if (!ahrefDescription) {
-							ahrefDescription = url
 						}
 
-						//$(target).css('float', 'left')
-						var originalText = $('#' + this.options.id + ' .outBoundLink:first').parent().parent().text().trim()
-						var originalHtml = this.$('#' + this.options.id + ' .outBoundLink:first').parent().parent().html()
-						if (youtubeID) {
-							url = $(target).attr("href") //in case it was a youtube video we should reset the url link to pass into the view
+						if (url != false || youtubeID != false) {
+
+							var ahrefDescription = $(target).text()
+							if (!ahrefDescription) {
+								ahrefDescription = url
+							}
+
+							//$(target).css('float', 'left')
+							var originalText = $('#' + this.options.id + ' .outBoundLink:first').parent().parent().text().trim()
+							var originalHtml = this.$('#' + this.options.id + ' .outBoundLink:first').parent().parent().html()
+							if (youtubeID) {
+								url = $(target).attr("href") //in case it was a youtube video we should reset the url link to pass into the view
+							}
+							//display the image if it exists
+							//maybe create an image view?
+							//console.log('hovering over an img', originalText)
+							var hoverImgView = new HoverImgView({
+								el: target.parent().parent(),
+								url: url,
+								ahrefDescription: ahrefDescription,
+								originalText: originalText,
+								originalHtml: originalHtml,
+								youtubeID: youtubeID
+
+							});
+
 						}
-						//display the image if it exists
-						//maybe create an image view?
-						//console.log('hovering over an img', originalText)
-						var hoverImgView = new HoverImgView({
-							el: target.parent().parent(),
-							url: url,
-							ahrefDescription: ahrefDescription,
-							originalText: originalText,
-							originalHtml: originalHtml,
-							youtubeID: youtubeID
-
-						});
-
 					}
 				}
 			},

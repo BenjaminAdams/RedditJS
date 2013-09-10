@@ -1,0 +1,222 @@
+<div class="login-popup cover-overlay" style="display: block;">
+  <div class="cover hidecover" >
+  </div>
+  <div class="popup" style="top: 0px;">
+    <a href="#" class="hidecover">
+      close this window
+    </a>
+    <h1 class="cover-msg">
+      you'll need to login or register to do that
+    </h1>
+    <div class="login-form-section divide register">
+      <h3>
+        create a new account
+      </h3>
+      <p class="tagline">
+        all it takes is a username and password
+      </p>
+      <div class="registration-info">
+        <div class="md wiki">
+          <h3>
+            privacy philosophy
+          </h3>
+          <ul>
+            <li>
+              we limit data collected about you and your use of the platform,
+            </li>
+            <li>
+              your personal information is never for sale,
+            </li>
+            <li>
+              we use and disclose information to prevent people from abusing the platform, but
+            </li>
+            <li>
+              we never disclose it for any other reason unless required by law.
+            </li>
+          </ul>
+          <p>
+            for more information, see our 
+            <a href="/help/privacypolicy" rel="nofollow" target="_blank">
+              privacy policy
+            </a>
+            .
+          </p>
+        </div>
+      </div>
+      <form id="login_reg" class="user-form register-form">
+        <div>
+          <ul>
+            <li class="name-entry">
+              <label for="user_reg">
+                username:
+              </label>
+              <input value="" name="user" id="user_reg" type="text" maxlength="20" tabindex="3" autofocus="">
+              <span class="throbber">
+              </span>
+              <span class="notice-taken">
+                try another
+              </span>
+              <span class="notice-available">
+                available!
+              </span>
+              <span class="error BAD_USERNAME field-user" style="display:none">
+              </span>
+              <span class="error USERNAME_TAKEN field-user" style="display:none">
+              </span>
+              <span class="error USERNAME_TAKEN_DEL field-user" style="display:none">
+              </span>
+            </li>
+            <li>
+              <label for="email_reg">
+                account recovery email: &nbsp;
+                <i>
+                  (optional)
+                </i>
+              </label>
+              <input value="" name="email" id="email_reg" type="email" maxlength="50" tabindex="3">
+              <label for="email_reg" class="note">
+                we only send email at your request
+              </label>
+              <span class="error BAD_EMAILS field-email" style="display:none">
+              </span>
+            </li>
+            <li>
+              <label for="passwd_reg">
+                password:
+              </label>
+              <input id="passwd_reg" name="passwd" type="password" tabindex="3">
+              <span class="error BAD_PASSWORD field-passwd" style="display:none">
+              </span>
+            </li>
+            <li>
+              <label for="passwd2_reg">
+                verify password:
+              </label>
+              <input name="passwd2" id="passwd2_reg" type="password" tabindex="3">
+              <span class="error BAD_PASSWORD_MATCH field-passwd2" style="display:none">
+              </span>
+            </li>
+            <li>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                    </td>
+                    <td>
+                      <img class="capimage" alt="visual CAPTCHA" title='click me to get a new captcha' src="">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right">
+                    </td>
+                    <td>
+                      <input class="captcha cap-text" id="captcha_" name="captcha" type="text" size="30" placeholder="type the letters from the image above" tabindex="3">
+                    </td>
+                    <td>
+                      <span class="error BAD_CAPTCHA field-captcha" style="display:none">
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <span class="error RATELIMIT field-ratelimit" style="display:none">
+              </span>
+              <span class="error RATELIMIT field-vdelay" style="display:none">
+              </span>
+            </li>
+            <li>
+              <input type="checkbox" name="rem" id="rem_reg" tabindex="3">
+              <label for="rem_reg" class="remember">
+                remember me
+              </label>
+            </li>
+          </ul>
+          <p class="submit">
+            <button type="submit" class="button" tabindex="3">
+              create account
+            </button>
+            <span class="throbber">
+            </span>
+            <span class="status error">
+            </span>
+          </p>
+        </div>
+      </form>
+      <p>
+        <span class="orangered">
+          is it really that easy? only one way to find out...
+        </span>
+      </p>
+    </div>
+    <div class="login-form-section login">
+      <h3>
+        login
+      </h3>
+      <p class="tagline">
+        already have an account and just want to login?
+      </p>
+     
+
+
+
+
+
+
+
+  <form id="login_login"  class="user-form login-form">
+    <div>
+      <ul>
+        <li class="name-entry">
+          <label for="user_login">
+            username:
+          </label>
+          <input value="" name="user" id="user_login" class='loginUsername' type="text" maxlength="20" tabindex="2" autofocus="">
+        </li>
+        <li>
+          <label for="passwd_login">
+            password:
+          </label>
+          <input id="passwd_login" class='loginPassword' name="passwd" type="password" tabindex="2">
+
+          </span>
+        </li>
+        <li>
+          <input type="checkbox" name="rem" id="rem_login" tabindex="2">
+          <label for="rem_login" class="remember">
+            remember me
+          </label>
+        </li>
+        <li>
+          <a class="recover-password" href="/password">
+            recover password
+          </a>
+        </li>
+      </ul>
+      <p class="submit">
+        <button type="submit" class="button" tabindex="2">
+          login
+        </button>
+        <span class="throbber loginThrobber">
+        </span>
+        <span class="status loginError">
+        </span>
+      </p>
+    </div>
+  </form>
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <div class="clear">
+    </div>
+  </div>
+</div>

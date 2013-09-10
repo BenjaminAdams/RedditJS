@@ -79,7 +79,7 @@ define([
 
 			},
 			remove: function() {
-			//$(window).unbind('keydown', this.keyPress);
+				//$(window).unbind('keydown', this.keyPress);
 				$(window).off('resize', this.debouncer);
 				channel.off("single:remove", this.remove, this);
 				this.undelegateEvents();

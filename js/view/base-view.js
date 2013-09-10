@@ -58,11 +58,12 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				}, 150);
 			},
 			dynamicStylesheet: function(name) {
-
-				if (this.subName == 'front') {
-					$("#subredditStyle").attr("href", "");
-				} else {
-					$("#subredditStyle").attr("href", "http://www.reddit.com/r/" + name + "/stylesheet");
+				if (window.settings.get('customCSS') == true) {
+					if (this.subName == 'front') {
+						$("#subredditStyle").attr("href", "");
+					} else {
+						$("#subredditStyle").attr("href", "http://www.reddit.com/r/" + name + "/stylesheet");
+					}
 				}
 			},
 			//Can be used to vote on a post or a comment

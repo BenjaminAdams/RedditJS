@@ -64,9 +64,12 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/bas
 							console.log('loaded img')
 
 							self.$('.imgPreview').html(this)
+							self.$('.imgPreview img').show() //sometimes the custom CSS from subreddits hide images
+
 						}).error(function() {
 							console.log("ERROR loading img")
-							self.$('.imgPreview').html('<img src="img/sad-icon.png" />')
+							self.$('.imgPreview').html('<img src="img/sad-icon.png" />').show()
+							self.$('.imgPreview img').show()
 						});
 
 				}

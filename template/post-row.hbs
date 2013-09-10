@@ -29,7 +29,7 @@
             </p>
 
             <p class="tagline">submitted <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
-            <span class="flair flair-{{model.author_flair_css_class}}" title=""></span>
+            {{#if model.author_flair_css_class}}<span class="flair flair-{{model.author_flair_css_class}}" title=""></span>{{/if}}
             <span class="userattrs"></span>to <a href="/r/{{model.subreddit}}/" class="subreddit hover">{{model.subreddit}}</a>
             </p>
             <ul class="flat-list buttons">

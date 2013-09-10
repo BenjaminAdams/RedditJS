@@ -21,10 +21,11 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 
 			},
 			login: function(e) {
-				e.preventDefault()
-				e.stopPropagation()
-
-				this.$('.throbber').css('display', 'inline-block')
+				if (e) {
+					e.preventDefault()
+					e.stopPropagation()
+				}
+				this.$('.loginThrobber').css('display', 'inline-block')
 				this.$('.status').html(' ') //clear the status
 				this.$('.status').hide()
 
@@ -51,25 +52,16 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 					if (data.json.errors.length > 0) {
 						//alert("unable to login")
 						console.log(data.json.errors)
-						this.$('.status').show()
-						this.$('.status').html(data.json.errors[0][1])
-						this.$('.throbber').css('display', 'none')
+						this.$('.loginError').show()
+						this.$('.loginError').html(data.json.errors[0][1])
+						this.$('.loginThrobber').css('display', 'none')
 
 					} else {
-						this.$('.throbber').css('display', 'none')
+						this.$('.loginThrobber').css('display', 'none')
 						var loginData = data.json.data;
 						console.log(loginData)
 
-						// set cookie
-						$.cookie('reddit_session', loginData.cookie, {
-							path: '/'
-						});
-						$.cookie('modhash', loginData.modhash, {
-							path: '/'
-						});
-						$.cookie('username', user, {
-							path: '/'
-						});
+						self.setLoginCookies(loginData.cookie, loginData.modhash, user)
 
 						channel.trigger("login");
 						self.$el.hide()
@@ -78,6 +70,20 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 				});
 
 			},
+			setLoginCookies: function(tehCookie, modhash, user) {
+				// set cookie
+				$.cookie('reddit_session', tehCookie, {
+					path: '/'
+				});
+				$.cookie('modhash', modhash, {
+					path: '/'
+				});
+				$.cookie('username', user, {
+					path: '/'
+				});
+
+			},
+
 			logout: function() {
 				//e.preventDefault()
 				//e.stopPropagation()

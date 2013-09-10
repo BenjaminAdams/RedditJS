@@ -171,7 +171,12 @@ define([
 					this.$('#siteTable').append('<div id="fullImgCache"></div>')
 
 				} else {
-					$('.side').show()
+
+					if (window.settings.get('showSidebar') == false) {
+						$('.side').hide()
+					} else {
+						$('.side').show()
+					}
 					this.$('#siteTable').html('')
 					this.resize()
 				}
@@ -403,7 +408,7 @@ define([
 			},
 			/**************Infinite Scroll functions ****************/
 			watchScroll: function(e) {
-				if (window.settings.get('infin') == false) {
+				if (window.settings.get('infin') == true) {
 					//no longer need this because the setInterval trick combined with window.stop() is good enough to handle a large amount of full sized pictures
 					// if (this.imagesAdded > 5) {  
 					// 	//console.log('not loading more')

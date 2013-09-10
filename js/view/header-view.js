@@ -6,7 +6,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 			events: {
 				'click .tabmenu-right li': 'changeGridOption',
 				'click .drop-down-header-toggle': 'toggleDropdown',
-				'click .drop-down-header a': 'toggleDropdown' //will close the menu after the user makes a selection
+				'click .drop-down-header a': 'toggleDropdown', //will close the menu after the user makes a selection
+				'click #userbar-logged-out': 'showLoginPopup'
 			},
 
 			initialize: function(data) {
@@ -38,6 +39,15 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 
 				// this.$() is a shortcut for this.$el.find().
 
+			},
+			showLoginPopup: function() {
+				require(['view/login-popup-view'], function(LoginPopupView) {
+
+					var loginPopupView = new LoginPopupView({
+						el: "#popupWindow"
+					})
+
+				});
 			},
 			toggleDropdown: function() {
 				this.$('.drop-down-header').toggle()

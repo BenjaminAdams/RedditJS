@@ -20,7 +20,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/prefs', 'view/base-vi
 				this.$el.empty()
 
 				this.model = window.settings
-				console.log('padding in model', this.model)
+
 				this.render();
 				this.showSettings()
 
@@ -84,7 +84,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/prefs', 'view/base-vi
 				//return o;
 			},
 			stringToBoolean: function(string) {
-				console.log(typeof string)
+
 				if (typeof string === 'undefined') {
 					return false
 				} else if (typeof string === 'boolean') {

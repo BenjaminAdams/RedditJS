@@ -79,6 +79,9 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				this.loadLoginView()
 				channel.trigger("header:update", this.model);
 				channel.trigger('submit:type', this.model.get('submission_type'))
+				if (window.settings.get('showSidebar') == false) {
+					$('.side').hide()
+				}
 				//HeaderView.updateHeader(this.model)
 
 			},
@@ -88,7 +91,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				})
 
 				//now render the login view
-				this.loginView.render();
+				//this.loginView.render();
 			}
 
 		});
