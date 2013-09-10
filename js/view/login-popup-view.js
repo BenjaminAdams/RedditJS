@@ -1,11 +1,11 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup', 'view/login-view', 'event/channel'],
-	function($, _, Backbone, Resthub, LoginPopupTmpl, LoginView, channel) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup', 'view/login-view', 'model/user-about', 'event/channel', 'cookie'],
+	function($, _, Backbone, Resthub, LoginPopupTmpl, LoginView, UserModel, channel, cookie) {
 		var LoginPopupView = LoginView.extend({
 			el: "#popupWindow",
 			events: {
 				'submit #login_reg': 'register',
 				'click .capimage': 'getNewCaptcha',
-				'click .hidecover': 'remove',
+				'click .hidecover': 'hide',
 				'submit #login_login': 'doLogin',
 			},
 
@@ -15,6 +15,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup
 
 				this.render()
 				this.getNewCaptcha()
+				this.$el.show() //it sometimes could be hidden
 
 				channel.on("login", this.gotoHomeAfterLogin, this);
 			},
@@ -24,6 +25,9 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup
 				e.stopPropagation()
 				this.login()
 
+			},
+			hide: function() {
+				this.$el.hide()
 			},
 			getNewCaptcha: function() {
 				var self = this
@@ -102,7 +106,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup
 							//load the captcha into the image box
 							var loginData = data.json.data;
 							console.log(loginData)
-
+							window.me = loginData
 							self.setLoginCookies(loginData.cookie, loginData.modhash, user)
 							self.gotoHomeAfterLogin()
 						}
@@ -111,13 +115,30 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup
 
 			},
 			gotoHomeAfterLogin: function() {
-				var curHash = Backbone.history.fragment
-				Backbone.history.navigate('redirectAfterLogin');
-				Backbone.history.navigate(curHash, {
-					trigger: true
+				var self = this
 
+				//check if user has reddit gold first
+				this.me = new UserModel($.cookie('username'));
+				this.me.fetch({
+					async: false,
+					success: function(data) {
+						console.log('my info=', data)
+						console.log('isgold=', data.get('is_gold'))
+						if (data.get('is_gold') == true) {
+							var curHash = Backbone.history.fragment
+							Backbone.history.navigate('redirectAfterLogin'); //have to redirect to a fake link before we goback to where the user wants to go
+							Backbone.history.navigate(curHash, {
+								trigger: true
+
+							})
+							self.remove()
+						} else {
+							self.$el.show()
+							self.logout()
+							self.$('.loginError').html('redditJS is for reddit gold users only.').show()
+						}
+					}
 				})
-				this.remove()
 
 			},
 

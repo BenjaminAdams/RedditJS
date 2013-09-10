@@ -35,7 +35,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 
 				if (this.checkIfLoggedIn() == true) {
 					this.updateSubreddits()
-
 				}
 
 				// this.$() is a shortcut for this.$el.find().
@@ -43,11 +42,9 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 			},
 			showLoginPopup: function() {
 				require(['view/login-popup-view'], function(LoginPopupView) {
-
 					var loginPopupView = new LoginPopupView({
 						el: "#popupWindow"
 					})
-
 				});
 			},
 			toggleDropdown: function() {

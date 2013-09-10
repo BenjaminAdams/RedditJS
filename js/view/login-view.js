@@ -60,11 +60,12 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 						this.$('.loginThrobber').css('display', 'none')
 						var loginData = data.json.data;
 						console.log(loginData)
-
+						window.me = loginData
 						self.setLoginCookies(loginData.cookie, loginData.modhash, user)
 
 						channel.trigger("login");
-						self.$el.hide()
+						//self.$el.hide()
+						$('#theLogin').hide()
 
 					}
 				});
@@ -81,6 +82,9 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 				$.cookie('username', user, {
 					path: '/'
 				});
+				$.cookie('gold', true, {
+					path: '/'
+				});
 
 			},
 
@@ -95,6 +99,10 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 					path: '/'
 				});
 				$.removeCookie('username', {
+					path: '/'
+				});
+
+				$.removeCookie('gold', {
 					path: '/'
 				});
 

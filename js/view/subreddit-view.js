@@ -160,7 +160,7 @@ define([
 				if (this.gridOption == 'grid') {
 
 					$('.side').hide()
-					$('#siteTable img').unbind('.imagesLoaded');
+					$('#siteTable').css('margin-right', '0') //some custom CSS were making this bad in grid mode
 					//calculate how many columns we will have
 					var colCount = Math.floor($(document).width() / 301)
 
