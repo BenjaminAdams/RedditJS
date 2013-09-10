@@ -75,7 +75,7 @@ require.config({
         // 'backbone-datagrid': 'lib/backbone-datagrid',
         //   'backbone-paginator': 'lib/backbone-paginator',
         //   'backbone-associations': 'lib/backbone-associations',
-        // 'backbone-localstorage': 'lib/backbone-localstorage',
+        //'backbone-localstorage': 'lib/backbone-localstorage',
         //  async: 'lib/async',
         //      keymaster: 'lib/keymaster',
         hbs: 'lib/resthub/require-handlebars',

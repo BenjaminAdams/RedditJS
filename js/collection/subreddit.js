@@ -1,20 +1,42 @@
 define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 	var SubredditCollection = Backbone.Collection.extend({
+
 		initialize: function(data) {
 			_.bindAll(this);
+
 			this.after = ""
 			this.subName = data.subName
 			this.sortOrder = data.sortOrder
+			this.count = 1
 			if (typeof this.sortOrder === 'undefined') {
 				this.sortOrder = 'hot' //the default sort order is hot
 			};
 			//this.sortOrder = "/" + this.sortOrder //needs to start with a slash to be injected into the URL
+			this.subID = this.subName + this.sortOrder
 
-			console.log('sort order=', this.sortOrder)
-			this.count = 1
-			this.instanceUrl = this.getUrl()
-			console.log(this.instanceUrl)
+			var localStorageData = window.localStorage.getItem(this.subID);
+			console.log('localstoragedata=', localStorageData)
+			if (typeof localStorageData !== 'undefined' && localStorageData != null) {
+				this.readLocalStorage(localStorageData)
+				console.log('i just read data from local storage', this)
+				//do not bind sync and change events until after we have read the data from localstorage
+				//this.bind("change", this.saveLocalStorage, this);
+				this.bind("change:[after]", this.saveLocalStorage, this);
+				//this.bind("sync", this.saveLocalStorage);
+
+			} else {
+				//if it is not in localstorage
+				//	this.doNoParse = false
+				this.instanceUrl = this.getUrl()
+				console.log(this.instanceUrl)
+				//do not bind sync and change events until after we have read the data from localstorage
+				//this.bind("change", this.saveLocalStorage, this);
+				//this.bind("sync", this.saveLocalStorage);
+				this.bind("change:[after]", this.saveLocalStorage, this);
+			}
+
+			//when we read from localstorage do not parse it a 2nd time
 
 		},
 		// Reference to this collection's model.
@@ -52,7 +74,14 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 		parse: function(response) {
 			//set the after for pagination
+			// if (this.doNoParse == true) {
+			// 	this.doNoParse = false; //so we parse it next time
+			// 	return response
+			// }
 			console.log(response)
+			if (typeof response === 'undefined' || response.length == 0) {
+				return
+			}
 			this.after = response.data.after;
 
 			if (this.after == "" || this.after == null) {
@@ -93,9 +122,35 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 			//reset the url to have the new after tag
 			this.instanceUrl = this.getUrl()
-
 			return models;
 		},
+		saveLocalStorage: function() {
+			//console.log('before turning this object into a string', this)
+			//console.log(this.toJSON())
+
+			var storeThis = new Object();
+			storeThis.models = JSON.stringify(this.models)
+			storeThis.after = this.after
+			storeThis.subID = this.subID
+			storeThis.subName = this.subName
+			storeThis.sortOrder = this.sortOrder
+			storeThis.instanceUrl = this.instanceUrl
+			console.log('storing this data into local storage', storeThis)
+			//this.doNoParse = true //we do not want to parse it again because its already parsed at this point
+			window.localStorage.setItem(this.subID, JSON.stringify(storeThis));
+		},
+		readLocalStorage: function(localStorageData) {
+			console.log('setting the local storage to this')
+			var storedData = JSON.parse(localStorageData)
+			var models = JSON.parse(storedData.models)
+			this.add(models)
+			this.after = storedData.after
+			this.subID = storedData.subID
+			this.subName = storedData.subName
+			this.sortOrder = storedData.sortOrder
+			this.instanceUrl = storedData.instanceUrl
+
+		}
 
 	});
 	return SubredditCollection;
