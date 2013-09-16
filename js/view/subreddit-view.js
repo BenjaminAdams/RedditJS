@@ -49,7 +49,7 @@ define([
 				//console.log("window.subs=", window.subs)
 
 				if (typeof window.subs[this.subID] === 'undefined') {
-					$(this.el).append("<div class='loading'> </div>")
+
 					this.collection = new SubredditCollection({
 						subName: this.subName,
 						sortOrder: this.sortOrder
@@ -76,7 +76,7 @@ define([
 				$(window).on("scroll", this.watchScroll);
 
 				//in small thumbnail mode, its sometimes impossible for the infinite scroll event to fire because there is no scrollbar yet
-				this.helpFillUpScreen();
+				//this.helpFillUpScreen();
 
 				//this.target = $("#siteTable"); //the target to test for infinite scroll
 				this.target = $(window); //the target to test for infinite scroll
@@ -247,7 +247,7 @@ define([
 				}
 				this.gridViewSetup()
 				this.appendPosts(this.collection)
-				this.helpFillUpScreen()
+				//this.helpFillUpScreen()
 			},
 			resetPosts: function() {
 				//this.$('#siteTable').html(" ")
@@ -391,6 +391,8 @@ define([
 
 				}
 
+				this.showMoarBtn()
+
 			},
 			gotNewPosts: function(models, res) {
 				this.$('.loading').hide()
@@ -410,7 +412,7 @@ define([
 				}
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.showMoarBtn()
-				this.helpFillUpScreen()
+				//this.helpFillUpScreen()
 				window.subs[this.subID] = this.collection
 
 			},
@@ -443,14 +445,14 @@ define([
 			},
 			helpFillUpScreen: function() {
 
-				if (this.collection.length < 301 && (this.gridOption == 'small')) {
-					this.watchScroll()
-				}
+				// if (this.collection.length < 301 && (this.gridOption == 'small')) {
+				// 	this.watchScroll()
+				// }
 
-				if (this.collection.length < 55 && this.gridOption == 'grid') {
+				// if (this.collection.length < 55 && this.gridOption == 'grid') {
 
-					this.watchScroll()
-				}
+				// 	this.watchScroll()
+				// }
 
 			},
 			showMoarBtn: function() {

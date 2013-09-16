@@ -379,9 +379,9 @@ white-space:normal;
 .btmCenter {
 position: relative;
 top:33px;
-left: 48%;
+float:left;
 font-size: 16px;
-clear: both;
+
 width:64px;
 cursor: pointer;
 text-decoration: none;
