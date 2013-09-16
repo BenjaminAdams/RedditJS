@@ -108,7 +108,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 		saveLocalStorage: function() {
 			console.log('saving to local storage')
-			var now = new Date().getTime();
+			var now = new Date()
 			var storeThis = new Object();
 			storeThis.models = JSON.stringify(this.models)
 			storeThis.after = this.after
