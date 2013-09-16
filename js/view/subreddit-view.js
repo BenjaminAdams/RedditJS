@@ -247,7 +247,7 @@ define([
 				}
 				this.gridViewSetup()
 				this.appendPosts(this.collection)
-				//this.helpFillUpScreen()
+
 			},
 			resetPosts: function() {
 				//this.$('#siteTable').html(" ")
@@ -268,14 +268,14 @@ define([
 
 			},
 			tryAgain: function() {
-				this.$('.loading').hide()
+				//this.$('.loading').hide()
 				this.$('#siteTable').html("<div class='loading'></div> ")
 				this.$('#retry').remove()
 
 				this.fetchMore();
 			},
 			fetchMore: function() {
-				$(this.el).append("<div class='loading'> </div>")
+				//$(this.el).append("<div class='loading'> </div>")
 				this.loading = true
 				this.hideMoarBtn()
 				this.collection.fetch({
@@ -392,10 +392,12 @@ define([
 				}
 
 				this.showMoarBtn()
+				//this.$('.loading').hide()
+				this.helpFillUpScreen()
 
 			},
 			gotNewPosts: function(models, res) {
-				this.$('.loading').hide()
+				//this.$('.loading').hide()
 
 				if (typeof res.data.children.length === 'undefined') {
 					return; //we might have an undefined length?
@@ -445,23 +447,24 @@ define([
 			},
 			helpFillUpScreen: function() {
 
-				// if (this.collection.length < 301 && (this.gridOption == 'small')) {
-				// 	this.watchScroll()
-				// }
+				if (this.collection.length < 301 && (this.gridOption == 'small')) {
+					this.watchScroll()
+				}
 
-				// if (this.collection.length < 55 && this.gridOption == 'grid') {
+				if (this.collection.length < 55 && this.gridOption == 'grid') {
 
-				// 	this.watchScroll()
-				// }
+					this.watchScroll()
+				}
 
 			},
 			showMoarBtn: function() {
 				//var moarBtn = '<p class="nextprev btmCenter"><a href="#" rel="next">MOAR ›</a></p>'
 				//this.$el.append(moarBtn)
-				this.$('.nextprev').show()
+				this.$('.nextprev').html('MOAR ›').show()
 			},
 			hideMoarBtn: function() {
-				this.$('.nextprev').hide()
+				//this.$('.nextprev').hide()
+				this.$('.nextprev').html('<img src="img/loading.gif" />')
 			}
 
 		});

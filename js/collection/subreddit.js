@@ -99,8 +99,18 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 					self.count++;
 
 					models.push(item.data)
+
 				}
 			});
+
+			//check if this post already exists in the collection
+			_.each(models, function(model) {
+
+				if (self.contains(model) == true) {
+					console.log('removed this')
+				}
+
+			})
 
 			//reset the url to have the new after tag
 			this.instanceUrl = this.getUrl()
