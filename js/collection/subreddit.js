@@ -16,7 +16,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			this.subID = this.subName + this.sortOrder
 
 			//this.bind("change", this.saveLocalStorage, this);
-			this.bind("sync", this.saveLocalStorage);
+			//this.bind("sync", this.saveLocalStorage);
 
 			this.instanceUrl = this.getUrl()
 
@@ -60,7 +60,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			// 	this.doNoParse = false; //so we parse it next time
 			// 	return response
 			// }
-			console.log(response)
+			//console.log(response)
 			if (typeof response === 'undefined' || response.length == 0) {
 				return
 			}
@@ -103,77 +103,70 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 				}
 			});
 
-			//check if this post already exists in the collection
-			_.each(models, function(model) {
-
-				if (self.contains(model) == true) {
-					console.log('removed this')
-				}
-
-			})
-
 			//reset the url to have the new after tag
 			this.instanceUrl = this.getUrl()
 			return models;
 		},
-		saveLocalStorage: function() {
-			if (window.localStorage !== undefined) {
-				var now = Math.round(new Date().getTime() / 1000)
-				var storeThis = new Object();
-				storeThis.models = JSON.stringify(this.models)
-				storeThis.after = this.after
-				//storeThis.subID = this.subID
-				//storeThis.subName = this.subName
-				//storeThis.sortOrder = this.sortOrder
-				storeThis.instanceUrl = this.instanceUrl
-				if (typeof this.expires === 'undefined') {
-					this.expires = now + (60 * 25) //refresh the subreddit in 25 minutes
-				}
-				storeThis.expires = this.expires
+		// saveLocalStorage: function() {
+		// 	if (window.localStorage !== undefined) {
+		// 		var now = Math.round(new Date().getTime() / 1000)
+		// 		var storeThis = new Object();
+		// 		storeThis.models = JSON.stringify(this.models)
+		// 		storeThis.after = this.after
+		// 		//storeThis.subID = this.subID
+		// 		//storeThis.subName = this.subName
+		// 		//storeThis.sortOrder = this.sortOrder
+		// 		storeThis.instanceUrl = this.instanceUrl
+		// 		if (typeof this.expires === 'undefined') {
+		// 			this.expires = now + (60 * 25) //refresh the subreddit in 25 minutes
+		// 		}
+		// 		storeThis.expires = this.expires
 
-				if (this.expires < now) {
-					console.log('deleting local storage')
-					localStorage.removeItem(this.subID)
-					delete this.expires
-				} else if (this.models.length < 202) { //only store the first 202 models in localstorage
-					console.log('saving to local storage')
-					try {
-						window.localStorage.setItem(this.subID, JSON.stringify(storeThis));
-					} catch (e) {
-						console.log('local storage is full') //5mb max of local storage
-					}
-				}
-			}
-		},
-		readLocalStorage: function(localStorageData) {
-			if (window.localStorage !== undefined) {
-				var localStorageData = window.localStorage.getItem(this.subID);
-				if (typeof localStorageData !== 'undefined' && localStorageData != null) {
-					var now = Math.round(new Date().getTime() / 1000)
-					console.log('setting the local storage to this')
-					var storedData = JSON.parse(localStorageData)
+		// 		if (this.expires < now) {
+		// 			console.log('deleting local storage')
+		// 			localStorage.removeItem(this.subID)
+		// 			delete this.expires
+		// 		} else if (this.models.length < 202) { //only store the first 202 models in localstorage
+		// 			console.log('saving to local storage')
+		// 			try {
+		// 				window.localStorage.setItem(this.subID, JSON.stringify(storeThis));
+		// 			} catch (e) {
+		// 				console.log('local storage is full') //5mb max of local storage
+		// 			}
+		// 		}
+		// 	}
+		// },
+		// readLocalStorage: function(localStorageData) {
+		// 	if (window.localStorage !== undefined) {
+		// 		var localStorageData = window.localStorage.getItem(this.subID);
+		// 		if (typeof localStorageData !== 'undefined' && localStorageData != null) {
 
-					this.expires = storedData.expires
+		// 			var now = Math.round(new Date().getTime() / 1000)
+		// 			console.log('setting the local storage to this')
+		// 			var storedData = JSON.parse(localStorageData)
 
-					if (this.expires < now) {
-						localStorage.removeItem(this.subID)
-						delete this.expires
-						return; //do not load the local storage data
+		// 			this.expires = storedData.expires
 
-					}
+		// 			if (this.expires < now) {
+		// 				localStorage.removeItem(this.subID)
+		// 				delete this.expires
+		// 				return; //do not load the local storage data
 
-					var models = JSON.parse(storedData.models)
-					this.add(models)
-					this.after = storedData.after
-					//	this.subID = storedData.subID
-					//	this.subName = storedData.subName
-					//	this.sortOrder = storedData.sortOrder
-					this.instanceUrl = storedData.instanceUrl
-				}
+		// 			}
 
-			}
+		// 			var models = JSON.parse(storedData.models)
+		// 			this.add(models)
+		// 			this.after = storedData.after
+		// 			//	this.subID = storedData.subID
+		// 			//	this.subName = storedData.subName
+		// 			//	this.sortOrder = storedData.sortOrder
+		// 			this.instanceUrl = storedData.instanceUrl
+		// 			//this.instanceUrl = this.getUrl()
+		// 		}
 
-		}
+		// 	}
+
+		// }
 
 	});
 	return SubredditCollection;

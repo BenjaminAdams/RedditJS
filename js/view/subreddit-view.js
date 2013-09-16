@@ -36,6 +36,8 @@ define([
 					this.sortOrder = 'hot'
 				}
 
+				this.loading = false;
+
 				channel.on("subreddit:changeGridOption", this.changeGridOption, this);
 				channel.on("subreddit:remove", this.remove, this);
 
@@ -54,14 +56,9 @@ define([
 						subName: this.subName,
 						sortOrder: this.sortOrder
 					});
-					this.collection.readLocalStorage();
 
-					if (this.collection.length > 1) {
-						this.appendPosts(this.collection)
-						this.showMoarBtn()
-					} else {
-						this.fetchMore();
-					}
+					this.fetchMore();
+
 				} else {
 					console.log('loading collection from memory')
 					this.collection = window.subs[this.subID]
@@ -76,7 +73,6 @@ define([
 				$(window).on("scroll", this.watchScroll);
 
 				//in small thumbnail mode, its sometimes impossible for the infinite scroll event to fire because there is no scrollbar yet
-				//this.helpFillUpScreen();
 
 				//this.target = $("#siteTable"); //the target to test for infinite scroll
 				this.target = $(window); //the target to test for infinite scroll
@@ -97,7 +93,7 @@ define([
 					self.changeSortOrderCss()
 				}, 100);
 
-				this.countAllImgs = 0 //delete this later
+				this.helpFillUpScreen();
 
 			},
 			//we have to override the remove event because the window.scroll event will not be removed by the garbage collector
@@ -391,9 +387,9 @@ define([
 
 				}
 
-				this.showMoarBtn()
-				//this.$('.loading').hide()
 				this.helpFillUpScreen()
+
+				this.showMoarBtn()
 
 			},
 			gotNewPosts: function(models, res) {
@@ -403,19 +399,17 @@ define([
 					return; //we might have an undefined length?
 				};
 				var newCount = res.data.children.length
-
 				var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
-				this.appendPosts(newModels)
 
 				//fetch more  posts with the After
 				if (this.collection.after == "stop") {
 					console.log("AFTER = stop")
 					$(window).off("scroll", this.watchScroll);
 				}
-				this.loading = false; //turn the flag on to go ahead and fetch more!
-				this.showMoarBtn()
-				//this.helpFillUpScreen()
+
 				window.subs[this.subID] = this.collection
+				this.appendPosts(newModels)
+				this.loading = false; //turn the flag on to go ahead and fetch more!
 
 			},
 
@@ -429,7 +423,7 @@ define([
 					// }
 
 					var self = this;
-					var triggerPoint = 1500; // 1500px from the bottom     
+					var triggerPoint = 2800; // 1500px from the bottom     
 
 					//keep the scrollheight in the collection so when we return to it, we can auto-move to it
 					//bad?
@@ -464,7 +458,7 @@ define([
 			},
 			hideMoarBtn: function() {
 				//this.$('.nextprev').hide()
-				this.$('.nextprev').html('<img src="img/loading.gif" />')
+				this.$('.nextprev').html('<img src="img/loading.gif" />').show()
 			}
 
 		});

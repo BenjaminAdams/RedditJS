@@ -44,14 +44,9 @@
  						subName: this.subName,
  						sortOrder: this.sortOrder
  					});
- 					this.collection.readLocalStorage();
 
- 					if (this.collection.length > 1) {
- 						this.appendPosts(this.collection)
+ 					this.fetchMore();
 
- 					} else {
- 						this.fetchMore();
- 					}
  					// this.selected(this.selectedID) //we either select the active post onload or when the user's page finally loads
  				} else {
  					console.log('loading collection from memory')
