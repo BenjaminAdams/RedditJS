@@ -51,20 +51,20 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     console.log('usr=', $.cookie('username'))
 
                     //check if user is a reddit gold subscriber
-                    if (window.settings.get('gold') != true && $.cookie('username') != 'armastevs') {
+                    // if (window.settings.get('gold') != true && $.cookie('username') != 'armastevs') {
 
-                        //  $('.content').html('redditJS is for reddit gold members only, coming soon =)')
+                    //     //  $('.content').html('redditJS is for reddit gold members only, coming soon =)')
 
-                        require(['view/login-popup-view'], function(LoginPopupView) {
+                    //     require(['view/login-popup-view'], function(LoginPopupView) {
 
-                            var loginPopupView = new LoginPopupView({
-                                el: "#popupWindow"
-                            })
+                    //         var loginPopupView = new LoginPopupView({
+                    //             el: "#popupWindow"
+                    //         })
 
-                        });
+                    //     });
 
-                        return;
-                    }
+                    //     return;
+                    // }
 
                     channel.trigger("subreddit:remove") //clear old subreddit views
                     channel.trigger("single:remove") //clear old subreddit views
