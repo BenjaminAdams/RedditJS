@@ -48,17 +48,29 @@ define([
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				//console.log("window.subs=", window.subs)
 
-				this.collection = new SubredditCollection({
-					subName: this.subName,
-					sortOrder: this.sortOrder
-				});
-				this.collection.readLocalStorage();
+				if (typeof window.subs[this.subID] === 'undefined') {
+					$(this.el).append("<div class='loading'> </div>")
+					this.collection = new SubredditCollection({
+						subName: this.subName,
+						sortOrder: this.sortOrder
+					});
+					this.collection.readLocalStorage();
 
-				if (this.collection.length > 1) {
-					this.appendPosts(this.collection)
-					this.showMoarBtn()
+					if (this.collection.length > 1) {
+						this.appendPosts(this.collection)
+						this.showMoarBtn()
+					} else {
+						this.fetchMore();
+					}
 				} else {
-					this.fetchMore();
+					console.log('loading collection from memory')
+					this.collection = window.subs[this.subID]
+					this.appendPosts(this.collection)
+					if (typeof this.collection !== 'undefined') {
+						$(window).scrollTop(this.collection.scroll)
+					}
+					this.showMoarBtn()
+					//this.fetchMore();
 				}
 
 				$(window).on("scroll", this.watchScroll);
@@ -399,7 +411,7 @@ define([
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.showMoarBtn()
 				this.helpFillUpScreen()
-				//window.subs[this.subID] = this.collection
+				window.subs[this.subID] = this.collection
 
 			},
 

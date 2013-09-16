@@ -38,18 +38,27 @@
  				this.scrolling = false; //timer for when the users movement over the bottom bar
  				this.guessedWidth = 0 //calculated later by how many posts are in the scrollbar
 
- 				this.collection = new SubredditCollection({
- 					subName: this.subName,
- 					sortOrder: this.sortOrder
- 				});
- 				this.collection.readLocalStorage();
- 				console.log('reading local storage in btm bar', this.collection)
+ 				if (typeof window.subs[this.subID] === 'undefined') {
 
- 				if (this.collection.length > 1) {
+ 					this.collection = new SubredditCollection({
+ 						subName: this.subName,
+ 						sortOrder: this.sortOrder
+ 					});
+ 					this.collection.readLocalStorage();
+
+ 					if (this.collection.length > 1) {
+ 						this.appendPosts(this.collection)
+
+ 					} else {
+ 						this.fetchMore();
+ 					}
+ 					// this.selected(this.selectedID) //we either select the active post onload or when the user's page finally loads
+ 				} else {
+ 					console.log('loading collection from memory')
+ 					this.collection = window.subs[this.subID]
  					this.appendPosts(this.collection)
  					this.selected(this.selectedID)
- 				} else {
- 					this.fetchMore();
+
  				}
 
  			},
@@ -235,7 +244,7 @@
  				}
  				this.loading = false; //turn the flag on to go ahead and fetch more!
 
- 				//window.subs[this.subID] = this.collection
+ 				window.subs[this.subID] = this.collection
  				this.selected(this.selectedID)
 
  			},

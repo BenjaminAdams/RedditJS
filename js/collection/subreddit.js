@@ -107,14 +107,14 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			return models;
 		},
 		saveLocalStorage: function() {
-			console.log('saving to local storage')
+
 			var now = Math.round(new Date().getTime() / 1000)
 			var storeThis = new Object();
 			storeThis.models = JSON.stringify(this.models)
 			storeThis.after = this.after
-			storeThis.subID = this.subID
-			storeThis.subName = this.subName
-			storeThis.sortOrder = this.sortOrder
+			//storeThis.subID = this.subID
+			//storeThis.subName = this.subName
+			//storeThis.sortOrder = this.sortOrder
 			storeThis.instanceUrl = this.instanceUrl
 			if (typeof this.expires === 'undefined') {
 				this.expires = now + (60 * 10) //add 10 minutes to expire time
@@ -122,9 +122,11 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			storeThis.expires = this.expires
 
 			if (this.expires < now) {
+				console.log('deleting local storage')
 				localStorage.removeItem(this.subID)
 				delete this.expires
-			} else {
+			} else if (this.models.length < 98) { //only store the first 98 models in localstorage
+				console.log('saving to local storage')
 				window.localStorage.setItem(this.subID, JSON.stringify(storeThis));
 			}
 		},
@@ -132,17 +134,22 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 			var localStorageData = window.localStorage.getItem(this.subID);
 			if (typeof localStorageData !== 'undefined' && localStorageData != null) {
-
+				var now = Math.round(new Date().getTime() / 1000)
 				console.log('setting the local storage to this')
 				var storedData = JSON.parse(localStorageData)
 				var models = JSON.parse(storedData.models)
 				this.add(models)
 				this.after = storedData.after
-				this.subID = storedData.subID
-				this.subName = storedData.subName
-				this.sortOrder = storedData.sortOrder
+				//	this.subID = storedData.subID
+				//	this.subName = storedData.subName
+				//	this.sortOrder = storedData.sortOrder
 				this.instanceUrl = storedData.instanceUrl
 				this.expires = storedData.expires
+
+				if (this.expires < now) {
+					localStorage.removeItem(this.subID)
+					delete this.expires
+				}
 			}
 
 		}

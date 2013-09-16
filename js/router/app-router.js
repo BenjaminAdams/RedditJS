@@ -11,6 +11,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
                 //what happens if we keep subreddits in a global?
                 window.subs = new Array()
+                // this.loadCollectionsFromStorage()
 
                 Backbone.history.start({
                     pushState: true,
@@ -255,7 +256,14 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 //console.log('settings params=', params)
                 //    window.settings.set(params)
                 //  console.log(window.settings)
-            }
+            },
+            //loads subreddit collections from localstorage and puts them in memory
+            // loadCollectionsFromStorage: function() {
+            //     for (var i in window.localStorage) {
+            //         val = localStorage.getItem(i);
+            //         window.subs[i] = val
+            //     }
+            // }
 
         });
 
