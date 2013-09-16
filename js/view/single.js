@@ -140,6 +140,7 @@ define([
 
 			},
 			renderStuff: function(model) {
+				console.log('rendering single=', this.model)
 				this.render()
 				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.resize()

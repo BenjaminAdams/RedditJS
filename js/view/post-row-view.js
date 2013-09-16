@@ -37,7 +37,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
                 var permalink = this.model.get('permalink')
                 var targetLink = target.attr('href')
                 if (permalink == targetLink) {
-                    console.log('it worked', this.model)
+                    // console.log('it worked', this.model)
                     //I've made the choice here to pass the current model as a global so we do not have to have a long load time
                     //the single post page takes 2-3 seconds to load the get request
                     window.curModel = this.model
@@ -53,7 +53,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
                 } else {
                     this.$('.expando-button').removeClass('collapsed')
                     this.$('.expando-button').addClass('expanded')
-                    var str = '<div class="expando"><div class="usertext-body"><p>' + this.model.get('media_embed').content + '</p></div></div>'
+                    var str = '<div class="expando"><div class="usertext-body"><p>' + this.model.get('media_embed') + '</p></div></div>'
                     console.log(str)
                     this.$('.postRowContent').html(str).show()
                 }

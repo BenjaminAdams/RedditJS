@@ -116,19 +116,19 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 			if (typeof data.media_embed.content === 'undefined' && data.is_self == false && data.imgUrl != false) {
 				//this is a single image we can embed
 				data.embededImg = true
-				data.media_embed = new Array()
-				data.media_embed.content = "<div class='embed'><p><a data-bypass  href='" + data.url + "' target='_blank'> <img src='" + data.imgUrl + "' /> </a></p></div>"
+				//data.media_embed = new Array()
+				data.media_embed = "<div class='embed'><p><a data-bypass  href='" + data.url + "' target='_blank'> <img src='" + data.imgUrl + "' /> </a></p></div>"
 				data.expandHTML = "<li><div class='expando-button " + expandedOrCollapsed + " video'></div></li>"
 
 			} else if (typeof data.media_embed.content !== 'undefined') {
 				//if it has embed content, lets embed it
 				data.embededImg = true
-				data.media_embed.content = $('<div/>').html(data.media_embed.content).text();
+				data.media_embed = $('<div/>').html(data.media_embed.content).text();
 				//data.media_embed.content = "<div class='embed'><p><a data-bypass  href='" + data.url + "' target='_blank'> <img src='" + data.imgUrl + "' /> </a></p></div>"
 				data.expandHTML = "<li><div class='expando-button " + expandedOrCollapsed + " video'></div></li>"
 
 			} else {
-				data.media_embed.content = ""
+				data.media_embed = ""
 			}
 
 			if (data.is_self == true) {

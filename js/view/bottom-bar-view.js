@@ -43,6 +43,7 @@
  					sortOrder: this.sortOrder
  				});
  				this.collection.readLocalStorage();
+ 				console.log('reading local storage in btm bar', this.collection)
 
  				if (this.collection.length > 1) {
  					this.appendPosts(this.collection)
@@ -234,7 +235,7 @@
  				}
  				this.loading = false; //turn the flag on to go ahead and fetch more!
 
- 				window.subs[this.subID] = this.collection
+ 				//window.subs[this.subID] = this.collection
  				this.selected(this.selectedID)
 
  			},
@@ -243,6 +244,7 @@
  				window.curModel = this.collection.findWhere({
  					name: name
  				})
+ 				console.log('curmodel=', window.curModel)
  				this.selected(name) //using the router to goto the selected link, pre selecting this post before we travel there
  			},
 

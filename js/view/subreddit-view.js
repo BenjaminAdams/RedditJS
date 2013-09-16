@@ -399,7 +399,7 @@ define([
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.showMoarBtn()
 				this.helpFillUpScreen()
-				window.subs[this.subID] = this.collection
+				//window.subs[this.subID] = this.collection
 
 			},
 

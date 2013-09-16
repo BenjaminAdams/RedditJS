@@ -68,7 +68,7 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 			},
 			//Can be used to vote on a post or a comment
 			vote: function(dir, id) {
-
+				var self = this
 				var params = {
 					id: id,
 					dir: dir,
@@ -79,6 +79,7 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 
 				this.api("api/vote", 'POST', params, function(data) {
 					console.log("vote done", data)
+					//self.model.save()
 				});
 
 			},
@@ -94,6 +95,8 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 						this.model.set('likes', true)
 						this.model.set('downmod', 'down')
 						this.model.set('upmod', 'upmod')
+						this.model.set('voted', 'likes')
+						this.model.save()
 						this.$('.midcol .dislikes').hide()
 						this.$('.midcol .likes').show()
 						this.$('.midcol .unvoted').hide()
@@ -119,6 +122,8 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 						this.model.set('likes', false)
 						this.model.set('downmod', 'downmod')
 						this.model.set('upmod', 'up')
+						this.model.set('voted', 'dislikes')
+						this.model.save()
 
 						this.$('.midcol .dislikes').show()
 						this.$('.midcol .likes').hide()
@@ -140,6 +145,9 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				this.model.set('likes', null)
 				this.model.set('downmod', 'down')
 				this.model.set('upmod', 'up')
+				this.model.set('voted', 'unvoted')
+				this.model.save()
+
 				this.$('.midcol .dislikes').hide()
 				this.$('.midcol .likes').hide()
 				this.$('.midcol .unvoted').show()
@@ -150,6 +158,7 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				this.$('.downArrow' + id).removeClass('downmod')
 			},
 			save: function(id) {
+				var self = this
 				var params = {
 					id: id,
 					dir: dir,
@@ -158,6 +167,8 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 
 				this.api("api/vote", 'POST', params, function(data) {
 					console.log("saving done", data)
+					self.model.set('saved', true)
+					self.model.save()
 				});
 			},
 			//attempts to create a new comment
@@ -333,15 +344,18 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 			hidePost: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
+				var self = this
 				this.$('div[data-fullname=' + this.model.get('name') + ']').hide()
 				var params = {
 					id: this.model.get('name'),
 					uh: $.cookie('modhash'),
 				};
-				console.log(params)
+				//console.log(params)
 
 				this.api("/api/hide", 'POST', params, function(data) {
 					console.log("hide done", data)
+					self.model.set('hidden', true)
+					self.model.save()
 
 				});
 			},
@@ -349,6 +363,7 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 			savePost: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
+				var self = this
 				this.$('#save' + this.model.get('id')).hide()
 				this.$('#unsave' + this.model.get('id')).show()
 				var params = {
@@ -359,10 +374,13 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 
 				this.api("/api/save", 'POST', params, function(data) {
 					console.log("save done", data)
+					self.model.set('saved', true)
+					self.model.save()
 
 				});
 			}, //so users can hide a post/link 
 			unSavePost: function(e) {
+				var self = this
 				e.preventDefault()
 				e.stopPropagation()
 				this.$('#save' + this.model.get('id')).show()
@@ -375,6 +393,8 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 
 				this.api("/api/unsave", 'POST', params, function(data) {
 					console.log("unsave done", data)
+					self.model.set('saved', false)
+					self.model.save()
 
 				});
 			},

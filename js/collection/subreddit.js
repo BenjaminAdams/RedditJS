@@ -107,9 +107,8 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			return models;
 		},
 		saveLocalStorage: function() {
-			//console.log('before turning this object into a string', this)
-			//console.log(this.toJSON())
-
+			console.log('saving to local storage')
+			var now = new Date().getTime();
 			var storeThis = new Object();
 			storeThis.models = JSON.stringify(this.models)
 			storeThis.after = this.after
@@ -117,14 +116,20 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			storeThis.subName = this.subName
 			storeThis.sortOrder = this.sortOrder
 			storeThis.instanceUrl = this.instanceUrl
-			//console.log('storing this data into local storage', storeThis)
-			//this.doNoParse = true //we do not want to parse it again because its already parsed at this point
-			window.localStorage.setItem(this.subID, JSON.stringify(storeThis));
+			if (typeof this.expires === 'undefined') {
+				this.expires = now + (60 * 30) //add 30 minutes to expire time
+			}
+			storeThis.expires = this.expires
+
+			if (this.expires < now) {
+				localStorage.removeItem(this.subID)
+			} else {
+				window.localStorage.setItem(this.subID, JSON.stringify(storeThis));
+			}
 		},
 		readLocalStorage: function(localStorageData) {
 
 			var localStorageData = window.localStorage.getItem(this.subID);
-			console.log('localstoragedata=', localStorageData)
 			if (typeof localStorageData !== 'undefined' && localStorageData != null) {
 
 				console.log('setting the local storage to this')
@@ -136,6 +141,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 				this.subName = storedData.subName
 				this.sortOrder = storedData.sortOrder
 				this.instanceUrl = storedData.instanceUrl
+				this.expires = storedData.expires
 			}
 
 		}
