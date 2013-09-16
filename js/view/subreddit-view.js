@@ -170,7 +170,7 @@ define([
 					$('.side').hide()
 					$('#siteTable').css('margin-right', '0') //some custom CSS were making this bad in grid mode
 					//calculate how many columns we will have
-					var colCount = Math.floor($(document).width() / 301)
+					var colCount = Math.floor($(document).width() / 305)
 
 					for (var i = 0; i < colCount; i++) {
 						self.$('#siteTable').append('<div class="column"> </div>')
@@ -339,7 +339,7 @@ define([
 									//var img = new Image()
 									//img.src = model.get('imgUrl');
 
-									var timeout = count * 310
+									var timeout = count * 230 //add an img to the screen every 230 milaseconds
 									self.imgAry[model.get('id')] = setTimeout(function() {
 
 										self.imagesAdded--;

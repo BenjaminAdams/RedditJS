@@ -109,6 +109,8 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 			}
 			data.imgUrl = imgUrl
 
+			data.smallImg = this.getSmallerImg(data.imgUrl)
+
 			var expandedOrCollapsed = 'expanded' //values can be expaned or collapsed
 			data.expandHTML = ""
 			data.embededImg = false // if its a single image/video we can embed into a single post view
@@ -172,16 +174,36 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				if (this.containsStr("imgur.com/a", url) == true || this.containsStr("gallery", url) == true) {
 					return false
 				} else {
-					//return url + "l.jpg"  //add l to the end of the img url to give it a better preview
-
-					//first remove query parameters from the url
 					url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
+					//first remove query parameters from the url
 
 					return url + ".jpg"
 				}
 
 			}
 			return false;
+		},
+		//imgur keeps a small image that we can use in the grid view
+		getSmallerImg: function(url) {
+
+			if (url != false && this.containsStr("imgur.com", url)) {
+				//check if its a gallery
+				if (this.containsStr("imgur.com/a", url) == true || this.containsStr("gallery", url) == true) {
+					return false
+				} else {
+					url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
+					//url = url.substr(0, url.lastIndexOf('.'));
+					url = url.replace('.jpg', '')
+					url = url.replace('.png', '')
+					url = url.replace('.jpeg', '')
+					url = url.replace('.gif', '')
+
+					return url + "l.jpg" //add l to the end of the img url to give it a better preview
+				}
+
+			}
+			return false;
+
 		},
 		containsStr: function(needle, haystack) {
 			return (haystack.indexOf(needle) >= 0)
