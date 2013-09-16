@@ -108,7 +108,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 		saveLocalStorage: function() {
 			console.log('saving to local storage')
-			var now = new Date()
+			var now = Math.round(new Date().getTime() / 1000)
 			var storeThis = new Object();
 			storeThis.models = JSON.stringify(this.models)
 			storeThis.after = this.after
@@ -117,12 +117,13 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			storeThis.sortOrder = this.sortOrder
 			storeThis.instanceUrl = this.instanceUrl
 			if (typeof this.expires === 'undefined') {
-				this.expires = now + (60 * 30) //add 30 minutes to expire time
+				this.expires = now + (60 * 10) //add 10 minutes to expire time
 			}
 			storeThis.expires = this.expires
 
 			if (this.expires < now) {
 				localStorage.removeItem(this.subID)
+				delete this.expires
 			} else {
 				window.localStorage.setItem(this.subID, JSON.stringify(storeThis));
 			}

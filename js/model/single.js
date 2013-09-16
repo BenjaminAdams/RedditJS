@@ -148,6 +148,17 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 
 			//console.log(data.media_embed.content)
 
+			//delete things we wont use to save space in localstorage
+			delete data.secure_media_embed;
+			delete data.selftext;
+			delete data.created_utc;
+			delete data.created;
+			delete data.approved_by;
+			delete data.over_18;
+			delete data.secure_media;
+			delete data.stickied;
+			delete data.banned_by
+
 			return data;
 
 		},
