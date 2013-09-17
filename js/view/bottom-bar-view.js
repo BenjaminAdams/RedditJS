@@ -27,7 +27,7 @@
  				this.sortOrder = 'hot'
  				this.subID = this.subName + this.sortOrder
  				this.selectedID = false;
- 				this.pixelsOfOneImg = 88
+ 				this.pixelsOfOneImg = 97.5
 
  				channel.on("bottombar:selected", this.selected, this); //when the user focuses on a single post page
  				channel.on("btmbar:remove", this.remove, this); //clears everthing in this view
@@ -94,29 +94,30 @@
  				this.$('#' + name).addClass('selectedBtmBar')
 
  				//move the btm bar to the active ID
- 				if (typeof this.collection !== "undefined" && this.collection.length > 15) {
- 					//find the active model's index in the collection
- 					//gets its index, multiply it by how wide it is
- 					console.log(this.collection)
- 					var count = 0
- 					var foundIndex = 0
- 					_.each(this.collection.models, function(model) {
+ 				// if (typeof this.collection !== "undefined" && this.collection.length > 15) {
+ 				// 	//find the active model's index in the collection
+ 				// 	//gets its index, multiply it by how wide it is
+ 				// 	console.log(this.collection)
+ 				// 	var count = 0
+ 				// 	var foundIndex = 0
+ 				// 	_.each(this.collection.models, function(model) {
 
- 						if (model.get('name') == name) {
- 							foundIndex = count;
- 						}
- 						count++;
- 					});
- 					console.log('found idnex=', foundIndex)
- 					var centerScreen = $(document).width() / 2
- 					//var model = this.collection.at(id)
- 					var leftPos = (foundIndex * this.pixelsOfOneImg) - (centerScreen - (this.pixelsOfOneImg * 3)) //make the selected index appear in the center
- 					console.log('new left pos=', leftPos)
- 					//rotate the bar to the active img
- 					if (foundIndex > 15) {
- 						this.$el.css('left', -leftPos)
- 					}
- 				}
+ 				// 		if (model.get('name') == name) {
+ 				// 			foundIndex = count;
+ 				// 		}
+ 				// 		count++;
+ 				// 	});
+ 				// 	console.log('found idnex=', foundIndex)
+ 				// 	var centerScreen = $(document).width() / 2
+ 				// 	//var model = this.collection.at(id)
+ 				// 	var leftPos = (foundIndex * this.pixelsOfOneImg) - (centerScreen - (this.pixelsOfOneImg * 3)) //make the selected index appear in the center
+
+ 				// 	console.log('new left pos=', leftPos)
+ 				// 	//rotate the bar to the active img
+ 				// 	if (foundIndex > 15) {
+ 				// 		this.$el.css('left', -leftPos)
+ 				// 	}
+ 				// }
 
  			},
  			//only scroll every few milaseconds in an interval
@@ -168,7 +169,7 @@
  							$('#bottom-bar').css('left', amount);
  						} else if (direction == 'right') {
 
- 							if ((self.guessedWidth > currentLeft - 1000) && self.loading == false) {
+ 							if ((self.guessedWidth > currentLeft - 1100) && self.loading == false) {
  								self.fetchMore()
  							} else if (self.guessedWidth < currentLeft) {
  								$('#bottom-bar').css('left', amount);
@@ -192,6 +193,8 @@
  			},
  			fetchMore: function() {
  				if (this.loading == false) {
+ 					this.showLoading()
+
  					console.log('fetching MOAR')
  					this.loading = true
  					this.collection.fetch({
@@ -217,6 +220,7 @@
  					// }))
  				})
  				this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
+ 				this.hideLoading()
 
  			},
  			show: function() {
@@ -240,7 +244,7 @@
  				this.loading = false; //turn the flag on to go ahead and fetch more!
 
  				window.subs[this.subID] = this.collection
- 				this.selected(this.selectedID)
+ 				//this.selected(this.selectedID) //leaving this here caused the selected post to highlight every fetch
 
  			},
  			gotoSingle: function(e) {
@@ -251,7 +255,12 @@
  				console.log('curmodel=', window.curModel)
  				this.selected(name) //using the router to goto the selected link, pre selecting this post before we travel there
  			},
-
+ 			showLoading: function() {
+ 				this.$el.append('<img class="btmbar-loading" src="img/loading.gif" />')
+ 			},
+ 			hideLoading: function() {
+ 				$('.btmbar-loading').remove()
+ 			}
  		});
  		return SubredditView;
  	});

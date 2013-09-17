@@ -405,3 +405,16 @@ color:#9494ff;
 .link img {
   max-width:65%;
 }
+
+
+.btmbar-loading {
+  padding:25px;
+  margin-left:15px;
+  float:left;
+}
+
+/*
+position: fixed;
+bottom: 25px;
+right: 15px;
+*/
