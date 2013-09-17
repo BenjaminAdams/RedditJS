@@ -56,11 +56,11 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
                     //     //  $('.content').html('redditJS is for reddit gold members only, coming soon =)')
 
-                    //     require(['view/login-popup-view'], function(LoginPopupView) {
+                    // require(['view/login-popup-view'], function(LoginPopupView) {
 
-                    //         var loginPopupView = new LoginPopupView({
-                    //             el: "#popupWindow"
-                    //         })
+                    //     var loginPopupView = new LoginPopupView({
+                    //         el: "#popupWindow"
+                    //     })
 
                     //     });
 

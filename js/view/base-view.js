@@ -109,6 +109,8 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 					} else {
 						this.cancelVote()
 					}
+				} else {
+					this.showLoginBox()
 				}
 			},
 			downvote: function(e) {
@@ -136,6 +138,8 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 					} else {
 						this.cancelVote()
 					}
+				} else {
+					this.showLoginBox()
 				}
 			},
 			cancelVote: function() {
@@ -156,42 +160,51 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				this.$('.downArrow' + id).removeClass('downmod')
 			},
 			save: function(id) {
-				var self = this
-				var params = {
-					id: id,
-					dir: dir,
-					uh: $.cookie('modhash'),
-				};
+				if (this.checkIfLoggedIn() == true) {
+					var self = this
+					var params = {
+						id: id,
+						dir: dir,
+						uh: $.cookie('modhash'),
+					};
 
-				this.api("api/vote", 'POST', params, function(data) {
-					console.log("saving done", data)
-					self.model.set('saved', true)
+					this.api("api/vote", 'POST', params, function(data) {
+						console.log("saving done", data)
+						self.model.set('saved', true)
 
-				});
+					});
+				} else {
+					this.showLoginBox()
+				}
 			},
 			//attempts to create a new comment
 			comment: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				var self = this
 
-				var id = this.model.get('name')
-				var text = this.$('#text' + id).val()
-				console.log("text from user input=", text)
-				text = this.sterilize(text) //clean the input
+				if (this.checkIfLoggedIn() == true) {
+					var self = this
 
-				var params = {
-					api_type: 'json',
-					thing_id: id,
-					text: text,
-					uh: $.cookie('modhash'),
-				};
-				console.log(params)
+					var id = this.model.get('name')
+					var text = this.$('#text' + id).val()
+					console.log("text from user input=", text)
+					text = this.sterilize(text) //clean the input
 
-				this.api("/api/comment", 'POST', params, function(data) {
-					console.log("comment done", data)
-					self.commentCallback(data)
-				});
+					var params = {
+						api_type: 'json',
+						thing_id: id,
+						text: text,
+						uh: $.cookie('modhash'),
+					};
+					console.log(params)
+
+					this.api("/api/comment", 'POST', params, function(data) {
+						console.log("comment done", data)
+						self.commentCallback(data)
+					});
+				} else {
+					this.showLoginBox()
+				}
 			}, //callback after trying to write a comment
 			commentCallback: function(data) {
 				console.log('callback comment=', data)
@@ -360,20 +373,24 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 			savePost: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				var self = this
-				this.$('#save' + this.model.get('id')).hide()
-				this.$('#unsave' + this.model.get('id')).show()
-				var params = {
-					id: this.model.get('name'),
-					uh: $.cookie('modhash'),
-				};
-				console.log(params)
+				if (this.checkIfLoggedIn() == true) {
+					var self = this
+					this.$('#save' + this.model.get('id')).hide()
+					this.$('#unsave' + this.model.get('id')).show()
+					var params = {
+						id: this.model.get('name'),
+						uh: $.cookie('modhash'),
+					};
+					console.log(params)
 
-				this.api("/api/save", 'POST', params, function(data) {
-					console.log("save done", data)
-					self.model.set('saved', true)
+					this.api("/api/save", 'POST', params, function(data) {
+						console.log("save done", data)
+						self.model.set('saved', true)
 
-				});
+					});
+				} else {
+					this.showLoginBox()
+				}
 			}, //so users can hide a post/link 
 			unSavePost: function(e) {
 				var self = this
@@ -409,7 +426,16 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				}
 
 			},
+			showLoginBox: function() {
+				require(['view/login-popup-view'], function(LoginPopupView) {
 
+					var loginPopupView = new LoginPopupView({
+						el: "#popupWindow"
+					})
+
+				});
+			}
 		});
+
 		return BaseView;
 	});

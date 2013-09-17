@@ -26,8 +26,11 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup
 				this.login()
 
 			},
-			hide: function() {
-				this.$el.hide()
+			hide: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				//this.$el.hide()
+				this.$el.empty()
 			},
 			getNewCaptcha: function() {
 				var self = this
