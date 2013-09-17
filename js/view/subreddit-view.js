@@ -93,7 +93,7 @@ define([
 					self.changeSortOrderCss()
 				}, 100);
 
-				this.helpFillUpScreen();
+				//this.helpFillUpScreen();
 
 			},
 			//we have to override the remove event because the window.scroll event will not be removed by the garbage collector
@@ -264,8 +264,6 @@ define([
 
 			},
 			tryAgain: function() {
-				//this.$('.loading').hide()
-				this.$('#siteTable').html("<div class='loading'></div> ")
 				this.$('#retry').remove()
 
 				this.fetchMore();
