@@ -15,9 +15,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup
 
 				this.render()
 				this.getNewCaptcha()
-				this.$el.show() //it sometimes could be hidden
 
-				channel.on("login", this.gotoHomeAfterLogin, this);
+				channel.on("login", this.loginSuccess, this);
 			},
 
 			doLogin: function(e) {
@@ -29,7 +28,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup
 			hide: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				//this.$el.hide()
+
 				this.$el.empty()
 			},
 			getNewCaptcha: function() {
@@ -111,36 +110,47 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup
 							console.log(loginData)
 							window.me = loginData
 							self.setLoginCookies(loginData.cookie, loginData.modhash, user)
-							self.gotoHomeAfterLogin()
+							self.loginSuccess()
 						}
 					}
 				});
 
 			},
-			gotoHomeAfterLogin: function() {
+			// checkifGoldBeforeLogin: function() {
+			// 	var self = this
+
+			// 	//check if user has reddit gold first
+			// 	this.me = new UserModel($.cookie('username'));
+			// 	this.me.fetch({
+			// 		async: false,
+			// 		success: function(data) {
+			// 			console.log('my info=', data)
+			// 			console.log('isgold=', data.get('is_gold'))
+			// 			if (data.get('is_gold') == true) {
+			// 				var curHash = Backbone.history.fragment
+			// 				Backbone.history.navigate('redirectAfterLogin'); //have to redirect to a fake link before we goback to where the user wants to go
+			// 				Backbone.history.navigate(curHash, {
+			// 					trigger: true
+
+			// 				})
+			// 				self.remove()
+			// 			} else {
+			// 				self.$el.show()
+			// 				self.logout()
+			// 				self.$('.loginError').html('redditJS is for reddit gold users only.').show()
+			// 			}
+			// 		}
+			// 	})
+
+			// },
+			loginSuccess: function() {
 				var self = this
+				this.$el.empty()
+				var curHash = Backbone.history.fragment
+				Backbone.history.navigate('redirectAfterLogin'); //have to redirect to a fake link before we goback to where the user wants to go
+				Backbone.history.navigate(curHash, {
+					trigger: true
 
-				//check if user has reddit gold first
-				this.me = new UserModel($.cookie('username'));
-				this.me.fetch({
-					async: false,
-					success: function(data) {
-						console.log('my info=', data)
-						console.log('isgold=', data.get('is_gold'))
-						if (data.get('is_gold') == true) {
-							var curHash = Backbone.history.fragment
-							Backbone.history.navigate('redirectAfterLogin'); //have to redirect to a fake link before we goback to where the user wants to go
-							Backbone.history.navigate(curHash, {
-								trigger: true
-
-							})
-							self.remove()
-						} else {
-							self.$el.show()
-							self.logout()
-							self.$('.loginError').html('redditJS is for reddit gold users only.').show()
-						}
-					}
 				})
 
 			},

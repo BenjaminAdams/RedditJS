@@ -49,7 +49,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 				this.api("api/login", 'POST', params, function(data) {
 					console.log(data)
 
-					if (data.json.errors.length > 0) {
+					if (typeof data.json.errors !== 'undefined' && data.json.errors.length > 0) {
 						//alert("unable to login")
 						console.log(data.json.errors)
 						this.$('.loginError').show()
