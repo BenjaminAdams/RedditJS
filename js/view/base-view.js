@@ -79,7 +79,7 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 
 				this.api("api/vote", 'POST', params, function(data) {
 					console.log("vote done", data)
-					//self.model.save()
+
 				});
 
 			},
@@ -96,7 +96,7 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 						this.model.set('downmod', 'down')
 						this.model.set('upmod', 'upmod')
 						this.model.set('voted', 'likes')
-						this.model.save()
+
 						this.$('.midcol .dislikes').hide()
 						this.$('.midcol .likes').show()
 						this.$('.midcol .unvoted').hide()
@@ -123,7 +123,6 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 						this.model.set('downmod', 'downmod')
 						this.model.set('upmod', 'up')
 						this.model.set('voted', 'dislikes')
-						this.model.save()
 
 						this.$('.midcol .dislikes').show()
 						this.$('.midcol .likes').hide()
@@ -146,7 +145,6 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				this.model.set('downmod', 'down')
 				this.model.set('upmod', 'up')
 				this.model.set('voted', 'unvoted')
-				this.model.save()
 
 				this.$('.midcol .dislikes').hide()
 				this.$('.midcol .likes').hide()
@@ -168,7 +166,7 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				this.api("api/vote", 'POST', params, function(data) {
 					console.log("saving done", data)
 					self.model.set('saved', true)
-					self.model.save()
+
 				});
 			},
 			//attempts to create a new comment
@@ -355,7 +353,6 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				this.api("/api/hide", 'POST', params, function(data) {
 					console.log("hide done", data)
 					self.model.set('hidden', true)
-					self.model.save()
 
 				});
 			},
@@ -375,7 +372,6 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				this.api("/api/save", 'POST', params, function(data) {
 					console.log("save done", data)
 					self.model.set('saved', true)
-					self.model.save()
 
 				});
 			}, //so users can hide a post/link 
@@ -394,7 +390,6 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 				this.api("/api/unsave", 'POST', params, function(data) {
 					console.log("unsave done", data)
 					self.model.set('saved', false)
-					self.model.save()
 
 				});
 			},
