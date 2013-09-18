@@ -456,7 +456,7 @@ define([
 			},
 			hideMoarBtn: function() {
 				//this.$('.nextprev').hide()
-				this.$('.nextprev').html('<img src="img/loading.gif" />').show()
+				this.$('.nextprev').html('<img class="loadingMOAR" src="img/loading.gif" />').show()
 			}
 
 		});
