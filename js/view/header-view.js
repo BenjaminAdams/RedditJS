@@ -66,17 +66,38 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				this.$(".top").prop("href", model.get('rname') + "/top")
 
 			},
-			updateSortOrder: function(sortOrder) {
-				if (typeof sortOrder === 'undefined') {
-					sortOrder = 'hot'
-				}
+			updateSortOrder: function(data) {
+				console.log(data)
+				var sortOrder = data.sortOrder
+				var domain = data.domain
+				var subName = data.subName
+				// if (typeof sortOrder === 'undefined') {
+				// 	sortOrder = 'hot'
+				// }
 				this.$('.hot').parent().removeClass('selected');
 				this.$('.new').parent().removeClass('selected');
 				this.$('.rising').parent().removeClass('selected');
 				this.$('.controversial').parent().removeClass('selected');
 				this.$('.top').parent().removeClass('selected');
 				this.$('.' + sortOrder).parent().addClass('selected');
+
+				if (domain == null) {
+					//http://localhost/r/funny/new
+					this.$('.hot').attr("href", "/r/" + subName + '/');
+					this.$('.new').attr("href", "/r/" + subName + '/new');
+					this.$('.rising').attr("href", "/r/" + subName + '/rising');
+					this.$('.controversial').attr("href", "/r/" + subName + '/controversial');
+					this.$('.top').attr("href", "/r/" + subName + '/top');
+				} else {
+					//http://localhost/domain/i.imgur.com/new
+					this.$('.hot').attr("href", "/domain/" + domain + '/');
+					this.$('.new').attr("href", "/domain/" + domain + '/new');
+					this.$('.rising').attr("href", "/domain/" + domain + '/rising');
+					this.$('.controversial').attr("href", "/domain/" + domain + '/controversial');
+					this.$('.top').attr("href", "/domain/" + domain + '/top');
+				}
 			},
+
 			updateSubreddits: function() {
 				this.mySubreddits.reset()
 				//query the api for /me.json

@@ -29,6 +29,10 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                 '(:sortOrder)(/)': 'home',
                 'r/:subName(/)': 'subreddit',
                 'r/:subName/:sortOrder(/)': 'subreddit',
+                //http://www.reddit.com/domain/i.imgur.com/new/
+                'domain/:domain(/)': 'subredditDomain',
+                'domain/:domain/:sortOrder(/)': 'subredditDomain',
+
                 'r/:subName/comments/:id/:slug(/)': 'single',
                 'r/:subName/comments/:id(/)': 'single',
 
@@ -92,7 +96,7 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
 
             home: function(sortOrder) {
 
-                channel.trigger("header:updateSortOrder")
+                // channel.trigger("header:updateSortOrder")
 
                 this.doSidebar('front');
 
@@ -111,6 +115,16 @@ define(['underscore', 'backbone', 'view/subreddit-view', 'view/header-view', 'vi
                     sortOrder: sortOrder || 'hot',
                 });
 
+            },
+
+            subredditDomain: function(domain, sortOrder) {
+                console.log('domain route')
+                this.doSidebar('front');
+                var subredditView = new SubredditView({
+                    subName: '',
+                    sortOrder: sortOrder || 'hot',
+                    domain: domain
+                });
             },
 
             single: function(subName, id) {

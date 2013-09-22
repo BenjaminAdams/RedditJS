@@ -8,6 +8,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			this.after = ""
 			this.subName = data.subName
 			this.sortOrder = data.sortOrder
+			this.domain = data.domain
 			this.count = 1
 			if (typeof this.sortOrder === 'undefined') {
 				this.sortOrder = 'hot' //the default sort order is hot
@@ -17,6 +18,19 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 			//this.bind("change", this.saveLocalStorage, this);
 			//this.bind("sync", this.saveLocalStorage);
+
+			//build the URL string before fetch
+			if (this.subName == "front" || this.domain != null) {
+				this.subnameWithrR = ''
+			} else {
+				this.subnameWithrR = 'r/' + this.subName + '/'
+			}
+
+			if (this.domain != null) {
+				this.domainStr = 'domain/' + this.domain + '/'
+			} else {
+				this.domainStr = ''
+			}
 
 			this.instanceUrl = this.getUrl()
 
@@ -35,21 +49,13 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			var linkCount = window.settings.get('linkCount')
 
 			if (typeof username !== "undefined") {
-				if (this.subName == "front") {
-					return "/api/?url=" + this.sortOrder + ".json&after=" + this.after + "&limit=" + linkCount + "&cookie=" + $.cookie('reddit_session');
-				} else {
 
-					return '/api/?url=r/' + this.subName + "/" + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
-				}
+				return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + "&cookie=" + $.cookie('reddit_session');
+
 			} else {
-				//if user is NOT logged in, use jsonp request
-				if (this.subName == "front") {
+				console.log("http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + "&limit=" + linkCount + "&jsonp=?")
+				return "http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + "&limit=" + linkCount + "&jsonp=?"
 
-					return "http://api.reddit.com/" + this.sortOrder + ".json?after=" + this.after + "&limit=" + linkCount + "&jsonp=?"
-				} else {
-					return "http://api.reddit.com/r/" + this.subName + "/" + this.sortOrder + ".json?after=" + this.after + "&limit=" + linkCount + "&jsonp=?"
-					//return '/api/?url=r/' + this.subName + this.sortOrder + ".json?after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
-				}
 			}
 
 		},

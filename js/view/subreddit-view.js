@@ -31,7 +31,11 @@ define([
 				this.subName = options.subName
 				this.template = subredditTmpl;
 				this.sortOrder = options.sortOrder
-				this.subID = this.subName + this.sortOrder
+				this.domain = options.domain
+				if (typeof this.domain === 'undefined') {
+					this.domain = null
+				}
+				this.subID = this.subName + this.domain + this.sortOrder
 				if (typeof this.sortOrder === 'undefined') {
 					this.sortOrder = 'hot'
 				}
@@ -53,6 +57,7 @@ define([
 				if (typeof window.subs[this.subID] === 'undefined') {
 
 					this.collection = new SubredditCollection({
+						domain: this.domain,
 						subName: this.subName,
 						sortOrder: this.sortOrder
 					});
@@ -90,7 +95,7 @@ define([
 				this.resize()
 
 				setTimeout(function() {
-					self.changeSortOrderCss()
+					self.changeHeaderLinks()
 				}, 100);
 
 				//this.helpFillUpScreen();
@@ -198,8 +203,12 @@ define([
 				});
 				return shortest;
 			},
-			changeSortOrderCss: function() {
-				channel.trigger("header:updateSortOrder", this.sortOrder);
+			changeHeaderLinks: function() {
+				channel.trigger("header:updateSortOrder", {
+					sortOrder: this.sortOrder,
+					domain: this.domain,
+					subName: this.subName
+				});
 			},
 
 			resize: function() {
