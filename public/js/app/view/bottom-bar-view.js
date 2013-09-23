@@ -26,7 +26,11 @@
                  var self = this;
                  this.subName = options.subName
                  this.sortOrder = 'hot'
-                 this.subID = this.subName + this.sortOrder
+                 this.domain = options.domain
+                 if (typeof this.domain === 'undefined') {
+                     this.domain = null
+                 }
+                 this.subID = this.subName + this.domain + this.sortOrder
                  this.selectedID = false;
                  this.pixelsOfOneImg = 97.5
 
@@ -41,7 +45,8 @@
 
                  if (typeof window.subs[this.subID] === 'undefined') {
 
-                     this.collection = new SubredditCollection({
+                     this.collection = new SubredditCollection([], {
+                         domain: this.domain,
                          subName: this.subName,
                          sortOrder: this.sortOrder
                      });

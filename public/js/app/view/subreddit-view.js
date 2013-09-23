@@ -1,6 +1,4 @@
-define([
-		'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'hbs!template/post-row-grid', 'view/post-row-view', 'view/sidebar-view', 'view/base-view', 'collection/subreddit', 'event/channel', 'cookie'
-	],
+define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'hbs!template/post-row-grid', 'view/post-row-view', 'view/sidebar-view', 'view/base-view', 'collection/subreddit', 'event/channel', 'cookie'],
 	function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, PostRowGrid, PostRowView, SidebarView, BaseView, SubredditCollection, channel, Cookie) {
 		var SubredditView = BaseView.extend({
 
@@ -55,7 +53,7 @@ define([
 
 				if (typeof window.subs[this.subID] === 'undefined') {
 
-					this.collection = new SubredditCollection({
+					this.collection = new SubredditCollection([], {
 						domain: this.domain,
 						subName: this.subName,
 						sortOrder: this.sortOrder

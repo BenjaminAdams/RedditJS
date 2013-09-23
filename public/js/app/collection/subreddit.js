@@ -2,7 +2,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 	var SubredditCollection = Backbone.Collection.extend({
 
-		initialize: function(data) {
+		initialize: function(models, data) {
 			_.bindAll(this);
 
 			this.after = ""

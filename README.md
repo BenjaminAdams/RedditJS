@@ -22,13 +22,13 @@ It then creates the output in the `target` folder
 
 
 ####RedditJS is built with :
+ * Node.js <http://nodejs.org/>
  * Backbone.js <https://github.com/jashkenas/backbone>
  * Underscore.js <https://github.com/jashkenas/underscore>
  * Require.js <http://requirejs.org/>
  * Handlebars <http://handlebarsjs.com/>
  * jQuery <http://jquery.com/>
  * Reddit API <http://www.reddit.com/dev/api/>
- * Resthub <http://resthub.org/2/backbone-stack.html>
 
 #### Thanks
 [Hire me to build your next webapp](mailto:armastevs@gmail.com)

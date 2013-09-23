@@ -34,7 +34,7 @@ module.exports = {
 				})
 			}
 
-			if (!error && response.statusCode == 200) {
+			if (!error && response.statusCode == 200 || response.statusCode == 304) {
 				//console.log('body=', body)
 				//fs.writeFile("screenleap.json", body);
 				res.json(JSON.parse(body))
@@ -62,9 +62,7 @@ module.exports = {
 		queryParams = this.ltrim(queryParams, '&');
 
 		urlStr = 'http://api.reddit.com/' + urlStr + '?' + queryParams.toString();
-		console.log('urlstr=', urlStr)
-		console.log('queryParams=', queryParams)
-		console.log('POSTdATA=', req.body)
+
 		var options = {
 			url: urlStr,
 			headers: {
@@ -83,7 +81,7 @@ module.exports = {
 				})
 			}
 
-			if (!error && response.statusCode == 200) {
+			if (!error && response.statusCode == 200 || response.statusCode == 304) {
 				//console.log('body=', body)
 				//fs.writeFile("screenleap.json", body);
 				res.json(JSON.parse(body))
@@ -100,17 +98,6 @@ module.exports = {
 	},
 	getTitle: function(res, req) {
 
-		// function get_url_contents($url){
-		//         $crl = curl_init();
-		//         $timeout = 5;
-		//         curl_setopt ($crl, CURLOPT_URL,$url);
-		//         curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
-		//         curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
-		//         $ret = curl_exec($crl);
-		//         curl_close($crl);
-		//         return $ret;
-		// }
-		// echo get_url_contents($_GET['url']);
 		var url = require('url');
 		var url_parts = url.parse(req.url, true);
 		var url = url_parts.query.url
