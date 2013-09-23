@@ -1,0 +1,117 @@
+<div id='{{model.id}}' class="thing comment " data-fullname="{{model.name}}">
+
+<div class="thing id-t1_cbtb7as comment "  {{#if model.is_user}} style='min-height:65px;' {{/if}} data-fullname="{{model.name}}" data-ups="{{model.ups}}" data-downs="{{model.downs}}">
+
+
+	<p class="parent">
+
+	</p>
+	<div class="midcol {{model.voted}} ">
+		<div class="arrow upArrow{{model.id}} {{model.upmod}} "  role="button" aria-label="upvote" tabindex="0">
+		</div>
+		<div class="arrow downArrow{{model.id}} {{model.downmod}} "  role="button" aria-label="downvote" tabindex="0">
+		</div>
+	</div>
+		 {{#if model.thumbnail}}
+			<a href='{{model.permalink}}'><img src='{{model.thumbnail}}' class='thumbnail'/></a>
+		{{/if}}
+	<div class="entry unvoted">
+		<div class="collapsed" style="display:none">
+			<a href="#" class="expand" >[+]</a>
+				 {{#if model.is_user}}
+				 	<a href='{{model.permalink}}' style='height:65px;' class='title'>{{model.title}}</a>
+				 {{/if}}
+			<a class="author gray " href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
+
+			<span class="userattrs"></span>
+				<span class="score dislikes">{{model.scoreDown}} points</span>
+				<span class="score unvoted">{{model.score}} points</span>
+				<span class="score likes">{{model.scoreUp}} points</span>
+			<time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">{{model.timeAgo}}</time> ago &nbsp;
+			  {{#if model.edited}}
+                        			<span>(*lasted edited {{model.editedTimeAgo}} ago)</span>
+
+                   		 {{/if}}
+			<a href="#" class="expand">({{model.childrenCount}} {{model.childOrChildren}})</a>
+		</div>
+		<div class="noncollapsed">
+			<p class="tagline">
+				<a href="#" class="expand" >[–]</a>
+				 {{#if model.is_user}}
+
+				 	<a href='{{model.permalink}}' class='title'>{{model.title}}</a>
+				 {{/if}}
+				<a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
+				 {{#if model.author_flair_css_class}}<span class="flair flair-{{model.author_flair_css_class}}" title=""></span>{{/if}}
+
+				
+
+					
+		<span class="score">{{model.score}}(<span class='orange'>{{model.ups}}</span>/<span class='purple'>{{model.downs}}</span>)</span>
+				
+
+				<time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">{{model.timeAgo}}</time> ago
+				{{#if model.edited}}				
+                        			<span>* (lasted edited {{model.editedTimeAgo}} ago)</span>
+
+                   			 {{/if}}
+
+                   			 {{#if model.is_user}}	
+                   			 	<span> in <a href='/r/{{model.subreddit}}'>{{model.subreddit}}</a>
+                   			 {{/if}}
+
+
+			</p>
+			<form action="#" class="usertext">
+			
+				<div class="usertext-body hoverImgParent">
+					<div class="md">
+						<p>
+							{{{model.body_html}}}
+							
+						</p>
+					</div>
+				</div>
+				
+			</form>
+			<ul class="flat-list buttons">
+				<li class="first"><a href="{{model.permalink}}" class="bylink" rel="nofollow">permalink</a></li>
+				<li>
+				<span class="toggle remove-button">
+					<span class="option main active">
+					<a href="#" id='report{{model.id}}' class="togglebutton">report</a></span>
+					<span id='reportConfirm{{model.id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{model.id}}' class="yes">yes</a> / <a href="#" id='reportConfirmNo{{model.id}}' class="no" >no</a></span>
+				</span>
+				</li>
+				<li><a  data-bypass href="http://reddit.com/gold?goldtype=gift&amp;months=1&amp;comment={{model.name}}"   target='_blank' title='If you like redditJS please buy someone reddit gold!' class="give-gold login-required">give gold</a></li>
+				<li><a id='replyToggle{{model.id}}' href="#" >reply</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id='{{model.name}}' class="child{{model.name}} child">
+
+<form action="#" class="usertext cloneable" id="commentreply{{model.id}}" style="display: none;">
+	<div class="usertext-edit" style="width: 500px;"><div>
+		<textarea rows="1" cols="1" name="text" id='text{{model.name}}'></textarea>
+	</div>
+	<div class="bottom-area">
+		<span class="help-toggle toggle" style="">
+			<a id="mdHelpShow{{model.id}}"  class="option active " href="#" tabindex="100">formatting help</a>
+			<a id="mdHelpHide{{model.id}}"  class="option " href="#">hide help</a></span>
+			<a href="http://reddit.com/wiki/reddiquette" data-bypass class="reddiquette" target="_blank" tabindex="100">reddiquette</a>
+			
+			<div class="usertext-buttons">
+				<button type="submit" class="save">save</button>
+				<button type="button"  class="cancel" style="">cancel</button>
+				<span class="status"></span>
+			</div>
+	</div>
+	<div id="mdHelp{{model.id}}" class="markhelp" style="display:none">
+
+
+
+	</div>
+	<div class="clearleft">
+		<!--IE6sux-->
+	</div>
+</div>

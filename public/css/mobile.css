@@ -1,0 +1,60 @@
+@media (max-width: 1000px) {
+/*
+.tabmenu {
+font-size: 20px;
+}
+
+.tabmenu-right {
+position: relative;
+right: 11px;
+top: 2px;
+z-index: 3333;
+width: 100%;
+text-align: center;
+margin: 12px 0;
+}
+
+.tabmenu li.selected a {
+color: #FF4500;
+
+border: 1px solid #5f99cf;
+background-color: #eff7ff;
+z-index: 100;
+}
+*/
+
+.entry {
+overflow: visible;
+}
+
+.comment .child, .comment .showreplies {
+margin-left: 0px;
+}
+.comment, .content .details {
+margin-left: 3px;
+}
+
+.large-thumb .thing {
+
+max-width: 85%;
+
+}
+
+.smallThumb {
+	padding:5px;
+	float:left;
+}
+
+
+.side {
+	display:none;
+}
+
+
+#sr-header-area {
+	display:none;
+}
+
+      }
+
+ 

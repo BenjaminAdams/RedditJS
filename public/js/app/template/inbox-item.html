@@ -1,0 +1,133 @@
+<div id='{{model.name}}' class="thing recipient message-parent even message">
+  <p class="parent">
+  </p>
+  <p class="subject">
+    <span class="correspondent rounded">
+      <a class="author" href="/user/{{model.author}}" target="_blank">
+        {{model.author}}
+      </a>
+      <span class="userattrs">
+      </span>
+    </span>
+           {{model.subject}}
+    <br>
+  </p>
+  <p>
+  </p>
+  <div class="midcol" style="display:none">
+  </div>
+  <div class="entry unvoted">
+    <div class="collapsed" style="display:none">
+      <a href="#" class="expand">
+        [+]
+      </a>
+      <span class="head">
+        from 
+        <b>
+          <a class="author" href="/user/{{model.author}}" target="_blank">
+           {{model.author}}
+          </a>
+      
+          <span class="userattrs">
+          </span>
+        </b>
+        sent 
+        <time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">
+          {{model.timeAgo}}
+        </time>
+        ago
+      </span>
+    </div>
+    <div class="noncollapsed">
+      <p class="tagline">
+        <a href="#" class="expand" >
+          [–]&nbsp;
+        </a>
+        <span class="head">
+          from
+          <b>
+            <a class="author" href="/user/{{model.author}}" target="_blank">
+              {{model.author}}
+            </a>to
+        <a class="author" href="/user/{{model.dest}}" target="_blank">
+           {{model.dest}}
+          </a>
+            <span class="userattrs">
+            </span>
+          </b>
+          sent 
+        <time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">
+          {{model.timeAgo}}
+        </time>
+          ago
+        </span>
+      </p>
+      <div class="md">
+        <p>
+          {{{model.body_html}}}
+        </p>
+      </div>
+      <ul class="flat-list buttons">
+
+        <li>
+          <form class="first toggle report-button" action="#" method="get">
+            <span class="option main active">
+              <a href="#" class="togglebutton togglebuttonReport">
+                report
+              </a>
+            </span>
+            <span class="reportOption option error">
+              are you sure?  
+              <a href="#" class="yes yesReport">
+                yes
+              </a>
+              / 
+              <a href="#" class="no noReport">
+                no
+              </a>
+            </span>
+          </form>
+        </li>
+        <li>
+          <form class="toggle block-button " action="#" method="get">
+            <input type="hidden" name="executed" value="blocked">
+            <span class="option main active">
+              <a href="#" class="togglebutton togglebuttonBlock">
+                block user
+              </a>
+            </span>
+            <span class="blockOption option error">
+              are you sure?  
+              <a href="#" class="yes yesBlock">
+                yes
+              </a>
+              / 
+              <a href="#" class="no noBlock">
+                no
+              </a>
+            </span>
+          </form>
+        </li>
+        <li class="unread">
+          <form action="/post/unread" method="post" class="state-button unread-button">
+            <span>
+              <a href="#">
+                mark unread
+              </a>
+            </span>
+          </form>
+        </li>
+        <li>
+          <a href="/message/compose/{{model.author}}">
+            reply
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="child">
+  </div>
+  <div class="clearleft">
+    <!--IE6sux-->
+  </div>
+</div>

@@ -1,0 +1,118 @@
+<div id='{{model.id}}' class="sitetable linklisting singlePostPage">
+<div class="thing id-{{model.name}} {{model.evenOrOdd}} link" data-fullname="{{model.name}}" data-ups="{{model.ups}}" data-downs="{{model.downs}}">
+       <p class="parent"></p>
+
+        <div class="midcol {{model.voted}} " style="width:5ex;">
+            <div data-id='{{model.id}}' class="arrow login-required upArrow{{model.id}} {{model.upmod}}" role='button' aria-label="upvote" tabindex="0"></div>
+            <div class="score dislikes">
+                {{model.scoreDown}} 
+            </div>
+            <div class="score unvoted">
+                {{model.score}}
+            </div>
+            <div class="score likes">
+                {{model.scoreUp}}
+            </div>        
+          <div data-id='{{model.id}}' class="arrow login-required downArrow{{model.id}} {{model.downmod}}" role="button" aria-label="downvote" tabindex="0"></div>
+        </div>
+
+
+    <a class="thumbnail loggedin" data-bypass href="{{model.actualUrl}}" target="_blank"><img alt="" height="52" src="{{model.thumbnail}}" width="70"></a>
+
+        <div class="entry {{model.voted}}">
+            <p class="title">
+      <a class="title loggedin" data-bypass href="{{model.actualUrl}}" target="_blank">{{model.title}}</a> 
+                <span class="domain">(<a href="/domain/{{model.domain}}/">{{model.domain}}</a>)</span>
+            </p>
+
+          {{{model.expandHTML}}} 
+
+             <p class="tagline">
+                 <span>{{model.score}}(<span class='orange'>{{model.ups}}</span>/<span class='purple'>{{model.downs}}</span>)</span>
+                submitted <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
+
+         {{#if model.author_flair_css_class}}<span class="flair flair-{{model.author_flair_css_class}}" title=""></span>{{/if}}
+            
+            <span class="userattrs"></span>to <a href="/r/{{model.subreddit}}/" class="subreddit hover">{{model.subreddit}}</a>
+            </p>
+
+  {{#if model.selftext_html}}
+            <div class="expando">
+                <form action="#" class="usertext" >
+                    <div class="usertext-body">
+                    
+                              {{{model.selftext_html}}}
+                        
+                    </div>
+                </form>
+            </div>
+  {{/if}}
+
+
+
+          <ul class="flat-list buttons">
+
+
+            
+                <li class='first'>
+                    <a class="comments" href="{{model.permalink}}"  target="_blank">{{model.num_comments}} comments</a>
+                </li>
+
+                <li class="share">
+                <span class="share-button toggle"><a class="option active login-required" href="#">share</a></span></li>
+                <li>
+
+                <span class="state-button save-button" >
+                     {{#if model.saved}}
+                        <span id='unsave{{model.id}}' ><a href='#'>unsave</a></span>
+                        <span id='save{{model.id}}' style='display:none;'><a href="#" >save</a></span>
+                    {{else}}
+                        <span id='unsave{{model.id}}' style='display:none;'><a href='#'>unsave</a></span>
+                        <span id='save{{model.id}}'><a href="#" >save</a></span>
+                    {{/if}}
+                </span>
+                </li>
+
+                <li>
+                <span class="state-button hide-button" >
+                   <span><a href="#" id='hide{{model.id}}'>hide</a></span>
+                </span>
+                </li>
+                <li>
+                <span class="toggle remove-button">
+                    <span class="option main active">
+                    <a href="#" id='report{{model.id}}' class="togglebutton">report</a></span>
+                    <span id='reportConfirm{{model.id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{model.id}}' class="yes">yes</a> / <a href="#" id='reportConfirmNo{{model.id}}' class="no" >no</a></span>
+                </span>
+                </li>
+
+            </ul>
+
+
+  {{#if model.media_embed}}
+<div class="expando"><div class="usertext-body"><p>
+{{{model.media_embed}}}
+</p>
+</div></div>
+  {{/if}}
+
+
+
+
+
+        </div>
+        <div class="child">
+        </div>
+        <div class="clearleft">
+            <!--IE6sux-->
+        </div>
+    </div>
+    <div class="clearleft">
+        <!--IE6sux-->
+    </div>
+</div>
+
+
+
+
+<div id='commentarea'> </div>
