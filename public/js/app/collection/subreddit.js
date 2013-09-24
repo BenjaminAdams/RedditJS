@@ -61,6 +61,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			if (typeof response === 'undefined' || response.length === 0) {
 				return
 			}
+
 			this.after = response.data.after;
 
 			if (this.after === "" || this.after === null) {

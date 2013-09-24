@@ -416,17 +416,20 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 				if (window.settings.get('infin') === true) {
 
 					var self = this;
-					if (this.gridOption == 'grid') {
-						this.triggerPoint = 3500; // px from the bottom 
-					} else {
-						this.triggerPoint = 1500; // px from the bottom 
-					}
+if(this.gridOption == 'grid')
+{
+this.triggerPoint = 3500; // px from the bottom 
+}else
+{
+this.triggerPoint = 1500; // px from the bottom 
+}
+					    
 
 					//keep the scrollheight in the collection so when we return to it, we can auto-move to it
 					//bad?
 					this.collection.scroll = $(window).scrollTop()
 
-					if ((($(window).scrollTop() + $(window).height()) + this.triggerPoint >= $(document).height()) && this.loading === false) {
+					if ((($(window).scrollTop() + $(window).height()) + triggerPoint >= $(document).height()) && this.loading === false) {
 
 						console.log('loading MOAR')
 						if (this.collection.after != "stop") {

@@ -7,6 +7,7 @@ module.exports = function(grunt) {
             desktopJS: {
                 options: {
                     baseUrl: "public/js/app",
+                    "findNestedDependencies": true,
                     wrap: true,
                     // Cannot use almond since it does not currently appear to support requireJS's config-map
                     name: "../lib/almond",

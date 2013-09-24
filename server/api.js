@@ -29,9 +29,8 @@ module.exports = {
 		request.get(options, function(error, response, body) {
 			if (error) {
 				console.log('error in get=', error)
-				res.json({
-					code: '404'
-				})
+				res.send(response.statusCode)
+				return
 			}
 
 			if (!error && response.statusCode == 200 || response.statusCode == 304) {
@@ -41,11 +40,11 @@ module.exports = {
 
 			} else {
 				console.log('error=', error)
+				console.log('return code=', response.statusCode)
 				//body = JSON.parse(body)
+				res.send(response.statusCode)
+				//res.json(JSON.parse(body))
 
-				res.json({
-					code: '404'
-				})
 			}
 		});
 
@@ -75,10 +74,9 @@ module.exports = {
 		request.post(options, function(error, response, body) {
 
 			if (error) {
-				console.log('error in post=', error)
-				res.json({
-					code: '404'
-				})
+				console.log('error in get=', error)
+				res.send(response.statusCode)
+				return
 			}
 
 			if (!error && response.statusCode == 200 || response.statusCode == 304) {
@@ -90,8 +88,10 @@ module.exports = {
 				//console.log('error=', error)
 				//console.log('body=', body)
 				//body = JSON.parse(body)
-
-				res.json(JSON.parse(body))
+				console.log('return code=', response.statusCode)
+				//body = JSON.parse(body)
+				res.send(response.statusCode)
+				//res.json(response.statusCode, JSON.parse(body))
 			}
 		});
 
@@ -125,9 +125,10 @@ module.exports = {
 
 			} else {
 				console.log('error=', error)
+				console.log('return code=', response.statusCode)
 				//body = JSON.parse(body)
 
-				res.json({
+				res.json(404, {
 					code: '404'
 				})
 			}
