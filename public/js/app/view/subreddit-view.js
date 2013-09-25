@@ -91,6 +91,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 
 				//$(window).bind("resize.app", _.bind(this.debouncer));
 				$(window).resize(this.debouncer(function(e) {
+
 					self.resize()
 				}));
 
@@ -221,6 +222,13 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 						newWidth = docWidth;
 					}
 					$('#dynamicWidth ').html(' < style > .large - thumb {width: ' + newWidth + 'px} < /style>');
+				} else if (window.settings.get('showSidebar') === true) {
+
+					if (mobileWidth > $(document).width()) {
+						$('.side').hide()
+					} else {
+						$('.side').show()
+					}
 				}
 
 			},

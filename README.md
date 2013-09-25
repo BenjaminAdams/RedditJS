@@ -29,6 +29,7 @@ It then creates the output in the `target` folder
  * Handlebars <http://handlebarsjs.com/>
  * jQuery <http://jquery.com/>
  * Reddit API <http://www.reddit.com/dev/api/>
+ * Hosted at [Heroku](https://www.heroku.com)
 
 #### Thanks
 [Hire me to build your next webapp](mailto:armastevs@gmail.com)
