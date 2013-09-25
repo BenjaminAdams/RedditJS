@@ -24,12 +24,16 @@ module.exports = {
 
 			},
 			form: url_parts.query,
-		};
+		}
 
 		request.get(options, function(error, response, body) {
 			if (error) {
 				console.log('error in get=', error)
-				res.send(response.statusCode)
+				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
+					res.send(response.statusCode)
+				} else {
+					res.send(500)
+				}
 				return
 			}
 
@@ -72,10 +76,13 @@ module.exports = {
 		};
 
 		request.post(options, function(error, response, body) {
-
 			if (error) {
 				console.log('error in get=', error)
-				res.send(response.statusCode)
+				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
+					res.send(response.statusCode)
+				} else {
+					res.send(500)
+				}
 				return
 			}
 
