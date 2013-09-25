@@ -65,8 +65,6 @@ define(['underscore', 'backbone', 'marionette', 'view/subreddit-view', 'view/hea
                     //     return;
                     // }
 
-                    console.log('ITS HAPPENING', name)
-
                     channel.trigger("subreddit:remove") //clear old subreddit views
                     channel.trigger("single:remove") //clear old subreddit views
 

@@ -26,6 +26,11 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 				_.bindAll(this);
 				var self = this;
 				this.subName = options.subName
+				if (this.subName == 'front') {
+					document.title = "RedditJS Beta"
+				} else {
+					document.title = this.subName + "- RedditJS Beta"
+				}
 				this.template = subredditTmpl;
 				this.sortOrder = options.sortOrder
 				this.domain = options.domain
