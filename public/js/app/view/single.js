@@ -44,7 +44,7 @@ define([
 					console.log('loading a model from memory')
 					//this is what we do when we pass in a model with out the comments
 					this.model = window.curModel;
-					this.updatePageTitle(this.model.get('title'))
+					this.updatePageTitle(this.model.get('title'));
 					delete window.curModel; //memory management
 					this.renderStuff(this.model);
 					//well now we need to get the comments for this post!
