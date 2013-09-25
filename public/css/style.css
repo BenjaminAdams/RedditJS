@@ -55,6 +55,10 @@ width: 90px;
 
 }
 
+.thumbnail {
+  max-height: 64px;
+}
+
 
 .tabmenu-right {
 position:relative;
