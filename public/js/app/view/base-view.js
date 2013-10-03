@@ -246,6 +246,10 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 
 					var newModel = new CommentModel(attributes) //shouldn't have to input this data into the model twice
 					this.hideUserInput()
+
+					newModel.set('permalink', this.permalinkParent + attributes.id)
+					newModel.set('permalinkParent', this.permalinkParent)
+
 					//child{{model.name}}
 					var comment = new CommentView({
 						model: newModel,

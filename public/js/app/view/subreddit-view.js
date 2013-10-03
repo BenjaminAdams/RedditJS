@@ -222,7 +222,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 						newWidth = docWidth;
 					}
 					$('#dynamicWidth ').html(' < style > .large - thumb {width: ' + newWidth + 'px} < /style>');
-				} else if (window.settings.get('showSidebar') === true) {
+				} else if (window.settings.get('showSidebar') === true && this.gridOption != "grid") {
 
 					if (mobileWidth > $(document).width()) {
 						$('.side').hide()
