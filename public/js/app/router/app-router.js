@@ -130,7 +130,8 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                 require(['view/single-view', 'view/bottom-bar-view'], function(SingleView, BottomBarView) {
                     var singleView = new SingleView({
                         subName: subName,
-                        id: id
+                        id: id,
+                        commentLink: commentLink || null
                     });
 
                     if (window.settings.get('btmbar') === true) {

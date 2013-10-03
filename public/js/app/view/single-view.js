@@ -1,7 +1,7 @@
 define([
-		'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view/post-row-view', 'view/sidebar-view', 'view/comments-view', 'view/base-view', 'model/single', 'event/channel', 'cookie'
+		'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view/post-row-view', 'view/sidebar-view', 'view/comment-view', 'view/base-view', 'model/single', 'event/channel', 'cookie'
 	],
-	function(_, Backbone, Resthub, singleTmpl, PostRowView, SidebarView, CommentsView, BaseView, SingleModel, channel, Cookie) {
+	function(_, Backbone, Resthub, singleTmpl, PostRowView, SidebarView, CommentView, BaseView, SingleModel, channel, Cookie) {
 		var SingleView = BaseView.extend({
 
 			el: $(".content"),
@@ -22,6 +22,18 @@ define([
 
 				_events['click .upArrow' + this.options.id] = "upvote";
 				_events['click .downArrow' + this.options.id] = "downvote";
+
+				//events moved from the 'comments-view.js'
+				_events['click #report' + this.options.id] = "reportShow";
+				_events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
+				_events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
+
+				_events['submit #comment' + this.options.id] = "comment";
+				//_events['click .comment' + this.options.name] = "comment";
+				//_events['click .MOAR' + this.options.id] = "loadMOAR";
+				_events['click #mdHelpShow' + this.options.id] = "showMdHelp";
+				_events['click #mdHelpHide' + this.options.id] = "hideMdHelp";
+
 				return _events;
 			},
 
@@ -52,6 +64,9 @@ define([
 
 				}
 
+				console.log('options in single view=', options)
+				this.commentLink = options.commentLink
+
 				$(window).resize(this.debouncer(function(e) {
 					self.resize()
 				}));
@@ -64,7 +79,7 @@ define([
 			},
 
 			fetchComments: function(callback) {
-				$('#commentarea').html("<div class='loadingS' style='position:relative;left:30%;'></div>")
+				this.$('#siteTableComments').html("<div class='loadingS' style='position:relative;left:30%;'></div>")
 				this.comments = new SingleModel({
 					subName: this.subName,
 					id: this.id,
@@ -148,22 +163,40 @@ define([
 			},
 			//if we dont pass in a model we need to render the comments here
 			loadComments: function(model, res) {
-				$('#commentarea').html('')
-				this.comments = new CommentsView({
-					collection: model.get('replies'),
-					model: this.model,
-					el: "#commentarea"
-					//root: "#commentarea"
-				})
+				this.$('.loadingS').remove()
+				this.permalinkParent = this.model.get('permalink') //this is for the comment callback so we can set the permalink after someone comments on a main post
+
+				this.renderComments(model.get('replies'))
+
 			},
 			loaded: function(model, res) {
 				this.$('.loading').hide()
 				this.model = model
-				this.updatePageTitle(this.model.get('title'))
+
 				//this.model = model.parseOnce(model.attributes)
 				this.renderStuff(model);
 				this.loadComments(model)
 				console.log('before activiating btm bar=', model)
+
+			},
+			renderComments: function(collection) {
+				//console.log('collection in renderComments', collection)
+				var self = this
+				this.updatePageTitle(this.model.get('title'))
+				collection.each(function(model) {
+					//console.log('model in renderComments', model)
+					model.set('permalink', self.model.get('permalink') + model.get('id'))
+					model.set('permalinkParent', self.model.get('permalink'))
+
+					var comment = new CommentView({
+						model: model,
+						id: model.get('id'),
+						strategy: "append",
+						root: "#siteTableComments"
+						//root: "#commentarea"
+					})
+
+				})
 
 			}
 

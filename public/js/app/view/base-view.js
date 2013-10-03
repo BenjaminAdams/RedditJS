@@ -250,6 +250,8 @@ define(['underscore', 'backbone', 'resthub', 'cookie'],
 					newModel.set('permalink', this.permalinkParent + attributes.id)
 					newModel.set('permalinkParent', this.permalinkParent)
 
+					console.log('in cmt callback', newModel)
+
 					//child{{model.name}}
 					var comment = new CommentView({
 						model: newModel,
