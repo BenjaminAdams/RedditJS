@@ -18,9 +18,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				//this.model = new SidebarModel()
 				console.log("I should only render the header once")
 				this.render();
-				this.userbar = new UserbarView({
-					root: "#header-bottom-right"
-				})
 
 				channel.on("header:update", this.updateHeader, this);
 				channel.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
@@ -36,6 +33,12 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				if (this.checkIfLoggedIn() === true) {
 					this.updateSubreddits()
 				}
+
+				setTimeout(function() {
+					this.userbar = new UserbarView({
+						root: "#header-bottom-right"
+					})
+				}, 100)
 
 				// this.$() is a shortcut for this.$el.find().
 
