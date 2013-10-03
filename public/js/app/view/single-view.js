@@ -45,8 +45,9 @@ define([
 				var self = this;
 				this.subName = options.subName
 				this.id = options.id
+				this.commentLink = options.commentLink
 				this.template = singleTmpl;
-
+				this.hasRendered = false
 				this.triggerID()
 
 				if (typeof window.curModel === 'undefined') {
@@ -64,9 +65,6 @@ define([
 
 				}
 
-				console.log('options in single view=', options)
-				this.commentLink = options.commentLink
-
 				$(window).resize(this.debouncer(function(e) {
 					self.resize()
 				}));
@@ -79,7 +77,7 @@ define([
 			},
 
 			fetchComments: function(callback) {
-				this.$('#siteTableComments').html("<div class='loadingS' style='position:relative;left:30%;'></div>")
+				this.$el.append("<div class='loadingS' style='position:relative;left:30%;'></div>")
 				this.comments = new SingleModel({
 					subName: this.subName,
 					id: this.id,
@@ -92,7 +90,53 @@ define([
 					error: this.fetchError
 				});
 
+				console.log('this.id in single', this.id)
+
+				if (this.commentLink !== null) {
+					this.loadLinkedComment()
+				}
+
 			},
+			//this function displays a single comment if the user is viewing a linked comment via the permalink feature
+			loadLinkedComment: function() {
+
+				//$(this.el).html("<div class='loadingS'></div>")
+				var self = this
+				var link_id = 't3_' + this.id
+				var params = {
+					link_id: link_id,
+					id: this.commentLink,
+					api_type: 'json',
+
+					//children: this.model.get('children').join(","),
+					children: this.commentLink,
+					byPassAuth: true
+				};
+
+				this.api("api/morechildren.json", 'POST', params, function(data) {
+					if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
+
+						require(['model/comment'], function(CommentModel) {
+							data.children = data.json.data.things
+							var tmpModel = new CommentModel({
+								skipParse: true
+							})
+							self.linkedCommentModel = tmpModel.parseComments(data, link_id)
+							self.linkedCommentModel = self.linkedCommentModel.models[0]
+
+							self.linkedCommentModel.set('permalink', document.URL)
+
+							if (self.hasRendered === true) {
+								self.loadLinkedCommentView()
+							}
+
+						})
+
+					}
+				});
+
+			},
+
 			remove: function() {
 				//$(window).unbind('keydown', this.keyPress);
 				$(window).off('resize', this.debouncer);
@@ -155,11 +199,27 @@ define([
 
 			},
 			renderStuff: function(model) {
-				console.log('rendering single=', this.model)
+				//console.log('rendering single=', this.model)
 				this.render()
+				this.hasRendered = true
+				this.loadLinkedCommentView()
 				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.resize()
 
+			},
+			loadLinkedCommentView: function() {
+				if (typeof this.linkedCommentModel !== 'undefined') {
+					console.log('loading linked comment view')
+					//this.linkedCommentView.render()
+					var comment = new CommentView({
+						model: this.linkedCommentModel,
+						id: this.linkedCommentModel.get('id'),
+						root: "#linkedComment"
+						//root: "#commentarea"
+					})
+					this.$('#linkedComment .usertext-body').first().css('background-color', '#F5F5A7')
+
+				}
 			},
 			//if we dont pass in a model we need to render the comments here
 			loadComments: function(model, res) {
@@ -170,13 +230,13 @@ define([
 
 			},
 			loaded: function(model, res) {
-				this.$('.loading').hide()
+				//this.$('.loading').hide()
 				this.model = model
 
 				//this.model = model.parseOnce(model.attributes)
 				this.renderStuff(model);
 				this.loadComments(model)
-				console.log('before activiating btm bar=', model)
+				//console.log('before activiating btm bar=', model)
 
 			},
 			renderComments: function(collection) {

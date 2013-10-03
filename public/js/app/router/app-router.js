@@ -125,8 +125,6 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
 
                 this.doSidebar(subName);
 
-                console.log('commentlink=', commentLink)
-
                 require(['view/single-view', 'view/bottom-bar-view'], function(SingleView, BottomBarView) {
                     var singleView = new SingleView({
                         subName: subName,
@@ -163,7 +161,7 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                 });
             },
             compose: function(username) {
-                console.log('compose view', username)
+
                 require(['view/compose-view'], function(ComposeView) {
                     var composeView = new ComposeView({
                         username: username
@@ -171,7 +169,7 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                 });
             },
             inbox: function(type) {
-                console.log('msg view, type= ', type)
+
                 require(['view/inbox-view'], function(InboxView) {
                     var inboxView = new InboxView({
                         type: type

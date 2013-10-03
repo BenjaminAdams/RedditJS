@@ -42,6 +42,7 @@ define([
 				}
 
 				this.render();
+
 				//console.log("trying to create a new comment view with = ", options)
 
 				this.addOutboundLink()
@@ -64,7 +65,6 @@ define([
 				var self = this
 				//console.log('loading MOAR')
 				var link_id = this.model.get('link_id')
-				//	url: "/api/?url=api/morechildren&cookie=" + $.cookie('reddit_session');,
 				var params = {
 					link_id: link_id,
 					id: this.id,
