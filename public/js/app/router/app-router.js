@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'marionette', 'view/subreddit-view', 'view/header-view', 'view/search-view', 'view/single', 'view/sidebar-view', 'view/bottom-bar-view', 'event/channel'],
-    function(_, Backbone, Marionette, SubredditView, HeaderView, SearchView, SingleView, SidebarView, BottomBarView, channel) {
+define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sidebar-view', 'event/channel'],
+    function(_, Backbone, Marionette, HeaderView, SidebarView, channel) {
 
         var AppRouter = Backbone.Marionette.AppRouter.extend({
             initialize: function(options) {
@@ -27,8 +27,9 @@ define(['underscore', 'backbone', 'marionette', 'view/subreddit-view', 'view/hea
                 'domain/:domain(/)': 'subredditDomain',
                 'domain/:domain/:sortOrder(/)': 'subredditDomain',
 
-                'r/:subName/comments/:id/:slug(/):commentLink(/)': 'single',
                 'r/:subName/comments/:id(/)': 'single',
+                'r/:subName/comments/:id/:slug(/)': 'single',
+                'r/:subName/comments/:id/:slug/:commentLink(/)': 'single',
 
                 'user/:username(/)': 'user',
                 'user/:username/:sortOrder(/)': 'user',
@@ -87,32 +88,36 @@ define(['underscore', 'backbone', 'marionette', 'view/subreddit-view', 'view/hea
                 // channel.trigger("header:updateSortOrder")
 
                 this.doSidebar('front');
-
-                var subredditView = new SubredditView({
-                    subName: "front",
-                    sortOrder: sortOrder || 'hot'
-                });
+                require(['view/subreddit-view'], function(SubredditView) {
+                    var subredditView = new SubredditView({
+                        subName: "front",
+                        sortOrder: sortOrder || 'hot'
+                    });
+                })
             },
 
             subreddit: function(subName, sortOrder) {
 
                 this.doSidebar(subName);
-
-                var subredditView = new SubredditView({
-                    subName: subName,
-                    sortOrder: sortOrder || 'hot'
-                });
+                require(['view/subreddit-view'], function(SubredditView) {
+                    var subredditView = new SubredditView({
+                        subName: subName,
+                        sortOrder: sortOrder || 'hot'
+                    });
+                })
 
             },
 
             subredditDomain: function(domain, sortOrder) {
                 console.log('domain route')
                 this.doSidebar('front');
-                var subredditView = new SubredditView({
-                    subName: '',
-                    sortOrder: sortOrder || 'hot',
-                    domain: domain
-                });
+                require(['view/subreddit-view'], function(SubredditView) {
+                    var subredditView = new SubredditView({
+                        subName: '',
+                        sortOrder: sortOrder || 'hot',
+                        domain: domain
+                    });
+                })
             },
 
             //'r/:subName/comments/:id/:slug(/):commentLink(/)': 'single',
@@ -122,21 +127,24 @@ define(['underscore', 'backbone', 'marionette', 'view/subreddit-view', 'view/hea
 
                 console.log('commentlink=', commentLink)
 
-                var singleView = new SingleView({
-                    subName: subName,
-                    id: id
-                });
+                require(['view/single-view', 'view/bottom-bar-view'], function(SingleView, BottomBarView) {
+                    var singleView = new SingleView({
+                        subName: subName,
+                        id: id
+                    });
 
-                if (window.settings.get('btmbar') === true) {
-                    if ((typeof this.bottomBar === 'undefined' || this.bottomBar === null) || this.bottomBar.subName != subName) { //only update btm bar if the subreddit changes
-                        this.bottomBar = new BottomBarView({
-                            subName: subName,
-                            id: id
-                        })
-                    } else {
-                        this.bottomBar.show()
+                    if (window.settings.get('btmbar') === true) {
+                        if ((typeof this.bottomBar === 'undefined' || this.bottomBar === null) || this.bottomBar.subName != subName) { //only update btm bar if the subreddit changes
+                            this.bottomBar = new BottomBarView({
+                                subName: subName,
+                                id: id
+                            })
+                        } else {
+                            this.bottomBar.show()
+                        }
                     }
-                }
+
+                })
 
             },
 
@@ -175,12 +183,13 @@ define(['underscore', 'backbone', 'marionette', 'view/subreddit-view', 'view/hea
             search: function(searchQ, timeFrame, sortOrder) {
 
                 this.doSidebar('front');
-
-                var search = new SearchView({
-                    searchQ: searchQ,
-                    timeFrame: timeFrame,
-                    sortOrder: sortOrder
-                });
+                require(['view/search-view'], function(SearchView) {
+                    var search = new SearchView({
+                        searchQ: searchQ,
+                        timeFrame: timeFrame,
+                        sortOrder: sortOrder
+                    });
+                })
             },
             submit: function(subName) {
                 this.doSidebar(subName);
