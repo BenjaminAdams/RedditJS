@@ -45,6 +45,8 @@ define([
 				//console.log("trying to create a new comment view with = ", options)
 
 				this.addOutboundLink()
+				this.permalinkParent = options.model.get('permalinkParent')
+				//this.model.set('permalinkParent', options.permalinkParent)
 
 				this.renderChildren(this.model.get('replies'))
 
@@ -75,7 +77,7 @@ define([
 				console.log('MOAR=', params)
 
 				this.api("api/morechildren.json", 'POST', params, function(data) {
-					console.log("MOAR done", data)
+					//console.log("MOAR done", data)
 
 					if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
 						data.children = data.json.data.things
@@ -100,6 +102,9 @@ define([
 					this.model = newComments.at(0)
 					newComments = newComments.slice(1, newComments.length)
 					newComments = new Backbone.Collection(newComments)
+
+					this.model.set('permalink', this.permalinkParent + this.model.get('id'))
+					this.model.set('permalinkParent', this.permalinkParent)
 
 					//this.model.set('replies', newComments)
 					//change template back to normal comment template
@@ -201,6 +206,9 @@ define([
 						var id = model.get('id')
 						if (id != "_") {
 
+							model.set('permalink', self.model.get('permalinkParent') + model.get('id'))
+							model.set('permalinkParent', self.model.get('permalinkParent'))
+
 							var comment = new CommentView({
 								model: model,
 								id: id,
@@ -219,6 +227,8 @@ define([
 				var self = this
 				collection.each(function(model) {
 					//console.log('model in renderComments', model)
+					model.set('permalink', self.model.get('permalinkParent') + model.get('id'))
+					model.set('permalinkParent', self.model.get('permalinkParent'))
 					var comment = new CommentView({
 						model: model,
 						id: model.get('id'),

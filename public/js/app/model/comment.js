@@ -62,7 +62,8 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 			///r/{{model.subreddit}}/comments/{{model.id}}/is_vox_worth_restarting/cbtb7as
 			//data.permalink = '/r/' + data.subreddit + '/comments/' + linkName + "#" + data.id
 			//TODO: add in the hashtag +data.id later
-			data.permalink = '/r/' + data.subreddit + '/comments/' + linkName
+
+			//data.permalink = '/r/' + data.subreddit + '/comments/' + linkName
 
 			//data.replies = this.parseComments(response[1].data.children)
 

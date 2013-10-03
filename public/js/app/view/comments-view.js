@@ -33,9 +33,9 @@ define([
 				this.collection = options.collection
 				this.render();
 				this.renderComments(this.collection)
-				console.log('got here')
+
 				this.model = options.model
-				//console.log('init comments view model=', this.model)
+				//console.log('options.model in comments view=', this.model)
 
 			},
 
@@ -49,9 +49,13 @@ define([
 			},
 			renderComments: function(collection) {
 				//console.log('collection in renderComments', collection)
+				var self = this
 
 				collection.each(function(model) {
 					//console.log('model in renderComments', model)
+					model.set('permalink', self.model.get('permalink') + model.get('id'))
+					model.set('permalinkParent', self.model.get('permalink'))
+
 					var comment = new CommentView({
 						model: model,
 						id: model.get('id'),

@@ -27,7 +27,7 @@ define(['underscore', 'backbone', 'marionette', 'view/subreddit-view', 'view/hea
                 'domain/:domain(/)': 'subredditDomain',
                 'domain/:domain/:sortOrder(/)': 'subredditDomain',
 
-                'r/:subName/comments/:id/:slug(/)': 'single',
+                'r/:subName/comments/:id/:slug(/):commentLink(/)': 'single',
                 'r/:subName/comments/:id(/)': 'single',
 
                 'user/:username(/)': 'user',
@@ -115,9 +115,12 @@ define(['underscore', 'backbone', 'marionette', 'view/subreddit-view', 'view/hea
                 });
             },
 
-            single: function(subName, id) {
+            //'r/:subName/comments/:id/:slug(/):commentLink(/)': 'single',
+            single: function(subName, id, slug, commentLink) {
 
                 this.doSidebar(subName);
+
+                console.log('commentlink=', commentLink)
 
                 var singleView = new SingleView({
                     subName: subName,
