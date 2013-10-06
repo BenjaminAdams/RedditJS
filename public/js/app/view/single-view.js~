@@ -73,8 +73,8 @@ define([
 
 			},
 			addOutboundLink: function() {
-				this.$('.usertext-body a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
-				this.$('.usertext-body a').attr('target', '_blank');
+				this.$('.hoverImgParent a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
+				this.$('.hoverImgParent a').attr('target', '_blank');
 			},
 			updatePageTitle: function(title) {
 				document.title = title + "- RedditJS Beta"
@@ -206,7 +206,6 @@ define([
 				//console.log('rendering single=', this.model)
 				this.render()
 				this.hasRendered = true
-				this.addOutboundLink()
 				this.loadLinkedCommentView()
 				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.resize()

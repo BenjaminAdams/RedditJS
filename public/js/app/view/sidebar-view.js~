@@ -86,7 +86,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				if (window.settings.get('showSidebar') === false) {
 					$('.side').hide()
 				}
-				this.addOutboundLink()
 				//HeaderView.updateHeader(this.model)
 
 			},
