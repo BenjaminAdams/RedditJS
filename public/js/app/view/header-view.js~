@@ -38,7 +38,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 					this.userbar = new UserbarView({
 						root: "#header-bottom-right"
 					})
-				}, 1000)
+				}, 600)
 
 				// this.$() is a shortcut for this.$el.find().
 

@@ -149,7 +149,7 @@
                              $('#bottom-bar').css('left', amount);
                          } else if (direction == 'right') {
 
-                             if ((self.guessedWidth > currentLeft - 1750) && self.loading === false) {
+                             if ((self.guessedWidth > currentLeft - 1800) && self.loading === false) {
                                  self.fetchMore()
                              } else if (self.guessedWidth < currentLeft) {
                                  $('#bottom-bar').css('left', amount);
