@@ -5,7 +5,7 @@ var express = require("express"),
     port = (process.env.PORT || 8001),
     server = module.exports = express();
 var fs = require("fs");
-var request = require('request');
+//var request = require('request');
 
 var api = require('./api')
 
@@ -15,10 +15,13 @@ server.configure(function() {
 
     server.use(express["static"](__dirname + "/../public"));
     server.use(express.favicon(__dirname + "/../public/img/favicon.ico"));
-    server.use(express.errorHandler({
-        dumpExceptions: true,
-        showStack: true
-    }));
+
+    if (process.env.NODE_ENV !== 'production') {
+        server.use(express.errorHandler({
+            dumpExceptions: true,
+            showStack: true
+        }));
+    }
 
     server.use(express.bodyParser());
     server.use(server.router);
@@ -46,4 +49,12 @@ server.get("*", function(req, res) {
 // Start Node.js Server
 http.createServer(server).listen(port);
 
-console.log('\nWelcome to redditjs.com!\nPlease go to http://localhost:' + port + ' to start using Art of Fx');
+console.log('\nWelcome to redditjs.com!\nPlease go to http://localhost:' + port + ' to start using RedditJS');
+
+if (process.env.NODE_ENV === 'production') {
+    var nullfun = function() {};
+    console.log = nullfun;
+    console.info = nullfun;
+    console.error = nullfun;
+    console.warn = nullfun;
+}

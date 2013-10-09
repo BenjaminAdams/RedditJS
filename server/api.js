@@ -118,7 +118,14 @@ module.exports = {
 		var re = /(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g;
 
 		request.get(urlOpts, function(error, response, body) {
-			if (error) throw error;
+			if (error) {
+				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
+					res.send(response.statusCode)
+				} else {
+					res.send(500)
+				}
+				return
+			}
 
 			if (!error && (response.statusCode == 200 || response.statusCode == 304)) {
 				//console.log('body=', body)
@@ -140,19 +147,6 @@ module.exports = {
 				})
 			}
 		});
-
-		// http.get(urlOpts, function(response, err) {
-		// 	console.log(response)
-		// 	if (err) throw err;
-		// 	response.on('data', function(chunk) {
-		// 		var str = chunk.toString();
-		// 		var match = re.exec(str);
-		// 		if (match && match[2]) {
-		// 			console.log(match[2]);
-		// 			res.send(200, match[2])
-		// 		}
-		// 	});
-		// });
 
 	},
 
