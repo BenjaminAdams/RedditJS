@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sidebar-view', 'event/channel'],
-    function(_, Backbone, Marionette, HeaderView, SidebarView, channel) {
+define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sidebar-view', 'collection/my-subreddits', 'event/channel'],
+    function(_, Backbone, Marionette, HeaderView, SidebarView, MySubredditsCollection, channel) {
 
         var AppRouter = Backbone.Marionette.AppRouter.extend({
             initialize: function(options) {
@@ -7,6 +7,8 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
 
                 window.settings = new Backbone.Model()
                 this.loadSettingsFromCookies()
+
+                window.subreddits = new MySubredditsCollection()
 
                 //what happens if we keep subreddits in a global?
                 window.subs = []

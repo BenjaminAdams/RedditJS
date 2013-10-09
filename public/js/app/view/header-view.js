@@ -1,6 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'view/userbar-view', 'view/base-view', 'model/sidebar', 'collection/my-subreddits', 'event/channel', 'cookie'],
-	function($, _, Backbone, Resthub, HeaderTmpl, UserbarView, BaseView, SidebarModel, MySubredditsCollection, channel, Cookie) {
-
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'view/userbar-view', 'view/base-view', 'model/sidebar', 'event/channel', 'cookie'],
+	function($, _, Backbone, Resthub, HeaderTmpl, UserbarView, BaseView, SidebarModel, channel, Cookie) {
 		var HeaderView = BaseView.extend({
 			el: $("#theHeader"),
 			events: {
@@ -9,13 +8,10 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				'click .drop-down-header a': 'toggleDropdown', //will close the menu after the user makes a selection
 				'click #userbar-logged-out': 'showLoginPopup'
 			},
-
 			initialize: function(data) {
 				_.bindAll(this);
 				this.template = HeaderTmpl;
-				this.mySubreddits = new MySubredditsCollection()
-				this.mySubreddits.loadDefaultSubreddits()
-				//this.model = new SidebarModel()
+
 				console.log("I should only render the header once")
 				this.render();
 
@@ -27,12 +23,16 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
 
 				this.displayMySubreddits()
+
+				this.listenTo(window.subreddits, 'sync', this.displayMySubreddits)
+
 				this.changeActiveGrid($.cookie('gridOption'))
 				//this.changeActiveGrid($.cookie('gridOption')) //so we are highlighting the correct grid option on page load
 
-				if (this.checkIfLoggedIn() === true) {
-					this.updateSubreddits()
-				}
+				//this function now handled by the init of the model itself
+				//if (this.checkIfLoggedIn() === true) {
+				//this.updateSubreddits()
+				//}
 
 				setTimeout(function() {
 					this.userbar = new UserbarView({
@@ -70,7 +70,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 
 			},
 			updateSortOrder: function(data) {
-				console.log(data)
+				//console.log(data)
 				var sortOrder = data.sortOrder
 				var domain = data.domain
 				var subName = data.subName
@@ -99,9 +99,10 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 			},
 
 			updateSubreddits: function() {
-				this.mySubreddits.reset()
+				console.log('updating subreddits!@')
+				window.subreddits.reset()
 				//query the api for /me.json
-				this.mySubreddits.fetch({
+				window.subreddits.fetch({
 					success: this.displayMySubreddits
 				});
 
@@ -132,17 +133,17 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 			},
 
 			displayMySubreddits: function(response, subreddits) {
-
 				this.$('#sr-bar').html(" ") //clear the div
+
 				//    Normal Format: 
 				//			<li><a href="/r/pics/">pics</a></li>
 				//   Every Subreddit after the first one has a seperator:  
 				//			<li><span class="separator">-</span><a href= "/r/funny/">funny</a></li>
 
-				window.subreddits = this.mySubreddits
+				//window.subreddits = this.mySubreddits
 				var seperator = '';
 				var count = 0;
-				this.mySubreddits.each(function(model) {
+				window.subreddits.each(function(model) {
 					if (count !== 0) {
 						seperator = '<span class="separator">-</span>';
 					}
@@ -160,7 +161,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 
 				//format:  <a class="choice" href="/r/AdviceAnimals/">AdviceAnimals</a>
 
-				this.mySubreddits.each(function(model) {
+				window.subreddits.each(function(model) {
 					//this.$('.drop-choices').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
 					this.$('.drop-down-header').append('<a class="choice" href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a>')
 				})

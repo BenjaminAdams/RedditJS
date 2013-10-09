@@ -34,29 +34,20 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 		// Reference to this collection's model.
 		model: SingleModel,
-
 		url: function() {
-
 			return this.instanceUrl //keeps a dynamic URL so we can give it a new "after"
 		},
-
 		getUrl: function() {
-
 			var username = $.cookie('username')
 			var linkCount = window.settings.get('linkCount')
 
 			if (typeof username !== "undefined") {
-
 				return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + "&cookie=" + $.cookie('reddit_session');
-
 			} else {
 				console.log("http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + "&limit=" + linkCount + "&jsonp=?")
 				return "http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + "&limit=" + linkCount + "&jsonp=?"
-
 			}
-
 		},
-
 		parse: function(response) {
 			if (typeof response === 'undefined' || response.length === 0) {
 				return
