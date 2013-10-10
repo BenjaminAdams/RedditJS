@@ -1,7 +1,6 @@
 <div id='{{model.id}}' class="sitetable linklisting singlePostPage">
 <div class="thing id-{{model.name}} {{model.evenOrOdd}} link" data-fullname="{{model.name}}" data-ups="{{model.ups}}" data-downs="{{model.downs}}">
        <p class="parent"></p>
-
         <div class="midcol {{model.voted}} " style="width:5ex;">
             <div data-id='{{model.id}}' class="arrow login-required upArrow{{model.id}} {{model.upmod}}" role='button' aria-label="upvote" tabindex="0"></div>
             <div class="score dislikes">
@@ -120,39 +119,27 @@
         <span class="title">all {{model.num_comments}} {{model.commentsPlural}}</span>
 
 <span class='arrowNav'>
-<span class='leftArrow'>←</span>
-<span class='rightArrow' title='next post' >→</span>
+<span class='leftArrow' title='Previous Post'>←</span>
+<span class='rightArrow' title='Next post' >→</span>
 </span>
 
     </div>
     <div class="menuarea" style='border-bottom: none;'>
         <div class="spacer">
             <span class="dropdown-title lightdrop ">sorted by: </span>
-            <div class="dropdown lightdrop " onclick="open_menu(this)" onmouseover="hover_open_menu(this)">
-                <span class="selected">best</span>
+            <div class="dropdown lightdrop toggleDropdownCmntSort">
+                <span class="selected selectedCmntSort">best</span>
             </div>
-            <div class="drop-choices lightdrop ">
-                <form method="POST" action="http://www.reddit.com/comments/1ktzvz">
-                    <input type="hidden" name="sort" value="confidence"><a href="http://www.reddit.com/comments/1ktzvz?sort=confidence" class="choice selected" onclick="$(this).parent().submit(); return false;">best</a>
-                </form>
-                <form method="POST" action="http://www.reddit.com/comments/1ktzvz">
-                    <input type="hidden" name="sort" value="top"><a href="http://www.reddit.com/comments/1ktzvz?sort=top" class="choice " onclick="$(this).parent().submit(); return false;">top</a>
-                </form>
-                <form method="POST" action="http://www.reddit.com/comments/1ktzvz">
-                    <input type="hidden" name="sort" value="new"><a href="http://www.reddit.com/comments/1ktzvz?sort=new" class="choice " onclick="$(this).parent().submit(); return false;">new</a>
-                </form>
-                <form method="POST" action="http://www.reddit.com/comments/1ktzvz">
-                    <input type="hidden" name="sort" value="hot"><a href="http://www.reddit.com/comments/1ktzvz?sort=hot" class="choice " onclick="$(this).parent().submit(); return false;">hot</a>
-                </form>
-                <form method="POST" action="http://www.reddit.com/comments/1ktzvz">
-                    <input type="hidden" name="sort" value="controversial"><a href="http://www.reddit.com/comments/1ktzvz?sort=controversial" class="choice " onclick="$(this).parent().submit(); return false;">controversial</a>
-                </form>
-                <form method="POST" action="http://www.reddit.com/comments/1ktzvz">
-                    <input type="hidden" name="sort" value="old"><a href="http://www.reddit.com/comments/1ktzvz?sort=old" class="choice " onclick="$(this).parent().submit(); return false;">old</a>
-                </form>
-                <form method="POST" action="http://www.reddit.com/comments/1ktzvz">
-                    <input type="hidden" name="sort" value="random"><a href="http://www.reddit.com/comments/1ktzvz?sort=random" class="choice hidden" onclick="$(this).parent().submit(); return false;">random</a>
-                </form>
+            <div class="drop-choices lightdrop drop-choices-single ">
+                
+                <a href="#" class="choice selected">best</a>
+                <a href="#" class="choice ">top</a>
+                <a href="#" class="choice">new</a>
+                <a href="#" class="choice">hot</a>
+                <a href="#" class="choice ">controversial</a>
+                <a href="#" class="choice">old</a>
+                <a href="#" class="choice hidden">random</a>
+
             </div>
         </div>
 

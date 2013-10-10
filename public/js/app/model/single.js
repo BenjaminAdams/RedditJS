@@ -3,15 +3,21 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 		initialize: function(data) {
 			this.id = data.id
 			this.parseNow = data.parseNow
+			this.sortOrder = data.sortOrder
 
 		},
 		url: function() {
+			var sortOrderStr = ""
+			if (this.sortOrder !== "undefined") {
+				sortOrderStr = "&sort=" + this.sortOrder
+			}
+
 			var username = $.cookie('username')
 			if (typeof username !== "undefined") {
-				return "/api/?url=comments/" + this.id + ".json&cookie=" + $.cookie('reddit_session');
+				return "/api/?url=comments/" + this.id + ".json" + sortOrderStr + "&cookie=" + $.cookie('reddit_session');
 			} else {
 				//use jsonp if user is not logged in
-				return "http://api.reddit.com/comments/" + this.id + ".json?jsonp=?"
+				return "http://api.reddit.com/comments/" + this.id + ".json?jsonp=?" + sortOrderStr
 			}
 		},
 		// Default attributes 
@@ -44,6 +50,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
 			timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
 			data.timeAgo = timeAgo
+
 			data.timeUgly = moment.unix(data.created).format()
 			data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
 			data.rname = "/r/" + data.subreddit

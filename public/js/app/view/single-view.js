@@ -3,7 +3,6 @@ define([
 	],
 	function(_, Backbone, Resthub, singleTmpl, PostRowView, SidebarView, CommentView, BaseView, SingleModel, channel, Cookie) {
 		var SingleView = BaseView.extend({
-
 			el: $(".content"),
 			template: singleTmpl,
 			events: function() {
@@ -11,8 +10,9 @@ define([
 					'click #retry': 'tryAgain',
 					'click .expando-button': 'toggleExpando',
 					'click .leftArrow': 'gotoPrev',
-					'click .rightArrow': 'gotoNext'
-
+					'click .rightArrow': 'gotoNext',
+					'click .toggleDropdownCmntSort': 'toggleDropDownCmtSort',
+					'click .drop-choices-single a': 'changeCmntSort'
 				};
 				_events['click #report' + this.options.id] = "reportShow";
 				_events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
@@ -91,6 +91,20 @@ define([
 				//call the superclass remove method
 				//Backbone.View.prototype.remove.apply(this, arguments);
 			},
+			toggleDropDownCmtSort: function() {
+				this.$('.drop-choices-single').toggle()
+			},
+			changeCmntSort: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				this.$('.drop-choices-single').hide()
+				var target = this.$(e.currentTarget)
+				var sortOrder = target.text()
+				this.$('.selectedCmntSort').html(sortOrder)
+				this.$('#siteTableComments').empty()
+				//this.comments.reset()
+				this.fetchComments(this.loadComments, sortOrder)
+			},
 			addOutboundLink: function() {
 				this.$('.usertext-body a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
 				this.$('.usertext-body a').attr('target', '_blank');
@@ -99,12 +113,14 @@ define([
 				document.title = title + "- RedditJS Beta"
 			},
 
-			fetchComments: function(callback) {
+			fetchComments: function(callback, sortOrder) {
 				this.$el.append("<div class='loadingS' style='position:relative;left:30%;'></div>")
+
 				this.comments = new SingleModel({
 					subName: this.subName,
 					id: this.id,
-					parseNow: true
+					parseNow: true,
+					sortOrder: sortOrder
 				});
 
 				//this.render();
@@ -242,7 +258,6 @@ define([
 			loadComments: function(model, res) {
 				this.$('.loadingS').remove()
 				this.permalinkParent = this.model.get('permalink') //this is for the comment callback so we can set the permalink after someone comments on a main post
-
 				this.renderComments(model.get('replies'))
 
 			},

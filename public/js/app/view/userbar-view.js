@@ -16,18 +16,18 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 					this.showLoggedIn()
 					//this.getMyStatus()
 				} else {
+					this.render();
 					this.showLoggedOut()
 				}
 
 				channel.on("login", this.showLoggedIn, this);
 
-				this.listenTo(this.model, 'sync', this.setMyStatus)
-				this.render();
 				// this.$() is a shortcut for this.$el.find().
 
 			},
 			showLoggedIn: function() {
 				this.model = new UserModel($.cookie('username'));
+				this.listenTo(this.model, 'sync', this.setMyStatus)
 				this.render()
 
 			},

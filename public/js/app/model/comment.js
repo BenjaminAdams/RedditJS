@@ -12,11 +12,11 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 			var data = this.attributes
 			//console.log('parsing one comment', data)
 
-			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
+			var timeAgo = moment.unix(data.created_utc).fromNow(true) //"true" removes the "ago"
 			timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
 			data.timeAgo = timeAgo
-			data.timeUgly = moment.unix(data.created).format()
-			data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
+			data.timeUgly = moment.unix(data.created_utc).format()
+			data.timePretty = moment.unix(data.created_utc).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
 
 			//if the comment is edited format its last edited time
 			if (typeof data.edited !== 'undefined' && data.edited !== false) {

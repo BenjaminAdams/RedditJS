@@ -441,3 +441,7 @@ color:#9494ff;
   cursor: pointer;
 margin:0 50px;
 }
+
+.drop-choices-single {
+  left:75px;
+}
