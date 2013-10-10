@@ -1,60 +1,25 @@
-define(['view/subreddit-view', 'collection/search', 'hbs!template/search', 'event/channel'],
-    function(SubredditView, SearchCollection, SearchTmpl, channel) {
-        return SubredditView.extend({
-
+define(['view/base-view', 'collection/subreddit-picker', 'hbs!template/subreddit-picker', 'view/subreddit-picker-item-view', 'event/channel'],
+    function(BaseView, SRPCollection, SRPTmpl, SRPItemView, channel) {
+        return BaseView.extend({
             el: $(".content"),
-            template: SearchTmpl,
-
-            events: function() {
-                return _.extend({}, SubredditView.prototype.events, {
-                    'submit .searchMain': 'gotoSearch',
-                    'click .drop-sort-order': 'toggleSort',
-                    'click .drop-sort-orderA': 'toggleSort',
-                    'click .drop-time-frame': 'toggleTimeFrame',
-                    'click .drop-time-frameA': 'toggleTimeFrame'
-                });
+            template: SRPTmpl,
+            events: {
+                'submit #search': 'gotoSearch'
             },
-
             initialize: function(options) {
-                //$(this.el).empty()
-                //this.$el.empty()
-
                 _.bindAll(this);
                 var self = this;
-                this.template = SearchTmpl;
-                this.subName = "Search"
+
                 this.searchQ = decodeURIComponent(options.searchQ);
-                this.timeFrame = options.timeFrame
-
-                if (typeof this.timeFrame === 'undefined') {
-                    this.timeFrame = 'month' //the default sort order is hot
-                }
-                this.sortOrder = options.sortOrder
-
-                if (typeof this.sortOrder === 'undefined') {
-                    this.sortOrder = 'relevance'
-                }
 
                 this.model = new Backbone.Model({
-                    searchQ: this.searchQ,
-                    timeFrame: this.timeFrame,
-                    sortOrder: this.sortOrder
+                    searchQ: this.searchQ
                 })
-
-                this.subID = this.subName + this.sortOrder
-                channel.on("subreddit:changeGridOption", this.changeGridOption, this);
-                channel.on("subreddit:remove", this.remove, this);
-
-                this.initGridOption();
 
                 this.render();
 
-                $(this.el).prepend("<style id='dynamicWidth'> </style>")
-
                 $(this.el).append("<div class='loading'> </div>")
-                this.collection = new SearchCollection({
-                    timeFrame: this.timeFrame,
-                    sortOrder: this.sortOrder,
+                this.collection = new SRPCollection({
                     searchQ: this.searchQ
                 });
                 this.fetchMore();
@@ -71,28 +36,24 @@ define(['view/subreddit-view', 'collection/search', 'hbs!template/search', 'even
                 this.prevScrollY = 0; //makes sure you are not checking when the user scrolls upwards
                 this.errorRetries = 0; //keeps track of how many errors we will retry after
 
-                //$(window).bind("resize.app", _.bind(this.debouncer));
-                $(window).resize(this.debouncer(function(e) {
-                    self.resize()
-                }));
-                this.resize()
-
-                setTimeout(function() {
-                    self.changeSortOrderCss()
-                }, 100);
+                channel.on("subreddit:remove", this.remove, this);
 
             },
-            toggleSort: function(e) {
-                //e.preventDefault()
-                //e.stopPropagation()
-                this.$('.drop-sort-orderA').toggle()
-                this.$('.drop-time-frameA').hide()
+            remove: function() {
+                var self = this
+                $(window).off("scroll", this.watchScroll);
+                this.undelegateEvents();
+                this.$el.empty();
+                this.stopListening();
+
+                //call the superclass remove method
+                //Backbone.View.prototype.remove.apply(this, arguments);
             },
-            toggleTimeFrame: function(e) {
-                //e.preventDefault()
-                //e.stopPropagation()
-                this.$('.drop-time-frameA').toggle()
-                this.$('.drop-sort-orderA').hide()
+            fetchMore: function() {
+                this.loading = true
+                this.collection.fetch({
+                    success: this.gotNewPosts
+                })
             },
 
             gotNewPosts: function(models, res) {
@@ -101,9 +62,11 @@ define(['view/subreddit-view', 'collection/search', 'hbs!template/search', 'even
                 if (typeof res.data.children.length === 'undefined') {
                     return;
                 }
+
                 var newCount = res.data.children.length
 
                 var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
+                console.log('inside of gotNewPosts=', newModels)
                 this.appendPosts(newModels)
 
                 //fetch more  posts with the After
@@ -116,17 +79,45 @@ define(['view/subreddit-view', 'collection/search', 'hbs!template/search', 'even
                 //window.subs[this.subID] = this.collection
 
             },
+            appendPosts: function(collection) {
+                var self = this
+                collection.each(function(model) {
+                    var srpItem = new SRPItemView({
+                        root: "#siteTable",
+                        model: model
+                    });
+
+                })
+
+            },
 
             helpFillUpScreen: function() {
                 if (this.collection.length < 301 && this.gridOption == 'small') {
-                    this.watchScroll()
+                    //this.watchScroll()
+                }
+            },
+            /**************Infinite Scroll functions ****************/
+            watchScroll: function(e) {
+                if (window.settings.get('infin') === true) {
+
+                    var self = this;
+                    this.triggerPoint = 1500; // px from the bottom 
+
+                    if ((($(window).scrollTop() + $(window).height()) + this.triggerPoint >= $(document).height()) && this.loading === false) {
+
+                        console.log('loading MOAR')
+                        if (this.collection.after != "stop") {
+                            this.fetchMore()
+                        }
+                    }
+                    //this.prevScrollY = scrollY;
                 }
             },
             gotoSearch: function(e) {
                 e.preventDefault()
                 e.stopPropagation()
-                var q = encodeURIComponent(this.$('.mainQ').val())
-                Backbone.history.navigate('/search/' + q, {
+                var q = encodeURIComponent(this.$('#mainQ').val())
+                Backbone.history.navigate('/subreddits/' + q, {
                     trigger: true
                 })
 

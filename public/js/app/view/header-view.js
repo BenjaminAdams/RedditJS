@@ -18,6 +18,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				channel.on("header:update", this.updateHeader, this);
 				channel.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
 				channel.on("header:updateSortOrder", this.updateSortOrder, this);
+				channel.on("header:refreshSubreddits", this.refreshSubreddits, this);
 
 				//load the subreddits on the top bar
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
@@ -50,6 +51,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				// this.$() is a shortcut for this.$el.find().
 
 			},
+
 			showLoginPopup: function() {
 				require(['view/login-popup-view'], function(LoginPopupView) {
 					var loginPopupView = new LoginPopupView({
@@ -105,16 +107,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				}
 			},
 
-			updateSubreddits: function() {
-				console.log('updating subreddits!@')
-				window.subreddits.reset()
-				//query the api for /me.json
-				window.subreddits.fetch({
-					success: this.displayMySubreddits
-				});
-
-			},
-
 			changeGridOption: function(e) {
 				e.preventDefault()
 				e.stopPropagation();
@@ -138,7 +130,19 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				this.$('#grid').removeClass('selected');
 				this.$('#' + id).addClass('selected');
 			},
+			refreshSubreddits: function() {
+				$.removeCookie('subreddits', {
+					path: '/'
+				});
+				this.updateSubreddits()
+			},
+			updateSubreddits: function() {
+				console.log('updating subreddits!@')
+				window.subreddits.reset()
+				//query the api for /me.json
+				window.subreddits.fetch();
 
+			},
 			displayMySubreddits: function(response, subreddits) {
 				this.$('#sr-bar').html(" ") //clear the div
 

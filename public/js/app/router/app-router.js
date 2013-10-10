@@ -24,6 +24,7 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                 'submit(/)': 'submit',
                 'prefs(/)': 'prefs',
                 'subreddits(/)': 'subreddits',
+                'subreddits(/):q': 'subreddits',
                 '(:sortOrder)(/)': 'home',
                 'r/:subName(/)': 'subreddit',
                 'r/:subName/:sortOrder(/)': 'subreddit',
@@ -179,9 +180,15 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                     });
                 });
             },
-            subreddits: function() {
+            subreddits: function(searchQ) {
                 require(['view/subreddit-picker-view'], function(SubredditPickerView) {
-                    new SubredditPickerView();
+                    if (typeof searchQ === 'undefined') {
+                        searchQ = ''
+                    }
+
+                    new SubredditPickerView({
+                        searchQ: searchQ
+                    });
                 })
             },
             search: function(searchQ, timeFrame, sortOrder) {

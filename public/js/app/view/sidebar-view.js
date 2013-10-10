@@ -50,6 +50,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 
 				this.api("api/subscribe", 'POST', params, function(data) {
 					console.log("vote done", data)
+					channel.trigger('header:refreshSubreddits')
 				});
 
 			},
@@ -65,6 +66,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				};
 				this.api("api/subscribe", 'POST', params, function(data) {
 					console.log("vote done", data)
+					channel.trigger('header:refreshSubreddits')
 				});
 			},
 

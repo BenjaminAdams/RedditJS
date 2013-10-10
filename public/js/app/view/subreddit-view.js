@@ -29,7 +29,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 				if (this.subName == 'front') {
 					document.title = "RedditJS Beta"
 				} else {
-					document.title = this.subName + "- RedditJS Beta"
+					document.title = this.subName + " - RedditJS Beta"
 				}
 				this.template = subredditTmpl;
 				this.sortOrder = options.sortOrder
@@ -305,7 +305,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 			},
 			appendPosts: function(collection) {
 				var self = this
-				this.start = new Date()
+				//this.start = new Date()
 				var count = 0;
 				var countSelfs = 0
 
@@ -387,8 +387,8 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 					}
 				}, this);
 
-				this.end = new Date()
-				console.log('single=', this.end - this.start)
+				//this.end = new Date()
+				//console.log('single=', this.end - this.start)
 				this.resize()
 
 				if (this.gridOption == 'grid' && count === 0 && countSelfs > 0) {
