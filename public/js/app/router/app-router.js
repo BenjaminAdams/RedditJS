@@ -54,30 +54,12 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                     //middleware functions
                     console.log('usr=', $.cookie('username'))
 
-                    //check if user is a reddit gold subscriber
-                    // if (window.settings.get('gold') != true && $.cookie('username') != 'armastevs') {
-
-                    //     //  $('.content').html('redditJS is for reddit gold members only, coming soon =)')
-
-                    // require(['view/login-popup-view'], function(LoginPopupView) {
-
-                    //     var loginPopupView = new LoginPopupView({
-                    //         el: "#popupWindow"
-                    //     })
-
-                    //     });
-
-                    //     return;
-                    // }
-
                     channel.trigger("subreddit:remove") //clear old subreddit views
                     channel.trigger("single:remove") //clear old subreddit views
 
                     if (name != 'single') { //hide the bottom bar if not in single view
                         $("#bottom-bar").hide()
                         channel.trigger("btmbar:remove")
-                        this.bottomBar = null;
-
                     }
 
                     $('#imgCache').empty() //flush the image thumbnail cache
@@ -137,7 +119,9 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                     });
 
                     if (window.settings.get('btmbar') === true) {
-                        if ((typeof this.bottomBar === 'undefined' || this.bottomBar === null) || this.bottomBar.subName != subName) { //only update btm bar if the subreddit changes
+                        console.log('BTM BAR=', this.bottomBar)
+                        if ((typeof this.bottomBar === 'undefined' || this.bottomBar === null) || this.bottomBar.subName != subName || this.bottomBar.deleted === true) { //only update btm bar if the subreddit changes
+
                             this.bottomBar = new BottomBarView({
                                 subName: subName,
                                 id: id

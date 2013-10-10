@@ -54,7 +54,7 @@ define([
 					this.fetchComments(this.loaded)
 
 				} else {
-					console.log('loading a model from memory')
+					//console.log('loading a model from memory')
 					//this is what we do when we pass in a model with out the comments
 					this.model = window.curModel;
 					this.updatePageTitle(this.model.get('title'));
@@ -71,6 +71,23 @@ define([
 				channel.on("single:remove", this.remove, this);
 				channel.on("single:giveBtnBarID", this.triggerID, this);
 
+			},
+			remove: function() {
+				//$(window).unbind('keydown', this.keyPress);
+				$(window).off('resize', this.debouncer);
+				channel.off("single:remove", this.remove, this);
+				channel.off("single:giveBtnBarID", this.triggerID, this);
+				this.undelegateEvents();
+				this.$el.empty();
+				this.stopListening();
+				if (typeof this.fetchXhr !== 'undefined' && this.fetchXhr.readyState > 0 && this.fetchXhr.readyState < 4) {
+					this.fetchXhr.abort();
+				}
+				this.fetchXhr.abort()
+				console.log('**********************removed the single view *********************************')
+
+				//call the superclass remove method
+				//Backbone.View.prototype.remove.apply(this, arguments);
 			},
 			addOutboundLink: function() {
 				this.$('.usertext-body a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
@@ -89,7 +106,7 @@ define([
 				});
 
 				//this.render();
-				this.comments.fetch({
+				this.fetchXhr = this.comments.fetch({
 					success: callback,
 					error: this.fetchError
 				});
@@ -141,18 +158,6 @@ define([
 
 			},
 
-			remove: function() {
-				//$(window).unbind('keydown', this.keyPress);
-				$(window).off('resize', this.debouncer);
-				channel.off("single:remove", this.remove, this);
-				this.undelegateEvents();
-				this.$el.empty();
-				this.stopListening();
-				console.log('**********************removed the single view *********************************')
-
-				//call the superclass remove method
-				//Backbone.View.prototype.remove.apply(this, arguments);
-			},
 			/**************UI functions ****************/
 			resize: function() {
 				var mobileWidth = 1000; //when to change to mobile CSS
@@ -182,6 +187,7 @@ define([
 			},
 			triggerID: function() {
 				channel.trigger("bottombar:selected", "t3_" + this.id);
+				//channel.trigger("bottombar:selected", this.model);
 			},
 
 			/**************Fetching functions ****************/

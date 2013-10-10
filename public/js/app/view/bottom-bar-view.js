@@ -22,6 +22,8 @@
                  this.$el.empty()
                  this.$el.css('left', 0) //sets the position to the start of the bar
 
+                 console.log('btm bar init', window.subs)
+
                  _.bindAll(this);
                  var self = this;
                  this.subName = options.subName
@@ -63,34 +65,74 @@
                  }
 
              },
-
              remove: function() {
                  $(window).unbind('keydown', this.keyPress);
-                 channel.off("single:remove", this.remove, this);
+                 channel.off("btmbar:remove", this.remove, this);
+                 channel.off("bottombar:selected", this.selected, this)
                  this.undelegateEvents();
                  this.$el.empty();
                  this.stopListening();
+                 this.unbind();
+                 this.deleted = true
+
+                 //Backbone.View.prototype.remove.call(this);
                  console.log('********removed the btm bar **')
 
                  //call the superclass remove method
                  //Backbone.View.prototype.remove.apply(this, arguments);
              },
              keyPress: function(e) {
-                 console.log('keydown', e.which)
+                 //console.log('keydown', e.which)
+                 if (this.collection.length > 2) {
+                     if (e.target.tagName.toLowerCase() !== 'input' && e.target.tagName.toLowerCase() !== 'textarea') {
 
-                 if (e.target.tagName.toLowerCase() !== 'input' && e.target.tagName.toLowerCase() !== 'textarea') {
+                         //find the selected model
 
-                     if (e.which == 39) //right key
-                     {
-                         console.log('right keypress')
-                     } else if (e.which == 37) { //left key
-                         console.log('left keypress')
+                         var selectedModel = this.collection.findWhere({
+                             name: this.selectedID
+                         })
+
+                         var index = this.collection.indexOf(selectedModel);
+                         this.shouldWeFetchMore(index)
+
+                         if (e.which == 39) //right key
+                         {
+                             //  console.log('right keypress', this.selectedID)
+
+                             var nextModel = this.collection.at(index + 1);
+                             if (typeof nextModel !== 'undefined') {
+                                 window.curModel = nextModel
+                                 var nextId = nextModel.get('id')
+                                 Backbone.history.navigate('/r/' + this.subName + "/comments/" + nextId, {
+                                     trigger: true
+                                 })
+                             }
+
+                         } else if (e.which == 37) { //left key
+                             //    console.log('left keypress')
+                             var prevModel = this.collection.at(index - 1);
+                             if (typeof prevModel !== 'undefined') {
+                                 window.curModel = prevModel
+                                 var prevId = prevModel.get('id')
+                                 Backbone.history.navigate('/r/' + this.subName + "/comments/" + prevId, {
+                                     trigger: true
+                                 })
+                             }
+
+                         }
                      }
+                 }
+             },
+             shouldWeFetchMore: function(index) {
+                 var amountLeft = this.collection.length - index
+                 if (amountLeft < 8) {
+                     this.fetchMore()
                  }
              },
              //when the user goes to a single post page, that ID will become selected in the bottom bar
              //only trigger this function after we have the entire subreddit data
              selected: function(name) {
+                 var self = this
                  this.selectedID = name
 
                  //console.log('data=', data)
@@ -98,6 +140,19 @@
                  //$('a[data-attribute=true]')
                  this.$('.selectedBtmBar').removeClass('selectedBtmBar')
                  this.$('#' + name).addClass('selectedBtmBar')
+
+                 var fakeE = {}
+                 fakeE.clientX = this.$('#' + name).offset()
+                 if (typeof fakeE.clientX !== 'undefined') {
+                     fakeE.clientX = fakeE.clientX.left + 175
+                     this.scrollBottomBar(fakeE)
+
+                     setTimeout(function() {
+                         self.stopScrolling()
+
+                     }, 1500);
+
+                 }
 
              },
              //only scroll every few milaseconds in an interval
