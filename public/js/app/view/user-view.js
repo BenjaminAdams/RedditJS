@@ -64,7 +64,8 @@ define([
 			appendPosts: function(models) {
 				console.log('userposts=', models)
 				models.each(function(model) {
-
+					console.log(model)
+					model.set('permalink', model.get('url'))
 					var comment = new CommentView({
 						model: model,
 						id: model.get('id'),

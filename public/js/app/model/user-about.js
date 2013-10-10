@@ -1,11 +1,29 @@
 define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 	var UserAbout = Backbone.Model.extend({
 		initialize: function(data) {
+			var self = this
 			this.username = data
+
+			if (typeof $.cookie('userInfo') !== 'undefined') {
+
+				if ($.cookie('userInfo').length < 15) {
+					this.fetch()
+				} else {
+					var userinfo = JSON.parse($.cookie('userInfo'))
+
+					this.set(userinfo)
+				}
+			}
+
+			//we still need to check mail
+			this.fetch()
+
 		},
 
 		url: function() {
-			return "/api/?url=user/" + this.username + "/about.json&cookie=" + $.cookie('reddit_session');
+			console.log("/api/?url=user/" + this.username + "/about.json")
+			//return "/api/?url=user/" + this.username + "/about.json&cookie=" + $.cookie('reddit_session');
+			return "/api/?url=user/" + this.username + "/about.json"
 
 		},
 		//so we have the attributes in the root of the model
@@ -22,6 +40,10 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 			}
 			data.uglyKarma = data.link_karma
 			data.link_karma = this.numberWithCommas(data.link_karma)
+
+			$.cookie('userInfo', JSON.stringify(data), {
+				expires: 7
+			})
 
 			return data;
 

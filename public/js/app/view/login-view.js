@@ -102,6 +102,13 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 				$.removeCookie('gold', {
 					path: '/'
 				});
+				$.removeCookie('userinfo', {
+					path: '/'
+				});
+
+				$.removeCookie('subreddits', {
+					path: '/'
+				});
 
 				this.$el.show() //shows the login box
 			}

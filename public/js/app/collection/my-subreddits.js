@@ -34,7 +34,9 @@ define(['backbone', 'model/single'], function(Backbone, SingleModel) {
 				subreddits.push(sub)
 				subredditsStr += item.data.display_name + ","
 			})
-			$.cookie('subreddits', subredditsStr)
+			$.cookie('subreddits', subredditsStr, {
+				expires: 7
+			})
 			return subreddits;
 
 		},

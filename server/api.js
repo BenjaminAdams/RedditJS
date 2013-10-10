@@ -28,7 +28,6 @@ module.exports = {
 
 		request.get(options, function(error, response, body) {
 			if (error) {
-				console.log('error in get=', error)
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
 					res.send(response.statusCode)
 				} else {
@@ -38,16 +37,11 @@ module.exports = {
 			}
 
 			if (!error && response.statusCode == 200 || response.statusCode == 304) {
-				//console.log('body=', body)
-				//fs.writeFile("screenleap.json", body);
+
 				res.json(JSON.parse(body))
 
 			} else {
-				console.log('error=', error)
-				console.log('return code=', response.statusCode)
-				//body = JSON.parse(body)
 				res.send(response.statusCode)
-				//res.json(JSON.parse(body))
 
 			}
 		});
@@ -77,7 +71,7 @@ module.exports = {
 
 		request.post(options, function(error, response, body) {
 			if (error) {
-				console.log('error in get=', error)
+
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
 					res.send(response.statusCode)
 				} else {
@@ -87,18 +81,11 @@ module.exports = {
 			}
 
 			if (!error && response.statusCode == 200 || response.statusCode == 304) {
-				//console.log('body=', body)
-				//fs.writeFile("screenleap.json", body);
+
 				res.json(JSON.parse(body))
 
 			} else {
-				//console.log('error=', error)
-				//console.log('body=', body)
-				//body = JSON.parse(body)
-				console.log('return code=', response.statusCode)
-				//body = JSON.parse(body)
 				res.send(response.statusCode)
-				//res.json(response.statusCode, JSON.parse(body))
 			}
 		});
 
@@ -128,18 +115,13 @@ module.exports = {
 			}
 
 			if (!error && (response.statusCode == 200 || response.statusCode == 304)) {
-				//console.log('body=', body)
-				//fs.writeFile("screenleap.json", body);
-
 				var match = re.exec(body);
 				if (match && match[2]) {
-					console.log(match[2]);
 					res.send(200, match[2])
 				}
 
 			} else {
-				console.log('error=', error)
-				console.log('return code=', response.statusCode)
+
 				//body = JSON.parse(body)
 
 				res.json(404, {

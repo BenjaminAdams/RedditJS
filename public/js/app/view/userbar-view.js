@@ -14,24 +14,21 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 
 				if (this.checkIfLoggedIn() === true) {
 					this.showLoggedIn()
-					this.getMyStatus() //fetches user karma count and mail status
+					//this.getMyStatus()
 				} else {
 					this.showLoggedOut()
 				}
 
 				channel.on("login", this.showLoggedIn, this);
 
+				this.listenTo(this.model, 'sync', this.setMyStatus)
+				this.render();
 				// this.$() is a shortcut for this.$el.find().
 
 			},
 			showLoggedIn: function() {
-				this.model = new Backbone.Model({
-					username: $.cookie('username'),
-					karma: "123"
-				})
-				this.$el.html(" ")
-				this.render();
-				this.getMyStatus()
+				this.model = new UserModel($.cookie('username'));
+				this.render()
 
 			},
 			showLoggedOut: function() {
@@ -45,23 +42,27 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/userbar', '
 				channel.trigger("logout");
 				this.showLoggedOut()
 			},
-			getMyStatus: function() {
-				if (this.me instanceof Backbone.Model === false) {
-					this.me = new UserModel($.cookie('username'));
-					this.me.fetch({
-						success: this.setMyStatus
-					})
-				}
-			},
+			//getMyStatus: function() {
+			//if (this.me instanceof Backbone.Model === false) {
+
+			//this.me.fetch({
+			//success: this.setMyStatus
+			//})
+			//}
+			//},
 			setMyStatus: function(model) {
-				this.$('#userkarma').html(model.get('uglyKarma'))
-				this.$('#userCommentkarma').html(model.get('comment_karma'))
-				if (model.get('has_mail') === true) {
-					this.$('#mail').removeClass('nohavemail').addClass('havemail')
-				}
-				if (model.get('has_mail') === true) {
-					this.$('#has_mod_mail').removeClass('nohavemail').addClass('havemail')
-				}
+				//this.$el.html(" ")
+				//why not just re-render here
+				console.log(this.model)
+				this.render()
+				// this.$('#userkarma').html(model.get('uglyKarma'))
+				// this.$('#userCommentkarma').html(model.get('comment_karma'))
+				//if (model.get('has_mail') === true) {
+				//this.$('#mail').removeClass('nohavemail').addClass('havemail')
+				//}
+				//if (model.get('has_mail') === true) {
+				//this.$('#has_mod_mail').removeClass('nohavemail').addClass('havemail')
+				//}
 			}
 
 		});

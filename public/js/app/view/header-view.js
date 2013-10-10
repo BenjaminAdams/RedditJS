@@ -34,11 +34,18 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				//this.updateSubreddits()
 				//}
 
-				setTimeout(function() {
-					this.userbar = new UserbarView({
-						root: "#header-bottom-right"
-					})
-				}, 1000)
+				// setTimeout(function() {
+				//this.userbar = new UserbarView({
+				//root: "#header-bottom-right"
+				//})
+				//}, 1000)
+				//try {
+				this.userbar = new UserbarView({
+					root: "#header-bottom-right"
+				})
+				//} catch (e) {
+				//console.log('FAILED TO LOAD USR BAR')
+				//}
 
 				// this.$() is a shortcut for this.$el.find().
 

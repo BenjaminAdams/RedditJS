@@ -23,6 +23,7 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                 'r/:subName/submit(/)': 'submit',
                 'submit(/)': 'submit',
                 'prefs(/)': 'prefs',
+                'subreddits(/)': 'subreddits',
                 '(:sortOrder)(/)': 'home',
                 'r/:subName(/)': 'subreddit',
                 'r/:subName/:sortOrder(/)': 'subreddit',
@@ -37,7 +38,7 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                 'user/:username/:sortOrder(/)': 'user',
                 'message/compose/:username(/)': 'compose',
                 'message/:type(/)': 'inbox',
-                'subreddits(/)': 'subreddits',
+
                 'search': 'search',
                 'search/:q(/)': 'search',
                 'search/:q/:timeFrame(/)': 'search',
@@ -102,7 +103,7 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
 
                 this.doSidebar(subName);
                 require(['view/subreddit-view'], function(SubredditView) {
-                    var subredditView = new SubredditView({
+                    new SubredditView({
                         subName: subName,
                         sortOrder: sortOrder || 'hot'
                     });
@@ -128,7 +129,7 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                 this.doSidebar(subName);
 
                 require(['view/single-view', 'view/bottom-bar-view'], function(SingleView, BottomBarView) {
-                    var singleView = new SingleView({
+                    new SingleView({
                         subName: subName,
                         id: id,
                         commentLink: commentLink || null
@@ -179,7 +180,9 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                 });
             },
             subreddits: function() {
-
+                require(['view/subreddit-picker-view'], function(SubredditPickerView) {
+                    new SubredditPickerView();
+                })
             },
             search: function(searchQ, timeFrame, sortOrder) {
 
