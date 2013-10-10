@@ -1,5 +1,6 @@
 ##RedditJS
-The code that powers [redditJS.com](http://www.redditjs.com)
+The code that powers [redditJS.com](http://www.redditjs.com).
+
 I rewrote reddit from the ground up using the javascript framework [Backbone](https://github.com/jashkenas/backbone) and the [reddit API](http://www.reddit.com/dev/api/).  I feel that I've created a better user experience as well as additional features that makes for a more enjoyable experience.
 
 #Features

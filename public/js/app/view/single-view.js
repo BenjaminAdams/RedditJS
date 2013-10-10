@@ -38,7 +38,6 @@ define([
 
 				return _events;
 			},
-
 			initialize: function(options) {
 				_.bindAll(this);
 
@@ -238,6 +237,18 @@ define([
 				this.loadLinkedCommentView()
 				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.resize()
+
+				//shows the key navigation help on hover
+				this.$('.arrowNav').hover(
+					function(e) {
+
+						self.$('#arrowNavHelp').show()
+
+					},
+					function(e) {
+						self.$('#arrowNavHelp').hide()
+					}
+				)
 
 			},
 			loadLinkedCommentView: function() {
