@@ -9,7 +9,9 @@ define([
 			events: function() {
 				var _events = {
 					'click #retry': 'tryAgain',
-					'click .expando-button': 'toggleExpando'
+					'click .expando-button': 'toggleExpando',
+					'click .leftArrow': 'gotoPrev',
+					'click .rightArrow': 'gotoNext'
 
 				};
 				_events['click #report' + this.options.id] = "reportShow";
@@ -205,9 +207,13 @@ define([
 					error: this.fetchError
 				});
 			},
-			fetchMore: function() {
-
+			gotoPrev: function() {
+				channel.trigger('btmbar:gotoPrev')
 			},
+			gotoNext: function() {
+				channel.trigger('btmbar:gotoNext')
+			},
+
 			renderStuff: function(model) {
 				//console.log('rendering single=', this.model)
 				this.render()

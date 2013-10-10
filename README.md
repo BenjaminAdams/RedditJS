@@ -9,18 +9,7 @@ The code that powers [redditJS.com](http://www.redditjs.com)
  * **Custom CSS:** Subreddit may have custom CSS and flair that goes with them, [redditJS](http://www.redditjs.com) uses them!
  * **Comment Links:** If you hover over a link to an image or Youtube video, it becomes fullsize inside of the comment box.  (Future plans to be able to add MEME text to this image right from the image)
  * **Permalink Comments:** If you visit a link to a permalink of a comment in Reddit it only shows that comment, I've always found this annoying.  RedditJS will show that linked comment first and all of the comments from that post in the thread
- * **Key Navigation:** Use the left and right arrow keys to navigate between posts
-
-####How to build with the r.js optimizer
-
-From the js/build folder
-
-```js
-node r.js -o build-config.js
-```
-
-It then creates the output in the `target` folder
-
+ * **Keyboard Navigation:** Use the left and right arrow keys to navigate between posts
 
 
 ####RedditJS is built with :
@@ -34,4 +23,4 @@ It then creates the output in the `target` folder
  * Hosted at [Heroku](https://www.heroku.com)
 
 #### Thanks
-[Hire me to build your next webapp](mailto:armastevs@gmail.com)
+[Hire me to build your next webapp](mailto:ben@benadams.co)

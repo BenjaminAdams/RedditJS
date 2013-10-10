@@ -38,6 +38,8 @@
 
                  channel.on("bottombar:selected", this.selected, this); //when the user focuses on a single post page
                  channel.on("btmbar:remove", this.remove, this); //clears everthing in this view
+                 channel.on("btmbar:gotoPrev", this.gotoPrev, this);
+                 channel.on("btmbar:gotoNext", this.gotoNext, this);
                  $(window).bind('keydown', this.keyPress); //remove this later!
                  channel.trigger("single:giveBtnBarID"); //ask the single view to give you the btm bar ID to make active
 
@@ -69,6 +71,8 @@
                  $(window).unbind('keydown', this.keyPress);
                  channel.off("btmbar:remove", this.remove, this);
                  channel.off("bottombar:selected", this.selected, this)
+                 channel.off("btmbar:gotoPrev", this.gotoPrev, this);
+                 channel.off("btmbar:gotoNext", this.gotoNext, this);
                  this.undelegateEvents();
                  this.$el.empty();
                  this.stopListening();
@@ -88,39 +92,44 @@
 
                          //find the selected model
 
-                         var selectedModel = this.collection.findWhere({
-                             name: this.selectedID
-                         })
-
-                         var index = this.collection.indexOf(selectedModel);
-                         this.shouldWeFetchMore(index)
-
                          if (e.which == 39) //right key
                          {
-                             //  console.log('right keypress', this.selectedID)
-
-                             var nextModel = this.collection.at(index + 1);
-                             if (typeof nextModel !== 'undefined') {
-                                 window.curModel = nextModel
-                                 var nextId = nextModel.get('id')
-                                 Backbone.history.navigate('/r/' + this.subName + "/comments/" + nextId, {
-                                     trigger: true
-                                 })
-                             }
-
+                             this.gotoNext()
                          } else if (e.which == 37) { //left key
-                             //    console.log('left keypress')
-                             var prevModel = this.collection.at(index - 1);
-                             if (typeof prevModel !== 'undefined') {
-                                 window.curModel = prevModel
-                                 var prevId = prevModel.get('id')
-                                 Backbone.history.navigate('/r/' + this.subName + "/comments/" + prevId, {
-                                     trigger: true
-                                 })
-                             }
+                             this.gotoPrev()
 
                          }
                      }
+                 }
+             },
+             gotoPrev: function() {
+                 var selectedModel = this.collection.findWhere({
+                     name: this.selectedID
+                 })
+                 var index = this.collection.indexOf(selectedModel);
+                 this.shouldWeFetchMore(index)
+                 var prevModel = this.collection.at(index - 1);
+                 if (typeof prevModel !== 'undefined') {
+                     window.curModel = prevModel
+                     var prevId = prevModel.get('id')
+                     Backbone.history.navigate('/r/' + this.subName + "/comments/" + prevId, {
+                         trigger: true
+                     })
+                 }
+             },
+             gotoNext: function() {
+                 var selectedModel = this.collection.findWhere({
+                     name: this.selectedID
+                 })
+                 var index = this.collection.indexOf(selectedModel);
+                 this.shouldWeFetchMore(index)
+                 var nextModel = this.collection.at(index + 1);
+                 if (typeof nextModel !== 'undefined') {
+                     window.curModel = nextModel
+                     var nextId = nextModel.get('id')
+                     Backbone.history.navigate('/r/' + this.subName + "/comments/" + nextId, {
+                         trigger: true
+                     })
                  }
              },
              shouldWeFetchMore: function(index) {
