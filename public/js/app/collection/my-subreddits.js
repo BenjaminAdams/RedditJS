@@ -29,15 +29,21 @@ define(['backbone', 'model/single'], function(Backbone, SingleModel) {
 		parse: function(response) {
 			var subreddits = []
 			var subredditsStr = ""
-			_.each(response.data.children, function(item) {
-				var sub = new SingleModel(item.data)
-				subreddits.push(sub)
-				subredditsStr += item.data.display_name + ","
-			})
-			$.cookie('subreddits', subredditsStr, {
-				expires: 7
-			})
-			return subreddits;
+
+			if (typeof response === 'undefined' || response.data === 'undefined') {
+				this.loadDefaultSubreddits()
+			} else {
+
+				_.each(response.data.children, function(item) {
+					var sub = new SingleModel(item.data)
+					subreddits.push(sub)
+					subredditsStr += item.data.display_name + ","
+				})
+				$.cookie('subreddits', subredditsStr, {
+					expires: 7
+				})
+				return subreddits;
+			}
 
 		},
 		loadFromCookie: function() {

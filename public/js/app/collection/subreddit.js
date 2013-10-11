@@ -55,7 +55,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
 			this.after = response.data.after;
 
-			if (this.after === "" || this.after === null) {
+			if (typeof this.after === 'undefined' || this.after === "" || this.after === null) {
 				this.after = "stop" //tells us we have finished downloading all of the possible posts in this subreddit
 			}
 

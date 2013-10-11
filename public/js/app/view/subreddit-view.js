@@ -18,7 +18,6 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 				_events['click .downArrow' + this.options.id] = "downvote";
 				return _events;
 			},
-
 			initialize: function(options) {
 				this.$('#siteTable').empty()
 				this.$el.empty()
@@ -286,11 +285,17 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 				//$(this.el).append("<div class='loading'> </div>")
 				this.loading = true
 				this.hideMoarBtn()
-				this.collection.fetch({
-					success: this.gotNewPosts,
-					error: this.fetchError,
-					remove: false
-				});
+
+				if (this.collection.after == "stop") {
+					$('.nextprev').html('Done')
+				} else {
+
+					this.collection.fetch({
+						success: this.gotNewPosts,
+						error: this.fetchError,
+						remove: false
+					});
+				}
 			},
 			appendOne: function(model) {
 				console.log('got here omg', model)
@@ -416,6 +421,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 				if (this.collection.after == "stop") {
 					console.log("AFTER = stop")
 					$(window).off("scroll", this.watchScroll);
+					$('.nextprev').html('Done')
 				}
 
 				window.subs[this.subID] = this.collection
@@ -432,7 +438,7 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 					if (this.gridOption == 'grid') {
 						this.triggerPoint = 3500; // px from the bottom 
 					} else {
-						this.triggerPoint = 1500; // px from the bottom 
+						this.triggerPoint = 2000; // px from the bottom 
 					}
 
 					//keep the scrollheight in the collection so when we return to it, we can auto-move to it
@@ -444,6 +450,8 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!temp
 						console.log('loading MOAR')
 						if (this.collection.after != "stop") {
 							this.fetchMore()
+						} else {
+							$('.nextprev').html('Done')
 						}
 					}
 					//this.prevScrollY = scrollY;
