@@ -12,6 +12,8 @@ define(['jquery', 'backbone', 'marionette', 'underscore', 'handlebars'],
             popupRegion: "#popupWindow"
         });
 
+        $.cookie.json = true; //so we can store objects in cookies
+
         App.addInitializer(function() {
             // Backbone.history.start();
 

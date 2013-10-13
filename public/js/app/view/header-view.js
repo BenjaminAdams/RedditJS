@@ -1,17 +1,17 @@
 define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'view/userbar-view', 'view/base-view', 'model/sidebar', 'event/channel', 'cookie'],
 	function($, _, Backbone, Resthub, HeaderTmpl, UserbarView, BaseView, SidebarModel, channel, Cookie) {
 		var HeaderView = BaseView.extend({
+			template: HeaderTmpl,
 			el: $("#theHeader"),
 			events: {
 				'click .tabmenu-right li': 'changeGridOption',
 				'click .drop-down-header-toggle': 'toggleDropdown',
-				'click .drop-down-header a': 'toggleDropdown', //will close the menu after the user makes a selection
+				'click #header-nav-logo-area a': 'toggleDropdown', //will close the menu after the user makes a selection
 				'click #userbar-logged-out': 'showLoginPopup'
 			},
 			initialize: function(data) {
 				_.bindAll(this);
-				this.template = HeaderTmpl;
-
+				this.displaySRImgs = true
 				console.log("I should only render the header once")
 				this.render();
 
@@ -40,13 +40,13 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				//root: "#header-bottom-right"
 				//})
 				//}, 1000)
-				//try {
-				this.userbar = new UserbarView({
-					root: "#header-bottom-right"
-				})
-				//} catch (e) {
-				//console.log('FAILED TO LOAD USR BAR')
-				//}
+				try {
+					this.userbar = new UserbarView({
+						root: "#header-bottom-right"
+					})
+				} catch (e) {
+					console.log('FAILED TO LOAD USR BAR')
+				}
 
 				// this.$() is a shortcut for this.$el.find().
 
@@ -60,7 +60,14 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				});
 			},
 			toggleDropdown: function() {
-				this.$('.drop-down-header').toggle()
+				//this.$('.drop-down-header').toggle()
+				var target = this.$("#header-nav-logo-area")
+				if (target.is(':visible')) {
+					target.slideUp("slow")
+				} else {
+					target.slideDown("slow")
+				}
+
 			},
 
 			updateHeader: function(model) {
@@ -144,7 +151,16 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 
 			},
 			displayMySubreddits: function(response, subreddits) {
+				var self = this;
 				this.$('#sr-bar').html(" ") //clear the div
+
+				if (self.displaySRImgs === true) {
+					//show CSS for large dropdown
+					//this.$('#header-nav-logo-area').empty().show()
+					this.$('#header-nav-logo-area').empty()
+				} else {
+
+				}
 
 				//    Normal Format: 
 				//			<li><a href="/r/pics/">pics</a></li>
@@ -155,11 +171,21 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				var seperator = '';
 				var count = 0;
 				window.subreddits.each(function(model) {
+
 					if (count !== 0) {
 						seperator = '<span class="separator">-</span>';
 					}
 					if (model.get('display_name') != "announcements" && model.get('display_name') != "blog") {
-						this.$('#sr-bar').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
+
+						var headerImg = model.get('header_img')
+						if (headerImg == null) {
+							self.$('#header-nav-logo-area').append("<span class='headerNavLogo'><a class='text-header-nav' href='/r/" + model.get('display_name') + "' >" + model.get('display_name') + "</span></a> ")
+						} else {
+							self.$('#header-nav-logo-area').append("<span class='headerNavLogo'><a href='/r/" + model.get('display_name') + "' ><img src='" + headerImg + "' /></a></span>")
+						}
+
+						self.$('#sr-bar').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
+
 						count++;
 					}
 				})
@@ -172,13 +198,13 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 
 				//format:  <a class="choice" href="/r/AdviceAnimals/">AdviceAnimals</a>
 
-				window.subreddits.each(function(model) {
-					//this.$('.drop-choices').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
-					this.$('.drop-down-header').append('<a class="choice" href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a>')
-				})
+				//window.subreddits.each(function(model) {
+				//this.$('.drop-choices').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
+				//this.$('.drop-down-header').append('<a class="choice" href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a>')
+				//})
 
 				//add the edit subscriptions button
-				this.$('.drop-down-header').append('<a class="choice bottom-option" href="/subreddits/">edit subscriptions</a>')
+				//this.$('.drop-down-header').append('<a class="choice bottom-option" href="/subreddits/">edit subscriptions</a>')
 
 			}
 

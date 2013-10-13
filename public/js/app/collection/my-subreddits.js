@@ -15,20 +15,27 @@ define(['backbone', 'model/single'], function(Backbone, SingleModel) {
 
 					this.fetch()
 				}
-
 			} else {
 				this.loadDefaultSubreddits()
 			}
 
+			//always fetch ****************************************************
+			this.fetch()
+			//*****************************
+
 		},
 		model: SingleModel,
 		url: function() {
-			return "/api/?url=reddits/mine.json&limit=100&cookie=" + $.cookie('reddit_session');
+			if (typeof $.cookie('username') !== 'undefined') {
+				return "/api/?url=reddits/mine.json&limit=100&cookie=" + $.cookie('reddit_session');
+			} else {
+				return "/api/?url=subreddits.json"
+			}
 		},
 		//so we have the attributes in the root of the model
 		parse: function(response) {
 			var subreddits = []
-			var subredditsStr = ""
+			//var subredditsStr = ""
 
 			if (typeof response === 'undefined' || response.data === 'undefined') {
 				this.loadDefaultSubreddits()
@@ -37,11 +44,12 @@ define(['backbone', 'model/single'], function(Backbone, SingleModel) {
 				_.each(response.data.children, function(item) {
 					var sub = new SingleModel(item.data)
 					subreddits.push(sub)
-					subredditsStr += item.data.display_name + ","
+					//subredditsStr += item.data.display_name + ","
 				})
-				$.cookie('subreddits', subredditsStr, {
-					expires: 7
-				})
+
+				// $.cookie('subreddits', subreddits, {
+				// 	expires: 7
+				// })
 				return subreddits;
 			}
 
