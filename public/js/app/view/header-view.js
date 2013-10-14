@@ -11,7 +11,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 			},
 			initialize: function(data) {
 				_.bindAll(this);
-				this.displaySRImgs = true
 				console.log("I should only render the header once")
 				this.render();
 
@@ -27,28 +26,14 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 
 				this.listenTo(window.subreddits, 'sync', this.displayMySubreddits)
 
-				this.changeActiveGrid($.cookie('gridOption'))
-				//this.changeActiveGrid($.cookie('gridOption')) //so we are highlighting the correct grid option on page load
-
-				//this function now handled by the init of the model itself
-				//if (this.checkIfLoggedIn() === true) {
-				//this.updateSubreddits()
-				//}
-
-				// setTimeout(function() {
-				//this.userbar = new UserbarView({
-				//root: "#header-bottom-right"
-				//})
-				//}, 1000)
+				this.changeActiveGrid($.cookie('gridOption')) //so we are highlighting the correct grid option on page load
 				try {
 					this.userbar = new UserbarView({
 						root: "#header-bottom-right"
 					})
 				} catch (e) {
-					console.log('FAILED TO LOAD USR BAR')
+					console.log('FAILED TO LOAD USR BAR', e)
 				}
-
-				// this.$() is a shortcut for this.$el.find().
 
 			},
 
@@ -58,16 +43,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 						el: "#popupWindow"
 					})
 				});
-			},
-			toggleDropdown: function() {
-				//this.$('.drop-down-header').toggle()
-				var target = this.$("#header-nav-logo-area")
-				if (target.is(':visible')) {
-					target.slideUp("slow")
-				} else {
-					target.slideDown("slow")
-				}
-
 			},
 
 			updateHeader: function(model) {
@@ -150,17 +125,36 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				window.subreddits.fetch();
 
 			},
+
+			toggleDropdown: function() {
+				//this.$('.drop-down-header').toggle()
+
+				var target = this.$("#header-nav-logo-area")
+				if (target.is(':visible')) {
+					target.slideUp("slow")
+				} else {
+					this.$('#header-nav-logo-area').empty()
+					window.subreddits.each(function(model) {
+
+						var headerImg = model.get('header_img')
+						var displayName = model.get('display_name')
+						if (headerImg === null) {
+							self.$('#header-nav-logo-area').append("<span class='headerNavLogo' ><a class='text-header-nav'  href='/r/" + displayName + "' >" + displayName + "</span></a> ")
+						} else {
+							self.$('#header-nav-logo-area').append("<span class='headerNavLogo'><a href='/r/" + displayName + "' title='" + displayName + "' ><img src='" + headerImg + "' /></a></span>")
+						}
+
+					})
+
+					target.slideDown("slow")
+				}
+
+			},
+
 			displayMySubreddits: function(response, subreddits) {
 				var self = this;
-				this.$('#sr-bar').html(" ") //clear the div
-
-				if (self.displaySRImgs === true) {
-					//show CSS for large dropdown
-					//this.$('#header-nav-logo-area').empty().show()
-					this.$('#header-nav-logo-area').empty()
-				} else {
-
-				}
+				this.$('#sr-bar').html(" ") //clear the top
+				this.$('#header-nav-logo-area').empty()
 
 				//    Normal Format: 
 				//			<li><a href="/r/pics/">pics</a></li>
@@ -175,14 +169,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 					if (count !== 0) {
 						seperator = '<span class="separator">-</span>';
 					}
-					if (model.get('display_name') != "announcements" && model.get('display_name') != "blog") {
 
-						var headerImg = model.get('header_img')
-						if (headerImg == null) {
-							self.$('#header-nav-logo-area').append("<span class='headerNavLogo'><a class='text-header-nav' href='/r/" + model.get('display_name') + "' >" + model.get('display_name') + "</span></a> ")
-						} else {
-							self.$('#header-nav-logo-area').append("<span class='headerNavLogo'><a href='/r/" + model.get('display_name') + "' ><img src='" + headerImg + "' /></a></span>")
-						}
+					if (model.get('display_name') != "announcements" && model.get('display_name') != "blog") {
 
 						self.$('#sr-bar').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
 

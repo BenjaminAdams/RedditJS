@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!template/login', 'event/channel', 'cookie'],
-	function($, _, Backbone, Resthub, BaseView, LogInTmpl, channel, Cookie) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!template/login', 'event/channel', 'cookie', 'localstorage'],
+	function($, _, Backbone, Resthub, BaseView, LogInTmpl, channel, Cookie, Localstorage) {
 		var LoginView = BaseView.extend({
 			events: {
 				'submit #login_login-main': 'login'
@@ -79,9 +79,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 				$.cookie('username', user, {
 					path: '/'
 				});
-				$.cookie('gold', true, {
-					path: '/'
-				});
 
 			},
 
@@ -102,13 +99,8 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 				$.removeCookie('gold', {
 					path: '/'
 				});
-				$.removeCookie('userinfo', {
-					path: '/'
-				});
-
-				$.removeCookie('subreddits', {
-					path: '/'
-				});
+				localStorage.removeItem('subreddits');
+				localStorage.removeItem('userinfo');
 
 				this.$el.show() //shows the login box
 			}

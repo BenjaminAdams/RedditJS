@@ -1,27 +1,18 @@
-define(['backbone', 'model/single'], function(Backbone, SingleModel) {
+define(['backbone', 'model/single', 'localstorage'], function(Backbone, SingleModel, Localstorage) {
 	var MySubreddits = Backbone.Collection.extend({
 		initialize: function() {
 
-			if (typeof $.cookie('username') !== 'undefined') {
+			var srcookie = $.totalStorage('subreddits')
+			if (typeof $.totalStorage('subreddits') !== 'undefined' && $.totalStorage('subreddits') !== null) {
 
-				if (typeof $.cookie('subreddits') !== 'undefined') {
+				this.loadFromCookie()
 
-					if ($.cookie('subreddits').length < 15) {
-						this.fetch()
-					} else {
-						this.loadFromCookie()
-					}
-				} else {
-
-					this.fetch()
-				}
 			} else {
-				this.loadDefaultSubreddits()
+
+				this.fetch()
 			}
 
-			//always fetch ****************************************************
-			this.fetch()
-			//*****************************
+			//this.fetch()
 
 		},
 		model: SingleModel,
@@ -42,25 +33,31 @@ define(['backbone', 'model/single'], function(Backbone, SingleModel) {
 			} else {
 
 				_.each(response.data.children, function(item) {
-					var sub = new SingleModel(item.data)
+					var sub = new SingleModel({
+						header_img: item.data.header_img,
+						display_name: item.data.display_name
+
+					})
 					subreddits.push(sub)
-					//subredditsStr += item.data.display_name + ","
+
 				})
 
-				// $.cookie('subreddits', subreddits, {
-				// 	expires: 7
-				// })
+				$.totalStorage('subreddits', subreddits);
+
 				return subreddits;
 			}
 
 		},
 		loadFromCookie: function() {
 			var self = this
-			var subreddits = $.cookie('subreddits').split(",")
+			var subreddits = $.totalStorage('subreddits')
 			for (var i = 0; i < subreddits.length; i++) {
 				self.add({
-					display_name: subreddits[i]
+					display_name: subreddits[i].display_name,
+					header_img: subreddits[i].header_img
+
 				});
+
 			}
 		},
 		loadDefaultSubreddits: function() {

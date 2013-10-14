@@ -10,9 +10,8 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
 
                 window.subreddits = new MySubredditsCollection()
 
-                //what happens if we keep subreddits in a global?
+                //caching subreddit json in a global because it takes about 3 seconds to query from reddit api
                 window.subs = []
-                // this.loadCollectionsFromStorage()
 
                 //   App.headerRegion.show(new HeaderView());
 
@@ -52,8 +51,6 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                 if (!callback) callback = this[name];
                 var f = function() {
                     //middleware functions
-                    console.log('usr=', $.cookie('username'))
-
                     channel.trigger("subreddit:remove") //clear old subreddit views
                     channel.trigger("single:remove") //clear old subreddit views
 

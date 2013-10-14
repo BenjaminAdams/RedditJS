@@ -465,18 +465,21 @@ margin:0 50px;
   display:none;
   position:absolute;
   top:19px;
+  padding-left:5px;
   z-index:99999;
 }
 
 .headerNavLogo {
-  display:inline-block;
+
+float:left;
   height:48px;
   margin:0px 4px;
    opacity: 0.7;
+
 }
 
 .headerNavLogo:hover {
-  display:inline-block;
+  
    opacity: 1;
 }
 
@@ -498,7 +501,7 @@ height: auto !important;
   height:48px;
     -webkit-box-shadow: 2px 2px 2px #7C7C7C;
     box-shadow: 2px 2px 2px #7C7C7C;
-
+padding:0px 2px;
 text-align: center;
   vertical-align: middle;
   /* fallback for non-Flexbox browsers */
@@ -525,3 +528,8 @@ text-align: center;
 
 
 }
+
+
+
+
+

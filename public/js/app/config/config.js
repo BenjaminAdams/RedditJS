@@ -25,12 +25,16 @@ require.config({
         "jasmine-html": "../lib/jasmine-html",
         // "screenleap": "http://api.screenleap.com/js/screenleap",
         'cookie': '../lib/jquery.cookie',
+        'localstorage': '../lib/jquery.total-storage',
         'moment': '../lib/moment',
         'console': '../lib/resthub/console',
         // Plugins
         "backbone.validateAll": "../lib/plugins/Backbone.validateAll",
         "bootstrap": "../lib/plugins/bootstrap",
         "text": "../lib/plugins/text",
+        //"isotope": "../lib/isotope",
+        //"wookmark": "../lib/jquery.wookmark",
+        //   "imagesLoaded": "../lib/imagesLoaded",
         //  "bootbox": "../lib/bootbox",
         "jasminejquery": "../lib/plugins/jasmine-jquery"
     },
@@ -89,7 +93,9 @@ require.config({
             "deps": ["jasmine"],
             "exports": "jasmine"
         },
-        "cookie": ["jquery"]
+        "cookie": ["jquery"],
+        "localstorage": ["jquery"]
+        // "isotope": ["jquery"]
     },
     // hbs config - must duplicate in Gruntfile.js Require build
     hbs: {

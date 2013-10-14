@@ -1,30 +1,22 @@
-define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
+define(['underscore', 'backbone', 'jquery', 'localstorage'], function(_, Backbone, $, Localstorage) {
 	var UserAbout = Backbone.Model.extend({
 		initialize: function(data) {
 			var self = this
 			this.username = data
+			if (typeof $.totalStorage('userinfo') !== 'undefined' && $.totalStorage('userinfo') !== null) {
+				var userinfo = $.totalStorage('userinfo')
 
-			if (typeof $.cookie('userInfo') !== 'undefined') {
+				this.set(userinfo)
 
-				if ($.cookie('userInfo').length < 15) {
-					this.fetch()
-				} else {
-					var userinfo = JSON.parse($.cookie('userInfo'))
-
-					this.set(userinfo)
-				}
+			} else {
+				this.fetch()
 			}
 
-			//we still need to check mail
-			this.fetch()
-
 		},
-
 		url: function() {
 			console.log("/api/?url=user/" + this.username + "/about.json")
 			//return "/api/?url=user/" + this.username + "/about.json&cookie=" + $.cookie('reddit_session');
 			return "/api/?url=user/" + this.username + "/about.json"
-
 		},
 		//so we have the attributes in the root of the model
 		parse: function(response) {
@@ -41,9 +33,7 @@ define(['underscore', 'backbone', 'jquery'], function(_, Backbone, $) {
 			data.uglyKarma = data.link_karma
 			data.link_karma = this.numberWithCommas(data.link_karma)
 
-			$.cookie('userInfo', JSON.stringify(data), {
-				expires: 7
-			})
+			$.totalStorage('userinfo', data)
 
 			return data;
 
