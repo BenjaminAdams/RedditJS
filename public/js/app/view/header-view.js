@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 			events: {
 				'click .tabmenu-right li': 'changeGridOption',
 				'click .drop-down-header-toggle': 'toggleDropdown',
-				'click #header-nav-logo-area a': 'toggleDropdown', //will close the menu after the user makes a selection
+				'click #header-nav-logo-area': 'toggleDropdown', //will close the menu after the user makes a selection
 				'click #userbar-logged-out': 'showLoginPopup'
 			},
 			initialize: function(data) {

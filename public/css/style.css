@@ -465,12 +465,10 @@ margin:0 50px;
   display:none;
   position:absolute;
   top:19px;
-  padding-left:5px;
   z-index:99999;
 }
 
 .headerNavLogo {
-
 float:left;
   height:48px;
   margin:0px 4px;
@@ -479,7 +477,6 @@ float:left;
 }
 
 .headerNavLogo:hover {
-  
    opacity: 1;
 }
 
@@ -528,8 +525,4 @@ text-align: center;
 
 
 }
-
-
-
-
 

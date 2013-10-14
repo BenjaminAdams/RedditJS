@@ -93,9 +93,14 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 
 			},
 			loadLoginView: function() {
-				this.loginView = new LoginView({
-					root: "#theLogin"
-				})
+
+				try {
+					this.loginView = new LoginView({
+						root: "#theLogin"
+					})
+				} catch (e) {
+					console.log('failed to load login view', e)
+				}
 
 				//now render the login view
 				//this.loginView.render();
