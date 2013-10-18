@@ -49,7 +49,7 @@ server.get("*", function(req, res) {
 // Start Node.js Server
 http.createServer(server).listen(port);
 
-//console.log('\nWelcome to redditjs.com!\nPlease go to http://localhost:' + port + ' to start using RedditJS');
+console.log('\nWelcome to redditjs.com!\nPlease go to http://localhost:' + port + ' to start using RedditJS');
 
 if (process.env.NODE_ENV === 'production') {
     var nullfun = function() {};
