@@ -69,10 +69,12 @@
 
         if (window.production === true) {
             var nullfun = function() {};
-            console.log = nullfun;
-            console.info = nullfun;
-            console.error = nullfun;
-            console.warn = nullfun;
+            if (typeof console !== 'undefined') {
+                console.log = nullfun;
+                console.info = nullfun;
+                console.error = nullfun;
+                console.warn = nullfun;
+            }
         }
 
         // Desktop CSS and JavaScript files to load
