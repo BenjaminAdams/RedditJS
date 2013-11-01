@@ -77,9 +77,9 @@ define(['view/subreddit-view', 'collection/search', 'hbs!template/search', 'even
 				}));
 				this.resize()
 
-				setTimeout(function() {
-					self.changeSortOrderCss()
-				}, 100);
+				//setTimeout(function() {
+				//self.changeSortOrderCss()
+				//}, 100);
 
 			},
 			toggleSort: function(e) {
