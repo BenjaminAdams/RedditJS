@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'view/userbar-view', 'view/base-view', 'model/sidebar', 'event/channel', 'cookie'],
-	function($, _, Backbone, Resthub, HeaderTmpl, UserbarView, BaseView, SidebarModel, channel, Cookie) {
+define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'view/userbar-view', 'view/basem-view', 'model/sidebar', 'event/channel', 'cookie'],
+	function(App, $, _, Backbone, Resthub, HeaderTmpl, UserbarView, BaseView, SidebarModel, channel, Cookie) {
 		var HeaderView = BaseView.extend({
 			template: HeaderTmpl,
 			el: $("#theHeader"),
@@ -9,10 +9,20 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				'click #header-nav-logo-area': 'toggleDropdown', //will close the menu after the user makes a selection
 				'click #userbar-logged-out': 'showLoginPopup'
 			},
+
+			ui: {
+				'siteTable': '#siteTable',
+				'nextprev': '.nextprev'
+
+			},
+			regions: {
+				'btmRightHeader': '#header-bottom-right'
+			},
+
 			initialize: function(data) {
 				_.bindAll(this);
 				console.log("I should only render the header once")
-				this.render();
+				//this.render();
 
 				channel.on("header:update", this.updateHeader, this);
 				channel.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
@@ -22,19 +32,14 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				//load the subreddits on the top bar
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
 
-				this.displayMySubreddits()
-
 				this.listenTo(window.subreddits, 'sync', this.displayMySubreddits)
 
+			},
+			onRender: function() {
 				this.changeActiveGrid($.cookie('gridOption')) //so we are highlighting the correct grid option on page load
-				try {
-					this.userbar = new UserbarView({
-						root: "#header-bottom-right"
-					})
-				} catch (e) {
-					console.log('FAILED TO LOAD USR BAR', e)
-				}
 
+				this.btmRightHeader.show(new UserbarView())
+				this.displayMySubreddits()
 			},
 
 			showLoginPopup: function() {
@@ -93,7 +98,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'v
 				e.preventDefault()
 				e.stopPropagation();
 				var id = this.$(e.currentTarget).attr('id')
-				channel.trigger("subreddit:changeGridOption", {
+				App.trigger("subreddit:changeGridOption", {
 					gridOption: id
 				});
 				this.changeActiveGrid(id) //so we are highlighting the correct grid option on page load

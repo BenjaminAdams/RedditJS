@@ -11,7 +11,8 @@ require.config({
         'underscore': '../lib/underscore',
         'underscore-string': '../lib/underscore-string',
         "backbone": "../lib/backbone",
-        "marionette": "../lib/backbone.marionette",
+        "marionette": "../lib/marionette",
+        //'fasterCollectioView': '../lib/marionette.FasterCollectionView',
         'handlebars': '../lib/handlebars',
         //   'handlebars': '../lib/resthub/handlebars-helpers',
         // "handlebars": "../lib/handlebars",
@@ -68,6 +69,10 @@ require.config({
             "deps": ["underscore", "backbone", "jquery"],
             "exports": "Marionette"
         },
+        //fasterCollectioView
+        //'fasterCollectioView': {
+        //"deps": ["underscore", "backbone", "jquery", 'marionette']
+        //},
         // Handlebars
         "handlebars": {
             "exports": "Handlebars"

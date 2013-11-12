@@ -1,37 +1,37 @@
 <div class='large-thumb'>
 
-    <div id='{{model.id}}' class="thing id-{{model.name}} {{model.evenOrOdd}} link" data-fullname="{{model.name}}" data-ups="{{model.ups}}" data-downs="{{model.downs}}">
-        <span class="rank" style="width:3.30ex;">{{model.count}}</span>
-        <div class="midcol {{model.voted}} " style="width:5ex;">
-            <div data-id='{{model.id}}' class="arrow upArrow upArrow{{model.id}} {{model.upmod}}" role='button' aria-label="upvote" tabindex="0">
+    <div id='{{id}}' class="thing id-{{name}} {{evenOrOdd}} link" data-fullname="{{name}}" data-ups="{{ups}}" data-downs="{{downs}}">
+        <span class="rank" style="width:3.30ex;">{{count}}</span>
+        <div class="midcol {{voted}} " style="width:5ex;">
+            <div data-id='{{id}}' class="arrow upArrow upArrow{{id}} {{upmod}}" role='button' aria-label="upvote" tabindex="0">
             </div>
             <div class="score dislikes">
-                 {{model.scoreDown}}
+                 {{scoreDown}}
             </div>
             <div class="score unvoted">
-                 {{model.score}}
+                 {{score}}
             </div>
             <div class="score likes">
-                 {{model.scoreUp}}
+                 {{scoreUp}}
             </div>
-            <div data-id='{{model.id}}' class="arrow downArrow downArrow{{model.id}} {{model.downmod}}" role="button" aria-label="downvote" tabindex="0">
+            <div data-id='{{id}}' class="arrow downArrow downArrow{{id}} {{downmod}}" role="button" aria-label="downvote" tabindex="0">
             </div>
         </div>
 
-        <a class="thumbnail" {{model.external}} href="{{model.url}}" target="_blank"><img  class='small-thumb-for-large-view' src="{{model.thumbnail}}" ></a>
+        <a class="thumbnail" {{external}} href="{{url}}" target="_blank"><img  class='small-thumb-for-large-view' src="{{thumbnail}}" ></a>
 
-        <div class="entry {{model.voted}}">
+        <div class="entry {{voted}}">
             <p class="title">
-                <a class="title loggedin" {{model.external}} href="{{model.url}}" target="_blank">{{model.title}}</a><span class="domain">(<a href="/domain/{{model.domain}}/">{{model.domain}}</a>)</span>
+                <a class="title loggedin" {{external}} href="{{url}}" target="_blank">{{title}}</a><span class="domain">(<a href="/domain/{{domain}}/">{{domain}}</a>)</span>
             </p>
             <p class="tagline">
-                submitted <time datetime "{{model.timeugly}}" " title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href "/user/{{model.author}}" " target="_blank">{{model.author}}</a>
-                <span class="userattrs"></span>to <a href="/r/{{model.subreddit}}/" class="subreddit hover">{{model.subreddit}}</a>
+                submitted <time datetime "{{timeugly}}" " title="{{timePretty}}">{{timeAgo}}</time> ago by <a class="author" href "/user/{{author}}" " target="_blank">{{author}}</a>
+                <span class="userattrs"></span>to <a href="/r/{{subreddit}}/" class="subreddit hover">{{subreddit}}</a>
             </p>
             <ul class="flat-list buttons">
 
                 <li class="first">
-                <a class="comments" href="{{model.permalink}}"  target="_blank">{{model.num_comments}} comments</a>
+                <a class="comments" href="{{permalink}}"  target="_blank">{{num_comments}} comments</a>
                 </li>
 
                 <li class="share">
@@ -39,34 +39,34 @@
                 <li>
 
                 <span class="state-button save-button" >
-                     {{#if model.saved}}
-                        <span id='unsave{{model.id}}' class='unsave' ><a href='#'>unsave</a></span>
-                        <span id='save{{model.id}}' class='save' style='display:none;'><a href="#" >save</a></span>
+                     {{#if saved}}
+                        <span id='unsave{{id}}' class='unsave' ><a href='#'>unsave</a></span>
+                        <span id='save{{id}}' class='save' style='display:none;'><a href="#" >save</a></span>
                     {{else}}
-                        <span id='unsave{{model.id}}' class='unsave' style='display:none;'><a href='#'>unsave</a></span>
-                        <span id='save{{model.id}}' class='save'><a href="#" >save</a></span>
+                        <span id='unsave{{id}}' class='unsave' style='display:none;'><a href='#'>unsave</a></span>
+                        <span id='save{{id}}' class='save'><a href="#" >save</a></span>
                     {{/if}}
                 </span>
                 </li>
 
                 <li>
                 <span class="state-button hide-button" >
-                   <span><a href="#" id='hide{{model.id}}' class='hide'>hide</a></span>
+                   <span><a href="#" id='hide{{id}}' class='hide'>hide</a></span>
                 </span>
                 </li>
                 <li>
                 <span class="toggle remove-button">
                     <span class="option main active">
-                    <a href="#" id='report{{model.id}}' class="report togglebutton">report</a></span>
-                    <span id='reportConfirm{{model.id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{model.id}}' class="yes reportConfirmYes">yes</a> / <a href="#" id='reportConfirmNo{{model.id}}' class="no reportConfirmNo" >no</a></span>
+                    <a href="#" id='report{{id}}' class="report togglebutton">report</a></span>
+                    <span id='reportConfirm{{id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{id}}' class="yes reportConfirmYes">yes</a> / <a href="#" id='reportConfirmNo{{id}}' class="no reportConfirmNo" >no</a></span>
                 </span>
                 </li>
             </ul>
         </div>
 
 <div class='large-thumblink'>
-    <a  data-bypass="true"   href="{{model.imgUrl}}" target="_blank">
-    <img class='large-img' alt="" src="{{model.imgUrl}}"/>
+    <a  data-bypass="true"   href="{{imgUrl}}" target="_blank">
+    <img class='large-img' alt="" src="{{imgUrl}}"/>
     </a>
 </div>
 

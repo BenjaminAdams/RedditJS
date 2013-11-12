@@ -1,43 +1,43 @@
-<div id='{{model.id}}' class="thing {{model.evenOrOdd}} link" data-fullname="{{model.name}}" data-ups="{{model.ups}}" data-downs="{{model.downs}}">
+<div id='{{id}}' class="thing {{evenOrOdd}} link" data-fullname="{{name}}" data-ups="{{ups}}" data-downs="{{downs}}">
        <p class="parent"></p>
-       <span class="rank" style="width:3.30ex;">{{model.count}}</span>
+       <span class="rank" style="width:3.30ex;">{{count}}</span>
 
-        <div class="midcol {{model.voted}} " style="width:5ex;">
-            <div data-id='{{model.id}}' class="arrow login-required upArrow upArrow{{model.id}} {{model.upmod}}" role='button' aria-label="upvote" tabindex="0"></div>
+        <div class="midcol {{voted}} " style="width:5ex;">
+            <div data-id='{{id}}' class="arrow login-required upArrow upArrow{{id}} {{upmod}}" role='button' aria-label="upvote" tabindex="0"></div>
 
             <div class="score dislikes">
-                {{model.scoreDown}} 
+                {{scoreDown}} 
             </div>
 
             <div class="score unvoted">
-                {{model.score}}
+                {{score}}
             </div>
 
             <div class="score likes">
-                {{model.scoreUp}}
+                {{scoreUp}}
             </div>
 			
-	<div data-id='{{model.id}}' class="arrow login-required downArrow downArrow{{model.id}} {{model.downmod}}" role="button" aria-label="downvote" tabindex="0"></div>
+	<div data-id='{{id}}' class="arrow login-required downArrow downArrow{{id}} {{downmod}}" role="button" aria-label="downvote" tabindex="0"></div>
         </div>
 
-		<a class="thumbnail loggedin" {{model.external}} href="{{model.url}}" target="_blank"><img alt="" height="52" src="{{model.thumbnail}}" width="70"></a>
+		<a class="thumbnail loggedin" {{external}} href="{{url}}" target="_blank"><img alt="" height="52" src="{{thumbnail}}" width="70"></a>
 
         <div class="entry">
             <p class="title">
-	  <a class="title loggedin" {{model.external}} href="{{model.url}}" target="_blank">{{model.title}}</a> 
-                <span class="domain">(<a href="/domain/{{model.domain}}/">{{model.domain}}</a>)</span>
+	  <a class="title loggedin" {{external}} href="{{url}}" target="_blank">{{title}}</a> 
+                <span class="domain">(<a href="/domain/{{domain}}/">{{domain}}</a>)</span>
             </p>
-                {{#if model.embededImg}} <li><div class='expando-button collapsed video'></div></li> {{/if}}
+                {{#if embededImg}} <li><div class='expando-button collapsed video'></div></li> {{/if}}
             <p class="tagline">
-            <span>{{model.score}}(<span class='orange'>{{model.ups}}</span>/<span class='purple'>{{model.downs}}</span>)</span>
-                submitted <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time> ago by <a class="author" href="/user/{{model.author}}" target="_blank">{{model.author}}</a>
-            {{#if model.author_flair_css_class}}<span class="flair flair-{{model.author_flair_css_class}}" title=""></span>{{/if}}
-            <span class="userattrs"></span>to <a href="/r/{{model.subreddit}}/" class="subreddit hover">{{model.subreddit}}</a>
+            <span>{{score}}(<span class='orange'>{{ups}}</span>/<span class='purple'>{{downs}}</span>)</span>
+                submitted <time datetime="{{timeUgly}}" title="{{timePretty}}">{{timeAgo}}</time> ago by <a class="author" href="/user/{{author}}" target="_blank">{{author}}</a>
+            {{#if author_flair_css_class}}<span class="flair flair-{{author_flair_css_class}}" title=""></span>{{/if}}
+            <span class="userattrs"></span>to <a href="/r/{{subreddit}}/" class="subreddit hover">{{subreddit}}</a>
             </p>
             <ul class="flat-list buttons">
 
                 <li class="first">
-                <a class="comments" href="{{model.permalink}}"  target="_blank">{{model.num_comments}} comments</a>
+                <a class="comments" href="{{permalink}}"  target="_blank">{{num_comments}} comments</a>
                 </li>
 
                 <li class="share">
@@ -45,26 +45,26 @@
                 <li>
 
                 <span class="state-button save-button" >
-                     {{#if model.saved}}
-                        <span id='unsave{{model.id}}' class='unsave' ><a href='#'>unsave</a></span>
-                        <span id='save{{model.id}}' class='save' style='display:none;'><a href="#" >save</a></span>
+                     {{#if saved}}
+                        <span id='unsave{{id}}' class='unsave' ><a href='#'>unsave</a></span>
+                        <span id='save{{id}}' class='save' style='display:none;'><a href="#" >save</a></span>
                     {{else}}
-                        <span id='unsave{{model.id}}' class='unsave' style='display:none;'><a href='#'>unsave</a></span>
-                        <span id='save{{model.id}}' class='save'><a href="#" >save</a></span>
+                        <span id='unsave{{id}}' class='unsave' style='display:none;'><a href='#'>unsave</a></span>
+                        <span id='save{{id}}' class='save'><a href="#" >save</a></span>
                     {{/if}}
                 </span>
                 </li>
 
                 <li>
                 <span class="state-button hide-button" >
-                   <span><a href="#" id='hide{{model.id}}' class='hide'>hide</a></span>
+                   <span><a href="#" id='hide{{id}}' class='hide'>hide</a></span>
                 </span>
                 </li>
                 <li>
                 <span class="toggle remove-button">
                     <span class="option main active">
-                    <a href="#" id='report{{model.id}}' class="report togglebutton">report</a></span>
-                    <span id='reportConfirm{{model.id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{model.id}}' class="yes reportConfirmYes">yes</a> / <a href="#" id='reportConfirmNo{{model.id}}' class="no reportConfirmNo" >no</a></span>
+                    <a href="#" id='report{{id}}' class="report togglebutton">report</a></span>
+                    <span id='reportConfirm{{id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{id}}' class="yes reportConfirmYes">yes</a> / <a href="#" id='reportConfirmNo{{id}}' class="no reportConfirmNo" >no</a></span>
                 </span>
                 </li>
             </ul>

@@ -15,10 +15,10 @@
         <div class="spacer">
             <div class="sidebox submit submit-link">
                 <div class="morelink">
-                    {{#if model.isFront }}
+                    {{#if isFront }}
                          <a href="/submit/">Submit a new link</a>
                     {{else}}
-                         <a href="/r/{{model.display_name}}/submit/">Submit a new link</a>
+                         <a href="/r/{{display_name}}/submit/">Submit a new link</a>
                     {{/if}}
                     <div class="nub"></div>
                 </div>
@@ -27,32 +27,32 @@
 
         <div class="spacer">
             <div class="titlebox">
-                <h1 class="hover redditname"><a class="hover" href="/r/{{model.display_name}}/">{{model.display_name}}</a></h1>
-                <span class="subscribe-button fancy-toggle-button toggle" data-sr_name="{{model.display_name}}" >
-                {{#if model.user_is_subscriber}}
+                <h1 class="hover redditname"><a class="hover" href="/r/{{display_name}}/">{{display_name}}</a></h1>
+                <span class="subscribe-button fancy-toggle-button toggle" data-sr_name="{{display_name}}" >
+                {{#if user_is_subscriber}}
                                <a class="option active remove" href="#" tabindex="100">unsubscribe</a>
                 {{else}}
                               <a class="option active add" href="#" tabindex="100">subscribe</a>    
                     
                 {{/if}}
-                <a class="option add" href="#">subscribe</a></span><span class="subscribers"><span class="number">{{model.subscribers}}</span>
+                <a class="option add" href="#">subscribe</a></span><span class="subscribers"><span class="number">{{subscribers}}</span>
                 <span class="word">readers</span></span>
 
                 <p class="users-online" title="logged-in users viewing this subreddit in the past 15 minutes">
-                <span class="number">{{model.accounts_active}}</span> <span class="word">users here now</span></p>
+                <span class="number">{{accounts_active}}</span> <span class="word">users here now</span></p>
 
-                <form action="#" class="usertext" id="form-{{model.name}}" name="form-{{model.name}}">
-                    <input name="thing_id" type="hidden" value="{{model.name}}">
+                <form action="#" class="usertext" id="form-{{name}}" name="form-{{name}}">
+                    <input name="thing_id" type="hidden" value="{{name}}">
 
                     <div class="usertext-body">
                         <div class="md">
-		{{{model.description_html}}} 
+		{{{description_html}}} 
                         </div>
                     </div>
                 </form>
 
                 <div class="bottom">
-                    <span class="age">a community for <time datetime="{{model.timeUgly}}" title="{{model.timePretty}}">{{model.timeAgo}}</time></span>
+                    <span class="age">a community for <time datetime="{{timeUgly}}" title="{{timePretty}}">{{timeAgo}}</time></span>
                 </div>
 
                 <div class="clear"></div>

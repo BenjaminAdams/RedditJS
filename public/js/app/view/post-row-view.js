@@ -1,8 +1,7 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 'hbs!template/post-row-large', 'hbs!template/post-row-small', 'view/base-view'],
-    function($, _, Backbone, Resthub, PostRowTmpl, PostRowLargeTmpl, PostRowSmallTmpl, BaseView) {
+define(['jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs!template/post-row-large', 'hbs!template/post-row-small', 'view/basem-view'],
+    function($, _, Backbone, PostRowTmpl, PostRowLargeTmpl, PostRowSmallTmpl, BaseView) {
         var PostRowView = BaseView.extend({
-            strategy: 'append',
-
+            // template: PostRowTmpl,
             events: {
                 'click a': "gotoSingle",
                 'click .upArrow': 'upvote',
@@ -14,6 +13,10 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
                 'click .reportConfirmYes': 'reportYes',
                 'click .reportConfirmNo': 'reportShow',
                 'click .expando-button': 'toggleExpando'
+            },
+            ui: {
+                'expandoButton': '.expando-button',
+                'postRowContent': '.postRowContent'
             },
 
             initialize: function(data) {
@@ -29,7 +32,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
                     this.template = PostRowSmallTmpl
                 }
 
-                this.render();
+                // this.render();
                 // this.$() is a shortcut for this.$el.find().
             },
             gotoSingle: function(e) {
@@ -46,16 +49,16 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/post-row', 
 
             },
             toggleExpando: function() {
-                if (this.$('.expando-button').hasClass('expanded')) {
-                    this.$('.expando-button').removeClass('expanded')
-                    this.$('.expando-button').addClass('collapsed')
-                    this.$('.postRowContent').html('').hide()
+                if (this.ui.expandoButton.hasClass('expanded')) {
+                    this.ui.expandoButton.removeClass('expanded')
+                    this.ui.expandoButton.addClass('collapsed')
+                    this.ui.postRowContent.html('').hide()
                 } else {
-                    this.$('.expando-button').removeClass('collapsed')
-                    this.$('.expando-button').addClass('expanded')
+                    this.ui.expandoButton.removeClass('collapsed')
+                    this.ui.expandoButton.addClass('expanded')
                     var str = '<div class="expando"><div class="usertext-body"><p>' + this.model.get('media_embed') + '</p></div></div>'
                     console.log(str)
-                    this.$('.postRowContent').html(str).show()
+                    this.ui.postRowContent.html(str).show()
                 }
             }
 

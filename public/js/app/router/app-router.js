@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sidebar-view', 'collection/my-subreddits', 'event/channel'],
-    function(_, Backbone, Marionette, HeaderView, SidebarView, MySubredditsCollection, channel) {
+define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view/sidebar-view', 'collection/my-subreddits', 'event/channel'],
+    function(App, _, Backbone, Marionette, HeaderView, SidebarView, MySubredditsCollection, channel) {
 
         var AppRouter = Backbone.Marionette.AppRouter.extend({
             initialize: function(options) {
@@ -13,9 +13,9 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                 //caching subreddit json in a global because it takes about 3 seconds to query from reddit api
                 window.subs = []
 
-                //   App.headerRegion.show(new HeaderView());
+                App.headerRegion.show(new HeaderView());
 
-                this.header = new HeaderView();
+                //this.header = new HeaderView();
             },
             routes: {
                 'r/myrandom(/)': 'myrandom',
@@ -51,8 +51,8 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
                 if (!callback) callback = this[name];
                 var f = function() {
                     //middleware functions
-                    channel.trigger("subreddit:remove") //clear old subreddit views
-                    channel.trigger("single:remove") //clear old subreddit views
+                    // App.trigger("subreddit:remove") //clear old subreddit views
+                    // App.trigger("single:remove") //clear old subreddit views
 
                     if (name != 'single') { //hide the bottom bar if not in single view
                         $("#bottom-bar").hide()
@@ -61,6 +61,8 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
 
                     $('#imgCache').empty() //flush the image thumbnail cache
 
+                    ga('send', 'pageview'); //track pageview
+                    window.stop() //prevent images from being loaded in gridview
                     //end middleware functions
                     callback.apply(router, arguments); //call the actual route
                 };
@@ -72,10 +74,15 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
 
                 this.doSidebar('front');
                 require(['view/subreddit-view'], function(SubredditView) {
-                    var subredditView = new SubredditView({
-                        subName: "front",
+                    //var subredditView = new SubredditView({
+                    //subName: "front",
+                    //sortOrder: sortOrder || 'hot'
+                    //});
+
+                    App.mainRegion.show(new SubredditView({
+                        subName: 'front',
                         sortOrder: sortOrder || 'hot'
-                    });
+                    }));
                 })
             },
 
@@ -83,10 +90,17 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
 
                 this.doSidebar(subName);
                 require(['view/subreddit-view'], function(SubredditView) {
-                    new SubredditView({
+
+                    App.mainRegion.show(new SubredditView({
                         subName: subName,
                         sortOrder: sortOrder || 'hot'
-                    });
+                    }));
+
+                    // new SubredditView({
+                    //     subName: subName,
+                    //     sortOrder: sortOrder || 'hot'
+                    // });
+
                 })
 
             },
@@ -224,10 +238,13 @@ define(['underscore', 'backbone', 'marionette', 'view/header-view', 'view/sideba
              */
             //displays the sidebar for that subreddit if its not already created
             doSidebar: function(subName) {
-                if (typeof this.sidebar === 'undefined' || this.sidebar.subName != subName) { //only update sidebar if the subreddit changes
-                    this.sidebar = new SidebarView({
+                if (typeof App.sidebarRegion.currentView === 'undefined' || App.sidebarRegion.currentView.subName != subName) { //only update sidebar if the subreddit changes
+                    App.sidebarRegion.show(new SidebarView({
                         subName: subName
-                    })
+                    }))
+                    // this.sidebar = new SidebarView({
+                    //     subName: subName
+                    // })
                 }
             },
             loadSettingsFromCookies: function() {

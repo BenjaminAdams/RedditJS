@@ -8,8 +8,10 @@ define(['jquery', 'backbone', 'marionette', 'underscore', 'handlebars'],
         //Regions can contain views, Layouts, or subregions nested as necessary
         App.addRegions({
             headerRegion: "theHeader",
-            mainRegion: "#main",
-            popupRegion: "#popupWindow"
+            // mainRegion: "#main",
+            mainRegion: ".content",
+            popupRegion: "#popupWindow",
+            sidebarRegion: '.side'
         });
 
         App.addInitializer(function() {
