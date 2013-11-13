@@ -1,5 +1,5 @@
-define(['view/base-view', 'collection/subreddit-picker', 'hbs!template/subreddit-picker', 'view/subreddit-picker-item-view', 'event/channel'],
-    function(BaseView, SRPCollection, SRPTmpl, SRPItemView, channel) {
+define(['App', 'view/base-view', 'collection/subreddit-picker', 'hbs!template/subreddit-picker', 'view/subreddit-picker-item-view'],
+    function(App, BaseView, SRPCollection, SRPTmpl, SRPItemView) {
         return BaseView.extend({
             el: $(".content"),
             template: SRPTmpl,
@@ -36,7 +36,7 @@ define(['view/base-view', 'collection/subreddit-picker', 'hbs!template/subreddit
                 this.prevScrollY = 0; //makes sure you are not checking when the user scrolls upwards
                 this.errorRetries = 0; //keeps track of how many errors we will retry after
 
-                channel.on("subreddit:remove", this.remove, this);
+                App.on("subreddit:remove", this.remove, this);
 
             },
             remove: function() {

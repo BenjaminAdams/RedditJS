@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'hbs!template/post-row-grid', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'collection/subreddit', 'event/channel', 'cView/subreddit', 'cookie'],
-	function(App, _, Backbone, subredditTmpl, PostViewSmallTpl, PostRowGrid, PostRowView, SidebarView, BaseView, SubredditCollection, channel, SrCView, Cookie) {
+define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'hbs!template/post-row-grid', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'collection/subreddit', 'cView/subreddit', 'cookie'],
+	function(App, _, Backbone, subredditTmpl, PostViewSmallTpl, PostRowGrid, PostRowView, SidebarView, BaseView, SubredditCollection, SrCView, Cookie) {
 		var SubredditView = BaseView.extend({
 
 			template: subredditTmpl,
@@ -33,6 +33,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				} else {
 					document.title = this.subName + " - RedditJS Beta"
 				}
+
+				this.gridOption = $.cookie('gridOption') || 'normal';
+				// if (typeof this.gridOption === 'undefined' || this.gridOption === null || this.gridOption === "") {
+				// 	this.gridOption = 'normal'
+				// }
+
 				this.template = subredditTmpl;
 				this.sortOrder = options.sortOrder
 				this.domain = options.domain
@@ -50,12 +56,68 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				App.on("subreddit:changeGridOption", this.changeGridOption, this);
 				//App.on("subreddit:remove", this.remove, this);
 
-				this.render();
+				//this.render();
 				this.imagesAdded = 0; //keeps a total of how many images we are loading
 				//this.initGridOption();
 
 				this.imgAry = []
 
+				$(window).on("scroll", this.watchScroll);
+
+				//in small thumbnail mode, its sometimes impossible for the infinite scroll event to fire because there is no scrollbar yet
+
+				//this.target = $("#siteTable"); //the target to test for infinite scroll
+				this.target = $(window); //the target to test for infinite scroll
+				this.loading = false;
+
+				this.scrollOffset = 1000;
+				this.prevScrollY = 0; //makes sure you are not checking when the user scrolls upwards
+				this.errorRetries = 0; //keeps track of how many errors we will retry after
+
+				//$(window).bind("resize.app", _.bind(this.debouncer));
+				$(window).resize(this.debouncer(function(e) {
+
+					self.resize()
+				}));
+
+				setTimeout(function() {
+					self.changeHeaderLinks()
+				}, 100);
+
+				//this.helpFillUpScreen();
+
+			},
+			//we have to override the remove event because the window.scroll event will not be removed by the garbage collector
+			//cant create infinite scroll without this.
+
+			// remove: function() {
+			// 	var self = this
+
+			// 	this.removePendingGrid()
+			// 	window.stop() //prevents new images from being downloaded
+			// 	$(window).off("scroll", this.watchScroll);
+			// 	$(window).off('resize', this.debouncer);
+			// 	App.off("subreddit:changeGridOption", this.changeGridOption, this);
+			// 	App.off("subreddit:remove", this.remove, this);
+			// 	this.undelegateEvents();
+			// 	this.$el.empty();
+			// 	this.stopListening();
+			// 	console.log('**********************removed the view *********************************')
+
+			// 	//call the superclass remove method
+			// 	//Backbone.View.prototype.remove.apply(this, arguments);
+			// },
+			onBeforeClose: function() {
+				console.log('closing subreddit-view')
+				//window.stop() //prevents new images from being downloaded
+				this.removePendingGrid()
+				$(window).off("scroll", this.watchScroll);
+				$(window).off('resize', this.debouncer);
+				App.off("subreddit:changeGridOption", this.changeGridOption, this);
+				App.off("subreddit:remove", this.remove, this);
+			},
+
+			onRender: function() {
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				//console.log("window.subs=", window.subs)
 
@@ -81,62 +143,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					//this.fetchMore();
 				}
 
-				$(window).on("scroll", this.watchScroll);
-
-				//in small thumbnail mode, its sometimes impossible for the infinite scroll event to fire because there is no scrollbar yet
-
-				//this.target = $("#siteTable"); //the target to test for infinite scroll
-				this.target = $(window); //the target to test for infinite scroll
-				this.loading = false;
-
-				this.scrollOffset = 1000;
-				this.prevScrollY = 0; //makes sure you are not checking when the user scrolls upwards
-				this.errorRetries = 0; //keeps track of how many errors we will retry after
-
-				//$(window).bind("resize.app", _.bind(this.debouncer));
-				$(window).resize(this.debouncer(function(e) {
-
-					self.resize()
-				}));
-
-				this.resize()
-
-				setTimeout(function() {
-					self.changeHeaderLinks()
-				}, 100);
-
-				//this.helpFillUpScreen();
-
-			},
-			//we have to override the remove event because the window.scroll event will not be removed by the garbage collector
-			//cant create infinite scroll without this.
-			// remove: function() {
-			// 	var self = this
-
-			// 	this.removePendingGrid()
-			// 	window.stop() //prevents new images from being downloaded
-			// 	$(window).off("scroll", this.watchScroll);
-			// 	$(window).off('resize', this.debouncer);
-			// 	App.off("subreddit:changeGridOption", this.changeGridOption, this);
-			// 	App.off("subreddit:remove", this.remove, this);
-			// 	this.undelegateEvents();
-			// 	this.$el.empty();
-			// 	this.stopListening();
-			// 	console.log('**********************removed the view *********************************')
-
-			// 	//call the superclass remove method
-			// 	//Backbone.View.prototype.remove.apply(this, arguments);
-			// },
-			onBeforeClose: function() {
-				//window.stop() //prevents new images from being downloaded
-				this.removePendingGrid()
-				$(window).off("scroll", this.watchScroll);
-				$(window).off('resize', this.debouncer);
-				App.off("subreddit:changeGridOption", this.changeGridOption, this);
-				App.off("subreddit:remove", this.remove, this);
-			},
-
-			onRender: function() {
 				this.subredditCollectionView = new SrCView({
 					collection: this.collection,
 					itemView: PostRowView,
@@ -144,6 +150,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				})
 				this.siteTable.show(this.subredditCollectionView)
 				this.hideMoarBtn()
+				this.resize()
 			},
 
 			//the image callback from waiting it to be loaded before being display
@@ -167,50 +174,50 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			},
 
 			/**************Grid functions ****************/
-			initGridOption: function() {
-				var self = this
-				/*grid option:
-					normal - the default Reddit styling
-					small - small thumbnails in the page
-					large - full sized images in the page
-				*/
-				this.gridOption = $.cookie('gridOption');
-				if (typeof this.gridOption === 'undefined' || this.gridOption === null || this.gridOption === "") {
-					this.gridOption = 'normal'
-				} else if (this.gridOption == "large") {
-					this.resize()
-				}
+			// initGridOption: function() {
+			// 	var self = this
+			// 	/*grid option:
+			// 		normal - the default Reddit styling
+			// 		small - small thumbnails in the page
+			// 		large - full sized images in the page
+			// 	*/
+			// 	this.gridOption = $.cookie('gridOption');
+			// 	if (typeof this.gridOption === 'undefined' || this.gridOption === null || this.gridOption === "") {
+			// 		this.gridOption = 'normal'
+			// 	} else if (this.gridOption == "large") {
+			// 		this.resize()
+			// 	}
 
-				this.gridViewSetup()
+			// 	this.gridViewSetup()
 
-			},
-			gridViewSetup: function() {
-				var self = this
+			// },
+			// gridViewSetup: function() {
+			// 	var self = this
 
-				if (this.gridOption == 'grid') {
+			// 	if (this.gridOption == 'grid') {
 
-					$('.side').hide()
-					this.ui.siteTable.css('margin-right', '0') //some custom CSS were making this bad in grid mode
-					//calculate how many columns we will have
-					var colCount = Math.floor($(document).width() / 305)
+			// 		$('.side').hide()
+			// 		this.ui.siteTable.css('margin-right', '0') //some custom CSS were making this bad in grid mode
+			// 		//calculate how many columns we will have
+			// 		var colCount = Math.floor($(document).width() / 305)
 
-					for (var i = 0; i < colCount; i++) {
-						self.ui.siteTable.append('<div class="column"> </div>')
-					}
+			// 		for (var i = 0; i < colCount; i++) {
+			// 			self.ui.siteTable.append('<div class="column"> </div>')
+			// 		}
 
-					this.ui.siteTable.append('<div id="fullImgCache"></div>')
+			// 		this.ui.siteTable.append('<div id="fullImgCache"></div>')
 
-				} else {
+			// 	} else {
 
-					if (window.settings.get('showSidebar') === false) {
-						$('.side').hide()
-					} else {
-						$('.side').show()
-					}
-					//this.ui.siteTable.html('')
-					this.resize()
-				}
-			},
+			// 		if (window.settings.get('showSidebar') === false) {
+			// 			$('.side').hide()
+			// 		} else {
+			// 			$('.side').show()
+			// 		}
+			// 		//this.ui.siteTable.html('')
+			// 		this.resize()
+			// 	}
+			// },
 			shortestCol: function() {
 				var shortest = null
 				var count = 0
@@ -225,7 +232,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				return shortest;
 			},
 			changeHeaderLinks: function() {
-				channel.trigger("header:updateSortOrder", {
+				App.trigger("header:updateSortOrder", {
 					sortOrder: this.sortOrder,
 					domain: this.domain,
 					subName: this.subName
@@ -280,7 +287,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				if (this.name == "large") {
 					this.resize()
 				}
-				this.gridViewSetup()
+				//this.gridViewSetup()
 				//this.appendPosts(this.collection)
 
 			},

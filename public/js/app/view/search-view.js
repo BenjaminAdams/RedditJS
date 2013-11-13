@@ -1,5 +1,5 @@
-define(['view/subreddit-view', 'collection/search', 'hbs!template/search', 'event/channel'],
-	function(SubredditView, SearchCollection, SearchTmpl, channel) {
+define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'],
+	function(App, SubredditView, SearchCollection, SearchTmpl) {
 		var SearchView = SubredditView.extend({
 
 			el: $(".content"),
@@ -42,8 +42,8 @@ define(['view/subreddit-view', 'collection/search', 'hbs!template/search', 'even
 				})
 
 				this.subID = this.subName + this.sortOrder
-				channel.on("subreddit:changeGridOption", this.changeGridOption, this);
-				channel.on("subreddit:remove", this.remove, this);
+				App.on("subreddit:changeGridOption", this.changeGridOption, this);
+				App.on("subreddit:remove", this.remove, this);
 
 				this.initGridOption();
 

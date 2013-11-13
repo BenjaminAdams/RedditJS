@@ -51,7 +51,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 if (!callback) callback = this[name];
                 var f = function() {
                     //middleware functions
-                    // App.trigger("subreddit:remove") //clear old subreddit views
+                    //App.trigger("subreddit:remove") //clear old subreddit views
                     // App.trigger("single:remove") //clear old subreddit views
 
                     if (name != 'single') { //hide the bottom bar if not in single view
@@ -62,7 +62,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     $('#imgCache').empty() //flush the image thumbnail cache
 
                     ga('send', 'pageview'); //track pageview
-                    window.stop() //prevent images from being loaded in gridview
+                    //  window.stop() //prevent images from being loaded in gridview
                     //end middleware functions
                     callback.apply(router, arguments); //call the actual route
                 };
@@ -71,13 +71,11 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             home: function(sortOrder) {
 
                 // channel.trigger("header:updateSortOrder")
-
+                if (window.subs.length > 1) {
+                    window.stop()
+                }
                 this.doSidebar('front');
                 require(['view/subreddit-view'], function(SubredditView) {
-                    //var subredditView = new SubredditView({
-                    //subName: "front",
-                    //sortOrder: sortOrder || 'hot'
-                    //});
 
                     App.mainRegion.show(new SubredditView({
                         subName: 'front',
@@ -87,19 +85,15 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             },
 
             subreddit: function(subName, sortOrder) {
-
+                if (window.subs.length > 1) {
+                    window.stop()
+                }
                 this.doSidebar(subName);
                 require(['view/subreddit-view'], function(SubredditView) {
-
                     App.mainRegion.show(new SubredditView({
                         subName: subName,
                         sortOrder: sortOrder || 'hot'
                     }));
-
-                    // new SubredditView({
-                    //     subName: subName,
-                    //     sortOrder: sortOrder || 'hot'
-                    // });
 
                 })
 
@@ -119,7 +113,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
             //'r/:subName/comments/:id/:slug(/):commentLink(/)': 'single',
             single: function(subName, id, slug, commentLink) {
-
+                if (window.subs.length > 1) {
+                    window.stop()
+                }
                 this.doSidebar(subName);
 
                 require(['view/single-view', 'view/bottom-bar-view'], function(SingleView, BottomBarView) {

@@ -1,7 +1,5 @@
-define([
-		'underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/base-view', 'model/comment', 'event/channel', 'cookie'
-	],
-	function(_, Backbone, Resthub, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, channel, Cookie) {
+define(['underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/base-view', 'model/comment', 'cookie'],
+	function(_, Backbone, Resthub, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, Cookie) {
 		var CommentView = BaseView.extend({
 			//strategy: 'append',
 

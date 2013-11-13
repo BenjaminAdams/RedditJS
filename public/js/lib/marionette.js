@@ -2272,7 +2272,7 @@
        var view = this.buildItemView(item, ItemView, itemViewOptions);
 
        // set up the child view event forwarding
-       this.addChildViewEventForwarding(view);
+       // this.addChildViewEventForwarding(view);
 
        // this view is about to be added
        this.triggerMethod("before:item:added", view);

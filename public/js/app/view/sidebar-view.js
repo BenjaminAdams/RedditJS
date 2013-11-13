@@ -1,11 +1,15 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/basem-view', 'view/login-view', 'model/sidebar', 'event/channel', 'cookie'],
-	function($, _, Backbone, Resthub, SidebarTmpl, BaseView, LoginView, SidebarModel, channel, Cookie) {
+define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/basem-view', 'view/login-view', 'model/sidebar', 'cookie'],
+	function(App, $, _, Backbone, Resthub, SidebarTmpl, BaseView, LoginView, SidebarModel, Cookie) {
 		var SidebarView = BaseView.extend({
 			//el: ".side",
 			events: {
 				'submit #search': 'gotoSearch',
 				'click .add': 'subscribe',
 				'click .remove': 'unsubscribe'
+			},
+
+			regions: {
+				'theLogin': '#theLogin'
 			},
 
 			initialize: function(data) {
@@ -15,20 +19,28 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				this.dynamicStylesheet(this.subName)
 				this.model = new SidebarModel(this.subName)
 
+				if (this.subName != "front") {
+					this.model.fetch({
+						success: this.render
+					});
+				}
+
+			},
+			onRender: function() {
+				console.log('sidebar rendered')
+				this.loadLoginView()
 				if (this.subName == "front") {
 					//this.model.set('header_img', 'img/logo.png')
 					this.model.set('isFront', true)
-					this.render()
-					this.loadLoginView()
-					channel.trigger("header:update", this.model);
 					this.$('.titlebox').hide()
-
-				} else { //only fetch sidebar info if on the front page
-					this.model.fetch({
-						success: this.loaded
-					});
 				}
-				// this.$() is a shortcut for this.$el.find().
+				this.loadLoginView()
+				App.trigger("header:update", this.model);
+				App.trigger('submit:type', this.model.get('submission_type'))
+				if (window.settings.get('showSidebar') === false) {
+					$('.side').hide()
+				}
+				this.addOutboundLink()
 
 			},
 			addOutboundLink: function() {
@@ -50,7 +62,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 
 				this.api("api/subscribe", 'POST', params, function(data) {
 					console.log("vote done", data)
-					channel.trigger('header:refreshSubreddits')
+					App.trigger('header:refreshSubreddits')
 				});
 
 			},
@@ -66,7 +78,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				};
 				this.api("api/subscribe", 'POST', params, function(data) {
 					console.log("vote done", data)
-					channel.trigger('header:refreshSubreddits')
+					App.trigger('header:refreshSubreddits')
 				});
 			},
 
@@ -80,27 +92,20 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', '
 				})
 
 			},
-			loaded: function(response, sidebar) {
-				this.render()
-				this.loadLoginView()
-				channel.trigger("header:update", this.model);
-				channel.trigger('submit:type', this.model.get('submission_type'))
-				if (window.settings.get('showSidebar') === false) {
-					$('.side').hide()
-				}
-				this.addOutboundLink()
-				//HeaderView.updateHeader(this.model)
+			// loaded: function(response, sidebar) {
+			// 	this.render()
+			// 	this.loadLoginView()
+			// 	channel.trigger("header:update", this.model);
+			// 	channel.trigger('submit:type', this.model.get('submission_type'))
+			// 	if (window.settings.get('showSidebar') === false) {
+			// 		$('.side').hide()
+			// 	}
+			// 	this.addOutboundLink()
+			// 	//HeaderView.updateHeader(this.model)
 
-			},
+			// },
 			loadLoginView: function() {
-
-				try {
-					this.loginView = new LoginView({
-						root: "#theLogin"
-					})
-				} catch (e) {
-					console.log('failed to load login view', e)
-				}
+				this.theLogin.show(new LoginView())
 
 				//now render the login view
 				//this.loginView.render();

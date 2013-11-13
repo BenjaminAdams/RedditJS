@@ -21,6 +21,7 @@ define(['backbone', 'model/single', 'localstorage'], function(Backbone, SingleMo
 				return "/api/?url=reddits/mine.json&limit=100&cookie=" + $.cookie('reddit_session');
 			} else {
 				return "/api/?url=subreddits.json"
+				//return 'http://api.reddit.com/subreddits.json&jsonp=?'
 			}
 		},
 		//so we have the attributes in the root of the model

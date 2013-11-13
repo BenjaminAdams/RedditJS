@@ -1,32 +1,41 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!template/login', 'event/channel', 'cookie', 'localstorage'],
-	function($, _, Backbone, Resthub, BaseView, LogInTmpl, channel, Cookie, Localstorage) {
-		var LoginView = BaseView.extend({
+define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!template/login', 'cookie', 'localstorage'],
+	function(App, $, _, Backbone, BaseView, LogInTmpl, Cookie, Localstorage) {
+		return BaseView.extend({
+			template: LogInTmpl,
 			events: {
 				'submit #login_login-main': 'login'
 			},
+			ui: {
+				'loginThrobber': '.loginThrobber',
+				'status': '.status',
+				'loginError': '.loginError'
+			},
 			initialize: function(data) {
 				_.bindAll(this);
-				this.template = LogInTmpl;
 				this.render()
+
+				App.on("logout", this.logout, this);
+
+			},
+			onRender: function() {
 				if (this.checkIfLoggedIn() === true) {
 					this.$el.hide()
 				} else {
 					this.$el.show()
 				}
-
-				channel.on("logout", this.logout, this);
-
 			},
+
 			login: function(e) {
+				var self = this
 				if (e) {
 					e.preventDefault()
 					e.stopPropagation()
 				}
-				this.$('.loginThrobber').css('display', 'inline-block')
-				this.$('.status').html(' ') //clear the status
-				this.$('.status').hide()
 
-				var self = this;
+				this.ui.loginThrobber.css('display', 'inline-block')
+				this.ui.status.html(' ') //clear the status
+				this.ui.status.hide()
+
 				var user = this.$(".loginUsername").val()
 				var pw = this.$(".loginPassword").val()
 				console.log(user, pw)
@@ -49,18 +58,18 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 					if (typeof data.json.errors !== 'undefined' && data.json.errors.length > 0) {
 						//alert("unable to login")
 						console.log(data.json.errors)
-						this.$('.loginError').show()
-						this.$('.loginError').html(data.json.errors[0][1])
-						this.$('.loginThrobber').css('display', 'none')
+						self.ui.loginError.show().html(data.json.errors[0][1])
+
+						self.ui.loginThrobber.css('display', 'none')
 
 					} else {
-						this.$('.loginThrobber').css('display', 'none')
+						self.ui.loginThrobber.css('display', 'none')
 						var loginData = data.json.data;
 						console.log(loginData)
 						window.me = loginData
 						self.setLoginCookies(loginData.cookie, loginData.modhash, user)
 
-						channel.trigger("login");
+						App.trigger("login");
 						//self.$el.hide()
 						$('#theLogin').hide()
 
@@ -106,5 +115,5 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'view/base-view', 'hbs!te
 			}
 
 		});
-		return LoginView;
+
 	});

@@ -6,6 +6,7 @@ module.exports = {
 	get: function(res, req) {
 
 		var url = require('url');
+
 		var url_parts = url.parse(req.url, true);
 		var urlStr = url_parts.query.url
 		var cookie = url_parts.query.cookie
@@ -37,12 +38,9 @@ module.exports = {
 			}
 
 			if (!error && response.statusCode == 200 || response.statusCode == 304) {
-
 				res.json(JSON.parse(body))
-
 			} else {
 				res.send(response.statusCode)
-
 			}
 		});
 

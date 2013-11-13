@@ -1,7 +1,5 @@
- define([
-         'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'collection/subreddit', 'event/channel'
-     ],
-     function(_, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, SubredditCollection, channel) {
+ define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'collection/subreddit'],
+     function(App, _, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, SubredditCollection) {
          var SubredditView = Resthub.View.extend({
 
              el: $("#bottom-bar"),
@@ -36,12 +34,12 @@
                  this.selectedID = false;
                  this.pixelsOfOneImg = 97.5
 
-                 channel.on("bottombar:selected", this.selected, this); //when the user focuses on a single post page
-                 channel.on("btmbar:remove", this.remove, this); //clears everthing in this view
-                 channel.on("btmbar:gotoPrev", this.gotoPrev, this);
-                 channel.on("btmbar:gotoNext", this.gotoNext, this);
+                 App.on("bottombar:selected", this.selected, this); //when the user focuses on a single post page
+                 App.on("btmbar:remove", this.remove, this); //clears everthing in this view
+                 App.on("btmbar:gotoPrev", this.gotoPrev, this);
+                 App.on("btmbar:gotoNext", this.gotoNext, this);
                  $(window).bind('keydown', this.keyPress); //remove this later!
-                 channel.trigger("single:giveBtnBarID"); //ask the single view to give you the btm bar ID to make active
+                 App.trigger("single:giveBtnBarID"); //ask the single view to give you the btm bar ID to make active
 
                  this.loading = false; //keeps track if we are loading more posts or not
                  this.scrolling = false; //timer for when the users movement over the bottom bar
@@ -69,10 +67,10 @@
              },
              remove: function() {
                  $(window).unbind('keydown', this.keyPress);
-                 channel.off("btmbar:remove", this.remove, this);
-                 channel.off("bottombar:selected", this.selected, this)
-                 channel.off("btmbar:gotoPrev", this.gotoPrev, this);
-                 channel.off("btmbar:gotoNext", this.gotoNext, this);
+                 App.off("btmbar:remove", this.remove, this);
+                 App.off("bottombar:selected", this.selected, this)
+                 App.off("btmbar:gotoPrev", this.gotoPrev, this);
+                 App.off("btmbar:gotoNext", this.gotoNext, this);
                  this.undelegateEvents();
                  this.$el.empty();
                  this.stopListening();

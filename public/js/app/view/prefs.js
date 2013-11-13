@@ -3,8 +3,8 @@
 Change site settings
 
 */
-define(['underscore', 'backbone', 'resthub', 'hbs!template/prefs', 'view/base-view', 'event/channel'],
-	function(_, Backbone, Resthub, PrefsTmpl, BaseView, channel) {
+define(['underscore', 'backbone', 'resthub', 'hbs!template/prefs', 'view/base-view'],
+	function(_, Backbone, Resthub, PrefsTmpl, BaseView) {
 		var PrefsView = BaseView.extend({
 			//strategy: 'append',
 			el: $(".content"),

@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup', 'view/login-view', 'model/user-about', 'event/channel', 'cookie'],
-	function($, _, Backbone, Resthub, LoginPopupTmpl, LoginView, UserModel, channel, cookie) {
+define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup', 'view/login-view', 'model/user-about', 'cookie'],
+	function(App, $, _, Backbone, Resthub, LoginPopupTmpl, LoginView, UserModel, cookie) {
 		var LoginPopupView = LoginView.extend({
 			el: "#popupWindow",
 			events: {
@@ -16,7 +16,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup
 				this.render()
 				this.getNewCaptcha()
 
-				channel.on("login", this.loginSuccess, this);
+				App.on("login", this.loginSuccess, this);
 			},
 
 			doLogin: function(e) {

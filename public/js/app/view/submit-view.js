@@ -3,8 +3,8 @@
 Submit a link or text post to any subreddit
 
 */
-define(['underscore', 'backbone', 'resthub', 'hbs!template/submit', 'view/base-view', 'event/channel'],
-	function(_, Backbone, Resthub, SubmitTmpl, BaseView, channel) {
+define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/submit', 'view/base-view'],
+	function(App, _, Backbone, Resthub, SubmitTmpl, BaseView) {
 		var SubmitView = BaseView.extend({
 			//strategy: 'append',
 			el: $(".content"),
@@ -31,8 +31,8 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/submit', 'view/base-v
 				this.type = 'link'
 
 				this.render(this.subName);
-				channel.on("submit:type", this.changeType, this);
-				channel.on("submit:subreddits", this.loadSubreddits, this);
+				App.on("submit:type", this.changeType, this);
+				App.on("submit:subreddits", this.loadSubreddits, this);
 				this.loadSubreddits()
 			},
 			/*

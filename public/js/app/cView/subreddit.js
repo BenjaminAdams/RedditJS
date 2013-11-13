@@ -4,23 +4,24 @@ define(['App', 'backbone', 'marionette', 'jquery', 'hbs!template/post-row', 'hbs
             //return Marionette.CollectionView.extend({
             initialize: function(options) {
                 _.bindAll(this);
-                this.itemViewtemplate;
+                this.itemViewtemplate = 'normal';
                 this.gridOption = options.gridOption;
                 this.setGridView(this.gridOption)
                 // this.gridOption = 'normal';
             },
+            //IT MAY SAVE CPU to use this!!!!!!!!
             // itemViewOptions: {
             //     gridOption: this.gridOption,
             //     template: this.itemViewtemplate
             // },
             itemViewOptions: function(model, index) {
                 // do some calculations based on the model
-                console.log('lolasd')
                 return {
                     gridOption: this.gridOption,
                     template: this.itemViewtemplate
                 }
             },
+
             changeGridView: function(option) {
                 this.gridOption = option
                 this.setGridView(this.gridOption)
@@ -65,6 +66,29 @@ define(['App', 'backbone', 'marionette', 'jquery', 'hbs!template/post-row', 'hbs
                     //this.ui.siteTable.html('')
                     this.resize()
                 }
+            },
+            resize: function() {
+                var mobileWidth = 1000; //when to change to mobile CSS
+                if (this.gridOption == "large") {
+                    $('.side').hide()
+                    //change css of 
+                    var docWidth = $(document).width()
+                    var newWidth = 0;
+                    if (docWidth > mobileWidth) {
+                        newWidth = docWidth - 355;
+                    } else {
+                        newWidth = docWidth;
+                    }
+                    $('#dynamicWidth').html(' < style > .large - thumb {width: ' + newWidth + 'px} < /style>');
+                } else if (window.settings.get('showSidebar') === true && this.gridOption != "grid") {
+
+                    if (mobileWidth > $(document).width()) {
+                        $('.side').hide()
+                    } else {
+                        $('.side').show()
+                    }
+                }
+
             },
 
         });

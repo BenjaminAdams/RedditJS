@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/user-sidebar', 'view/base-view', 'view/login-view', 'model/user-about', 'event/channel', 'cookie'],
-	function($, _, Backbone, Resthub, UserSidebarTmpl, BaseView, LoginView, UserAboutModel, channel, Cookie) {
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/user-sidebar', 'view/base-view', 'view/login-view', 'model/user-about', 'cookie'],
+	function($, _, Backbone, Resthub, UserSidebarTmpl, BaseView, LoginView, UserAboutModel, Cookie) {
 		var UserSidebarView = BaseView.extend({
 			el: ".side",
 			events: {

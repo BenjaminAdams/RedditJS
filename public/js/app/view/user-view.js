@@ -1,7 +1,7 @@
 define([
-		'underscore', 'backbone', 'resthub', 'hbs!template/user', 'view/comment-view', 'view/subreddit-view', 'collection/user', 'event/channel', 'cookie'
+		'underscore', 'backbone', 'resthub', 'hbs!template/user', 'view/comment-view', 'view/subreddit-view', 'collection/user', 'cookie'
 	],
-	function(_, Backbone, Resthub, UserTmpl, CommentView, SubredditView, UserCollection, channel, Cookie) {
+	function(_, Backbone, Resthub, UserTmpl, CommentView, SubredditView, UserCollection, Cookie) {
 		var UserView = SubredditView.extend({
 
 			el: $(".content"),
@@ -29,7 +29,7 @@ define([
 				})
 				this.template = UserTmpl
 
-				channel.on("subreddit:remove", this.remove, this);
+				App.on("subreddit:remove", this.remove, this);
 				this.render();
 
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")

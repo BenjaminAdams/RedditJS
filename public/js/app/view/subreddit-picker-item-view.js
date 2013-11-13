@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/subreddit-picker-item', 'view/base-view', 'event/channel'],
-    function($, _, Backbone, Resthub, SRPitemTmpl, BaseView, channel) {
+define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/subreddit-picker-item', 'view/base-view'],
+    function(App, $, _, Backbone, Resthub, SRPitemTmpl, BaseView) {
         return BaseView.extend({
             strategy: 'append',
             template: SRPitemTmpl,
@@ -32,7 +32,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/subreddit-p
                 this.api("api/subscribe", 'POST', params, function(data) {
                     console.log("subscribe done", data)
                     //edit the window and cookie
-                    channel.trigger('header:refreshSubreddits')
+                    App.trigger('header:refreshSubreddits')
 
                 });
 
@@ -52,7 +52,7 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/subreddit-p
 
                 this.api("api/subscribe", 'POST', params, function(data) {
                     console.log("unsubscribe done", data)
-                    channel.trigger('header:refreshSubreddits')
+                    App.trigger('header:refreshSubreddits')
                 });
             }
 

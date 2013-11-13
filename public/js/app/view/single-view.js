@@ -1,7 +1,5 @@
-define([
-		'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view/post-row-view', 'view/sidebar-view', 'view/comment-view', 'view/base-view', 'model/single', 'event/channel', 'cookie'
-	],
-	function(_, Backbone, Resthub, singleTmpl, PostRowView, SidebarView, CommentView, BaseView, SingleModel, channel, Cookie) {
+define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view/post-row-view', 'view/sidebar-view', 'view/comment-view', 'view/base-view', 'model/single', 'cookie'],
+	function(App, _, Backbone, Resthub, singleTmpl, PostRowView, SidebarView, CommentView, BaseView, SingleModel, Cookie) {
 		var SingleView = BaseView.extend({
 			el: $(".content"),
 			template: singleTmpl,
@@ -69,15 +67,15 @@ define([
 				$(window).resize(this.debouncer(function(e) {
 					self.resize()
 				}));
-				channel.on("single:remove", this.remove, this);
-				channel.on("single:giveBtnBarID", this.triggerID, this);
+				App.on("single:remove", this.remove, this);
+				App.on("single:giveBtnBarID", this.triggerID, this);
 
 			},
 			remove: function() {
 				//$(window).unbind('keydown', this.keyPress);
 				$(window).off('resize', this.debouncer);
-				channel.off("single:remove", this.remove, this);
-				channel.off("single:giveBtnBarID", this.triggerID, this);
+				App.off("single:remove", this.remove, this);
+				App.off("single:giveBtnBarID", this.triggerID, this);
 				this.undelegateEvents();
 				this.$el.empty();
 				this.stopListening();
@@ -203,8 +201,8 @@ define([
 				}
 			},
 			triggerID: function() {
-				channel.trigger("bottombar:selected", "t3_" + this.id);
-				//channel.trigger("bottombar:selected", this.model);
+				App.trigger("bottombar:selected", "t3_" + this.id);
+				//App.trigger("bottombar:selected", this.model);
 			},
 
 			/**************Fetching functions ****************/
@@ -223,10 +221,10 @@ define([
 				});
 			},
 			gotoPrev: function() {
-				channel.trigger('btmbar:gotoPrev')
+				App.trigger('btmbar:gotoPrev')
 			},
 			gotoNext: function() {
-				channel.trigger('btmbar:gotoNext')
+				App.trigger('btmbar:gotoNext')
 			},
 
 			renderStuff: function(model) {

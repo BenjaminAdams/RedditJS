@@ -1,8 +1,7 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/header', 'view/userbar-view', 'view/basem-view', 'model/sidebar', 'event/channel', 'cookie'],
-	function(App, $, _, Backbone, Resthub, HeaderTmpl, UserbarView, BaseView, SidebarModel, channel, Cookie) {
-		var HeaderView = BaseView.extend({
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/userbar-view', 'view/basem-view', 'model/sidebar', 'cookie'],
+	function(App, $, _, Backbone, HeaderTmpl, UserbarView, BaseView, SidebarModel, Cookie) {
+		return BaseView.extend({
 			template: HeaderTmpl,
-			el: $("#theHeader"),
 			events: {
 				'click .tabmenu-right li': 'changeGridOption',
 				'click .drop-down-header-toggle': 'toggleDropdown',
@@ -24,10 +23,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/head
 				console.log("I should only render the header once")
 				//this.render();
 
-				channel.on("header:update", this.updateHeader, this);
-				channel.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
-				channel.on("header:updateSortOrder", this.updateSortOrder, this);
-				channel.on("header:refreshSubreddits", this.refreshSubreddits, this);
+				App.on("header:update", this.updateHeader, this);
+				App.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
+				App.on("header:updateSortOrder", this.updateSortOrder, this);
+				App.on("header:refreshSubreddits", this.refreshSubreddits, this);
 
 				//load the subreddits on the top bar
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
@@ -36,10 +35,12 @@ define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/head
 
 			},
 			onRender: function() {
+
 				this.changeActiveGrid($.cookie('gridOption')) //so we are highlighting the correct grid option on page load
 
 				this.btmRightHeader.show(new UserbarView())
 				this.displayMySubreddits()
+
 			},
 
 			showLoginPopup: function() {
@@ -165,7 +166,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/head
 				//			<li><a href="/r/pics/">pics</a></li>
 				//   Every Subreddit after the first one has a seperator:  
 				//			<li><span class="separator">-</span><a href= "/r/funny/">funny</a></li>
-
+				//if (this.checkIfLoggedIn() === false) {
+				//window.subreddits.loadDefaultSubreddits()
+				//}
 				//window.subreddits = this.mySubreddits
 				var seperator = '';
 				var count = 0;
@@ -184,7 +187,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/head
 				})
 
 				this.displayDropChoices()
-				channel.trigger("submit:subreddits");
+				App.trigger("submit:subreddits");
 			},
 			displayDropChoices: function() {
 				this.$('.drop-down-header').html(" ") //clear the div
@@ -202,7 +205,4 @@ define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/head
 			}
 
 		});
-		//return new HeaderView();
-		//return header;
-		return HeaderView;
 	});

@@ -14,7 +14,7 @@ define(['underscore', 'backbone', 'jquery', 'localstorage'], function(_, Backbon
 
 		},
 		url: function() {
-			console.log("/api/?url=user/" + this.username + "/about.json")
+			//console.log("/api/?url=user/" + this.username + "/about.json")
 			//return "/api/?url=user/" + this.username + "/about.json&cookie=" + $.cookie('reddit_session');
 			return "/api/?url=user/" + this.username + "/about.json"
 		},
