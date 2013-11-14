@@ -58,7 +58,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 				//this.render();
 				this.imagesAdded = 0; //keeps a total of how many images we are loading
-				//this.initGridOption();
 
 				this.imgAry = []
 
@@ -87,26 +86,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				//this.helpFillUpScreen();
 
 			},
-			//we have to override the remove event because the window.scroll event will not be removed by the garbage collector
-			//cant create infinite scroll without this.
 
-			// remove: function() {
-			// 	var self = this
-
-			// 	this.removePendingGrid()
-			// 	window.stop() //prevents new images from being downloaded
-			// 	$(window).off("scroll", this.watchScroll);
-			// 	$(window).off('resize', this.debouncer);
-			// 	App.off("subreddit:changeGridOption", this.changeGridOption, this);
-			// 	App.off("subreddit:remove", this.remove, this);
-			// 	this.undelegateEvents();
-			// 	this.$el.empty();
-			// 	this.stopListening();
-			// 	console.log('**********************removed the view *********************************')
-
-			// 	//call the superclass remove method
-			// 	//Backbone.View.prototype.remove.apply(this, arguments);
-			// },
 			onBeforeClose: function() {
 				console.log('closing subreddit-view')
 				//window.stop() //prevents new images from being downloaded
@@ -118,6 +98,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			},
 
 			onRender: function() {
+				this.initGridOption();
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				//console.log("window.subs=", window.subs)
 
@@ -143,12 +124,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					//this.fetchMore();
 				}
 
-				this.subredditCollectionView = new SrCView({
-					collection: this.collection,
-					itemView: PostRowView,
-					gridOption: this.gridOption
-				})
-				this.siteTable.show(this.subredditCollectionView)
+				if (this.gridOption != 'grid') {
+					this.subredditCollectionView = new SrCView({
+						collection: this.collection,
+						itemView: PostRowView,
+						gridOption: this.gridOption
+					})
+					this.siteTable.show(this.subredditCollectionView)
+				}
 				this.hideMoarBtn()
 				this.resize()
 			},
@@ -174,50 +157,50 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			},
 
 			/**************Grid functions ****************/
-			// initGridOption: function() {
-			// 	var self = this
-			// 	/*grid option:
-			// 		normal - the default Reddit styling
-			// 		small - small thumbnails in the page
-			// 		large - full sized images in the page
-			// 	*/
-			// 	this.gridOption = $.cookie('gridOption');
-			// 	if (typeof this.gridOption === 'undefined' || this.gridOption === null || this.gridOption === "") {
-			// 		this.gridOption = 'normal'
-			// 	} else if (this.gridOption == "large") {
-			// 		this.resize()
-			// 	}
+			initGridOption: function() {
+				var self = this
+				/*grid option:
+					normal - the default Reddit styling
+					small - small thumbnails in the page
+					large - full sized images in the page
+				*/
+				this.gridOption = $.cookie('gridOption');
+				if (typeof this.gridOption === 'undefined' || this.gridOption === null || this.gridOption === "") {
+					this.gridOption = 'normal'
+				} else if (this.gridOption == "large") {
+					this.resize()
+				}
 
-			// 	this.gridViewSetup()
+				this.gridViewSetup()
 
-			// },
-			// gridViewSetup: function() {
-			// 	var self = this
+			},
+			gridViewSetup: function() {
+				var self = this
 
-			// 	if (this.gridOption == 'grid') {
+				if (this.gridOption == 'grid') {
 
-			// 		$('.side').hide()
-			// 		this.ui.siteTable.css('margin-right', '0') //some custom CSS were making this bad in grid mode
-			// 		//calculate how many columns we will have
-			// 		var colCount = Math.floor($(document).width() / 305)
+					$('.side').hide()
+					this.ui.siteTable.css('margin-right', '0') //some custom CSS was making this bad in grid mode
+					//calculate how many columns we will have
+					var colCount = Math.floor($(document).width() / 305)
 
-			// 		for (var i = 0; i < colCount; i++) {
-			// 			self.ui.siteTable.append('<div class="column"> </div>')
-			// 		}
+					for (var i = 0; i < colCount; i++) {
+						self.ui.siteTable.append('<div class="column"> </div>')
+					}
 
-			// 		this.ui.siteTable.append('<div id="fullImgCache"></div>')
+					this.ui.siteTable.append('<div id="fullImgCache"></div>')
 
-			// 	} else {
+				} else {
 
-			// 		if (window.settings.get('showSidebar') === false) {
-			// 			$('.side').hide()
-			// 		} else {
-			// 			$('.side').show()
-			// 		}
-			// 		//this.ui.siteTable.html('')
-			// 		this.resize()
-			// 	}
-			// },
+					if (window.settings.get('showSidebar') === false) {
+						$('.side').hide()
+					} else {
+						$('.side').show()
+					}
+					//this.ui.siteTable.html('')
+					this.resize()
+				}
+			},
 			shortestCol: function() {
 				var shortest = null
 				var count = 0
@@ -279,22 +262,27 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					path: '/'
 				});
 
-				//this.changeActiveGrid()
-				//this.resetPosts()
-
-				this.subredditCollectionView.changeGridView(this.gridOption)
-
-				if (this.name == "large") {
-					this.resize()
+				if (this.gridOption == "grid") {
+					//this.changeActiveGrid()
+					this.siteTable.close()
+					this.resetPosts()
+					this.gridViewSetup()
+					this.appendPosts(this.collection)
+				} else {
+					this.subredditCollectionView = new SrCView({
+						collection: this.collection,
+						itemView: PostRowView,
+						gridOption: this.gridOption
+					})
+					this.siteTable.show(this.subredditCollectionView)
+					this.subredditCollectionView.changeGridView(this.gridOption)
 				}
-				//this.gridViewSetup()
-				//this.appendPosts(this.collection)
 
 			},
-			//resetPosts: function() {
-			//this.$('#siteTable').html(" ")
-			//this.ui.siteTable.empty();
-			//},
+			resetPosts: function() {
+				this.$('#siteTable').html(" ")
+				this.ui.siteTable.empty();
+			},
 			/**************Fetching functions ****************/
 			fetchError: function(response, error) {
 				console.log("fetch error, lets retry", this.collection)
@@ -330,107 +318,162 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					});
 				}
 			},
+			// appendPosts: function(collection) {
+			// 	var self = this
+			// 	this.start = new Date()
+			// 	var count = 0;
+			// 	var countSelfs = 0
+			//var frag = document.createDocumentFragment();
+			//var tmpHolder = '';
+
+			// this.siteTable.show(new SrCView({
+			// 	collection: collection,
+			// 	itemView: PostRowView,
+			// 	gridOption: this.gridOption
+			// }))
+
+			//this.subredditCollectionView
+
+			// collection.each(function(model) {
+
+			// 	if (model.get('title') !== null) {
+
+			// 		if (this.gridOption == "small") {
+			// 			//its faster to just render the template with no view
+			// 			this.ui.siteTable.append(PostViewSmallTpl({
+			// 				model: model.attributes
+			// 			}))
+			// 			//var postview = new PostRowView({
+			// 			// root: "#siteTable",
+			// 			// id: model.get('id'),
+			// 			// model: model,
+			// 			// gridOption: this.gridOption
+			// 			//});
+			// 		} else if (this.gridOption == 'grid') {
+
+			// 			//if (model.get('thumbnail') != 'undefined') {
+			// 			//$('#imgCache').append('<img src="' + model.get('thumbnail') + '" />')
+			// 			//}
+
+			// 			if (model.get('imgUrl')) {
+			// 				count++;
+			// 				self.imagesAdded++
+			// 				var newPost = $(PostRowGrid({
+			// 					model: model.attributes
+			// 				}))
+			// 				if (count < 11) {
+
+			// 					var col = self.shortestCol()
+			// 					if (col) {
+			// 						col.append(newPost);
+			// 					}
+			// 				} else {
+			// 					//check if image is cached
+			// 					//var img = new Image()
+			// 					//img.src = model.get('imgUrl');
+
+			// 					var timeout = count * 230 //add an img to the screen every 230 milaseconds
+			// 					self.imgAry[model.get('id')] = setTimeout(function() {
+
+			// 						self.imagesAdded--;
+			// 						var col = self.shortestCol()
+			// 						if (col) {
+			// 							col.append(newPost);
+			// 						}
+			// 					}, timeout);
+
+			// 				}
+
+			// 			} else {
+			// 				countSelfs++;
+			// 				//do not add self posts or links
+
+			// 			}
+
+			// 			//$('<img/>').attr('src', model.get('thumbnail')); //preload thumbnails
+
+			// 		} else if (this.gridOption == "large") {
+
+			// 			var postview = new PostRowView({
+			// 				root: "#siteTable",
+			// 				id: model.get('id'),
+			// 				model: model,
+			// 				gridOption: this.gridOption
+			// 			});
+			// 		} else {
+
+			// 			new PostRowView({
+			// 				//root: "#siteTable",
+			// 				//root: frag,
+			// 				root: self.ui.siteTable,
+			// 				model: model,
+			// 				id: model.get('id'),
+			// 				gridOption: this.gridOption
+			// 			});
+			// 		}
+			// 	}
+			// }, this);
+
+			//this.$('#siteTable').append(frag)
+			//this.$('#siteTable').append(tmpHolder)
+
+			// this.end = new Date()
+			// console.log('subreddit calc time=', this.end - this.start)
+
+			// this.resize()
+
+			// if (this.gridOption == 'grid' && count === 0 && countSelfs > 0) {
+			// 	//if the grid image finder did not find any images, we need to find some more!
+			// 	console.log('found no images, searching for more')
+			// 	this.$('.column:first-child').html('<div style="margin:20% 20%;font-size:20px;">no images found, switch views to see self posts and links</div>')
+
+			// }
+
+			//},
+
 			appendPosts: function(collection) {
 				var self = this
-				this.start = new Date()
 				var count = 0;
 				var countSelfs = 0
-				//var frag = document.createDocumentFragment();
-				//var tmpHolder = '';
 
-				// this.siteTable.show(new SrCView({
-				// 	collection: collection,
-				// 	itemView: PostRowView,
-				// 	gridOption: this.gridOption
-				// }))
+				collection.each(function(model) {
 
-				//this.subredditCollectionView
+					if (model.get('imgUrl')) {
+						count++;
+						self.imagesAdded++
+						var newPost = $(PostRowGrid({
+							model: model.attributes
+						}))
+						if (count < 9999) {
 
-				// collection.each(function(model) {
+							var col = self.shortestCol()
+							if (col) {
+								col.append(newPost);
+							}
+						} else {
+							//check if image is cached
+							//var img = new Image()
+							//img.src = model.get('imgUrl');
 
-				// 	if (model.get('title') !== null) {
+							var timeout = count * 230 //add an img to the screen every 230 milaseconds
+							self.imgAry[model.get('id')] = setTimeout(function() {
 
-				// 		if (this.gridOption == "small") {
-				// 			//its faster to just render the template with no view
-				// 			this.ui.siteTable.append(PostViewSmallTpl({
-				// 				model: model.attributes
-				// 			}))
-				// 			//var postview = new PostRowView({
-				// 			// root: "#siteTable",
-				// 			// id: model.get('id'),
-				// 			// model: model,
-				// 			// gridOption: this.gridOption
-				// 			//});
-				// 		} else if (this.gridOption == 'grid') {
+								self.imagesAdded--;
+								var col = self.shortestCol()
+								if (col) {
+									col.append(newPost);
+								}
+							}, timeout);
 
-				// 			//if (model.get('thumbnail') != 'undefined') {
-				// 			//$('#imgCache').append('<img src="' + model.get('thumbnail') + '" />')
-				// 			//}
+						}
 
-				// 			if (model.get('imgUrl')) {
-				// 				count++;
-				// 				self.imagesAdded++
-				// 				var newPost = $(PostRowGrid({
-				// 					model: model.attributes
-				// 				}))
-				// 				if (count < 11) {
+					} else {
+						countSelfs++;
+						//do not add self posts or links
 
-				// 					var col = self.shortestCol()
-				// 					if (col) {
-				// 						col.append(newPost);
-				// 					}
-				// 				} else {
-				// 					//check if image is cached
-				// 					//var img = new Image()
-				// 					//img.src = model.get('imgUrl');
+					}
 
-				// 					var timeout = count * 230 //add an img to the screen every 230 milaseconds
-				// 					self.imgAry[model.get('id')] = setTimeout(function() {
-
-				// 						self.imagesAdded--;
-				// 						var col = self.shortestCol()
-				// 						if (col) {
-				// 							col.append(newPost);
-				// 						}
-				// 					}, timeout);
-
-				// 				}
-
-				// 			} else {
-				// 				countSelfs++;
-				// 				//do not add self posts or links
-
-				// 			}
-
-				// 			//$('<img/>').attr('src', model.get('thumbnail')); //preload thumbnails
-
-				// 		} else if (this.gridOption == "large") {
-
-				// 			var postview = new PostRowView({
-				// 				root: "#siteTable",
-				// 				id: model.get('id'),
-				// 				model: model,
-				// 				gridOption: this.gridOption
-				// 			});
-				// 		} else {
-
-				// 			new PostRowView({
-				// 				//root: "#siteTable",
-				// 				//root: frag,
-				// 				root: self.ui.siteTable,
-				// 				model: model,
-				// 				id: model.get('id'),
-				// 				gridOption: this.gridOption
-				// 			});
-				// 		}
-				// 	}
-				// }, this);
-
-				//this.$('#siteTable').append(frag)
-				//this.$('#siteTable').append(tmpHolder)
-
-				this.end = new Date()
-				console.log('subreddit calc time=', this.end - this.start)
+				}, this);
 
 				this.resize()
 
@@ -442,40 +485,33 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				}
 
 			},
-			gotNewPosts: function() {
+
+			gotNewPosts: function(models, res) {
+				//this.$('.loading').hide()
+
+				if (this.gridOption == 'grid') {
+					//displaying posts with collection view for everything besides gridview
+					if (typeof res.data.children.length === 'undefined') {
+						return; //we might have an undefined length?
+					}
+					var newCount = res.data.children.length
+					var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
+
+					window.subs[this.subID] = this.collection
+					this.appendPosts(newModels)
+				}
+
 				this.loading = false; //turn the flag on to go ahead and fetch more!
+				this.showMoarBtn()
+				this.helpFillUpScreen()
+				//fetch more  posts with the After
 				if (this.collection.after == "stop") {
 					console.log("AFTER = stop")
 					$(window).off("scroll", this.watchScroll);
 					this.ui.nextprev.html('Done')
 				}
-				window.subs[this.subID] = this.collection
-
-				this.helpFillUpScreen()
-				this.showMoarBtn()
 
 			},
-			// gotNewPosts: function(models, res) {
-			// 	//this.$('.loading').hide()
-
-			// 	if (typeof res.data.children.length === 'undefined') {
-			// 		return; //we might have an undefined length?
-			// 	}
-			// 	var newCount = res.data.children.length
-			// 	var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
-
-			// 	//fetch more  posts with the After
-			// 	if (this.collection.after == "stop") {
-			// 		console.log("AFTER = stop")
-			// 		$(window).off("scroll", this.watchScroll);
-			// 		this.ui.nextprev.html('Done')
-			// 	}
-
-			// 	window.subs[this.subID] = this.collection
-			// 	this.appendPosts(newModels)
-			// 	this.loading = false; //turn the flag on to go ahead and fetch more!
-
-			// },
 
 			/**************Infinite Scroll functions ****************/
 			watchScroll: function(e) {

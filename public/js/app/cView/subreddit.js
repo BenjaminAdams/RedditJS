@@ -34,62 +34,10 @@ define(['App', 'backbone', 'marionette', 'jquery', 'hbs!template/post-row', 'hbs
                     this.itemViewtemplate = PostRowSmallTmpl
                 } else if (option == 'large') {
                     this.itemViewtemplate = PostRowLargeTmpl
-                } else if (option == 'grid') {
-                    this.itemViewtemplate = PostRowGridTmpl
-                }
-
-                this.gridViewSetup()
-            },
-            gridViewSetup: function() {
-                var self = this
-
-                if (this.gridOption == 'grid') {
-
-                    $('.side').hide()
-                    this.ui.siteTable.css('margin-right', '0') //some custom CSS were making this bad in grid mode
-                    //calculate how many columns we will have
-                    var colCount = Math.floor($(document).width() / 305)
-
-                    for (var i = 0; i < colCount; i++) {
-                        self.ui.siteTable.append('<div class="column"> </div>')
-                    }
-
-                    this.ui.siteTable.append('<div id="fullImgCache"></div>')
-
-                } else {
-
-                    if (window.settings.get('showSidebar') === false) {
-                        $('.side').hide()
-                    } else {
-                        $('.side').show()
-                    }
-                    //this.ui.siteTable.html('')
-                    this.resize()
-                }
-            },
-            resize: function() {
-                var mobileWidth = 1000; //when to change to mobile CSS
-                if (this.gridOption == "large") {
-                    $('.side').hide()
-                    //change css of 
-                    var docWidth = $(document).width()
-                    var newWidth = 0;
-                    if (docWidth > mobileWidth) {
-                        newWidth = docWidth - 355;
-                    } else {
-                        newWidth = docWidth;
-                    }
-                    $('#dynamicWidth').html(' < style > .large - thumb {width: ' + newWidth + 'px} < /style>');
-                } else if (window.settings.get('showSidebar') === true && this.gridOption != "grid") {
-
-                    if (mobileWidth > $(document).width()) {
-                        $('.side').hide()
-                    } else {
-                        $('.side').show()
-                    }
-                }
-
-            },
+                } //else if (option == 'grid') {
+                //this.itemViewtemplate = PostRowGridTmpl
+                //}
+            }
 
         });
     });
