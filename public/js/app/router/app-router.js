@@ -100,14 +100,14 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             },
 
             subredditDomain: function(domain, sortOrder) {
-                console.log('domain route')
                 this.doSidebar('front');
                 require(['view/subreddit-view'], function(SubredditView) {
-                    var subredditView = new SubredditView({
+                    App.mainRegion.show(new SubredditView({
                         subName: '',
                         sortOrder: sortOrder || 'hot',
                         domain: domain
-                    });
+                    }));
+
                 })
             },
 
@@ -119,11 +119,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 this.doSidebar(subName);
 
                 require(['view/single-view', 'view/bottom-bar-view'], function(SingleView, BottomBarView) {
-                    new SingleView({
+
+                    App.mainRegion.show(new SingleView({
                         subName: subName,
                         id: id,
                         commentLink: commentLink || null
-                    });
+                    }));
 
                     if (window.settings.get('btmbar') === true) {
                         console.log('BTM BAR=', this.bottomBar)

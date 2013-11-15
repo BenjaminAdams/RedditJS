@@ -1,9 +1,7 @@
 define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'hbs!template/post-row-grid', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'collection/subreddit', 'cView/subreddit', 'cookie'],
 	function(App, _, Backbone, subredditTmpl, PostViewSmallTpl, PostRowGrid, PostRowView, SidebarView, BaseView, SubredditCollection, SrCView, Cookie) {
-		var SubredditView = BaseView.extend({
-
+		return BaseView.extend({
 			template: subredditTmpl,
-
 			events: {
 
 				//'click .tabmenu-right li': 'changeGridOption',
@@ -12,16 +10,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				'click .nextprev': 'fetchMore'
 
 			},
-
 			ui: {
 				'siteTable': '#siteTable',
 				'nextprev': '.nextprev'
-
 			},
 			regions: {
 				'siteTable': '#siteTable'
 			},
-
 			initialize: function(options) {
 				//this.$('#siteTable').empty()
 				this.$el.empty()
@@ -444,7 +439,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 						var newPost = $(PostRowGrid({
 							model: model.attributes
 						}))
-						if (count < 9999) {
+						if (count < 20) {
 
 							var col = self.shortestCol()
 							if (col) {
@@ -497,11 +492,11 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					var newCount = res.data.children.length
 					var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
 
-					window.subs[this.subID] = this.collection
 					this.appendPosts(newModels)
 				}
 
 				this.loading = false; //turn the flag on to go ahead and fetch more!
+				window.subs[this.subID] = this.collection
 				this.showMoarBtn()
 				this.helpFillUpScreen()
 				//fetch more  posts with the After
@@ -528,7 +523,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 					//keep the scrollheight in the collection so when we return to it, we can auto-move to it
 					//bad?
-					this.collection.scroll = $(window).scrollTop()
+					//if we are not checking for this it will reset the scrolltop back to zero when we reach this subreddit
+					var windowScrollTop = $(window).scrollTop()
+					if (windowScrollTop > 50) {
+						this.collection.scroll = windowScrollTop
+						window.subs[this.subID].scroll = $(window).scrollTop()
+
+					}
 
 					if ((($(window).scrollTop() + $(window).height()) + this.triggerPoint >= $(document).height()) && this.loading === false) {
 
@@ -565,5 +566,5 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			}
 
 		});
-		return SubredditView;
+
 	});

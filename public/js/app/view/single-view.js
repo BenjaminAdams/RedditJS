@@ -1,7 +1,6 @@
-define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view/post-row-view', 'view/sidebar-view', 'view/comment-view', 'view/base-view', 'model/single', 'cookie'],
-	function(App, _, Backbone, Resthub, singleTmpl, PostRowView, SidebarView, CommentView, BaseView, SingleModel, Cookie) {
-		var SingleView = BaseView.extend({
-			el: $(".content"),
+define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/loading', 'view/post-row-view', 'view/sidebar-view', 'view/comment-view', 'view/basem-view', 'model/single', 'cookie'],
+	function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, CommentView, BaseView, SingleModel, Cookie) {
+		return BaseView.extend({
 			template: singleTmpl,
 			events: function() {
 				var _events = {
@@ -39,54 +38,52 @@ define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view
 			initialize: function(options) {
 				_.bindAll(this);
 
-				$(this.el).html('')
-				this.scrollTop()
 				var self = this;
 				this.subName = options.subName
 				this.id = options.id
 				this.commentLink = options.commentLink
-				this.template = singleTmpl;
 				this.hasRendered = false
 				this.triggerID()
 
 				if (typeof window.curModel === 'undefined') {
+
 					this.fetchComments(this.loaded)
+					this.template = loadingTmpl
 
 				} else {
-					//console.log('loading a model from memory')
+					console.log('loading a model from memory')
 					//this is what we do when we pass in a model with out the comments
 					this.model = window.curModel;
 					this.updatePageTitle(this.model.get('title'));
-					delete window.curModel; //memory management
+					//delete window.curModel; //memory management
 					this.renderStuff(this.model);
 					//well now we need to get the comments for this post!
 					this.fetchComments(this.loadComments)
 
 				}
 
-				$(window).resize(this.debouncer(function(e) {
-					self.resize()
-				}));
 				App.on("single:remove", this.remove, this);
 				App.on("single:giveBtnBarID", this.triggerID, this);
 
 			},
-			remove: function() {
-				//$(window).unbind('keydown', this.keyPress);
+			onRender: function() {
+				this.scrollTop()
+				$(window).resize(this.debouncer(function(e) {
+					self.resize()
+				}));
+			},
+			onBeforeClose: function() {
+				console.log('**********************removed the single view ', this.model.get('title'))
 				$(window).off('resize', this.debouncer);
 				App.off("single:remove", this.remove, this);
 				App.off("single:giveBtnBarID", this.triggerID, this);
-				this.undelegateEvents();
-				this.$el.empty();
-				this.stopListening();
+
+				//removes the ajax call if the user decided to leave the page while still waiting on reddit api
 				if (typeof this.fetchXhr !== 'undefined' && this.fetchXhr.readyState > 0 && this.fetchXhr.readyState < 4) {
 					this.fetchXhr.abort();
 				}
 				this.fetchXhr.abort()
-				console.log('**********************removed the single view *********************************')
 
-				//call the superclass remove method
-				//Backbone.View.prototype.remove.apply(this, arguments);
 			},
 			toggleDropDownCmtSort: function() {
 				this.$('.drop-choices-single').toggle()
@@ -111,7 +108,8 @@ define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view
 			},
 
 			fetchComments: function(callback, sortOrder) {
-				this.$el.append("<div class='loadingS' style='position:relative;left:30%;'></div>")
+				//this.$el.append("<div class='loadingS' style='position:relative;left:30%;'></div>")
+				this.$('#siteTableComments').html("<div class='loadingS' style='position:relative;left:30%;'></div>")
 
 				this.comments = new SingleModel({
 					subName: this.subName,
@@ -125,8 +123,6 @@ define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view
 					success: callback,
 					error: this.fetchError
 				});
-
-				console.log('this.id in single', this.id)
 
 				if (this.commentLink !== null) {
 					this.loadLinkedComment()
@@ -147,7 +143,7 @@ define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view
 					//children: this.model.get('children').join(","),
 					children: this.commentLink,
 					byPassAuth: true
-				};
+				}
 
 				this.api("api/morechildren.json", 'POST', params, function(data) {
 					if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
@@ -229,7 +225,9 @@ define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view
 
 			renderStuff: function(model) {
 				//console.log('rendering single=', this.model)
+				this.template = singleTmpl
 				this.render()
+
 				this.hasRendered = true
 				this.addOutboundLink()
 				this.loadLinkedCommentView()
@@ -276,7 +274,7 @@ define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view
 
 				//this.model = model.parseOnce(model.attributes)
 				this.renderStuff(model);
-				this.loadComments(model)
+				this.loadComments(model);
 				//console.log('before activiating btm bar=', model)
 
 			},
@@ -302,5 +300,5 @@ define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/single', 'view
 			}
 
 		});
-		return SingleView;
+
 	});

@@ -24,6 +24,14 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
+.loadingSingle {
+  height: 15px;
+width:15px;
+position:absolute;
+left:30%;
+top:15%;
+
+}
 
 
 .panestack-title {
