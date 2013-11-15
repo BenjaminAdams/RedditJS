@@ -25,4 +25,4 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * Hosted at [Heroku](https://www.heroku.com)
 
 #### Thanks
-[Hire me to build your next webapp](mailto:ben@benadams.co)
+[Hire me to build your next webapp](mailto:armastevs@gmail.com)
