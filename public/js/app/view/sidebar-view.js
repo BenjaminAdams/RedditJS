@@ -1,7 +1,6 @@
 define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/basem-view', 'view/login-view', 'model/sidebar', 'cookie'],
 	function(App, $, _, Backbone, Resthub, SidebarTmpl, BaseView, LoginView, SidebarModel, Cookie) {
 		var SidebarView = BaseView.extend({
-			//el: ".side",
 			events: {
 				'submit #search': 'gotoSearch',
 				'click .add': 'subscribe',
@@ -92,18 +91,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/side
 				})
 
 			},
-			// loaded: function(response, sidebar) {
-			// 	this.render()
-			// 	this.loadLoginView()
-			// 	channel.trigger("header:update", this.model);
-			// 	channel.trigger('submit:type', this.model.get('submission_type'))
-			// 	if (window.settings.get('showSidebar') === false) {
-			// 		$('.side').hide()
-			// 	}
-			// 	this.addOutboundLink()
-			// 	//HeaderView.updateHeader(this.model)
-
-			// },
 			loadLoginView: function() {
 				this.theLogin.show(new LoginView())
 

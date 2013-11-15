@@ -30,9 +30,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				}
 
 				this.gridOption = $.cookie('gridOption') || 'normal';
-				// if (typeof this.gridOption === 'undefined' || this.gridOption === null || this.gridOption === "") {
-				// 	this.gridOption = 'normal'
-				// }
+				//if (typeof this.gridOption === 'undefined' || this.gridOption === null || this.gridOption === "") {
+				//this.gridOption = 'normal'
+				//}
 
 				this.template = subredditTmpl;
 				this.sortOrder = options.sortOrder
@@ -313,118 +313,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					});
 				}
 			},
-			// appendPosts: function(collection) {
-			// 	var self = this
-			// 	this.start = new Date()
-			// 	var count = 0;
-			// 	var countSelfs = 0
-			//var frag = document.createDocumentFragment();
-			//var tmpHolder = '';
-
-			// this.siteTable.show(new SrCView({
-			// 	collection: collection,
-			// 	itemView: PostRowView,
-			// 	gridOption: this.gridOption
-			// }))
-
-			//this.subredditCollectionView
-
-			// collection.each(function(model) {
-
-			// 	if (model.get('title') !== null) {
-
-			// 		if (this.gridOption == "small") {
-			// 			//its faster to just render the template with no view
-			// 			this.ui.siteTable.append(PostViewSmallTpl({
-			// 				model: model.attributes
-			// 			}))
-			// 			//var postview = new PostRowView({
-			// 			// root: "#siteTable",
-			// 			// id: model.get('id'),
-			// 			// model: model,
-			// 			// gridOption: this.gridOption
-			// 			//});
-			// 		} else if (this.gridOption == 'grid') {
-
-			// 			//if (model.get('thumbnail') != 'undefined') {
-			// 			//$('#imgCache').append('<img src="' + model.get('thumbnail') + '" />')
-			// 			//}
-
-			// 			if (model.get('imgUrl')) {
-			// 				count++;
-			// 				self.imagesAdded++
-			// 				var newPost = $(PostRowGrid({
-			// 					model: model.attributes
-			// 				}))
-			// 				if (count < 11) {
-
-			// 					var col = self.shortestCol()
-			// 					if (col) {
-			// 						col.append(newPost);
-			// 					}
-			// 				} else {
-			// 					//check if image is cached
-			// 					//var img = new Image()
-			// 					//img.src = model.get('imgUrl');
-
-			// 					var timeout = count * 230 //add an img to the screen every 230 milaseconds
-			// 					self.imgAry[model.get('id')] = setTimeout(function() {
-
-			// 						self.imagesAdded--;
-			// 						var col = self.shortestCol()
-			// 						if (col) {
-			// 							col.append(newPost);
-			// 						}
-			// 					}, timeout);
-
-			// 				}
-
-			// 			} else {
-			// 				countSelfs++;
-			// 				//do not add self posts or links
-
-			// 			}
-
-			// 			//$('<img/>').attr('src', model.get('thumbnail')); //preload thumbnails
-
-			// 		} else if (this.gridOption == "large") {
-
-			// 			var postview = new PostRowView({
-			// 				root: "#siteTable",
-			// 				id: model.get('id'),
-			// 				model: model,
-			// 				gridOption: this.gridOption
-			// 			});
-			// 		} else {
-
-			// 			new PostRowView({
-			// 				//root: "#siteTable",
-			// 				//root: frag,
-			// 				root: self.ui.siteTable,
-			// 				model: model,
-			// 				id: model.get('id'),
-			// 				gridOption: this.gridOption
-			// 			});
-			// 		}
-			// 	}
-			// }, this);
-
-			//this.$('#siteTable').append(frag)
-			//this.$('#siteTable').append(tmpHolder)
-
-			// this.end = new Date()
-			// console.log('subreddit calc time=', this.end - this.start)
-
-			// this.resize()
-
-			// if (this.gridOption == 'grid' && count === 0 && countSelfs > 0) {
-			// 	//if the grid image finder did not find any images, we need to find some more!
-			// 	console.log('found no images, searching for more')
-			// 	this.$('.column:first-child').html('<div style="margin:20% 20%;font-size:20px;">no images found, switch views to see self posts and links</div>')
-
-			// }
-
-			//},
 
 			appendPosts: function(collection) {
 				var self = this
