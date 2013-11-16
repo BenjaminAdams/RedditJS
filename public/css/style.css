@@ -272,15 +272,21 @@ margin:3px 3px 0px 0px;
 
 
 /* Bottom bar */
-#bottom-bar {
+
+#bottom-bar-container {
 position:fixed;
 bottom:0px;
 left:1px;
 height:70px;
 width: 99999px;
 overflow: hidden;
+}
 
-display:none;
+#bottom-bar {
+
+overflow: hidden;
+position:relative;
+left:1px;
 background-color:#CEE3F8;
 border-top: 1px solid #5F99CF;
 border-bottom: 1px solid #5F99CF;

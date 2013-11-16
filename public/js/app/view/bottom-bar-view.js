@@ -1,10 +1,15 @@
- define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'collection/subreddit'],
-     function(App, _, Backbone, Resthub, subredditTmpl, PostViewSmallTpl, SubredditCollection) {
-         var SubredditView = Resthub.View.extend({
+ define(['App', 'underscore', 'backbone', 'hbs!template/btmbar', 'hbs!template/post-row-small', 'collection/subreddit', 'cView/subreddit', 'view/post-row-view'],
+     function(App, _, Backbone, btmbarTmpl, PostViewSmallTpl, SubredditCollection, SrCView, PostRowView) {
+         return Backbone.Marionette.Layout.extend({
 
-             el: $("#bottom-bar"),
-             //template: subredditTmpl,
-
+             //   el: $("#bottom-bar"),
+             template: btmbarTmpl,
+             regions: {
+                 'posts': '#bottom-bar'
+             },
+             ui: {
+                 bottomBar: "#bottom-bar"
+             },
              events: {
                  'mousemove': 'scrollBottomBar',
                  'mouseleave': 'stopScrolling',
@@ -16,14 +21,14 @@
              },
 
              initialize: function(options) {
+                 _.bindAll(this);
+                 var self = this;
                  //$(this.el).empty()
-                 this.$el.empty()
+                 //this.$el.empty()
                  this.$el.css('left', 0) //sets the position to the start of the bar
 
                  console.log('btm bar init', window.subs)
 
-                 _.bindAll(this);
-                 var self = this;
                  this.subName = options.subName
                  this.sortOrder = 'hot'
                  this.domain = options.domain
@@ -45,6 +50,10 @@
                  this.scrolling = false; //timer for when the users movement over the bottom bar
                  this.guessedWidth = 0 //calculated later by how many posts are in the scrollbar
 
+             },
+             onRender: function() {
+                 $('#bottom-bar').show()
+
                  if (typeof window.subs[this.subID] === 'undefined') {
 
                      this.collection = new SubredditCollection([], {
@@ -59,22 +68,26 @@
                  } else {
                      console.log('loading collection from memory')
                      this.collection = window.subs[this.subID]
-                     this.appendPosts(this.collection)
+                     //   this.appendPosts(this.collection)
                      this.selected(this.selectedID)
-
                  }
 
+                 this.subredditCollectionView = new SrCView({
+                     collection: this.collection,
+                     itemView: PostRowView,
+                     gridOption: 'small'
+                 })
+                 this.posts.show(this.subredditCollectionView)
+                 this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
+
              },
-             remove: function() {
+             onBeforeClose: function() {
+                 // $('#bottom-bar').hide()
                  $(window).unbind('keydown', this.keyPress);
                  App.off("btmbar:remove", this.remove, this);
                  App.off("bottombar:selected", this.selected, this)
                  App.off("btmbar:gotoPrev", this.gotoPrev, this);
                  App.off("btmbar:gotoNext", this.gotoNext, this);
-                 this.undelegateEvents();
-                 this.$el.empty();
-                 this.stopListening();
-                 this.unbind();
                  this.deleted = true
 
                  //Backbone.View.prototype.remove.call(this);
@@ -168,7 +181,7 @@
                  if (this.scrolling === false) {
                      this.scrolling = true
                      clearTimeout(this.userLeftTimeout)
-                     var currentLeft = $('#bottom-bar').css('left').replace('px', '')
+                     var currentLeft = this.ui.bottomBar.css('left').replace('px', '')
                      var centerScreen = $(document).width() / 2
 
                      if (centerScreen > e.clientX) {
@@ -183,8 +196,8 @@
                      }
 
                      //toggle transparency only if it does not exist
-                     if (this.$el.hasClass("transparent")) {
-                         this.$el.removeClass('transparent')
+                     if (this.ui.bottomBar.hasClass("transparent")) {
+                         this.ui.bottomBar.removeClass('transparent')
                      }
 
                      setTimeout(function() {
@@ -208,13 +221,13 @@
                      this.curInterval = setInterval(function() {
                          var currentLeft = $('#bottom-bar').css('left').replace('px', '')
                          if (direction == 'left' && currentLeft < 0) {
-                             $('#bottom-bar').css('left', amount);
+                             self.ui.bottomBar.css('left', amount);
                          } else if (direction == 'right') {
 
                              if ((self.guessedWidth > currentLeft - 1750) && self.loading === false) {
                                  self.fetchMore()
                              } else if (self.guessedWidth < currentLeft) {
-                                 $('#bottom-bar').css('left', amount);
+                                 self.ui.bottomBar.css('left', amount);
                              }
                          }
 
@@ -226,8 +239,8 @@
                  this.setScrollInt('stop')
 
                  this.userLeftTimeout = setTimeout(function() {
-                     if (!self.$el.hasClass("transparent")) {
-                         self.$el.addClass('transparent')
+                     if (!self.ui.bottomBar.hasClass("transparent")) {
+                         self.ui.bottomBar.addClass('transparent')
                      }
 
                  }, 1500);
@@ -245,26 +258,26 @@
                      });
                  }
              },
-             appendPosts: function(collection) {
-                 var self = this
-                 this.$el.show()
-                 console.log(collection)
-                 collection.each(function(model) {
-                     var thumbnail = model.get('thumbnail')
+             // appendPosts: function(collection) {
+             //     var self = this
+             //     this.$el.show()
+             //     console.log(collection)
+             //     collection.each(function(model) {
+             //         var thumbnail = model.get('thumbnail')
 
-                     if (typeof thumbnail !== 'undefined') {
+             //         if (typeof thumbnail !== 'undefined') {
 
-                         var str = '<a id="' + model.get('name') + '" data-id="' + model.get('name') + '" class="thumbnailSmall" ' + model.get('external') + ' href="' + model.get('url') + '" target="_blank"><img src="' + model.get('thumbnail') + '" ></a>'
-                         this.$('#bottom-bar').append(str)
-                     }
-                     //this.$('#bottom-bar').append(PostViewSmallTpl({
-                     //model: model.attributes
-                     //}))
-                 })
-                 this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
-                 this.hideLoading()
+             //             var str = '<a id="' + model.get('name') + '" data-id="' + model.get('name') + '" class="thumbnailSmall" ' + model.get('external') + ' href="' + model.get('url') + '" target="_blank"><img src="' + model.get('thumbnail') + '" ></a>'
+             //             this.$('#bottom-bar').append(str)
+             //         }
+             //         //this.$('#bottom-bar').append(PostViewSmallTpl({
+             //         //model: model.attributes
+             //         //}))
+             //     })
+             //     this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
+             //     this.hideLoading()
 
-             },
+             // },
              show: function() {
                  this.$el.show()
              },
@@ -276,7 +289,7 @@
                  var newCount = res.data.children.length
 
                  var newPosts = new Backbone.Collection(models.slice((models.length - newCount), models.length))
-                 this.appendPosts(newPosts)
+                 // this.appendPosts(newPosts)
 
                  //fetch more  posts with the After
                  if (this.collection.after == "stop") {
@@ -284,8 +297,10 @@
                      $(window).off("scroll", this.watchScroll);
                  }
                  this.loading = false; //turn the flag on to go ahead and fetch more!
-
+                 this.hideLoading()
                  window.subs[this.subID] = this.collection
+
+                 this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
                  //this.selected(this.selectedID) //leaving this here caused the selected post to highlight every fetch
 
              },
@@ -298,11 +313,11 @@
                  this.selected(name) //using the router to goto the selected link, pre selecting this post before we travel there
              },
              showLoading: function() {
-                 this.$el.append('<img class="btmbar-loading" src="img/loading.gif" />')
+                 this.ui.bottomBar.append('<img class="btmbar-loading" src="img/loading.gif" />')
              },
              hideLoading: function() {
                  $('.btmbar-loading').remove()
              }
          });
-         return SubredditView;
+
      });

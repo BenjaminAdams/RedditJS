@@ -2129,10 +2129,12 @@
      // it's much more performant to insert elements into a document
      // fragment and then insert that document fragment into the page
      initRenderBuffer: function() {
+
        this.elBuffer = document.createDocumentFragment();
      },
 
      startBuffering: function() {
+
        this.initRenderBuffer();
        this.isBuffering = true;
      },

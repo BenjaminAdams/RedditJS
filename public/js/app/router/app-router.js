@@ -55,8 +55,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     // App.trigger("single:remove") //clear old subreddit views
 
                     if (name != 'single') { //hide the bottom bar if not in single view
-                        $("#bottom-bar").hide()
-                        channel.trigger("btmbar:remove")
+                        // $("#bottom-bar").hide()
+                        //channel.trigger("btmbar:remove")
+                        App.bottombarRegion.close()
                     }
 
                     $('#imgCache').empty() //flush the image thumbnail cache
@@ -127,15 +128,15 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     }));
 
                     if (window.settings.get('btmbar') === true) {
-                        console.log('BTM BAR=', this.bottomBar)
-                        if ((typeof this.bottomBar === 'undefined' || this.bottomBar === null) || this.bottomBar.subName != subName || this.bottomBar.deleted === true) { //only update btm bar if the subreddit changes
 
-                            this.bottomBar = new BottomBarView({
+                        if (typeof App.bottombarRegion.currentView === 'undefined' || App.bottombarRegion.currentView.subName != subName) { //only update btm bar if the subreddit changes
+
+                            App.bottombarRegion.show(new BottomBarView({
                                 subName: subName,
                                 id: id
-                            })
+                            }))
                         } else {
-                            this.bottomBar.show()
+                            //this.bottomBar.show()
                         }
                     }
 

@@ -1,6 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs!template/post-row-large', 'hbs!template/post-row-small', 'view/basem-view'],
-    function($, _, Backbone, PostRowTmpl, PostRowLargeTmpl, PostRowSmallTmpl, BaseView) {
-        var PostRowView = BaseView.extend({
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs!template/post-row-large', 'hbs!template/post-row-small', 'view/basem-view'],
+    function(App, $, _, Backbone, PostRowTmpl, PostRowLargeTmpl, PostRowSmallTmpl, BaseView) {
+        return BaseView.extend({
             // template: PostRowTmpl,
             events: {
                 'click a': "gotoSingle",
@@ -20,9 +20,13 @@ define(['jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs!templa
             },
 
             initialize: function(data) {
+                _.bindAll(this);
                 this.model = data.model;
                 //this.template = PostRowTmpl;
                 this.gridOption = data.gridOption
+                if (typeof data.expand !== 'undefined') {
+                    this.expand = true;
+                }
 
                 if (this.gridOption == "normal") {
                     this.template = PostRowTmpl
@@ -32,8 +36,11 @@ define(['jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs!templa
                     this.template = PostRowSmallTmpl
                 }
 
-                // this.render();
-                // this.$() is a shortcut for this.$el.find().
+            },
+            onRender: function() {
+                if (this.expand === true) {
+                    this.toggleExpando()
+                }
             },
             gotoSingle: function(e) {
                 var target = this.$(e.currentTarget)
@@ -54,14 +61,14 @@ define(['jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs!templa
                     this.ui.expandoButton.addClass('collapsed')
                     this.ui.postRowContent.html('').hide()
                 } else {
+                    var model = this.model
                     this.ui.expandoButton.removeClass('collapsed')
                     this.ui.expandoButton.addClass('expanded')
                     var str = '<div class="expando"><div class="usertext-body"><p>' + this.model.get('media_embed') + '</p></div></div>'
-                    console.log(str)
+
                     this.ui.postRowContent.html(str).show()
                 }
             }
 
         });
-        return PostRowView;
     });

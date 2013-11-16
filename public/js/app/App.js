@@ -11,7 +11,8 @@ define(['jquery', 'backbone', 'marionette', 'underscore', 'handlebars'],
             // mainRegion: "#main",
             mainRegion: ".content",
             popupRegion: "#popupWindow",
-            sidebarRegion: '.side'
+            sidebarRegion: '.side',
+            bottombarRegion: '#bottom-bar-container '
         });
 
         App.addInitializer(function() {

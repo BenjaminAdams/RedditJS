@@ -5,36 +5,39 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 			events: function() {
 				var _events = {
 					'click #retry': 'tryAgain',
-					'click .expando-button': 'toggleExpando',
+					//'click .expando-button': 'toggleExpando',
 					'click .leftArrow': 'gotoPrev',
 					'click .rightArrow': 'gotoNext',
 					'click .toggleDropdownCmntSort': 'toggleDropDownCmtSort',
 					'click .drop-choices-single a': 'changeCmntSort'
 				};
-				_events['click #report' + this.options.id] = "reportShow";
-				_events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
-				_events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
+				// _events['click #report' + this.options.id] = "reportShow";
+				// _events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
+				// _events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
 
-				_events['click #hide' + this.options.id] = "hidePost"; //user wants to hide this post
-				_events['click #save' + this.options.id] = "savePost"; //user wants to hide this post
-				_events['click #unsave' + this.options.id] = "unSavePost"; //user wants to hide this post
+				// _events['click #hide' + this.options.id] = "hidePost"; //user wants to hide this post
+				// _events['click #save' + this.options.id] = "savePost"; //user wants to hide this post
+				// _events['click #unsave' + this.options.id] = "unSavePost"; //user wants to hide this post
 
-				_events['click .upArrow' + this.options.id] = "upvote";
-				_events['click .downArrow' + this.options.id] = "downvote";
+				// _events['click .upArrow' + this.options.id] = "upvote";
+				// _events['click .downArrow' + this.options.id] = "downvote";
 
-				//events moved from the 'comments-view.js'
-				_events['click #report' + this.options.id] = "reportShow";
-				_events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
-				_events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
+				// //events moved from the 'comments-view.js'
+				// _events['click #report' + this.options.id] = "reportShow";
+				// _events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
+				// _events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
 
 				_events['submit #comment' + this.options.id] = "comment";
-				//_events['click .comment' + this.options.name] = "comment";
-				//_events['click .MOAR' + this.options.id] = "loadMOAR";
 				_events['click #mdHelpShow' + this.options.id] = "showMdHelp";
 				_events['click #mdHelpHide' + this.options.id] = "hideMdHelp";
 
 				return _events;
 			},
+
+			regions: {
+				'thepost': '#thepost'
+			},
+
 			initialize: function(options) {
 				_.bindAll(this);
 
@@ -67,6 +70,17 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
 			},
 			onRender: function() {
+				var self = this
+				if (typeof this.model !== 'undefined') {
+
+					self.thepost.show(new PostRowView({
+						model: self.model,
+						gridOption: 'normal',
+						expand: true
+					}));
+
+				}
+
 				this.scrollTop()
 				$(window).resize(this.debouncer(function(e) {
 					self.resize()
@@ -185,17 +199,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				$('#dynamicWidth').html('<style> .embed img { max-width: ' + newWidth + 'px };   </style>');
 
 			},
-			toggleExpando: function() {
-				if ($('.expando-button').hasClass('expanded')) {
-					$('.expando-button').removeClass('expanded')
-					$('.expando-button').addClass('collapsed')
-					$('.expando').hide()
-				} else {
-					$('.expando-button').removeClass('collapsed')
-					$('.expando-button').addClass('expanded')
-					$('.expando').show()
-				}
-			},
+
 			triggerID: function() {
 				App.trigger("bottombar:selected", "t3_" + this.id);
 				//App.trigger("bottombar:selected", this.model);
@@ -203,7 +207,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
 			/**************Fetching functions ****************/
 			fetchError: function(response, error) {
-				console.log("fetch error, lets retry")
+				console.log("fetch error, this probly happened because you navigated away")
 
 				$(this.el).html("<div id='retry' >  <div class='loading'></div> </div> ")
 

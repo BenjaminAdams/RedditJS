@@ -1,4 +1,4 @@
-define(['App', 'underscore', 'backbone', 'marionette', 'cookie'],
+define(['App', 'underscore', 'backbone', 'cookie'],
 	function(App, _, Backbone, Cookie) {
 		return Backbone.Marionette.Layout.extend({
 
