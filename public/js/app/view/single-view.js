@@ -37,6 +37,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 			regions: {
 				'thepost': '#thepost'
 			},
+			ui: {
+				loadingC: '#loadingC'
+			},
 
 			initialize: function(options) {
 				_.bindAll(this);
@@ -121,8 +124,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 			},
 
 			fetchComments: function(callback, sortOrder) {
-				//this.$el.append("<div class='loadingS' style='position:relative;left:30%;'></div>")
-				this.$('#siteTableComments').html("<div class='loadingS' style='position:relative;left:30%;'></div>")
 
 				this.comments = new SingleModel({
 					subName: this.subName,
@@ -266,7 +267,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 			},
 			//if we dont pass in a model we need to render the comments here
 			loadComments: function(model, res) {
-				this.$('.loadingS').remove()
+				//this.$('.loadingS').remove()
+				this.ui.loadingC.remove()
 				this.permalinkParent = this.model.get('permalink') //this is for the comment callback so we can set the permalink after someone comments on a main post
 				this.renderComments(model.get('replies'))
 
