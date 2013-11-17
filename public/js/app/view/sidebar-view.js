@@ -16,13 +16,13 @@ define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/side
 				this.template = SidebarTmpl;
 				this.subName = data.subName
 				this.dynamicStylesheet(this.subName)
-				this.model = new SidebarModel(this.subName)
-
-				if (this.subName != "front") {
-					this.model.fetch({
-						success: this.render
-					});
-				}
+				//this.model = new SidebarModel(this.subName)
+				this.model = data.model
+				//if (this.subName != "front") {
+				//this.model.fetch({
+				//success: this.render
+				//});
+				//}
 
 			},
 			onRender: function() {

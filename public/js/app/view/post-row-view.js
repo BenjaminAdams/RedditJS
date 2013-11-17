@@ -43,7 +43,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
                 }
             },
             gotoSingle: function(e) {
-                var target = this.$(e.currentTarget)
+                var target = $(e.currentTarget)
                 var permalink = this.model.get('permalink')
                 var targetLink = target.attr('href')
                 if (permalink == targetLink) {

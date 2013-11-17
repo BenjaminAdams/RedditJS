@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view/sidebar-view', 'collection/my-subreddits', 'event/channel'],
-    function(App, _, Backbone, Marionette, HeaderView, SidebarView, MySubredditsCollection, channel) {
+define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view/sidebar-view', 'collection/my-subreddits', 'model/sidebar', 'event/channel'],
+    function(App, _, Backbone, Marionette, HeaderView, SidebarView, MySubredditsCollection, SidebarModel, channel) {
 
         var AppRouter = Backbone.Marionette.AppRouter.extend({
             initialize: function(options) {
@@ -237,9 +237,24 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             //displays the sidebar for that subreddit if its not already created
             doSidebar: function(subName) {
                 if (typeof App.sidebarRegion.currentView === 'undefined' || App.sidebarRegion.currentView.subName != subName) { //only update sidebar if the subreddit changes
-                    App.sidebarRegion.show(new SidebarView({
-                        subName: subName
-                    }))
+
+                    var sidebarModel = new SidebarModel(subName)
+                    if (subName == 'front') {
+                        App.sidebarRegion.show(new SidebarView({
+                            subName: subName,
+                            model: sidebarModel
+                        }))
+                    } else {
+                        sidebarModel.fetch({
+                            success: function(model) {
+                                App.sidebarRegion.show(new SidebarView({
+                                    subName: subName,
+                                    model: model
+                                }))
+                            }
+                        })
+                    }
+
                     // this.sidebar = new SidebarView({
                     //     subName: subName
                     // })
