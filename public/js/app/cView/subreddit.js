@@ -1,7 +1,7 @@
 define(['App', 'backbone', 'jquery', 'hbs!template/post-row', 'hbs!template/post-row-small', 'hbs!template/post-row-large', 'hbs!template/post-row-grid'],
     function(App, Backbone, $, PostRowTmpl, PostRowSmallTmpl, PostRowLargeTmpl, PostRowGridTmpl) {
-        return Backbone.Marionette.FasterCollectionView.extend({
-            // return Marionette.CollectionView.extend({
+        //  return Backbone.Marionette.FasterCollectionView.extend({
+        return Marionette.CollectionView.extend({
             initialize: function(options) {
                 _.bindAll(this);
                 this.itemViewtemplate = 'normal';
