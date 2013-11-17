@@ -23,11 +23,6 @@
              initialize: function(options) {
                  _.bindAll(this);
                  var self = this;
-                 //$(this.el).empty()
-                 //this.$el.empty()
-                 this.$el.css('left', 0) //sets the position to the start of the bar
-
-                 console.log('btm bar init', window.subs)
 
                  this.subName = options.subName
                  this.sortOrder = 'hot'
@@ -44,19 +39,12 @@
                  App.on("btmbar:gotoPrev", this.gotoPrev, this);
                  App.on("btmbar:gotoNext", this.gotoNext, this);
                  $(window).bind('keydown', this.keyPress); //remove this later!
-                 App.trigger("single:giveBtnBarID"); //ask the single view to give you the btm bar ID to make active
 
                  this.loading = false; //keeps track if we are loading more posts or not
                  this.scrolling = false; //timer for when the users movement over the bottom bar
                  this.guessedWidth = 0 //calculated later by how many posts are in the scrollbar
 
-             },
-             onRender: function() {
-                 var self = this
-                 //$('#bottom-bar').show()
-
                  if (typeof window.subs[this.subID] === 'undefined') {
-
                      this.collection = new SubredditCollection([], {
                          domain: this.domain,
                          subName: this.subName,
@@ -64,9 +52,15 @@
                      });
 
                      this.fetchMore();
+                 }
 
-                     // this.selected(this.selectedID) //we either select the active post onload or when the user's page finally loads
-                 } else {
+             },
+             onRender: function() {
+                 var self = this
+                 //$('#bottom-bar').show()
+                 App.trigger("single:giveBtnBarID"); //ask the single view to give you the btm bar ID to make active
+
+                 if (typeof window.subs[this.subID] !== 'undefined') {
                      console.log('loading collection from memory')
                      this.collection = window.subs[this.subID]
                      //   this.appendPosts(this.collection)
@@ -80,9 +74,10 @@
                  })
                  this.posts.show(this.subredditCollectionView)
                  this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
-                 setTimeout(function() {
-                     self.selected(self.selectedID)
-                 }, 5000)
+
+                 //setTimeout(function() {
+                 //self.selected()
+                 //}, 5000)
 
              },
              onBeforeClose: function() {
@@ -155,17 +150,19 @@
              },
              //when the user goes to a single post page, that ID will become selected in the bottom bar
              //only trigger this function after we have the entire subreddit data
+             markSelected: function() {
+                 $('.selectedBtmBar').removeClass('selectedBtmBar')
+                 var selectedThumb = $('.thumbnailSmall#' + this.selectedID)
+                 selectedThumb.addClass('selectedBtmBar')
+                 return selectedThumb
+             },
              selected: function(name) {
                  var self = this
-                 this.selectedID = name
+                 if (typeof name === 'string') {
+                     this.selectedID = name
 
-                 //console.log('data=', data)
-                 console.log('name', name)
-                 //$('a[data-attribute=true]')
-                 $('.selectedBtmBar').removeClass('selectedBtmBar')
-                 var selectedThumb = $('.thumbnailSmall#' + name)
-                 selectedThumb.addClass('selectedBtmBar')
-
+                 }
+                 var selectedThumb = this.markSelected()
                  var fakeE = {}
                  fakeE.clientX = selectedThumb.offset()
                  if (typeof fakeE.clientX !== 'undefined') {
@@ -180,6 +177,7 @@
                  }
 
              },
+
              //only scroll every few milaseconds in an interval
              scrollBottomBar: function(e) {
                  var self = this
@@ -251,7 +249,7 @@
                  }, 1500);
 
              },
-             fetchMore: function() {
+             fetchMore: function(selectAfter) {
                  if (this.loading === false) {
                      this.showLoading()
 
@@ -263,26 +261,7 @@
                      });
                  }
              },
-             // appendPosts: function(collection) {
-             //     var self = this
-             //     this.$el.show()
-             //     console.log(collection)
-             //     collection.each(function(model) {
-             //         var thumbnail = model.get('thumbnail')
 
-             //         if (typeof thumbnail !== 'undefined') {
-
-             //             var str = '<a id="' + model.get('name') + '" data-id="' + model.get('name') + '" class="thumbnailSmall" ' + model.get('external') + ' href="' + model.get('url') + '" target="_blank"><img src="' + model.get('thumbnail') + '" ></a>'
-             //             this.$('#bottom-bar').append(str)
-             //         }
-             //         //this.$('#bottom-bar').append(PostViewSmallTpl({
-             //         //model: model.attributes
-             //         //}))
-             //     })
-             //     this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
-             //     this.hideLoading()
-
-             // },
              show: function() {
                  this.$el.show()
              },
@@ -291,10 +270,6 @@
                  if (typeof res.data.children.length === 'undefined') {
                      return; //we might have an undefined length?
                  }
-                 // var newCount = res.data.children.length
-
-                 //  var newPosts = new Backbone.Collection(models.slice((models.length - newCount), models.length))
-                 // this.appendPosts(newPosts)
 
                  //fetch more  posts with the After
                  if (this.collection.after == "stop") {
@@ -304,10 +279,8 @@
                  this.loading = false; //turn the flag on to go ahead and fetch more!
                  this.hideLoading()
                  window.subs[this.subID] = this.collection
-
                  this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
-                 //this.selected(this.selectedID) //cant leave this here caused the selected post to highlight every fetch
-
+                 this.markSelected()
              },
              gotoSingle: function(e) {
                  //   var name = this.$(e.currentTarget).data('id')
@@ -319,7 +292,8 @@
                  this.selected(name) //using the router to goto the selected link, pre selecting this post before we travel there
              },
              showLoading: function() {
-                 this.ui.bottomBar.append('<img class="btmbar-loading" src="img/loading.gif" />')
+                 // this.ui.bottomBar.append('<img class="btmbar-loading" src="img/loading.gif" />')
+                 $('#bottom-bar').append('<img class="btmbar-loading" src="img/loading.gif" />')
              },
              hideLoading: function() {
                  $('.btmbar-loading').remove()

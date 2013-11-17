@@ -46,7 +46,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				this.id = options.id
 				this.commentLink = options.commentLink
 				this.hasRendered = false
-				this.triggerID()
 
 				if (typeof window.curModel === 'undefined') {
 
@@ -80,7 +79,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 					}));
 
 				}
-
+				this.triggerID()
 				this.scrollTop()
 				$(window).resize(this.debouncer(function(e) {
 					self.resize()

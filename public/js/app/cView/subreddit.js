@@ -24,6 +24,13 @@ define(['App', 'backbone', 'jquery', 'hbs!template/post-row', 'hbs!template/post
                 }
             },
 
+            onRender: function() {
+                setTimeout(function() {
+                    App.trigger("bottombar:selected");
+                }, 1000)
+
+            },
+
             changeGridView: function(option) {
                 this.gridOption = option
                 this.setGridView(this.gridOption)
