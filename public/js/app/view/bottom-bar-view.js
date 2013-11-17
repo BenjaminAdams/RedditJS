@@ -52,7 +52,8 @@
 
              },
              onRender: function() {
-                 $('#bottom-bar').show()
+                 var self = this
+                 //$('#bottom-bar').show()
 
                  if (typeof window.subs[this.subID] === 'undefined') {
 
@@ -69,7 +70,7 @@
                      console.log('loading collection from memory')
                      this.collection = window.subs[this.subID]
                      //   this.appendPosts(this.collection)
-                     this.selected(this.selectedID)
+                     // this.selected(this.selectedID)
                  }
 
                  this.subredditCollectionView = new SrCView({
@@ -79,6 +80,9 @@
                  })
                  this.posts.show(this.subredditCollectionView)
                  this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
+                 setTimeout(function() {
+                     self.selected(self.selectedID)
+                 }, 5000)
 
              },
              onBeforeClose: function() {
@@ -158,11 +162,12 @@
                  //console.log('data=', data)
                  console.log('name', name)
                  //$('a[data-attribute=true]')
-                 this.$('.selectedBtmBar').removeClass('selectedBtmBar')
-                 this.$('#' + name).addClass('selectedBtmBar')
+                 $('.selectedBtmBar').removeClass('selectedBtmBar')
+                 var selectedThumb = $('.thumbnailSmall#' + name)
+                 selectedThumb.addClass('selectedBtmBar')
 
                  var fakeE = {}
-                 fakeE.clientX = this.$('#' + name).offset()
+                 fakeE.clientX = selectedThumb.offset()
                  if (typeof fakeE.clientX !== 'undefined') {
                      fakeE.clientX = fakeE.clientX.left + 175
                      this.scrollBottomBar(fakeE)
@@ -286,9 +291,9 @@
                  if (typeof res.data.children.length === 'undefined') {
                      return; //we might have an undefined length?
                  }
-                 var newCount = res.data.children.length
+                 // var newCount = res.data.children.length
 
-                 var newPosts = new Backbone.Collection(models.slice((models.length - newCount), models.length))
+                 //  var newPosts = new Backbone.Collection(models.slice((models.length - newCount), models.length))
                  // this.appendPosts(newPosts)
 
                  //fetch more  posts with the After
@@ -301,11 +306,12 @@
                  window.subs[this.subID] = this.collection
 
                  this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
-                 //this.selected(this.selectedID) //leaving this here caused the selected post to highlight every fetch
+                 //this.selected(this.selectedID) //cant leave this here caused the selected post to highlight every fetch
 
              },
              gotoSingle: function(e) {
-                 var name = this.$(e.currentTarget).data('id')
+                 //   var name = this.$(e.currentTarget).data('id')
+                 var name = this.$(e.currentTarget).attr('id')
                  window.curModel = this.collection.findWhere({
                      name: name
                  })

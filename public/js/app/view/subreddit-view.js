@@ -3,7 +3,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 		return BaseView.extend({
 			template: subredditTmpl,
 			events: {
-
 				//'click .tabmenu-right li': 'changeGridOption',
 				'click #retry': 'tryAgain',
 				'click .thumbnailSmall': 'gotoSingle',
