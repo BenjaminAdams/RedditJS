@@ -5,8 +5,6 @@ define(['App', 'backbone', 'jquery', 'view/comment-view'],
             itemView: CommentView,
             initialize: function(options) {
                 _.bindAll(this);
-                console.log('init comment collection view')
-
             }
 
         });

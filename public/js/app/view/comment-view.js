@@ -1,48 +1,57 @@
-define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/basem-view', 'model/comment', 'cView/comments', 'cookie'],
-	function(App, _, Backbone, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, CViewComments, Cookie) {
+define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/basem-view', 'model/comment', 'cView/comments', 'collection/comments', 'cookie'],
+	function(App, _, Backbone, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, CViewComments, CommentCollection, Cookie) {
 		return BaseView.extend({
 			//strategy: 'append',
 			template: commentTmpl,
-			events: function() {
-				var _events = {
-					'click .noncollapsed .expand': "hideThread",
-					'click .collapsed .expand': "showThread",
-					'click .cancel': 'hideUserInput',
-					'click .MOAR': 'loadMOAR',
-					'click .upArrow': 'upvote',
-					'click .downArrow': 'downvote'
+			events: {
 
-				};
+				'click .noncollapsed .expand': "hideThread",
+				'click .collapsed .expand': "showThread",
+				'click .cancel': 'hideUserInput',
+				'click .MOAR': 'loadMOAR',
+				'click .upArrow': 'upvote',
+				'click .downArrow': 'downvote',
+				'mouseover .outBoundLink': 'commentLinkHover',
+				'click .report': 'reportShow',
+				'click .reportConfirmYes': 'reportYes',
+				'click .reportConfirmNo': 'reportShow',
+				'submit .commentreply': 'comment',
+				'click .replyToggle': 'toggleReply',
+				'click .mdHelpShow': 'showMdHelp',
+				'click .mdHelpHide': 'hideMdHelp'
 
-				_events['mouseover #' + this.options.id + ' .outBoundLink'] = "commentLinkHover";
-				_events['click #report' + this.options.id] = "reportShow";
-				_events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
-				_events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
-
-				_events['submit #commentreply' + this.options.id] = "comment"; //submits a reply to a comment
-				//_events['click .upArrow' + this.options.id] = "upvote";
-				_events['click .downArrow' + this.options.id] = "downvote";
-				//_events['click .MOAR' + this.options.id] = "loadMOAR"; //loads more comments
-				_events['click #replyToggle' + this.options.id] = "toggleReply"; //shows the textarea to input a comment
-				_events['click #mdHelpShow' + this.options.id] = "showMdHelp";
-				_events['click #mdHelpHide' + this.options.id] = "hideMdHelp";
-				return _events;
 			},
-			// regions: function(model, index) {
-			// 	// do some calculations based on the model
-			// 	return {
-			// 		replies: '.child' + this.model.get('name')
-			// 	}
-			// },
 			regions: {
 				replies: '.replies'
+			},
+			ui: {
+				upArrow: '.upArrow',
+				downArrow: '.downArrow',
+				midcol: '.midcol',
+				'noncollapsed': '.noncollapsed',
+				'collapsed': '.collapsed',
+				'child': '.child',
+				'commentreply': '.commentreply',
+				'text': '.text',
+				'status': '.status',
+				'mdHelp': '.mdHelp',
+				'mdHelpShow': '.mdHelpShow',
+				'mdHelpHide': '.mdHelpHide',
+				'reportConfirm': '.reportConfirm',
+				'reportConfirmYes': '.reportConfirmYes'
 			},
 
 			initialize: function(options) {
 				_.bindAll(this);
 				var self = this;
-				this.collection = new Backbone.Collection()
+
 				this.model = options.model
+				//this.collection = new CommentCollection()
+				this.collection = this.model.get('replies')
+				if (typeof this.collection === 'undefined' || this.collection === null || this.collection.length === 0) {
+					//console.log('empty')
+					this.collection = new CommentCollection()
+				}
 				this.name = this.model.get('name')
 				this.id = this.model.get('id')
 				if (this.model.get('kind') == 'more') {
@@ -54,17 +63,24 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
 			},
 			onRender: function() {
+				var self = this
+				var CommentView = require('view/comment-view')
 
-				//console.log("trying to create a new comment view with = ", options)
+				self.commentCollectionView = new CViewComments({
+					collection: self.collection,
+					itemView: CommentView
+				})
+
+				self.replies.show(self.commentCollectionView)
 
 				this.addOutboundLink()
 				this.permalinkParent = this.model.get('permalinkParent')
 				//this.model.set('permalinkParent', options.permalinkParent)
-
-				this.renderChildren(this.model.get('replies'))
+				//this.renderChildren(this.model.get('replies'))
 			},
 			addOneChild: function(model) {
 				this.collection.add(model)
+				//this.commentCollectionView.collection.add(model)
 			},
 			//add data-external and a special class to any link in a comment
 			//once the links have the class outBoundLink on them, they will no longer trigger the hover view
@@ -128,7 +144,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
 					this.renderOtherReplyComments(newComments)
 					var replies = this.model.get('replies')
-					this.renderChildren(replies)
+					//this.renderChildren(replies)
+					this.collection.add(replies)
 					this.addOutboundLink()
 				}
 			},
@@ -137,26 +154,26 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				e.preventDefault()
 				e.stopPropagation()
 
-				this.$('.noncollapsed').hide()
-				this.$('.collapsed').show()
-				this.$('.child').hide()
-				this.$('.midcol').hide()
+				this.ui.noncollapsed.hide()
+				this.ui.collapsed.show()
+				this.ui.child.hide()
+				this.ui.midcol.hide()
 
 			},
 			showThread: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				this.$('.collapsed').hide()
-				this.$('.noncollapsed').show()
-				this.$('.child').show()
-				this.$('.midcol').show()
+				this.ui.collapsed.hide()
+				this.ui.noncollapsed.show()
+				this.ui.child.show()
+				this.ui.midcol.show()
 
 			},
 			//shows the comment reply textbox
 			toggleReply: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				this.$('#commentreply' + this.model.get('id')).toggle()
+				this.ui.commentreply.toggle()
 			},
 			commentLinkHover: function(e) {
 				//console.log('hovering over a comment')
@@ -211,61 +228,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				}
 			},
 
-			renderChildren: function(replies) {
-				//var replies = this.model.get('replies')
-				if (typeof replies !== 'undefined' && replies !== "" && replies !== null) {
-					var self = this
-					this.collection = replies
-					require(['cView/comments', 'view/comment-view'], function(CViewComments, CommentView) {
-
-						self.commentCollectionView = new CViewComments({
-							collection: self.collection,
-							itemView: CommentView
-						})
-						self.replies.show(self.commentCollectionView)
-					})
-
-					//this.commentCollectionView = new CViewComments({
-					//	collection: replies
-					//})
-					//this.children.show(this.commentCollectionView)
-
-					// replies.each(function(model) {
-					// 	var id = model.get('id')
-					// 	if (id != "_") {
-
-					// 		model.set('permalink', self.model.get('permalinkParent') + model.get('id'))
-					// 		model.set('permalinkParent', self.model.get('permalinkParent'))
-
-					// 		var comment = new CommentView({
-					// 			model: model,
-					// 			id: id,
-					// 			strategy: "append",
-					// 			root: "#" + self.name
-
-					// 		})
-					// 	}
-
-					// })
-
-				}
-			},
+			//renderChildren: function(replies) {
+			//this.collection.add(replies)
+			//},
 			renderOtherReplyComments: function(collection) {
 				console.log('other replies', collection)
 				var self = this
 				collection.each(function(model) {
 					App.trigger("comment:addOneChild" + model.get('parent_id'), model);
-					//console.log('model in renderComments', model)
-					//model.set('permalink', self.model.get('permalinkParent') + model.get('id'))
-					//model.set('permalinkParent', self.model.get('permalinkParent'))
-					// var comment = new CommentView({
-					// 	model: model,
-					// 	id: model.get('id'),
-					// 	strategy: "append",
-					// 	root: ".child" + model.get('parent_id')
-					// 	//root: "#commentarea"
-					// })
-
 				})
 
 			},
@@ -277,9 +247,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
 			loaded: function(model, res) {
 				this.$('.loading').hide()
-
 				this.render();
-
 			}
 
 		});

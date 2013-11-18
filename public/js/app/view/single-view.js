@@ -2,36 +2,17 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 	function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, BaseView, SingleModel, CommentView, Cookie) {
 		return BaseView.extend({
 			template: singleTmpl,
-			events: function() {
-				var _events = {
-					'click #retry': 'tryAgain',
-					//'click .expando-button': 'toggleExpando',
-					'click .leftArrow': 'gotoPrev',
-					'click .rightArrow': 'gotoNext',
-					'click .toggleDropdownCmntSort': 'toggleDropDownCmtSort',
-					'click .drop-choices-single a': 'changeCmntSort'
-				};
-				// _events['click #report' + this.options.id] = "reportShow";
-				// _events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
-				// _events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
+			events: {
 
-				// _events['click #hide' + this.options.id] = "hidePost"; //user wants to hide this post
-				// _events['click #save' + this.options.id] = "savePost"; //user wants to hide this post
-				// _events['click #unsave' + this.options.id] = "unSavePost"; //user wants to hide this post
+				'click #retry': 'tryAgain',
+				//'click .expando-button': 'toggleExpando',
+				'click .leftArrow': 'gotoPrev',
+				'click .rightArrow': 'gotoNext',
+				'click .toggleDropdownCmntSort': 'toggleDropDownCmtSort',
+				'click .drop-choices-single a': 'changeCmntSort',
+				'click .mdHelpShow': 'showMdHelp',
+				'click .mdHelpHide': 'hideMdHelp'
 
-				// _events['click .upArrow' + this.options.id] = "upvote";
-				// _events['click .downArrow' + this.options.id] = "downvote";
-
-				// //events moved from the 'comments-view.js'
-				// _events['click #report' + this.options.id] = "reportShow";
-				// _events['click #reportConfirmYes' + this.options.id] = "reportYes"; //user clicks yes to report 
-				// _events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
-
-				_events['submit #comment' + this.options.id] = "comment";
-				_events['click #mdHelpShow' + this.options.id] = "showMdHelp";
-				_events['click #mdHelpHide' + this.options.id] = "hideMdHelp";
-
-				return _events;
 			},
 
 			regions: {
@@ -40,7 +21,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
 			},
 			ui: {
-				loadingC: '#loadingC'
+				loadingC: '#loadingC',
+				text: '.text',
+				commentreply: '.commentreply',
+				'mdHelp': '.mdHelp',
+				'mdHelpShow': '.mdHelpShow',
+				'mdHelpHide': '.mdHelpHide'
 			},
 
 			initialize: function(options) {
@@ -299,8 +285,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				App.on("comment:addOneChild" + this.model.get('name'), this.addOneChild);
 
 				require(['cView/comments', 'view/comment-view'], function(CViewComments, CommentView) {
-					//require(['cView/comments'], function(CViewComments) {
-
 					self.commentCollectionView = new CViewComments({
 						collection: collection,
 						itemView: CommentView
@@ -308,20 +292,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 					self.siteTableComments.show(self.commentCollectionView)
 
 				})
-				// collection.each(function(model) {
-				// 	//console.log('model in renderComments', model)
-				// 	model.set('permalink', self.model.get('permalink') + model.get('id'))
-				// 	model.set('permalinkParent', self.model.get('permalink'))
-
-				// 	var comment = new CommentView({
-				// 		model: model,
-				// 		id: model.get('id'),
-				// 		strategy: "append",
-				// 		root: "#siteTableComments"
-				// 		//root: "#commentarea"
-				// 	})
-
-				// })
 
 			}
 

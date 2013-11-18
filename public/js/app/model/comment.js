@@ -57,7 +57,7 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 			}
 
 			data.body_html = (typeof data.body_html === 'undefined') ? '' : $('<div/>').html(data.body_html).text();
-			var linkName = data.link_id.replace('t3_', '')
+			//var linkName = data.link_id.replace('t3_', '')
 
 			///r/{{model.subreddit}}/comments/{{model.id}}/is_vox_worth_restarting/cbtb7as
 			//data.permalink = '/r/' + data.subreddit + '/comments/' + linkName + "#" + data.id

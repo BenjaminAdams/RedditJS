@@ -1,7 +1,6 @@
-define(['underscore', 'backbone', 'resthub', 'hbs!template/hover-img', 'view/base-view'],
-	function(_, Backbone, Resthub, HoverImgTemplate, BaseView) {
+define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
+	function(_, Backbone, HoverImgTemplate, BaseView) {
 		var HoverImgView = BaseView.extend({
-			strategy: 'replace',
 			template: HoverImgTemplate,
 			//tagName: 'span',
 			//className: 'hoverImgView',

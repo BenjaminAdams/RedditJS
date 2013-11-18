@@ -16,7 +16,14 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
             },
             ui: {
                 'expandoButton': '.expando-button',
-                'postRowContent': '.postRowContent'
+                'postRowContent': '.postRowContent',
+                upArrow: '.upArrow',
+                downArrow: '.downArrow',
+                midcol: '.midcol',
+                'reportConfirm': '.reportConfirm',
+                'reportConfirmYes': '.reportConfirmYes',
+                'save': '.save',
+                'unsave': '.unsave'
             },
 
             initialize: function(data) {

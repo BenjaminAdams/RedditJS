@@ -1,15 +1,11 @@
-<div id='{{id}}' class="thing comment " data-fullname="{{name}}">
+<div class="thing comment ">
 
-<div class="thing id-t1_cbtb7as comment "  {{#if is_user}} style='min-height:65px;' {{/if}} data-fullname="{{name}}" data-ups="{{ups}}" data-downs="{{downs}}">
+<div class="thing comment"  {{#if is_user}} style='min-height:65px;' {{/if}}>
 
-
-	<p class="parent">
-
-	</p>
-	<div class="midcol {{voted}} ">
-		<div class="arrow upArrow  {{upmod}} "  role="button" aria-label="upvote" tabindex="0">
+	<div class="midcol {{voted}}">
+		<div class="arrow upArrow {{upmod}}"  role="button" aria-label="upvote" tabindex="0">
 		</div>
-		<div class="arrow downArrow {{downmod}} "  role="button" aria-label="downvote" tabindex="0">
+		<div class="arrow downArrow {{downmod}}"  role="button" aria-label="downvote" tabindex="0">
 		</div>
 	</div>
 		 {{#if thumbnail}}
@@ -24,9 +20,7 @@
 			<a class="author gray " href="/user/{{author}}" target="_blank">{{author}}</a>
 
 			<span class="userattrs"></span>
-				<span class="score dislikes">{{scoreDown}} points</span>
 				<span class="score unvoted">{{score}} points</span>
-				<span class="score likes">{{scoreUp}} points</span>
 			<time title="{{timePretty}}" datetime="{{timeUgly}}">{{timeAgo}}</time> ago &nbsp;
 			  {{#if edited}}
                         			<span>(*lasted edited {{editedTimeAgo}} ago)</span>
@@ -79,25 +73,22 @@
 				<li>
 				<span class="toggle remove-button">
 					<span class="option main active">
-					<a href="#" id='report{{id}}' class="togglebutton">report</a></span>
-					<span id='reportConfirm{{id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{id}}' class="yes">yes</a> / <a href="#" id='reportConfirmNo{{id}}' class="no" >no</a></span>
+					<a href="#"  class="togglebutton report">report</a></span>
+					<span class="option error reportConfirm">are you sure? <a href="#"  class="reportConfirmYes yes">yes</a> / <a href="#" class="no reportConfirmNo" >no</a></span>
 				</span>
 				</li>
 				<li><a  data-bypass href="http://reddit.com/gold?goldtype=gift&amp;months=1&amp;comment={{name}}"   target='_blank' title='If you like redditJS please buy someone reddit gold!' class="give-gold login-required">give gold</a></li>
-				<li><a id='replyToggle{{id}}' href="#" >reply</a></li>
+				<li><a class='replyToggle' href="#" >reply</a></li>
 			</ul>
-		</div>
-	</div>
-	<div id='{{name}}' class="child{{name}} child replies">
 
-<form action="#" class="usertext cloneable" id="commentreply{{id}}" style="display: none;">
+			<form action="#" class="usertext cloneable commentreply" style="display: none;">
 	<div class="usertext-edit" style="width: 500px;"><div>
-		<textarea rows="1" cols="1" name="text" id='text{{name}}'></textarea>
+		<textarea rows="1" cols="1" name="text" class='text'></textarea>
 	</div>
 	<div class="bottom-area">
 		<span class="help-toggle toggle" style="">
-			<a id="mdHelpShow{{id}}"  class="option active " href="#" tabindex="100">formatting help</a>
-			<a id="mdHelpHide{{id}}"  class="option " href="#">hide help</a></span>
+			<a class="option active mdHelpShow" href="#" tabindex="100">formatting help</a>
+			<a class="option mdHelpHide" href="#">hide help</a></span>
 			<a href="http://reddit.com/wiki/reddiquette" data-bypass class="reddiquette" target="_blank" tabindex="100">reddiquette</a>
 			
 			<div class="usertext-buttons">
@@ -106,12 +97,19 @@
 				<span class="status"></span>
 			</div>
 	</div>
-	<div id="mdHelp{{id}}" class="markhelp" style="display:none">
+	<div  class="mdHelp markhelp" style="display:none"></div>
 
-
-
-	</div>
 	<div class="clearleft">
 		<!--IE6sux-->
 	</div>
+	</div>
+</form>
 </div>
+
+<div class="child replies">
+
+</div>
+	
+
+
+

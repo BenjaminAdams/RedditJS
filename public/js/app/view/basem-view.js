@@ -97,14 +97,21 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 						this.model.set('upmod', 'upmod')
 						this.model.set('voted', 'likes')
 
-						this.$('.midcol .dislikes').hide()
-						this.$('.midcol .likes').show()
-						this.$('.midcol .unvoted').hide()
+						// this.$('.midcol .dislikes').hide()
+						// this.$('.midcol .likes').show()
+						// this.$('.midcol .unvoted').hide()
 
-						this.$('.upArrow' + id).addClass('upmod')
-						this.$('.upArrow' + id).removeClass('up')
-						this.$('.downArrow' + id).addClass('down')
-						this.$('.downArrow' + id).removeClass('downmod')
+						this.ui.midcol.removeClass('unvoted likes dislikes')
+						this.ui.midcol.addClass('likes')
+
+						// this.$('.upArrow').addClass('upmod')
+						// this.$('.upArrow').removeClass('up')
+						// this.$('.downArrow').addClass('down')
+						// this.$('.downArrow').removeClass('downmod')
+						this.ui.upArrow.addClass('upmod')
+						this.ui.upArrow.removeClass('up')
+						this.ui.downArrow.addClass('down')
+						this.ui.downArrow.removeClass('downmod')
 
 					} else {
 						this.cancelVote()
@@ -126,14 +133,13 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 						this.model.set('upmod', 'up')
 						this.model.set('voted', 'dislikes')
 
-						this.$('.midcol .dislikes').show()
-						this.$('.midcol .likes').hide()
-						this.$('.midcol .unvoted').hide()
+						this.ui.midcol.removeClass('unvoted likes dislikes')
+						this.ui.midcol.addClass('dislikes')
 
-						this.$('.upArrow' + id).addClass('up')
-						this.$('.upArrow' + id).removeClass('upmod')
-						this.$('.downArrow' + id).addClass('downmod')
-						this.$('.downArrow' + id).removeClass('down')
+						this.ui.upArrow.addClass('up')
+						this.ui.upArrow.removeClass('upmod')
+						this.ui.downArrow.addClass('downmod')
+						this.ui.downArrow.removeClass('down')
 
 					} else {
 						this.cancelVote()
@@ -150,14 +156,13 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				this.model.set('upmod', 'up')
 				this.model.set('voted', 'unvoted')
 
-				this.$('.midcol .dislikes').hide()
-				this.$('.midcol .likes').hide()
-				this.$('.midcol .unvoted').show()
+				this.ui.midcol.removeClass('unvoted likes dislikes')
+				this.ui.midcol.addClass('unvoted')
 
-				this.$('.upArrow' + id).addClass('up')
-				this.$('.upArrow' + id).removeClass('upmod')
-				this.$('.downArrow' + id).addClass('down')
-				this.$('.downArrow' + id).removeClass('downmod')
+				this.ui.upArrow.addClass('up')
+				this.ui.upArrow.removeClass('upmod')
+				this.ui.downArrow.addClass('down')
+				this.ui.downArrow.removeClass('downmod')
 			},
 			save: function(id) {
 				if (this.checkIfLoggedIn() === true) {
@@ -186,8 +191,8 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 					var self = this
 
 					var id = this.model.get('name')
-					var text = this.$('#text' + id).val()
-					console.log("text from user input=", text)
+					//var text = this.$('#text' + id).val()
+					var text = this.ui.text.val()
 					text = this.sterilize(text) //clean the input
 
 					var params = {
@@ -214,7 +219,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				//post comment to have the new ID from this data 
 				if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
 					//status{{model.name}}
-					this.$('.status' + this.model.get('name')).html('<span class="success">success!</span>')
+					this.ui.status.html('<span class="success">success!</span>')
 					//data.json.data.things[0].data.link_id = this.model.get('name')
 					var attributes = data.json.data.things[0].data
 					attributes.author = $.cookie('username');
@@ -236,13 +241,13 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 					attributes.subreddit = this.model.get('subreddit')
 					attributes.smallid = attributes.id.replace('t1_', '')
 					attributes.smallid = attributes.id.replace('t3_', '')
-					attributes.permalink = '/r/' + data.subreddit + '/comments/' + attributes.link_id + "#" + data.id
+					attributes.permalink = '/r/' + data.subreddit + '/comments/' + attributes.link_id + "#" + attributes.id
 
 					attributes.downs = 0
 					attributes.ups = 1
 
 					//clear the users text
-					this.$('#text' + attributes.link_id).val("")
+					this.ui.text.val("")
 
 					var newModel = new CommentModel(attributes) //shouldn't have to input this data into the model twice
 					this.hideUserInput()
@@ -250,19 +255,13 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 					newModel.set('permalink', this.permalinkParent + attributes.id)
 					newModel.set('permalinkParent', this.permalinkParent)
 
-					console.log('in cmt callback', newModel)
-
-					//child{{model.name}}
-					var comment = new CommentView({
-						model: newModel,
-						id: newModel.get('id'),
-						strategy: "prepend",
-						root: ".child" + this.model.get('name') //append this comment to the end of this at the child
-					})
+					App.trigger("comment:addOneChild" + newModel.get('parent_id'), newModel);
 
 				} else {
 					//this.$('.status' + this.model.get('name')).html('error ' + data)
-					this.$('.status' + this.model.get('name')).html('<div class="error">' + data.json.errors[0][1] + '</div>')
+					//this.ui.status.html('<div class="error">' + data.json.errors[0][1] + '</div>')
+					this.ui.status.html('<div class="error">' + data.responseText + '</div>')
+
 				}
 			}, //hides the comment reply textbox
 			hideUserInput: function(e) {
@@ -270,7 +269,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 					e.preventDefault()
 					e.stopPropagation()
 				}
-				this.$('#commentreply' + this.model.get('id')).hide()
+				this.ui.commentreply.hide()
 			},
 
 			//sterilizes user input 
@@ -311,28 +310,29 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				e.stopPropagation()
 
 				var mdHelp = '<p></p><p>reddit uses a slightly-customized version of <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> for formatting. See below for some basics, or check <a href="/wiki/commenting">the commenting wiki page</a> for more detailed help and solutions to common issues.</p><p></p><table class="md"><tbody><tr style="background-color: #ffff99;text-align: center"><td><em>you type:</em></td><td><em>you see:</em></td></tr><tr><td>*italics*</td><td><em>italics</em></td></tr><tr><td>**bold**</td><td><b>bold</b></td></tr><tr><td>[reddit!](http://reddit.com)</td><td><a href="http://reddit.com">reddit!</a></td></tr><tr><td>* item 1<br>* item 2<br>* item 3</td><td><ul><li>item 1</li><li>item 2</li><li>item 3</li></ul></td></tr><tr><td>>quoted text</td><td><blockquote>quoted text</blockquote></td></tr><tr><td>Lines starting with four spaces<br>are treated like code:<br><br><span class="spaces">    </span>if 1 * 2 <3:<br><span class="spaces">        </span>print "hello, world!"<br></td><td>Lines starting with four spaces<br>are treated like code:<br><pre>if 1 * 2 <3:<br>    print "hello, world!"</pre></td></tr><tr><td>~~strikethrough~~</td><td><strike>strikethrough</strike></td></tr><tr><td>super^script</td><td>super<sup>script</sup></td></tr></tbody></table></div></div></form>'
-				this.$('#mdHelp' + this.model.get('id')).html(mdHelp).show()
-				this.$('#mdHelpShow' + this.model.get('id')).hide()
-				this.$('#mdHelpHide' + this.model.get('id')).show()
+				this.ui.mdHelp.html(mdHelp).show()
+				this.ui.mdHelpShow.hide()
+				this.ui.mdHelpHide.show()
 			},
 			hideMdHelp: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				this.$('#mdHelpShow' + this.model.get('id')).show()
-				this.$('#mdHelpHide' + this.model.get('id')).hide()
-				this.$('#mdHelp' + this.model.get('id')).html('')
+				this.ui.mdHelpShow.show()
+				this.ui.mdHelpHide.hide()
+				this.ui.mdHelp.html('')
 			},
 
 			//so users can report spam
 			reportShow: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				this.$('#reportConfirm' + this.model.get('id')).toggle()
+				//this.$('#reportConfirm' + this.model.get('id')).toggle()
+				this.ui.reportConfirm.toggle()
 			},
 			reportYes: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				this.$('#reportConfirm' + this.model.get('id')).hide()
+				this.ui.reportConfirm.hide()
 				var params = {
 					id: this.model.get('name'),
 					uh: $.cookie('modhash')
@@ -370,7 +370,8 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				e.preventDefault()
 				e.stopPropagation()
 				var self = this
-				this.$('div[data-fullname=' + this.model.get('name') + ']').hide()
+				//this.$('div[data-fullname=' + this.model.get('name') + ']').hide()
+				$(this.el).hide()
 				var params = {
 					id: this.model.get('name'),
 					uh: $.cookie('modhash')
@@ -389,8 +390,8 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				e.stopPropagation()
 				if (this.checkIfLoggedIn() === true) {
 					var self = this
-					this.$('#save' + this.model.get('id')).hide()
-					this.$('#unsave' + this.model.get('id')).show()
+					this.ui.save.hide()
+					this.ui.unsave.show()
 					var params = {
 						id: this.model.get('name'),
 						uh: $.cookie('modhash')
@@ -410,8 +411,8 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				var self = this
 				e.preventDefault()
 				e.stopPropagation()
-				this.$('#save' + this.model.get('id')).show()
-				this.$('#unsave' + this.model.get('id')).hide()
+				this.ui.save.show()
+				this.ui.unsave.hide()
 				var params = {
 					id: this.model.get('name'),
 					uh: $.cookie('modhash')

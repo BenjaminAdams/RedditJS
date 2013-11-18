@@ -33,28 +33,24 @@
 
     </div>
 
-    <form  class="usertext " id='comment{{id}}'  >
+    <form  class="usertext comment">
         <div class="usertext-edit" >
             <div>
-                <textarea rows="1" cols="1" name="text" id='text{{name}}'></textarea>
+                <textarea rows="1" cols="1" name="text" class='text'></textarea>
             </div>
             <div class="bottom-area">
                 <span class="help-toggle toggle" style="">
-                <a id="mdHelpShow{{id}}"  class="option active " href="#" tabindex="100">formatting help</a>
-                <a id="mdHelpHide{{id}}"  class="option " href="#">hide help</a></span>
+                <a   class="option active mdHelpShow" href="#" tabindex="100">formatting help</a>
+                <a   class="option mdHelpHide" href="#">hide help</a></span>
                 <a href="http://reddit.com/wiki/reddiquette" data-bypass class="reddiquette" target="_blank" tabindex="100">reddiquette</a>
             
             <div class="usertext-buttons">
                 <button type="submit" class="save">save</button>
 
-                <span class="status status{{name}}"></span>
+                <span class="status"></span>
             </div>
-    </div>
-    <div id="mdHelp{{id}}" class="markhelp" style="display:none">
-
-
-
-    </div>
+            </div>
+    <div  class="mdHelp markhelp" style="display:none"></div>
         </div>
     </form>
     <div class="gold-form gold-payment cloneable">
@@ -71,8 +67,7 @@
                     <input type="hidden" name="cmd" value="_s-xclick"><input type="hidden" name="custom" value="" class="passthrough"><input type="hidden" name="quantity" value="1"><input type="hidden" name="hosted_button_id" value="HDENEQ8QWLTML"><button type="submit" class="btn gold-button">PayPal</button>
                 </form>
                 <button class="btn coinbase-gold gold-button gold-checkout" data-vendor="coinbase">Bitcoin</button><input type="hidden" name="cbbaseurl" value="https://coinbase.com/checkouts/6d670dea8505cc8805ae2c00294599b2"><button class="btn stripe-gold gold-button">Credit Card</button>
-                <div class="throbber">
-                </div>
+                <div class="throbber"></div>
             </div>
         </div>
     </div>
