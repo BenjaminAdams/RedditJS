@@ -1,13 +1,16 @@
-define(['underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/base-view', 'model/comment', 'cookie'],
-	function(_, Backbone, Resthub, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, Cookie) {
-		var CommentView = BaseView.extend({
+define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/basem-view', 'model/comment', 'cView/comments', 'cookie'],
+	function(App, _, Backbone, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, CViewComments, Cookie) {
+		return BaseView.extend({
 			//strategy: 'append',
-
+			template: commentTmpl,
 			events: function() {
 				var _events = {
 					'click .noncollapsed .expand': "hideThread",
 					'click .collapsed .expand': "showThread",
-					'click .cancel': 'hideUserInput'
+					'click .cancel': 'hideUserInput',
+					'click .MOAR': 'loadMOAR',
+					'click .upArrow': 'upvote',
+					'click .downArrow': 'downvote'
 
 				};
 
@@ -17,19 +20,28 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!templa
 				_events['click #reportConfirmNo' + this.options.id] = "reportShow"; //user decides not to report this link/comment
 
 				_events['submit #commentreply' + this.options.id] = "comment"; //submits a reply to a comment
-				_events['click .upArrow' + this.options.id] = "upvote";
+				//_events['click .upArrow' + this.options.id] = "upvote";
 				_events['click .downArrow' + this.options.id] = "downvote";
-				_events['click .MOAR' + this.options.id] = "loadMOAR"; //loads more comments
+				//_events['click .MOAR' + this.options.id] = "loadMOAR"; //loads more comments
 				_events['click #replyToggle' + this.options.id] = "toggleReply"; //shows the textarea to input a comment
 				_events['click #mdHelpShow' + this.options.id] = "showMdHelp";
 				_events['click #mdHelpHide' + this.options.id] = "hideMdHelp";
 				return _events;
 			},
+			// regions: function(model, index) {
+			// 	// do some calculations based on the model
+			// 	return {
+			// 		replies: '.child' + this.model.get('name')
+			// 	}
+			// },
+			regions: {
+				replies: '.replies'
+			},
 
 			initialize: function(options) {
 				_.bindAll(this);
 				var self = this;
-				//this.collection = options.collection
+				this.collection = new Backbone.Collection()
 				this.model = options.model
 				this.name = this.model.get('name')
 				this.id = this.model.get('id')
@@ -38,17 +50,21 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!templa
 				} else {
 					this.template = commentTmpl
 				}
+				App.on("comment:addOneChild" + this.model.get('name'), this.addOneChild, this);
 
-				this.render();
+			},
+			onRender: function() {
 
 				//console.log("trying to create a new comment view with = ", options)
 
 				this.addOutboundLink()
-				this.permalinkParent = options.model.get('permalinkParent')
+				this.permalinkParent = this.model.get('permalinkParent')
 				//this.model.set('permalinkParent', options.permalinkParent)
 
 				this.renderChildren(this.model.get('replies'))
-
+			},
+			addOneChild: function(model) {
+				this.collection.add(model)
 			},
 			//add data-external and a special class to any link in a comment
 			//once the links have the class outBoundLink on them, they will no longer trigger the hover view
@@ -199,24 +215,38 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!templa
 				//var replies = this.model.get('replies')
 				if (typeof replies !== 'undefined' && replies !== "" && replies !== null) {
 					var self = this
+					this.collection = replies
+					require(['cView/comments', 'view/comment-view'], function(CViewComments, CommentView) {
 
-					replies.each(function(model) {
-						var id = model.get('id')
-						if (id != "_") {
-
-							model.set('permalink', self.model.get('permalinkParent') + model.get('id'))
-							model.set('permalinkParent', self.model.get('permalinkParent'))
-
-							var comment = new CommentView({
-								model: model,
-								id: id,
-								strategy: "append",
-								root: "#" + self.name
-
-							})
-						}
-
+						self.commentCollectionView = new CViewComments({
+							collection: self.collection,
+							itemView: CommentView
+						})
+						self.replies.show(self.commentCollectionView)
 					})
+
+					//this.commentCollectionView = new CViewComments({
+					//	collection: replies
+					//})
+					//this.children.show(this.commentCollectionView)
+
+					// replies.each(function(model) {
+					// 	var id = model.get('id')
+					// 	if (id != "_") {
+
+					// 		model.set('permalink', self.model.get('permalinkParent') + model.get('id'))
+					// 		model.set('permalinkParent', self.model.get('permalinkParent'))
+
+					// 		var comment = new CommentView({
+					// 			model: model,
+					// 			id: id,
+					// 			strategy: "append",
+					// 			root: "#" + self.name
+
+					// 		})
+					// 	}
+
+					// })
 
 				}
 			},
@@ -224,16 +254,17 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!templa
 				console.log('other replies', collection)
 				var self = this
 				collection.each(function(model) {
+					App.trigger("comment:addOneChild" + model.get('parent_id'), model);
 					//console.log('model in renderComments', model)
-					model.set('permalink', self.model.get('permalinkParent') + model.get('id'))
-					model.set('permalinkParent', self.model.get('permalinkParent'))
-					var comment = new CommentView({
-						model: model,
-						id: model.get('id'),
-						strategy: "append",
-						root: ".child" + model.get('parent_id')
-						//root: "#commentarea"
-					})
+					//model.set('permalink', self.model.get('permalinkParent') + model.get('id'))
+					//model.set('permalinkParent', self.model.get('permalinkParent'))
+					// var comment = new CommentView({
+					// 	model: model,
+					// 	id: model.get('id'),
+					// 	strategy: "append",
+					// 	root: ".child" + model.get('parent_id')
+					// 	//root: "#commentarea"
+					// })
 
 				})
 
@@ -252,5 +283,5 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/comment', 'hbs!templa
 			}
 
 		});
-		return CommentView;
+
 	});

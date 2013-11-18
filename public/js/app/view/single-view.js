@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/loading', 'view/post-row-view', 'view/sidebar-view', 'view/comment-view', 'view/basem-view', 'model/single', 'cookie'],
-	function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, CommentView, BaseView, SingleModel, Cookie) {
+define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/loading', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'model/single', 'view/comment-view', 'cookie'],
+	function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, BaseView, SingleModel, CommentView, Cookie) {
 		return BaseView.extend({
 			template: singleTmpl,
 			events: function() {
@@ -35,7 +35,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 			},
 
 			regions: {
-				'thepost': '#thepost'
+				'thepost': '#thepost',
+				'siteTableComments': '#siteTableComments'
+
 			},
 			ui: {
 				loadingC: '#loadingC'
@@ -283,24 +285,43 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				//console.log('before activiating btm bar=', model)
 
 			},
+
+			addOneChild: function(model) {
+				this.collection.add(model)
+			},
+
 			renderComments: function(collection) {
 				//console.log('collection in renderComments', collection)
 				var self = this
 				this.updatePageTitle(this.model.get('title'))
-				collection.each(function(model) {
-					//console.log('model in renderComments', model)
-					model.set('permalink', self.model.get('permalink') + model.get('id'))
-					model.set('permalinkParent', self.model.get('permalink'))
+				this.collection = collection
 
-					var comment = new CommentView({
-						model: model,
-						id: model.get('id'),
-						strategy: "append",
-						root: "#siteTableComments"
-						//root: "#commentarea"
+				App.on("comment:addOneChild" + this.model.get('name'), this.addOneChild);
+
+				require(['cView/comments', 'view/comment-view'], function(CViewComments, CommentView) {
+					//require(['cView/comments'], function(CViewComments) {
+
+					self.commentCollectionView = new CViewComments({
+						collection: collection,
+						itemView: CommentView
 					})
+					self.siteTableComments.show(self.commentCollectionView)
 
 				})
+				// collection.each(function(model) {
+				// 	//console.log('model in renderComments', model)
+				// 	model.set('permalink', self.model.get('permalink') + model.get('id'))
+				// 	model.set('permalinkParent', self.model.get('permalink'))
+
+				// 	var comment = new CommentView({
+				// 		model: model,
+				// 		id: model.get('id'),
+				// 		strategy: "append",
+				// 		root: "#siteTableComments"
+				// 		//root: "#commentarea"
+				// 	})
+
+				// })
 
 			}
 
