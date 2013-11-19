@@ -443,13 +443,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 			},
 			showMoarBtn: function() {
-				//var moarBtn = '<p class="nextprev btmCenter"><a href="#" rel="next">MOAR ›</a></p>'
-				//this.$el.append(moarBtn)
-				this.ui.nextprev.html('MOAR ›').show()
+				if (this.isClosed === false) {
+					this.ui.nextprev.html('MOAR ›').show()
+				}
 			},
 			hideMoarBtn: function() {
-				//this.$('.nextprev').hide()
-				this.ui.nextprev.html('<img class="loadingMOAR" src="img/loading.gif" />').show()
+				if (this.isClosed === false) {
+					this.ui.nextprev.html('<img class="loadingMOAR" src="img/loading.gif" />').show()
+				}
 			}
 
 		});

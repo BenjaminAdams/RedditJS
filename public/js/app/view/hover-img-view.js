@@ -1,12 +1,17 @@
 define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 	function(_, Backbone, HoverImgTemplate, BaseView) {
-		var HoverImgView = BaseView.extend({
+		return BaseView.extend({
 			template: HoverImgTemplate,
 			//tagName: 'span',
 			//className: 'hoverImgView',
 			events: {
 				'click .close': "closeImg", //closes the image out of the comment area
 				'mouseover .openedOutBoundLink': 'newImgSelected'
+			},
+			ui: {
+				'imgPreview': '.imgPreview',
+				'imgTitle': '.imgTitle',
+				'hoverImgView': '.hoverImgView'
 			},
 
 			initialize: function(options) {
@@ -20,18 +25,13 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 				this.youtubeID = options.youtubeID
 				this.youtubeEmbed = ''
 
-				// console.log('original text=', this.originalText)
+				//console.log('original text=', this.originalText)
 				// console.log('ahrefdesc=', this.ahrefDescription)
 				// console.log('number of links in this string=', (this.originalHtml.split("href").length - 1))
 
 				if (this.originalText == this.ahrefDescription && (this.originalHtml.split("href").length - 1) == 1) {
 					//no point in showing the same string twice
 					this.displayHtml = ''
-				}
-
-				if (this.youtubeID !== false) {
-					this.youtubeEmbed = this.buildYoutubeEmbed()
-					this.$('.imgPreview').hide()
 				}
 
 				this.model = new Backbone.Model({
@@ -43,8 +43,16 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 					//originalHtml: this.originalHtml.replace('outBoundLink', 'openedOutBoundLink')
 
 				})
+				//this.render()
 
-				this.render();
+			},
+
+			onRender: function() {
+				if (this.youtubeID !== false) {
+					this.youtubeEmbed = this.buildYoutubeEmbed()
+					this.ui.imgPreview.hide()
+				}
+
 				this.$el.removeClass('outBoundLink')
 				this.loadImg()
 
@@ -52,24 +60,23 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 				this.addHeaderGBimg()
 
 			},
+
 			loadImg: function() {
 				var self = this
 
 				if (this.youtubeID === false) {
-					this.$('.imgPreview').html('<img src="img/loading.gif" />')
+					this.ui.imgPreview.html('<img src="img/loading.gif" />')
 
-					$('<img src="' + this.url + '" />')
-						.load(function() {
-							console.log('loaded img')
+					$('<img src="' + this.url + '" />').load(function() {
+						console.log('loaded img')
+						self.ui.imgPreview.html(this)
+						self.ui.imgPreview.find('img').show() //sometimes the custom CSS from subreddits hide images
 
-							self.$('.imgPreview').html(this)
-							self.$('.imgPreview img').show() //sometimes the custom CSS from subreddits hide images
-
-						}).error(function() {
-							console.log("ERROR loading img")
-							self.$('.imgPreview').html('<img src="img/sad-icon.png" />').show()
-							self.$('.imgPreview img').show()
-						});
+					}).error(function() {
+						console.log("ERROR loading img")
+						self.ui.imgPreview.html('<img src="img/sad-icon.png" />').show()
+						self.ui.imgPreview.find('img').show()
+					});
 
 				}
 			},
@@ -83,14 +90,14 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 					var linkColor = $('.tabmenu li.selected a').css('color')
 					//this.$('.hoverImgView').css('color', color)
 
-					this.$('.imgTitle').css('background-image', bgImg, 'important')
-					this.$('.imgTitle a').css('color', linkColor, 'important')
+					this.ui.imgTitle.css('background-image', bgImg, 'important')
+					this.ui.imgTitle.find('a').css('color', linkColor, 'important')
 					//this.$('h3').css('border', border, 'important')
 				}
 
 				var headerImg = $('#header-img').attr('src')
 				if (typeof headerImg !== 'undefined') {
-					$('.hoverImgView').append("<style>.hoverImgView::after{ content:'';background:url(" + headerImg + ") no-repeat bottom right; opacity:0.15;top:0;left:0;right:0;bottom:0;position:absolute;z-index:-1; }</style>");
+					this.ui.hoverImgView.append("<style>.hoverImgView::after{ content:'';background:url(" + headerImg + ") no-repeat bottom right; opacity:0.15;top:0;left:0;right:0;bottom:0;position:absolute;z-index:-1; }</style>");
 
 				}
 
@@ -106,13 +113,9 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 				}, 1500)
 
 				//console.log('closing', this.originalHtml)
-				this.$el.html(this.originalHtml)
+				this.$el.html("<div class='md'>" + this.originalHtml + "</div>")
 			},
-			render: function() {
-				this.$el.html(HoverImgTemplate({
-					model: this.model.attributes
-				}))
-			},
+
 			newImgSelected: function(e) {
 
 				var target = $(e.currentTarget)
@@ -167,5 +170,4 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 			}
 
 		});
-		return HoverImgView;
 	});

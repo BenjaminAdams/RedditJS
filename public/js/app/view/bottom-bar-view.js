@@ -242,7 +242,7 @@
                  this.setScrollInt('stop')
 
                  this.userLeftTimeout = setTimeout(function() {
-                     if (!self.ui.bottomBar.hasClass("transparent")) {
+                     if (self.isClosed === false && !self.ui.bottomBar.hasClass("transparent")) {
                          self.ui.bottomBar.addClass('transparent')
                      }
 

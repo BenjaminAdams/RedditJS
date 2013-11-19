@@ -50,6 +50,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
                 }
             },
             gotoSingle: function(e) {
+                var self = this
+
                 var target = $(e.currentTarget)
                 var permalink = this.model.get('permalink')
                 var targetLink = target.attr('href')
@@ -57,8 +59,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
                     // console.log('it worked', this.model)
                     //I've made the choice here to pass the current model as a global so we do not have to have a long load time
                     //the single post page takes 2-3 seconds to load the get request
+                    setTimeout(function() {
+                        window.curModel = self.model //the small view closes too fast and is unable to pass the model to the single
+                    }, 5)
                     window.curModel = this.model
-
                 }
 
             },

@@ -22,7 +22,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
 			},
 			regions: {
-				replies: '.replies'
+				replies: '.replies',
+				hoverImgParent: '.hoverImgParent:first'
 			},
 			ui: {
 				upArrow: '.upArrow',
@@ -205,23 +206,31 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 							}
 
 							//$(target).css('float', 'left')
-							var originalText = $('#' + this.options.id + ' .outBoundLink:first').parent().parent().text().trim()
-							var originalHtml = this.$('#' + this.options.id + ' .outBoundLink:first').parent().parent().html()
+							var originalText = $('.outBoundLink:first').parent().parent().text().trim()
+							var originalHtml = this.$('.outBoundLink:first').parent().parent().html()
 							if (youtubeID) {
 								url = $(target).attr("href") //in case it was a youtube video we should reset the url link to pass into the view
 							}
 							//display the image if it exists
 							//maybe create an image view?
 							//console.log('hovering over an img', originalText)
-							var hoverImgView = new HoverImgView({
-								el: target.parent().parent(),
+							// var hoverImgView = new HoverImgView({
+							// 	el: target.parent().parent(),
+							// 	url: url,
+							// 	ahrefDescription: ahrefDescription,
+							// 	originalText: originalText,
+							// 	originalHtml: originalHtml,
+							// 	youtubeID: youtubeID
+
+							// });
+							this.hoverImgParent.show(new HoverImgView({
 								url: url,
 								ahrefDescription: ahrefDescription,
 								originalText: originalText,
 								originalHtml: originalHtml,
 								youtubeID: youtubeID
 
-							});
+							}))
 
 						}
 					}
