@@ -11,7 +11,9 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 			ui: {
 				'imgPreview': '.imgPreview',
 				'imgTitle': '.imgTitle',
-				'hoverImgView': '.hoverImgView'
+				'hoverImgView': '.hoverImgView',
+				'youtubeEmbed': '.youtubeEmbed',
+				'ahrefDescription': '.ahrefDescription'
 			},
 
 			initialize: function(options) {
@@ -78,6 +80,8 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 						self.ui.imgPreview.find('img').show()
 					});
 
+				} else {
+					this.ui.youtubeEmbed.html(this.youtubeEmbed)
 				}
 			},
 			addHeaderGBimg: function() {
@@ -142,19 +146,19 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 					if (youtubeID !== false) {
 						this.url = $(target).attr("href")
 						this.youtubeID = youtubeID
-						this.$('.imgPreview').hide()
-						this.$('.youtubeEmbed').html(this.buildYoutubeEmbed())
+						this.ui.imgPreview.hide()
+						this.ui.youtubeEmbed.html(this.buildYoutubeEmbed())
 
 					} else {
 						this.youtubeID = false
-						this.$('.imgPreview').show()
-						this.$('.youtubeEmbed').html('')
-						this.$('.imgPreview').attr('href', this.url)
+						this.ui.imgPreview.show()
+						this.ui.youtubeEmbed.html('')
+						this.ui.imgPreview.attr('href', this.url)
 						//this.$('.imgPreview img').attr('src', this.url)
 						this.loadImg()
 					}
-					this.$('.ahrefDescription').attr('href', this.url)
-					this.$('.ahrefDescription').html(this.ahrefDescription)
+					this.ui.ahrefDescription.attr('href', this.url)
+					this.ui.ahrefDescription.html(this.ahrefDescription)
 
 					window.Delay = true //delay the user from switching images because it could hover over a lot at once
 					setTimeout(function() {
