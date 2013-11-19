@@ -12,10 +12,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 			},
 			initialize: function(data) {
 				_.bindAll(this);
-				this.render()
-
 				App.on("logout", this.logout, this);
-
 			},
 			onRender: function() {
 				if (this.checkIfLoggedIn() === true) {
@@ -54,16 +51,14 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 
 				this.api("api/login", 'POST', params, function(data) {
 					console.log(data)
-
+					self.ui.loginThrobber.css('display', 'none')
 					if (typeof data.json.errors !== 'undefined' && data.json.errors.length > 0) {
 						//alert("unable to login")
 						console.log(data.json.errors)
 						self.ui.loginError.show().html(data.json.errors[0][1])
 
-						self.ui.loginThrobber.css('display', 'none')
-
 					} else {
-						self.ui.loginThrobber.css('display', 'none')
+
 						var loginData = data.json.data;
 						console.log(loginData)
 						window.me = loginData
@@ -108,9 +103,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 				$.removeCookie('gold', {
 					path: '/'
 				});
-				localStorage.removeItem('subreddits');
-				localStorage.removeItem('userinfo');
-
+				//localStorage.removeItem('subreddits');
+				//localStorage.removeItem('userinfo');
+				$.totalStorage.deleteItem('userinfo')
+				$.totalStorage.deleteItem('subreddits')
 				this.$el.show() //shows the login box
 			}
 
