@@ -1,9 +1,9 @@
 <div class='large-thumb'>
 
-    <div id='{{id}}' class="thing id-{{name}} {{evenOrOdd}} link" data-fullname="{{name}}" data-ups="{{ups}}" data-downs="{{downs}}">
+    <div  class="thing {{evenOrOdd}} link">
         <span class="rank" style="width:3.30ex;">{{count}}</span>
         <div class="midcol {{voted}} " style="width:5ex;">
-            <div data-id='{{id}}' class="arrow upArrow upArrow{{id}} {{upmod}}" role='button' aria-label="upvote" tabindex="0">
+            <div data-id='{{id}}' class="arrow upArrow {{upmod}}" role='button' aria-label="upvote" tabindex="0">
             </div>
             <div class="score dislikes">
                  {{scoreDown}}
@@ -14,7 +14,7 @@
             <div class="score likes">
                  {{scoreUp}}
             </div>
-            <div data-id='{{id}}' class="arrow downArrow downArrow{{id}} {{downmod}}" role="button" aria-label="downvote" tabindex="0">
+            <div data-id='{{id}}' class="arrow downArrow {{downmod}}" role="button" aria-label="downvote" tabindex="0">
             </div>
         </div>
 
@@ -40,25 +40,25 @@
 
                 <span class="state-button save-button" >
                      {{#if saved}}
-                        <span id='unsave{{id}}' class='unsave' ><a href='#'>unsave</a></span>
-                        <span id='save{{id}}' class='save' style='display:none;'><a href="#" >save</a></span>
+                        <span  class='unsave' ><a href='#'>unsave</a></span>
+                        <span  class='save' style='display:none;'><a href="#" >save</a></span>
                     {{else}}
-                        <span id='unsave{{id}}' class='unsave' style='display:none;'><a href='#'>unsave</a></span>
-                        <span id='save{{id}}' class='save'><a href="#" >save</a></span>
+                        <span class='unsave' style='display:none;'><a href='#'>unsave</a></span>
+                        <span class='save'><a href="#" >save</a></span>
                     {{/if}}
                 </span>
                 </li>
 
                 <li>
                 <span class="state-button hide-button" >
-                   <span><a href="#" id='hide{{id}}' class='hide'>hide</a></span>
+                   <span><a href="#" class='hide'>hide</a></span>
                 </span>
                 </li>
                 <li>
                 <span class="toggle remove-button">
                     <span class="option main active">
-                    <a href="#" id='report{{id}}' class="report togglebutton">report</a></span>
-                    <span id='reportConfirm{{id}}' class="option error">are you sure? <a href="#" id='reportConfirmYes{{id}}' class="yes reportConfirmYes">yes</a> / <a href="#" id='reportConfirmNo{{id}}' class="no reportConfirmNo" >no</a></span>
+                    <a href="#"  class="togglebutton report">report</a></span>
+                    <span class="option error reportConfirm">are you sure? <a href="#"  class="reportConfirmYes yes">yes</a> / <a href="#" class="no reportConfirmNo" >no</a></span>
                 </span>
                 </li>
             </ul>
