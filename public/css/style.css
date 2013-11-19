@@ -59,14 +59,20 @@ border-bottom: 1px dotted #808080;
 }
 
 .thumbnailSmall img {
-
 height: 70px;
 width: 90px;
-
 }
 
 .thumbnail {
   max-height: 64px;
+}
+
+.morecomments {
+height:33px;
+}
+.morecomments a {
+  font-weight: bold;
+  margin:10px;
 }
 
 
