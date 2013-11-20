@@ -12,7 +12,19 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			ui: {
 				'siteTable': '#siteTable',
 				'nextprev': '.nextprev',
-				'headerImg': '#header-img'
+				'headerImg': '#header-img',
+				'pagenameA': '#pagename-a',
+				'hot': '.hot',
+				'new': '.new',
+				'rising': '.rising',
+				'controversial': '.controversial',
+				'top': '.top',
+				'normal': '#normal',
+				'small': '#small',
+				'large': '#large',
+				'grid': '#grid',
+				'headerNavLogoArea': '#header-nav-logo-area',
+				'srBar': '#sr-bar'
 
 			},
 			regions: {
@@ -22,7 +34,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			initialize: function(data) {
 				_.bindAll(this);
 				console.log("I should only render the header once")
-				//this.render();
 
 				App.on("header:update", this.updateHeader, this);
 				App.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
@@ -55,20 +66,19 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			updateHeader: function(model) {
 				this.model = model
 				//this.userbar.render()
-				this.$("#pagename-a").prop("href", model.get('rname'))
-				this.$("#pagename-a").text(model.get('display_name'))
+				this.ui.pagenameA.prop("href", model.get('rname'))
+				this.ui.pagenameA.text(model.get('display_name'))
 				var header_img = model.get('header_img')
 				if (typeof header_img === 'undefined' || header_img === null) {
 					this.ui.headerImg.attr("src", '/img/logo.png');
 				} else {
-
 					this.ui.headerImg.attr("src", header_img);
 				}
-				this.$(".hot").prop("href", model.get('rname'))
-				this.$(".new").prop("href", model.get('rname') + "/new")
-				this.$(".rising").prop("href", model.get('rname') + "/rising")
-				this.$(".controversial").prop("href", model.get('rname') + "/controversial")
-				this.$(".top").prop("href", model.get('rname') + "/top")
+				this.ui.hot.prop("href", model.get('rname'))
+				this.ui.new.prop("href", model.get('rname') + "/new")
+				this.ui.rising.prop("href", model.get('rname') + "/rising")
+				this.ui.controversial.prop("href", model.get('rname') + "/controversial")
+				this.ui.top.prop("href", model.get('rname') + "/top")
 
 			},
 			updateSortOrder: function(data) {
@@ -76,27 +86,27 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				var sortOrder = data.sortOrder
 				var domain = data.domain
 				var subName = data.subName
-				this.$('.hot').parent().removeClass('selected');
-				this.$('.new').parent().removeClass('selected');
-				this.$('.rising').parent().removeClass('selected');
-				this.$('.controversial').parent().removeClass('selected');
-				this.$('.top').parent().removeClass('selected');
+				this.ui.hot.parent().removeClass('selected');
+				this.ui.new.parent().removeClass('selected');
+				this.ui.rising.parent().removeClass('selected');
+				this.ui.controversial.parent().removeClass('selected');
+				this.ui.top.parent().removeClass('selected');
 				this.$('.' + sortOrder).parent().addClass('selected');
 
 				if (domain === null) {
 					//http://localhost/r/funny/new
-					this.$('.hot').attr("href", "/r/" + subName + '/');
-					this.$('.new').attr("href", "/r/" + subName + '/new');
-					this.$('.rising').attr("href", "/r/" + subName + '/rising');
-					this.$('.controversial').attr("href", "/r/" + subName + '/controversial');
-					this.$('.top').attr("href", "/r/" + subName + '/top');
+					this.ui.hot.attr("href", "/r/" + subName + '/');
+					this.ui.new.attr("href", "/r/" + subName + '/new');
+					this.ui.rising.attr("href", "/r/" + subName + '/rising');
+					this.ui.controversial.attr("href", "/r/" + subName + '/controversial');
+					this.ui.top.attr("href", "/r/" + subName + '/top');
 				} else {
 					//http://localhost/domain/i.imgur.com/new
-					this.$('.hot').attr("href", "/domain/" + domain + '/');
-					this.$('.new').attr("href", "/domain/" + domain + '/new');
-					this.$('.rising').attr("href", "/domain/" + domain + '/rising');
-					this.$('.controversial').attr("href", "/domain/" + domain + '/controversial');
-					this.$('.top').attr("href", "/domain/" + domain + '/top');
+					this.ui.hot.attr("href", "/domain/" + domain + '/');
+					this.ui.new.attr("href", "/domain/" + domain + '/new');
+					this.ui.rising.attr("href", "/domain/" + domain + '/rising');
+					this.ui.controversial.attr("href", "/domain/" + domain + '/controversial');
+					this.ui.top.attr("href", "/domain/" + domain + '/top');
 				}
 			},
 
@@ -117,10 +127,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 					id = 'normal'
 				}
 
-				this.$('#normal').removeClass('selected');
-				this.$('#small').removeClass('selected');
-				this.$('#large').removeClass('selected');
-				this.$('#grid').removeClass('selected');
+				this.ui.normal.removeClass('selected');
+				this.ui.small.removeClass('selected');
+				this.ui.large.removeClass('selected');
+				this.ui.grid.removeClass('selected');
 				this.$('#' + id).addClass('selected');
 			},
 			refreshSubreddits: function() {
@@ -130,7 +140,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				this.updateSubreddits()
 			},
 			updateSubreddits: function() {
-				console.log('updating subreddits!@')
 				window.subreddits.reset()
 				//query the api for /me.json
 				window.subreddits.fetch();
@@ -138,34 +147,32 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			},
 
 			toggleDropdown: function() {
-				//this.$('.drop-down-header').toggle()
-
-				var target = this.$("#header-nav-logo-area")
-				if (target.is(':visible')) {
-					target.slideUp("slow")
+				var self = this
+				if (this.ui.headerNavLogoArea.is(':visible')) {
+					this.ui.headerNavLogoArea.slideUp("slow")
 				} else {
-					this.$('#header-nav-logo-area').empty()
+					this.ui.headerNavLogoArea.empty()
 					window.subreddits.each(function(model) {
 
 						var headerImg = model.get('header_img')
 						var displayName = model.get('display_name')
 						if (headerImg === null) {
-							self.$('#header-nav-logo-area').append("<span class='headerNavLogo' ><a class='text-header-nav'  href='/r/" + displayName + "' >" + displayName + "</span></a> ")
+							self.ui.headerNavLogoArea.append("<span class='headerNavLogo' ><a class='text-header-nav'  href='/r/" + displayName + "' >" + displayName + "</span></a> ")
 						} else {
-							self.$('#header-nav-logo-area').append("<span class='headerNavLogo'><a href='/r/" + displayName + "' title='" + displayName + "' ><img src='" + headerImg + "' /></a></span>")
+							self.ui.headerNavLogoArea.append("<span class='headerNavLogo'><a href='/r/" + displayName + "' title='" + displayName + "' ><img src='" + headerImg + "' /></a></span>")
 						}
 
 					})
 
-					target.slideDown("slow")
+					this.ui.headerNavLogoArea.slideDown("slow")
 				}
 
 			},
 
 			displayMySubreddits: function(response, subreddits) {
 				var self = this;
-				this.$('#sr-bar').html(" ") //clear the top
-				this.$('#header-nav-logo-area').empty()
+				this.ui.srBar.html(" ") //clear the top
+				this.ui.headerNavLogoArea.empty()
 
 				//    Normal Format: 
 				//			<li><a href="/r/pics/">pics</a></li>
@@ -185,28 +192,14 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 
 					if (model.get('display_name') != "announcements" && model.get('display_name') != "blog") {
 
-						self.$('#sr-bar').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
+						self.ui.srBar.append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
 
 						count++;
 					}
 				})
 
-				this.displayDropChoices()
+				//this.displayDropChoices()
 				App.trigger("submit:subreddits");
-			},
-			displayDropChoices: function() {
-				this.$('.drop-down-header').html(" ") //clear the div
-
-				//format:  <a class="choice" href="/r/AdviceAnimals/">AdviceAnimals</a>
-
-				//window.subreddits.each(function(model) {
-				//this.$('.drop-choices').append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
-				//this.$('.drop-down-header').append('<a class="choice" href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a>')
-				//})
-
-				//add the edit subscriptions button
-				//this.$('.drop-down-header').append('<a class="choice bottom-option" href="/subreddits/">edit subscriptions</a>')
-
 			}
 
 		});
