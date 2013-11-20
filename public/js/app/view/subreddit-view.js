@@ -412,7 +412,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					//bad?
 					//if we are not checking for this it will reset the scrolltop back to zero when we reach this subreddit
 					var windowScrollTop = $(window).scrollTop()
-					if (windowScrollTop > 50) {
+					if (typeof this.subID !== 'undefined' && windowScrollTop > 50) {
 						this.collection.scroll = windowScrollTop
 						window.subs[this.subID].scroll = $(window).scrollTop()
 

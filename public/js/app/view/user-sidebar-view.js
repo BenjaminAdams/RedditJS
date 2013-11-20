@@ -1,7 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/user-sidebar', 'view/base-view', 'view/login-view', 'model/user-about', 'cookie'],
+define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/user-sidebar', 'view/basem-view', 'view/login-view', 'model/user-about', 'cookie'],
 	function($, _, Backbone, Resthub, UserSidebarTmpl, BaseView, LoginView, UserAboutModel, Cookie) {
-		var UserSidebarView = BaseView.extend({
-			el: ".side",
+		return BaseView.extend({
 			events: {
 				'click .remove-friend': 'removeFriend',
 				'click .add-friend': 'addFriend'
@@ -17,8 +16,6 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/user-sideba
 				this.model.fetch({
 					success: this.loaded
 				});
-
-				this.$el.show()
 
 			},
 			loaded: function(response, sidebar) {
@@ -73,5 +70,4 @@ define(['jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/user-sideba
 			}
 
 		});
-		return UserSidebarView;
 	});

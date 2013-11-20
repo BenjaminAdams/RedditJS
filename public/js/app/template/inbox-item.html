@@ -1,15 +1,15 @@
-<div id='{{model.name}}' class="thing recipient message-parent even message">
+<div id='{{name}}' class="thing recipient message-parent even message">
   <p class="parent">
   </p>
   <p class="subject">
     <span class="correspondent rounded">
-      <a class="author" href="/user/{{model.author}}" target="_blank">
-        {{model.author}}
+      <a class="author" href="/user/{{author}}" target="_blank">
+        {{author}}
       </a>
       <span class="userattrs">
       </span>
     </span>
-           {{model.subject}}
+           {{subject}}
     <br>
   </p>
   <p>
@@ -24,16 +24,16 @@
       <span class="head">
         from 
         <b>
-          <a class="author" href="/user/{{model.author}}" target="_blank">
-           {{model.author}}
+          <a class="author" href="/user/{{author}}" target="_blank">
+           {{author}}
           </a>
       
           <span class="userattrs">
           </span>
         </b>
         sent 
-        <time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">
-          {{model.timeAgo}}
+        <time title="{{timePretty}}" datetime="{{timeUgly}}">
+          {{timeAgo}}
         </time>
         ago
       </span>
@@ -46,25 +46,25 @@
         <span class="head">
           from
           <b>
-            <a class="author" href="/user/{{model.author}}" target="_blank">
-              {{model.author}}
+            <a class="author" href="/user/{{author}}" target="_blank">
+              {{author}}
             </a>to
-        <a class="author" href="/user/{{model.dest}}" target="_blank">
-           {{model.dest}}
+        <a class="author" href="/user/{{dest}}" target="_blank">
+           {{dest}}
           </a>
             <span class="userattrs">
             </span>
           </b>
           sent 
-        <time title="{{model.timePretty}}" datetime="{{model.timeUgly}}">
-          {{model.timeAgo}}
+        <time title="{{timePretty}}" datetime="{{timeUgly}}">
+          {{timeAgo}}
         </time>
           ago
         </span>
       </p>
       <div class="md">
         <p>
-          {{{model.body_html}}}
+          {{{body_html}}}
         </p>
       </div>
       <ul class="flat-list buttons">
@@ -118,7 +118,7 @@
           </form>
         </li>
         <li>
-          <a href="/message/compose/{{model.author}}">
+          <a href="/message/compose/{{author}}">
             reply
           </a>
         </li>

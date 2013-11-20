@@ -1,17 +1,7 @@
 define(['underscore', 'backbone', 'jquery', 'localstorage'], function(_, Backbone, $, Localstorage) {
 	var UserAbout = Backbone.Model.extend({
 		initialize: function(data) {
-			var self = this
 			this.username = data
-			if (typeof $.totalStorage('userinfo') !== 'undefined' && $.totalStorage('userinfo') !== null) {
-				var userinfo = $.totalStorage('userinfo')
-
-				this.set(userinfo)
-
-			} else {
-				this.fetch()
-			}
-
 		},
 		url: function() {
 			//console.log("/api/?url=user/" + this.username + "/about.json")
@@ -32,8 +22,6 @@ define(['underscore', 'backbone', 'jquery', 'localstorage'], function(_, Backbon
 			}
 			data.uglyKarma = data.link_karma
 			data.link_karma = this.numberWithCommas(data.link_karma)
-
-			$.totalStorage('userinfo', data)
 
 			return data;
 

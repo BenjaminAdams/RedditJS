@@ -5,41 +5,35 @@ unread
 sent
 all
 
-
 */
-define(['underscore', 'backbone', 'resthub', 'hbs!template/inbox-item', 'view/base-view'],
-	function(_, Backbone, Resthub, InboxItemTmpl, BaseView) {
-		var InboxItemView = BaseView.extend({
-			strategy: 'append',
-
-			//el: $(".content"),
+define(['underscore', 'backbone', 'hbs!template/inbox-item', 'view/basem-view'],
+	function(_, Backbone, InboxItemTmpl, BaseView) {
+		return BaseView.extend({
 			template: InboxItemTmpl,
 			events: {
 				'click .noncollapsed .expand': "hideThread",
 				'click .collapsed .expand': "showThread",
-
 				'click .togglebuttonReport': "reportShow",
 				'click .yesReport': "reportYes", //user clicks yes to report 
 				'click .noReport': "reportShow", //user decides not to report this link/comment
-
 				'click .togglebuttonBlock': "blockShow",
 				'click .yesBlock': "blockYes", //user clicks yes to report 
 				'click .noBlock': "blockShow", //user decides not to report this link/comment
 				'click .new': 'markRead',
 				'click .unread-button': 'markUnread'
 			},
-
 			initialize: function(options) {
 				_.bindAll(this);
 				this.model = options.model
-				this.render();
 				this.selector = $('#' + this.model.get('name'))
 				//this.$el = $('#' + this.model.get('name'))
+
+			},
+			onRender: function() {
 				if (this.model.get('new') === true) {
 					this.selector.addClass('new')
 				}
 				this.selector.addClass(this.model.get('evenOrOdd')) //add even or odd classes
-
 			},
 			hideThread: function(e) {
 				e.preventDefault()
@@ -132,5 +126,4 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/inbox-item', 'view/ba
 			}
 
 		});
-		return InboxItemView;
 	});

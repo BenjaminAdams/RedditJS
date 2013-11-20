@@ -50,20 +50,11 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 var router = this;
                 if (!callback) callback = this[name];
                 var f = function() {
-                    //middleware functions
-                    //App.trigger("subreddit:remove") //clear old subreddit views
-                    // App.trigger("single:remove") //clear old subreddit views
 
+                    //middleware functions, functions that get called between every route
                     if (name != 'single') { //hide the bottom bar if not in single view
-                        // $("#bottom-bar").hide()
-                        //channel.trigger("btmbar:remove")
                         App.bottombarRegion.close()
                     }
-
-                    $('#imgCache').empty() //flush the image thumbnail cache
-
-                    ga('send', 'pageview'); //track pageview
-                    //  window.stop() //prevent images from being loaded in gridview
                     //end middleware functions
                     callback.apply(router, arguments); //call the actual route
                 };
@@ -127,17 +118,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                         commentLink: commentLink || null
                     }));
 
-                    if (window.settings.get('btmbar') === true) {
-
-                        if (typeof App.bottombarRegion.currentView === 'undefined' || App.bottombarRegion.currentView.subName != subName) { //only update btm bar if the subreddit changes
-
-                            App.bottombarRegion.show(new BottomBarView({
-                                subName: subName,
-                                id: id
-                            }))
-                        } else {
-                            //this.bottomBar.show()
-                        }
+                    //only update btm bar if the subreddit changes
+                    if ((typeof App.bottombarRegion.currentView === 'undefined' || App.bottombarRegion.currentView.subName != subName) && window.settings.get('btmbar') === true) {
+                        App.bottombarRegion.show(new BottomBarView({
+                            subName: subName,
+                            id: id
+                        }))
                     }
 
                 })
@@ -147,30 +133,34 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             user: function(username, sortOrder) {
                 var self = this
                 require(['view/user-sidebar-view', 'view/user-view'], function(UserSidebarView, UserView) {
-                    self.sidebar = new UserSidebarView({
+
+                    App.sidebarRegion.show(new UserSidebarView({
                         username: username
-                    })
-                    console.log('in router =', username + " " + sortOrder)
-                    var userView = new UserView({
+                    }))
+
+                    App.mainRegion.show(new UserView({
                         username: username,
                         sortOrder: sortOrder
-                    });
+                    }));
+
                 });
             },
             compose: function(username) {
 
                 require(['view/compose-view'], function(ComposeView) {
-                    var composeView = new ComposeView({
+                    App.mainRegion.show(new ComposeView({
                         username: username
-                    });
+                    }));
+
                 });
             },
             inbox: function(type) {
 
                 require(['view/inbox-view'], function(InboxView) {
-                    var inboxView = new InboxView({
+                    App.mainRegion.show(new InboxView({
                         type: type
-                    });
+                    }));
+
                 });
             },
             subreddits: function(searchQ) {

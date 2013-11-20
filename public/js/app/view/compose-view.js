@@ -3,39 +3,35 @@
 Sends an outgoing to message to another reddit user
 
 */
-
-define(['underscore', 'backbone', 'resthub', 'hbs!template/compose', 'view/base-view'],
+define(['underscore', 'backbone', 'resthub', 'hbs!template/compose', 'view/basem-view'],
 	function(_, Backbone, Resthub, ComposeTmpl, BaseView) {
-		var ComposeView = BaseView.extend({
-			//strategy: 'append',
-			el: $(".content"),
+		return BaseView.extend({
 			template: ComposeTmpl,
 			events: {
 				'submit #compose-message': "sendMsg"
-
 			},
-
 			initialize: function(options) {
 				_.bindAll(this);
-				//this.template = MessageTmpl
 				this.model = new Backbone.Model({
 					username: options.username
 				})
-				this.render();
-
+			},
+			ui: {
+				'msgTxt': '#msgTxt',
+				'to': '#to',
+				'subject': '#subject',
+				'status': '.status',
+				'error': '.error'
 			},
 			sendMsg: function(e) {
 				e.preventDefault()
 				e.stopPropagation();
 				var self = this;
-				var msgTxt = this.$('#msgTxt').val()
-				var msgSendTo = this.$('#to').val()
-				var msgSubject = this.$('#subject').val()
 
 				var params = {
-					to: msgSendTo,
-					text: msgTxt,
-					subject: msgSubject,
+					to: this.ui.to.val(),
+					text: this.ui.msgTxt.val(),
+					subject: this.ui.subject.val(),
 					uh: $.cookie('modhash')
 				};
 				console.log(params)
@@ -43,17 +39,16 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/compose', 'view/base-
 				this.api("/api/compose", 'POST', params, function(data) {
 					console.log("msg  done", data)
 					if (data.jquery.length > 18) {
-						this.$('.status').html("Message sent")
-						self.$('#msgTxt').val('')
-						self.$('#to').val('')
-						self.$('#subject').val('')
+						self.ui.status.html("Message sent")
+						self.ui.msgTxt.val('')
+						self.ui.to.val('')
+						self.ui.subject.val('')
 					} else {
-						this.$('.error').html('failed to send message')
+						self.ui.error.html('failed to send message')
 					}
 
 				});
 			}
 
 		});
-		return ComposeView;
 	});

@@ -1,18 +1,12 @@
-define([
-		'underscore', 'backbone', 'resthub', 'hbs!template/user', 'view/comment-view', 'view/subreddit-view', 'collection/user', 'cookie'
-	],
-	function(_, Backbone, Resthub, UserTmpl, CommentView, SubredditView, UserCollection, Cookie) {
-		var UserView = SubredditView.extend({
-
-			el: $(".content"),
+define(['App', 'underscore', 'backbone', 'hbs!template/user', 'view/comment-view', 'view/subreddit-view', 'collection/user', 'cView/comments', 'view/post-row-view', 'cookie'],
+	function(App, _, Backbone, UserTmpl, CommentView, SubredditView, UserCollection, CView, PostRowView, Cookie) {
+		return SubredditView.extend({
+			template: UserTmpl,
 			events: {
 				'click .dropdown-user': 'toggleDropdown'
 			},
 
 			initialize: function(options) {
-				//$(this.el).empty()
-				//this.$el.empty()
-				console.log('options=', options)
 				_.bindAll(this);
 				var self = this;
 				this.username = options.username
@@ -27,20 +21,11 @@ define([
 					username: this.username,
 					sortOrder: this.sortOrder
 				})
-				this.template = UserTmpl
 
-				App.on("subreddit:remove", this.remove, this);
-				this.render();
-
-				$(this.el).prepend("<style id='dynamicWidth'> </style>")
-
-				$(this.el).append("<div class='loading'> </div>")
-
-				this.collection = new UserCollection({
+				this.collection = new UserCollection([], {
 					username: this.username,
 					sortOrder: this.sortOrder
 				});
-				this.fetchMore();
 
 				$(window).on("scroll", this.watchScroll);
 
@@ -49,7 +34,19 @@ define([
 				this.scrollOffset = 1000;
 				this.prevScrollY = 0; //makes sure you are not checking when the user scrolls upwards
 				this.errorRetries = 0; //keeps track of how many errors we will retry after
+			},
+			onRender: function() {
+				this.subredditCollectionView = new CView({
+					collection: this.collection,
+					itemView: CommentView,
+					gridOption: 'normal'
+				})
+				this.siteTable.show(this.subredditCollectionView)
+				this.fetchMore()
 
+				$(this.el).prepend("<style id='dynamicWidth'> </style>")
+
+				$(this.el).append("<div class='loading'> </div>")
 				$(window).resize(this.debouncer(function(e) {
 					self.resize()
 				}));
@@ -63,19 +60,19 @@ define([
 			/**************Fetching functions ****************/
 			appendPosts: function(models) {
 				console.log('userposts=', models)
-				models.each(function(model) {
-					console.log(model)
-					model.set('permalink', model.get('url'))
-					var comment = new CommentView({
-						model: model,
-						id: model.get('id'),
-						strategy: "append",
-						root: "#siteTable"
-					})
+				// models.each(function(model) {
+				// 	console.log(model)
+				// 	model.set('permalink', model.get('url'))
+				// 	var comment = new CommentView({
+				// 		model: model,
+				// 		id: model.get('id'),
+				// 		strategy: "append",
+				// 		root: "#siteTable"
+				// 	})
 
-				}, this);
+				// }, this);
 
-				this.resize()
+				// this.resize()
 
 			},
 			gotNewPosts: function(models, res) {
@@ -84,10 +81,10 @@ define([
 				if (typeof res.data.children.length === 'undefined') {
 					return; //we might have an undefined length?
 				}
-				var newCount = res.data.children.length
+				//var newCount = res.data.children.length
 
-				var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
-				this.appendPosts(newModels)
+				//var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
+				//this.appendPosts(newModels)
 
 				//fetch more  posts with the After
 				if (this.collection.after == "stop") {
@@ -96,10 +93,9 @@ define([
 				}
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.helpFillUpScreen()
-				//	window.subs[this.subID] = this.collection
 
 			}
 
 		});
-		return UserView;
+
 	});

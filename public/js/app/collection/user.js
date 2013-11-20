@@ -1,7 +1,7 @@
 define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbone, SingleModel, CommentModel) {
 
 	var User = Backbone.Collection.extend({
-		initialize: function(data) {
+		initialize: function(tmp, data) {
 			_.bindAll(this);
 			this.after = ""
 			this.username = data.username

@@ -73,6 +73,7 @@ height:33px;
 .morecomments a {
   font-weight: bold;
   margin:10px;
+  font-size:12px;
 }
 
 
@@ -312,15 +313,9 @@ padding: 0px 0px 5px 5px;
   opacity: 0.18;
 }
 
-#imgCache {
-  display:none;
-}
-
 .message.new>.entry {
 background-color: #E9E9E9;
 }
-
-
 
 .contentSidebar {
 margin: 0;

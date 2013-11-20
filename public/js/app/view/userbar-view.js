@@ -13,9 +13,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 			initialize: function(data) {
 				_.bindAll(this);
 				var self = this
-				var username = $.cookie('username')
-				if (typeof username !== 'undefined') {
-					this.model = new UserModel(username);
+
+				if (this.checkIfLoggedIn() === true) {
+					var localstorageUsr = $.totalStorage('userinfo')
+					this.model = new UserModel(localstorageUsr);
 				}
 				App.on("login", this.showLoggedIn, this);
 
@@ -35,7 +36,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 			},
 			showLoggedIn: function() {
 				this.model = new UserModel($.cookie('username'));
-				this.listenTo(this.model, 'sync', this.render)
+				this.model.fetch({
+					success: this.updateUserInfo
+				})
+				//this.listenTo(this.model, 'sync', this.updateUserInfo)
 				//this.render()
 				this.ui.loggedOut.hide()
 				this.ui.loggedIn.show()
@@ -46,6 +50,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 				this.ui.loggedOut.show()
 				this.ui.loggedIn.hide()
 				//$(this.el).html(this.loggedOut)
+			},
+			updateUserInfo: function() {
+				$.totalStorage('userinfo', this.model.attributes)
+				this.render()
 			},
 			logout: function(e) {
 				e.preventDefault()
