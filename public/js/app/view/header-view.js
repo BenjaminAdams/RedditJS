@@ -11,7 +11,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 
 			ui: {
 				'siteTable': '#siteTable',
-				'nextprev': '.nextprev'
+				'nextprev': '.nextprev',
+				'headerImg': '#header-img'
 
 			},
 			regions: {
@@ -56,9 +57,13 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				//this.userbar.render()
 				this.$("#pagename-a").prop("href", model.get('rname'))
 				this.$("#pagename-a").text(model.get('display_name'))
+				var header_img = model.get('header_img')
+				if (typeof header_img === 'undefined' || header_img === null) {
+					this.ui.headerImg.attr("src", '/img/logo.png');
+				} else {
 
-				this.$("#header-img").attr("src", model.get('header_img'));
-
+					this.ui.headerImg.attr("src", header_img);
+				}
 				this.$(".hot").prop("href", model.get('rname'))
 				this.$(".new").prop("href", model.get('rname') + "/new")
 				this.$(".rising").prop("href", model.get('rname') + "/rising")
