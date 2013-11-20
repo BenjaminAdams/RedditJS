@@ -265,7 +265,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 for (var x in selectboxes) {
                     if (typeof $.cookie(selectboxes[x]) === 'undefined') {
-                        window.settings.set(selectboxes[x], 25)
+                        window.settings.set(selectboxes[x], 50)
                     } else {
                         window.settings.set(selectboxes[x], $.cookie(selectboxes[x]))
                     }

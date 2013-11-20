@@ -28,9 +28,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 
 			},
 			regions: {
-				'btmRightHeader': '#header-bottom-right'
+				'btmRightHeader': '#header-bottom-right',
+				'popupWindow': '#popupWindow'
 			},
-
 			initialize: function(data) {
 				_.bindAll(this);
 				console.log("I should only render the header once")
@@ -39,6 +39,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				App.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
 				App.on("header:updateSortOrder", this.updateSortOrder, this);
 				App.on("header:refreshSubreddits", this.refreshSubreddits, this);
+
+				App.on('header:showLoginBox', this.showLoginPopup, this)
 
 				//load the subreddits on the top bar
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
@@ -55,11 +57,14 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 
 			},
 
-			showLoginPopup: function() {
+			showLoginPopup: function(e) {
+				var self = this
+				if (e) {
+					e.preventDefault()
+					e.stopPropagation();
+				}
 				require(['view/login-popup-view'], function(LoginPopupView) {
-					var loginPopupView = new LoginPopupView({
-						el: "#popupWindow"
-					})
+					self.popupWindow.show(new LoginPopupView())
 				});
 			},
 

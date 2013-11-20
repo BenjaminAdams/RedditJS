@@ -1,22 +1,20 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/login-popup', 'view/login-view', 'model/user-about', 'cookie'],
-	function(App, $, _, Backbone, Resthub, LoginPopupTmpl, LoginView, UserModel, cookie) {
-		var LoginPopupView = LoginView.extend({
-			el: "#popupWindow",
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/login-popup', 'view/login-view', 'model/user-about', 'cookie'],
+	function(App, $, _, Backbone, LoginPopupTmpl, LoginView, UserModel, cookie) {
+		return LoginView.extend({
+			template: LoginPopupTmpl,
 			events: {
 				'submit #login_reg': 'register',
 				'click .capimage': 'getNewCaptcha',
 				'click .hidecover': 'hide',
 				'submit #login_login': 'doLogin'
 			},
-
 			initialize: function(data) {
 				_.bindAll(this);
-				this.template = LoginPopupTmpl;
-
-				this.render()
-				this.getNewCaptcha()
 
 				App.on("login", this.loginSuccess, this);
+			},
+			onRender: function() {
+				this.getNewCaptcha()
 			},
 
 			doLogin: function(e) {
@@ -129,5 +127,4 @@ define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/logi
 			}
 
 		});
-		return LoginPopupView;
 	});

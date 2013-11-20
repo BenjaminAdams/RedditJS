@@ -26,14 +26,18 @@ define(['jquery', 'backbone', 'marionette', 'underscore', 'handlebars'],
 
         });
 
-        //move this somewhere else later
-        // window.Handlebars.registerHelper('select', function(value, options) {
-        //     var $el = $('<select />').html(options.fn(this));
-        //     $el.find('[value=' + value + ']').attr({
-        //         'selected': 'selected'
-        //     });
-        //     return $el.html();
-        // });
+        //prevent page reload
+        $(window.document).on('click', 'a[href]:not([data-bypass])', function(evt) {
+            var protocol = this.protocol + '//';
+            var href = this.href;
+            href = href.slice(protocol.length);
+            href = href.slice(href.indexOf("/") + 1);
+
+            if (href.slice(protocol.length) !== protocol) {
+                evt.preventDefault();
+                Backbone.history.navigate(href, true);
+            }
+        });
 
         return App;
     });

@@ -17,8 +17,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				'siteTable': '#siteTable'
 			},
 			initialize: function(options) {
-				//this.$('#siteTable').empty()
-				this.$el.empty()
 				_.bindAll(this);
 				var self = this;
 				this.subName = options.subName
@@ -263,18 +261,23 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					this.gridViewSetup()
 					this.appendPosts(this.collection)
 				} else {
+
+					//this.ui.siteTable.empty();
+					this.siteTable.close()
 					this.subredditCollectionView = new SrCView({
 						collection: this.collection,
 						itemView: PostRowView,
 						gridOption: this.gridOption
 					})
 					this.siteTable.show(this.subredditCollectionView)
-					this.subredditCollectionView.changeGridView(this.gridOption)
+
+					//this.subredditCollectionView.changeGridView(this.gridOption)
+
 				}
 
 			},
 			resetPosts: function() {
-				this.$('#siteTable').html(" ")
+				//this.$('#siteTable').html(" ")
 				this.ui.siteTable.empty();
 			},
 			/**************Fetching functions ****************/

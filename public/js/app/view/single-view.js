@@ -48,7 +48,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 					//this is what we do when we pass in a model with out the comments
 					this.model = window.curModel;
 					this.updatePageTitle(this.model.get('title'));
-					//delete window.curModel; //memory management
+					delete window.curModel; //memory management
 					this.renderStuff(this.model);
 					//well now we need to get the comments for this post!
 					this.fetchComments(this.loadComments)
@@ -77,7 +77,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				}));
 			},
 			onBeforeClose: function() {
-				console.log('**********************removed the single view ', this.model.get('title'))
+
 				$(window).off('resize', this.debouncer);
 				App.off("single:remove", this.remove, this);
 				App.off("single:giveBtnBarID", this.triggerID, this);

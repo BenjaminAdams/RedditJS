@@ -1,7 +1,7 @@
 define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs!template/post-row-large', 'hbs!template/post-row-small', 'view/basem-view'],
     function(App, $, _, Backbone, PostRowTmpl, PostRowLargeTmpl, PostRowSmallTmpl, BaseView) {
         return BaseView.extend({
-            // template: PostRowTmpl,
+            //template: PostRowTmpl,
             events: {
                 'click a': "gotoSingle",
                 'click .upArrow': 'upvote',
@@ -34,14 +34,16 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
                 if (typeof data.expand !== 'undefined') {
                     this.expand = true;
                 }
-
                 if (this.gridOption == "normal") {
                     this.template = PostRowTmpl
-                } else if (this.gridOption == "large") {
-                    this.template = PostRowLargeTmpl
-                } else if (this.gridOption == "small") {
-                    this.template = PostRowSmallTmpl
                 }
+                // if (this.gridOption == "normal") {
+                //     this.template = PostRowTmpl
+                // } else if (this.gridOption == "large") {
+                //     this.template = PostRowLargeTmpl
+                // } else if (this.gridOption == "small") {
+                //     this.template = PostRowSmallTmpl
+                // }
 
             },
             onRender: function() {

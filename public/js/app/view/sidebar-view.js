@@ -1,5 +1,5 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/sidebar', 'view/basem-view', 'view/login-view', 'model/sidebar', 'cookie'],
-	function(App, $, _, Backbone, Resthub, SidebarTmpl, BaseView, LoginView, SidebarModel, Cookie) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view/basem-view', 'view/login-view', 'model/sidebar', 'cookie'],
+	function(App, $, _, Backbone, SidebarTmpl, BaseView, LoginView, SidebarModel, Cookie) {
 		var SidebarView = BaseView.extend({
 			events: {
 				'submit #search': 'gotoSearch',

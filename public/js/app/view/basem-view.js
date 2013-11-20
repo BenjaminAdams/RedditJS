@@ -441,13 +441,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 
 			},
 			showLoginBox: function() {
-				require(['view/login-popup-view'], function(LoginPopupView) {
-
-					var loginPopupView = new LoginPopupView({
-						el: "#popupWindow"
-					})
-
-				});
+				App.trigger('header:showLoginBox')
 			}
 		});
 
