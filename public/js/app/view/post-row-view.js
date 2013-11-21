@@ -69,6 +69,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
 
             },
             toggleExpando: function() {
+                var str;
                 if (this.ui.expandoButton.hasClass('expanded')) {
                     this.ui.expandoButton.removeClass('expanded')
                     this.ui.expandoButton.addClass('collapsed')
@@ -77,7 +78,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
                     var model = this.model
                     this.ui.expandoButton.removeClass('collapsed')
                     this.ui.expandoButton.addClass('expanded')
-                    var str = '<div class="expando"><div class="usertext-body"><p>' + this.model.get('media_embed') + '</p></div></div>'
+                    if (this.model.get('is_self') === true) {
+                        str = '<div class="expando"><div class="usertext-body blueborder">' + this.model.get('selftext_html') + '</div></div>'
+                    } else {
+                        str = '<div class="expando"><div class="usertext-body"><p>' + this.model.get('media_embed') + '</p></div></div>'
+                    }
 
                     this.ui.postRowContent.html(str).show()
                 }

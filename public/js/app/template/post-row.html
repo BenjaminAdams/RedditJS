@@ -28,6 +28,8 @@
                 <span class="domain">(<a href="/domain/{{domain}}/">{{domain}}</a>)</span>
             </p>
                 {{#if embededImg}} <li><div class='expando-button collapsed video'></div></li> {{/if}}
+                {{#if selftext_html}} <li><div class='expando-button collapsed video'></div></li> {{/if}}
+
             <p class="tagline">
             <span>{{score}}(<span class='orange'>{{ups}}</span>/<span class='purple'>{{downs}}</span>)</span>
                 submitted <time datetime="{{timeUgly}}" title="{{timePretty}}">{{timeAgo}}</time> ago by <a class="author" href="/user/{{author}}" target="_blank">{{author}}</a>
@@ -69,8 +71,12 @@
                 </li>
             </ul>
 
-<div class="expando"><div class="usertext-body"><p>
-    <span class='postRowContent'> </span>
+<div class="expando">
+<div class="usertext-body">
+<p>
+
+    <span class='postRowContent'></span>
+
 </p>
 </div></div>
 

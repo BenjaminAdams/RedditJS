@@ -325,11 +325,11 @@ font-size: larger;
 list-style: none;
 }
 
-
-#alienLoading {
-  position:fixed;
-  top:49%;
-  left:49%;
+.blueborder {
+  padding: 0 5px;
+background-color: #fafafa;
+border: 1px solid #369;
+border-radius: 7px;
 }
 
 .hoverImgView {
