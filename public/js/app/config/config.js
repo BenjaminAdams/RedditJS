@@ -5,9 +5,6 @@ require.config({
     paths: {
         // Core Libraries
         "jquery": "../lib/jquery",
-        "jqueryui": "../lib/jqueryui",
-        "jquerymobile": "../lib/jquery.mobile",
-        //  "underscore": "../lib/lodash",
         'underscore': '../lib/underscore',
         'underscore-string': '../lib/underscore-string',
         "backbone": "../lib/backbone",
@@ -15,29 +12,21 @@ require.config({
         "marionette": "../lib/marionettev1.2.3",
         //'fasterCollectioView': '../lib/marionette.FasterCollectionView',
         'handlebars': '../lib/handlebars',
-        //   'handlebars': '../lib/resthub/handlebars-helpers',
-        // "handlebars": "../lib/handlebars",
         "hbs": "../lib/hbs",
-        // hbs: '../lib/resthub/require-handlebars', //CHANGE THIS to the /lib/hbs when you remove resthub 
-        'resthub': '../lib/resthub/resthub',
-        //  template: '../app/template', //from resthub
         "i18nprecompile": "../lib/i18nprecompile",
         "json2": "../lib/json2",
         "jasmine": "../lib/jasmine",
         "jasmine-html": "../lib/jasmine-html",
-        // "screenleap": "http://api.screenleap.com/js/screenleap",
         'cookie': '../lib/jquery.cookie',
         'localstorage': '../lib/jquery.total-storage',
         'moment': '../lib/moment',
-        'console': '../lib/resthub/console',
+        'console': '../lib/console',
         // Plugins
         "backbone.validateAll": "../lib/plugins/Backbone.validateAll",
         "bootstrap": "../lib/plugins/bootstrap",
         "text": "../lib/plugins/text",
-        //"isotope": "../lib/isotope",
         //"wookmark": "../lib/jquery.wookmark",
         //   "imagesLoaded": "../lib/imagesLoaded",
-        //  "bootbox": "../lib/bootbox",
         "jasminejquery": "../lib/plugins/jasmine-jquery"
     },
     // Sets the configuration for your third party scripts that are not AMD compatible
@@ -48,9 +37,9 @@ require.config({
         // Twitter Bootstrap jQuery plugins
         "bootstrap": ["jquery"],
         // jQueryUI
-        "jqueryui": ["jquery"],
+        // "jqueryui": ["jquery"],
         // jQuery mobile
-        "jquerymobile": ["jqueryui"],
+        //"jquerymobile": ["jqueryui"],
 
         // Backbone
         "backbone": {
@@ -78,11 +67,8 @@ require.config({
         "handlebars": {
             "exports": "Handlebars"
         },
-        // 'handlebars-orig': {
-        //     exports: 'Handlebars' //from resthub
-        // },
         // Backbone.validateAll plugin that depends on Backbone
-        "backbone.validateAll": ["backbone"],
+        //"backbone.validateAll": ["backbone"],
 
         "jasmine": {
             // Exports the global 'window.jasmine' object

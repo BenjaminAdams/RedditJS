@@ -1,7 +1,6 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/subreddit-picker-item', 'view/base-view'],
-    function(App, $, _, Backbone, Resthub, SRPitemTmpl, BaseView) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/subreddit-picker-item', 'view/basem-view'],
+    function(App, $, _, Backbone, SRPitemTmpl, BaseView) {
         return BaseView.extend({
-            strategy: 'append',
             template: SRPitemTmpl,
             events: {
                 'click .add': 'subscribe',
@@ -10,8 +9,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'resthub', 'hbs!template/subr
 
             initialize: function(data) {
                 this.model = data.model;
-
-                this.render();
 
             },
             subscribe: function(e) {

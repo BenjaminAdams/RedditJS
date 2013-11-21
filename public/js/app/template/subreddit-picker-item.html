@@ -5,7 +5,7 @@
         <span class="subscribe-button fancy-toggle-button toggle" style="" data-sr_name="pics">
 
 
-                {{#if model.user_is_subscriber}}
+                {{#if user_is_subscriber}}
                                <a class="option active remove" href="#" tabindex="100">unsubscribe</a>
                 {{else}}
                               <a class="option active add" href="#" tabindex="100">subscribe</a>    
@@ -15,14 +15,14 @@
     </div>
     <div class="entry ">
         <p class="titlerow">
-            <a href="{{model.rname}}" class="title">{{model.rname}}: {{model.title}}</a>
+            <a href="{{rname}}" class="title">{{rname}}: {{title}}</a>
         </p>
         <div class="description">
             <form action="#" class="usertext">
                 <div class="usertext-body">
                     <div class="md">
                         <p>
-                            {{model.public_description}}
+                            {{public_description}}
                         </p>
                     </div>
                 </div>
@@ -30,9 +30,9 @@
         </div>
         <p class="tagline">
             <span class="score unvoted">
-                <span class="number">{{model.subscribers}}</span>
+                <span class="number">{{subscribers}}</span>
                 <span class="word">subscribers</span>
-            </span> a community for {{model.timeAgo}}
+            </span> a community for {{timeAgo}}
         </p>
     </div>
     <div class="child">

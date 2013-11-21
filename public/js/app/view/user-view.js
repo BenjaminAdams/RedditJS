@@ -57,34 +57,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/user', 'view/comment-view
 				this.$('.drop-choices-user').toggle()
 			},
 
-			/**************Fetching functions ****************/
-			appendPosts: function(models) {
-				console.log('userposts=', models)
-				// models.each(function(model) {
-				// 	console.log(model)
-				// 	model.set('permalink', model.get('url'))
-				// 	var comment = new CommentView({
-				// 		model: model,
-				// 		id: model.get('id'),
-				// 		strategy: "append",
-				// 		root: "#siteTable"
-				// 	})
-
-				// }, this);
-
-				// this.resize()
-
-			},
 			gotNewPosts: function(models, res) {
 				this.$('.loading').hide()
 
 				if (typeof res.data.children.length === 'undefined') {
 					return; //we might have an undefined length?
 				}
-				//var newCount = res.data.children.length
-
-				//var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
-				//this.appendPosts(newModels)
 
 				//fetch more  posts with the After
 				if (this.collection.after == "stop") {

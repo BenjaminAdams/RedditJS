@@ -3,18 +3,12 @@
 Sends an outgoing to message to another reddit user
 
 */
-define(['underscore', 'backbone', 'resthub', 'hbs!template/compose', 'view/basem-view'],
-	function(_, Backbone, Resthub, ComposeTmpl, BaseView) {
+define(['underscore', 'backbone', 'hbs!template/compose', 'view/basem-view'],
+	function(_, Backbone, ComposeTmpl, BaseView) {
 		return BaseView.extend({
 			template: ComposeTmpl,
 			events: {
 				'submit #compose-message': "sendMsg"
-			},
-			initialize: function(options) {
-				_.bindAll(this);
-				this.model = new Backbone.Model({
-					username: options.username
-				})
 			},
 			ui: {
 				'msgTxt': '#msgTxt',
@@ -22,6 +16,12 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/compose', 'view/basem
 				'subject': '#subject',
 				'status': '.status',
 				'error': '.error'
+			},
+			initialize: function(options) {
+				_.bindAll(this);
+				this.model = new Backbone.Model({
+					username: options.username
+				})
 			},
 			sendMsg: function(e) {
 				e.preventDefault()

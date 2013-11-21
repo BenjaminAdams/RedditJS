@@ -1,7 +1,6 @@
 define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/basem-view', 'model/comment', 'cView/comments', 'collection/comments', 'cookie'],
 	function(App, _, Backbone, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, CViewComments, CommentCollection, Cookie) {
 		return BaseView.extend({
-			//strategy: 'append',
 			template: commentTmpl,
 			events: {
 
@@ -137,7 +136,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 					this.model.set('permalink', this.permalinkParent + this.model.get('id'))
 					this.model.set('permalinkParent', this.permalinkParent)
 
-					//this.model.set('replies', newComments)
 					//change template back to normal comment template
 					this.template = commentTmpl
 					this.$el.empty()
@@ -211,18 +209,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 							if (youtubeID) {
 								url = $(target).attr("href") //in case it was a youtube video we should reset the url link to pass into the view
 							}
-							//display the image if it exists
-							//maybe create an image view?
-							//console.log('hovering over an img', originalText)
-							// var hoverImgView = new HoverImgView({
-							// 	el: target.parent().parent(),
-							// 	url: url,
-							// 	ahrefDescription: ahrefDescription,
-							// 	originalText: originalText,
-							// 	originalHtml: originalHtml,
-							// 	youtubeID: youtubeID
 
-							// });
 							this.hoverImgParent.show(new HoverImgView({
 								url: url,
 								ahrefDescription: ahrefDescription,
@@ -236,10 +223,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 					}
 				}
 			},
-
-			//renderChildren: function(replies) {
-			//this.collection.add(replies)
-			//},
 			renderOtherReplyComments: function(collection) {
 				console.log('other replies', collection)
 				var self = this
@@ -253,12 +236,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				console.log("fetch error, lets retry")
 
 			},
-
 			loaded: function(model, res) {
 				this.$('.loading').hide()
 				this.render();
 			}
-
 		});
 
 	});

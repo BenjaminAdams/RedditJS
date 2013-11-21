@@ -15,7 +15,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				'headerImg': '#header-img',
 				'pagenameA': '#pagename-a',
 				'hot': '.hot',
-				'new': '.new',
+				'New': '.new',
 				'rising': '.rising',
 				'controversial': '.controversial',
 				'top': '.top',
@@ -80,7 +80,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 					this.ui.headerImg.attr("src", header_img);
 				}
 				this.ui.hot.prop("href", model.get('rname'))
-				this.ui.new.prop("href", model.get('rname') + "/new")
+				this.ui.New.prop("href", model.get('rname') + "/new")
 				this.ui.rising.prop("href", model.get('rname') + "/rising")
 				this.ui.controversial.prop("href", model.get('rname') + "/controversial")
 				this.ui.top.prop("href", model.get('rname') + "/top")
@@ -92,7 +92,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				var domain = data.domain
 				var subName = data.subName
 				this.ui.hot.parent().removeClass('selected');
-				this.ui.new.parent().removeClass('selected');
+				this.ui.New.parent().removeClass('selected');
 				this.ui.rising.parent().removeClass('selected');
 				this.ui.controversial.parent().removeClass('selected');
 				this.ui.top.parent().removeClass('selected');
@@ -101,14 +101,14 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				if (domain === null) {
 					//http://localhost/r/funny/new
 					this.ui.hot.attr("href", "/r/" + subName + '/');
-					this.ui.new.attr("href", "/r/" + subName + '/new');
+					this.ui.New.attr("href", "/r/" + subName + '/new');
 					this.ui.rising.attr("href", "/r/" + subName + '/rising');
 					this.ui.controversial.attr("href", "/r/" + subName + '/controversial');
 					this.ui.top.attr("href", "/r/" + subName + '/top');
 				} else {
 					//http://localhost/domain/i.imgur.com/new
 					this.ui.hot.attr("href", "/domain/" + domain + '/');
-					this.ui.new.attr("href", "/domain/" + domain + '/new');
+					this.ui.New.attr("href", "/domain/" + domain + '/new');
 					this.ui.rising.attr("href", "/domain/" + domain + '/rising');
 					this.ui.controversial.attr("href", "/domain/" + domain + '/controversial');
 					this.ui.top.attr("href", "/domain/" + domain + '/top');

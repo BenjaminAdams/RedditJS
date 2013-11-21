@@ -209,5 +209,5 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			}
 
 		});
-		return SubmitView;
+
 	});

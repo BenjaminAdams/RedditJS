@@ -4,18 +4,13 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
         var AppRouter = Backbone.Marionette.AppRouter.extend({
             initialize: function(options) {
                 //load settings
-
                 window.settings = new Backbone.Model()
                 this.loadSettingsFromCookies()
 
                 window.subreddits = new MySubredditsCollection()
-
                 //caching subreddit json in a global because it takes about 3 seconds to query from reddit api
                 window.subs = []
-
                 App.headerRegion.show(new HeaderView());
-
-                //this.header = new HeaderView();
             },
             routes: {
                 'r/myrandom(/)': 'myrandom',
@@ -165,13 +160,13 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             },
             subreddits: function(searchQ) {
                 require(['view/subreddit-picker-view'], function(SubredditPickerView) {
-                    if (typeof searchQ === 'undefined') {
-                        searchQ = ''
-                    }
+                    //if (typeof searchQ === 'undefined') {
+                    //searchQ = ''
+                    //}
+                    App.mainRegion.show(new SubredditPickerView({
+                        searchQ: searchQ || ''
+                    }))
 
-                    new SubredditPickerView({
-                        searchQ: searchQ
-                    });
                 })
             },
             search: function(searchQ, timeFrame, sortOrder) {
