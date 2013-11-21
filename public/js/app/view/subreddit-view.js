@@ -47,7 +47,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 				App.on("subreddit:changeGridOption", this.changeGridOption, this);
 				//App.on("subreddit:remove", this.remove, this);
-
 				//this.render();
 				this.imagesAdded = 0; //keeps a total of how many images we are loading
 
@@ -189,7 +188,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					} else {
 						$('.side').show()
 					}
-					//this.ui.siteTable.html('')
+
 					this.resize()
 				}
 			},
@@ -247,6 +246,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					return;
 					//do nothingif the user already clicked this once
 				}
+
 				this.removePendingGrid()
 
 				this.gridOption = data.gridOption
@@ -254,16 +254,18 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					path: '/'
 				});
 
+				this.siteTable.close()
+
 				if (this.gridOption == "grid") {
 					//this.changeActiveGrid()
-					this.siteTable.close()
-					this.resetPosts()
+
+					//this.resetPosts()
 					this.gridViewSetup()
 					this.appendPosts(this.collection)
 				} else {
 
 					//this.ui.siteTable.empty();
-					this.siteTable.close()
+
 					this.subredditCollectionView = new SrCView({
 						collection: this.collection,
 						itemView: PostRowView,
@@ -274,6 +276,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					//this.subredditCollectionView.changeGridView(this.gridOption)
 
 				}
+
+				this.helpFillUpScreen()
 
 			},
 			resetPosts: function() {
@@ -445,6 +449,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				}
 
 			},
+
 			showMoarBtn: function() {
 				if (this.isClosed === false) {
 					this.ui.nextprev.html('MOAR ›').show()

@@ -13,11 +13,6 @@ define(['App', 'backbone', 'jquery', 'marionette', 'hbs!template/post-row', 'hbs
                 //  this.start = new Date() //timer for testing
 
             },
-            // IT MAY SAVE CPU to use this!!!!!!!!
-            //itemViewOptions: {
-            // gridOption: this.gridOption,
-            //template: this.itemViewtemplate
-            //},
             itemViewOptions: function(model, index) {
                 // do some calculations based on the model
                 return {
@@ -25,14 +20,12 @@ define(['App', 'backbone', 'jquery', 'marionette', 'hbs!template/post-row', 'hbs
                     template: this.itemViewtemplate
                 }
             },
-
             onRender: function() {
                 setTimeout(function() {
                     App.trigger("bottombar:selected");
                 }, 1000)
 
             },
-
             changeGridView: function(option) {
                 this.gridOption = option
                 this.setTemplate(this.gridOption)
@@ -49,6 +42,5 @@ define(['App', 'backbone', 'jquery', 'marionette', 'hbs!template/post-row', 'hbs
                 //this.itemViewtemplate = PostRowGridTmpl
                 //}
             }
-
         });
     });

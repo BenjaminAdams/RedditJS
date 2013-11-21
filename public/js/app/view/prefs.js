@@ -3,11 +3,9 @@
 Change site settings
 
 */
-define(['underscore', 'backbone', 'resthub', 'hbs!template/prefs', 'view/base-view'],
-	function(_, Backbone, Resthub, PrefsTmpl, BaseView) {
-		var PrefsView = BaseView.extend({
-			//strategy: 'append',
-			el: $(".content"),
+define(['underscore', 'backbone', 'hbs!template/prefs', 'view/basem-view'],
+	function(_, Backbone, PrefsTmpl, BaseView) {
+		return BaseView.extend({
 			template: PrefsTmpl,
 			events: {
 				//'submit #newlink': "submitForm",
@@ -17,13 +15,10 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/prefs', 'view/base-vi
 
 			initialize: function(options) {
 				_.bindAll(this);
-				this.$el.empty()
-
 				this.model = window.settings
-
-				this.render();
+			},
+			onRender: function() {
 				this.showSettings()
-
 			},
 			//was having trouble getting handlebars template setting the settings values
 			//doing it in this function instead
@@ -39,7 +34,9 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/prefs', 'view/base-vi
 						//console.log(window.settings.attributes[item])
 						input.prop('checked', self.stringToBoolean(window.settings.attributes[item]));
 					} else if (type == 'select-one') {
-						$('#' + item).val(window.settings.attributes[item]);
+						//$('#' + item).val(window.settings.attributes[item]);
+						input.val(window.settings.attributes[item]);
+						//$('#' + item + ' option[value=' + window.settings.attributes[item] + ']').attr('selected', 'selected');
 
 					}
 				}
@@ -106,5 +103,4 @@ define(['underscore', 'backbone', 'resthub', 'hbs!template/prefs', 'view/base-vi
 			}
 
 		});
-		return PrefsView;
 	});

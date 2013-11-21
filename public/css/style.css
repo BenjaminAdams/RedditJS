@@ -326,6 +326,12 @@ list-style: none;
 }
 
 
+#alienLoading {
+  position:fixed;
+  top:49%;
+  left:49%;
+}
+
 .hoverImgView {
 margin-left:30px;
 max-width:90%;

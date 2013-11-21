@@ -197,8 +197,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             prefs: function() {
                 this.doSidebar('front');
                 require(['view/prefs'], function(PrefsView) {
-
-                    var prefsView = new PrefsView();
+                    App.mainRegion.show(new PrefsView())
                 });
 
             },
