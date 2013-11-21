@@ -178,19 +178,19 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 this.doSidebar('front');
                 require(['view/search-view'], function(SearchView) {
-                    var search = new SearchView({
+                    App.mainRegion.show(new SearchView({
                         searchQ: searchQ,
                         timeFrame: timeFrame,
                         sortOrder: sortOrder
-                    });
+                    }))
                 })
             },
             submit: function(subName) {
                 this.doSidebar(subName);
                 require(['view/submit-view'], function(SubmitView) {
-                    var submitView = new SubmitView({
+                    App.mainRegion.show(new SubmitView({
                         subName: subName
-                    });
+                    }))
                 });
             },
 

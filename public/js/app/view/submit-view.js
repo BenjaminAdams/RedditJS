@@ -3,15 +3,12 @@
 Submit a link or text post to any subreddit
 
 */
-define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/submit', 'view/base-view'],
-	function(App, _, Backbone, Resthub, SubmitTmpl, BaseView) {
-		var SubmitView = BaseView.extend({
-			//strategy: 'append',
-			el: $(".content"),
+define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view'],
+	function(App, _, Backbone, SubmitTmpl, BaseView) {
+		return BaseView.extend({
 			template: SubmitTmpl,
 			events: {
 				'submit #newlink': "submitForm",
-
 				'click .link-button': 'changeToLink',
 				'click .text-button': 'changeToText',
 				'click #suggested-reddits a': 'changeSubreddit',
@@ -23,17 +20,15 @@ define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/submit', 'view
 
 			initialize: function(options) {
 				_.bindAll(this);
-				this.$el.empty()
 				this.subName = options.subName
 				this.model = new Backbone.Model({
 					subName: this.subName
 				})
 				this.type = 'link'
 
-				this.render(this.subName);
 				App.on("submit:type", this.changeType, this);
 				App.on("submit:subreddits", this.loadSubreddits, this);
-				this.loadSubreddits()
+
 			},
 			/*
 			type can be
@@ -41,6 +36,9 @@ define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/submit', 'view
 			*link
 			*self
 			*/
+			onRender: function() {
+				this.loadSubreddits()
+			},
 			changeType: function(type) {
 				console.log('type from channel=', type)
 				if (type == 'link') {
@@ -83,12 +81,10 @@ define(['App', 'underscore', 'backbone', 'resthub', 'hbs!template/submit', 'view
 
 			loadSubreddits: function() {
 				var self = this
-				$('.drop-choices .choice').each(function(index) {
-					var sr = $(this).text()
-					if (sr != 'edit subscriptions') {
-						var str = '<li>\n<a href="#" tabindex="100">' + sr + '</a>\n</li>'
-						self.$('#suggested-reddits ul').append(str)
-					}
+				window.subreddits.each(function(model) {
+					var str = '<li>\n<a href="#">' + model.get('display_name') + '</a>\n</li>'
+					self.$('#suggested-reddits ul').append(str)
+
 				});
 			},
 			showMdHelp: function(e) {

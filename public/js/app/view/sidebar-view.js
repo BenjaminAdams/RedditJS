@@ -17,7 +17,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 				this.subName = data.subName
 				this.dynamicStylesheet(this.subName)
 				this.model = data.model
-
+				if (this.subName == "front") {
+					this.model.set('isFront', true)
+				}
 			},
 			onRender: function() {
 				console.log('sidebar rendered')

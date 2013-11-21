@@ -104,6 +104,7 @@ module.exports = {
 
 		request.get(urlOpts, function(error, response, body) {
 			if (error) {
+				console.log(error)
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
 					res.send(response.statusCode)
 				} else {
@@ -114,6 +115,7 @@ module.exports = {
 
 			if (!error && (response.statusCode == 200 || response.statusCode == 304)) {
 				var match = re.exec(body);
+				console.log(match)
 				if (match && match[2]) {
 					res.send(200, match[2])
 				}

@@ -1,7 +1,7 @@
 define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 
-	var SearchCollection = Backbone.Collection.extend({
-		initialize: function(data) {
+	return Backbone.Collection.extend({
+		initialize: function(x, data) {
 			_.bindAll(this);
 			this.after = ""
 			this.sortOrder = data.sortOrder
@@ -83,5 +83,4 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		}
 
 	});
-	return SearchCollection;
 });

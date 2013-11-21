@@ -1,8 +1,6 @@
-define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'],
-	function(App, SubredditView, SearchCollection, SearchTmpl) {
-		var SearchView = SubredditView.extend({
-
-			el: $(".content"),
+define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search', 'cView/subreddit', 'view/post-row-view'],
+	function(App, SubredditView, SearchCollection, SearchTmpl, SrCView, PostRowView) {
+		return SubredditView.extend({
 			template: SearchTmpl,
 
 			events: function() {
@@ -14,18 +12,16 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
 					'click .drop-time-frameA': 'toggleTimeFrame'
 				});
 			},
-
+			regions: {
+				'siteTable': '#siteTable'
+			},
 			initialize: function(options) {
-				//$(this.el).empty()
-				//this.$el.empty()
-
 				_.bindAll(this);
 				var self = this;
-				this.template = SearchTmpl;
 				this.subName = "Search"
 				this.searchQ = decodeURIComponent(options.searchQ);
 				this.timeFrame = options.timeFrame
-
+				this.gridOption = $.cookie('gridOption') || 'normal';
 				if (typeof this.timeFrame === 'undefined') {
 					this.timeFrame = 'month' //the default sort order is hot
 				}
@@ -41,26 +37,20 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
 					sortOrder: this.sortOrder
 				})
 
-				this.subID = this.subName + this.sortOrder
-				App.on("subreddit:changeGridOption", this.changeGridOption, this);
-				App.on("subreddit:remove", this.remove, this);
-
-				this.initGridOption();
-
-				this.render();
-
-				$(this.el).prepend("<style id='dynamicWidth'> </style>")
-
-				$(this.el).append("<div class='loading'> </div>")
-				this.collection = new SearchCollection({
+				this.collection = new SearchCollection([], {
 					timeFrame: this.timeFrame,
 					sortOrder: this.sortOrder,
 					searchQ: this.searchQ
 				});
-				this.fetchMore();
+
+				this.subID = this.subName + this.sortOrder
+				App.on("subreddit:changeGridOption", this.changeGridOption, this);
+				App.on("subreddit:remove", this.remove, this);
 
 				$(window).on("scroll", this.watchScroll);
-
+				$(window).resize(this.debouncer(function(e) {
+					self.resize()
+				}));
 				//in small thumbnail mode, its sometimes impossible for the infinite scroll event to fire because there is no scrollbar yet
 				this.helpFillUpScreen();
 
@@ -71,15 +61,23 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
 				this.prevScrollY = 0; //makes sure you are not checking when the user scrolls upwards
 				this.errorRetries = 0; //keeps track of how many errors we will retry after
 
-				//$(window).bind("resize.app", _.bind(this.debouncer));
-				$(window).resize(this.debouncer(function(e) {
-					self.resize()
-				}));
-				this.resize()
+				this.subredditCollectionView = new SrCView({
+					collection: this.collection,
+					itemView: PostRowView,
+					gridOption: this.gridOption
+				})
 
-				//setTimeout(function() {
-				//self.changeSortOrderCss()
-				//}, 100);
+				this.fetchMore();
+
+			},
+			onRender: function() {
+				this.initGridOption();
+				this.siteTable.show(this.subredditCollectionView)
+				$(this.el).prepend("<style id='dynamicWidth'> </style>")
+
+				$(this.el).append("<div class='loading'> </div>")
+
+				this.resize()
 
 			},
 			toggleSort: function(e) {
@@ -101,10 +99,10 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
 				if (typeof res.data.children.length === 'undefined') {
 					return;
 				}
-				var newCount = res.data.children.length
+				//var newCount = res.data.children.length
 
-				var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
-				this.appendPosts(newModels)
+				//var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
+				//this.appendPosts(newModels)
 
 				//fetch more  posts with the After
 				if (this.collection.after == "stop") {
@@ -133,5 +131,5 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
 			}
 
 		});
-		return SearchView;
+
 	});
