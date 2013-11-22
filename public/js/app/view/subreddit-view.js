@@ -89,6 +89,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			},
 
 			onRender: function() {
+				var self = this
 				this.initGridOption();
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				//console.log("window.subs=", window.subs)
@@ -108,9 +109,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					this.collection = window.subs[this.subID]
 					//this.appendPosts(this.collection)
 
-					if (typeof this.collection !== 'undefined') {
-						$(window).scrollTop(this.collection.scroll)
-					}
 					this.showMoarBtn()
 					//this.fetchMore();
 				}
@@ -123,6 +121,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					})
 					this.siteTable.show(this.subredditCollectionView)
 				}
+
+				if (typeof this.collection !== 'undefined' && typeof this.collection.scroll !== 'undefined') {
+					setTimeout(function() {
+						$(window).scrollTop(self.collection.scroll)
+					}, 10)
+
+				}
+
 				this.hideMoarBtn()
 				this.resize()
 			},
