@@ -13,7 +13,13 @@ var api = require('./api')
 // ====================
 server.configure(function() {
 
-    server.use(express["static"](__dirname + "/../public"));
+    var oneDay = 86400000;
+
+    server.use(express.compress());
+
+    server.use(express.static(__dirname + "/../public", {
+        maxAge: oneDay
+    }));
     server.use(express.favicon(__dirname + "/../public/img/favicon.ico"));
 
     if (process.env.NODE_ENV !== 'production') {
