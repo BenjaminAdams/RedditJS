@@ -33,7 +33,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			},
 			initialize: function(data) {
 				_.bindAll(this);
-				console.log("I should only render the header once")
+				//console.log("I should only render the header once")
 
 				App.on("header:update", this.updateHeader, this);
 				App.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
