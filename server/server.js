@@ -14,9 +14,7 @@ var api = require('./api')
 server.configure(function() {
 
     var oneDay = 86400000;
-
     server.use(express.compress());
-
     server.use(express.static(__dirname + "/../public", {
         maxAge: oneDay
     }));

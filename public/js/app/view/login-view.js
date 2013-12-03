@@ -8,7 +8,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 			ui: {
 				'loginThrobber': '.loginThrobber',
 				'status': '.status',
-				'loginError': '.loginError'
+				'loginError': '.loginError',
+				'loginForm': '#login_login-main'
 			},
 			initialize: function(data) {
 				_.bindAll(this);
@@ -16,9 +17,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 			},
 			onRender: function() {
 				if (this.checkIfLoggedIn() === true) {
-					this.$el.hide()
+					this.ui.loginForm.hide()
 				} else {
-					this.$el.show()
+					this.ui.loginForm.show()
 				}
 			},
 
