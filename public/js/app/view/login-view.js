@@ -56,7 +56,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 					if (typeof data.json.errors !== 'undefined' && data.json.errors.length > 0) {
 						//alert("unable to login")
 						console.log(data.json.errors)
-						self.ui.loginError.show().html(data.json.errors[0][1])
+						self.ui.loginError.show().html(data.json.errors[0][1] + ".. The Reddit API may be rate limiting this.")
 
 					} else {
 
