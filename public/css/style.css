@@ -290,10 +290,10 @@ overflow: hidden;
 }
 
 #bottom-bar {
- -webkit-transition: all 0.35s;
-     -moz-transition: all 0.35s;
-       -o-transition: all 0.35s;
-          transition: all 0.35s;
+ -webkit-transition: opacity 0.35s;
+     -moz-transition: opacity 0.35s;
+       -o-transition: opacity 0.35s;
+          transition: opacity 0.35s;
 overflow: hidden;
 position:relative;
 left:1px;
