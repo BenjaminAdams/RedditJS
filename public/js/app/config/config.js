@@ -20,8 +20,8 @@ require.config({
         'localstorage': '../lib/jquery.total-storage',
         'moment': '../lib/moment',
         'console': '../lib/console',
-        "backbone.validateAll": "../lib/plugins/Backbone.validateAll",
-        "bootstrap": "../lib/plugins/bootstrap",
+        //"backbone.validateAll": "../lib/plugins/Backbone.validateAll",
+        //"bootstrap": "../lib/plugins/bootstrap",
         "text": "../lib/plugins/text"
         //"wookmark": "../lib/jquery.wookmark",
         //   "imagesLoaded": "../lib/imagesLoaded",
