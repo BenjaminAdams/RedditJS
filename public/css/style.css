@@ -290,7 +290,10 @@ overflow: hidden;
 }
 
 #bottom-bar {
-
+ -webkit-transition: opacity 0.35s;
+     -moz-transition: opacity 0.35s;
+       -o-transition: opacity 0.35s;
+          transition: opacity 0.35s;
 overflow: hidden;
 position:relative;
 left:1px;
@@ -345,14 +348,14 @@ max-width: 90%;
 padding:5px;
   display:block;
   margin: 10px auto;
-  
+
 }
 
 .hoverImgView .youtubeEmbed {
 text-align: center;
 margin: 10px 20px 20px 10px;
 padding-bottom: 20px;
- 
+
 }
 
 .hoverImgView .displayHtml {
@@ -391,7 +394,7 @@ background-repeat: no-repeat;
 }
 
 
-.preftable { 
+.preftable {
 display: table-row-group;
 vertical-align: middle;
 border-color: inherit;
