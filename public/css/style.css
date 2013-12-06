@@ -505,6 +505,12 @@ float:left;
    opacity: 0.7;
 }
 
+.exploreLink {
+  color:#1DA81D !important;
+  font-weight: bold !important;
+  text-shadow: 0 0 37px #1DA81D;
+}
+
 #innerSR {
 max-width:70%;
 margin:0 auto;

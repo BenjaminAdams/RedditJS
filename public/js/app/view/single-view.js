@@ -66,7 +66,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 					self.thepost.show(new PostRowView({
 						model: self.model,
 						gridOption: 'normal',
-						expand: true
+						expand: true,
+						isSingle: true
 					}));
 
 				}

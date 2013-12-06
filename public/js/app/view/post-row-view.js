@@ -29,14 +29,18 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
             initialize: function(data) {
                 _.bindAll(this);
                 this.model = data.model;
-                //this.template = PostRowTmpl;
                 this.gridOption = data.gridOption
+
+                // this.isSingle = data.isSingle || false
+                if (data.isSingle) {
+                    //changes the main post link to be external instead of linking back to itself
+                    this.model.set('url', this.model.get('actualUrl'))
+                    this.model.set('external', 'data-bypass')
+                }
+
                 if (typeof data.expand !== 'undefined') {
                     this.expand = true;
                 }
-                //else {
-                //this.expand = false
-                //}
                 if (this.gridOption == "normal") {
                     this.template = PostRowTmpl
                 }
