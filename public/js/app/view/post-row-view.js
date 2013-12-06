@@ -34,6 +34,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
                 if (typeof data.expand !== 'undefined') {
                     this.expand = true;
                 }
+                //else {
+                //this.expand = false
+                //}
                 if (this.gridOption == "normal") {
                     this.template = PostRowTmpl
                 }
@@ -69,6 +72,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
 
             },
             toggleExpando: function() {
+                //if (this.model.get('embededImg') === false && this.expand === false) {
+                // this.ui.expandoButton.hide()
+                // return
+                //}
+
                 var str;
                 if (this.ui.expandoButton.hasClass('expanded')) {
                     this.ui.expandoButton.removeClass('expanded')
@@ -78,6 +86,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
                     var model = this.model
                     this.ui.expandoButton.removeClass('collapsed')
                     this.ui.expandoButton.addClass('expanded')
+
                     if (this.model.get('is_self') === true) {
                         str = '<div class="expando"><div class="usertext-body blueborder">' + this.model.get('selftext_html') + '</div></div>'
                     } else {

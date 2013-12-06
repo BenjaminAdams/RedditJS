@@ -495,6 +495,7 @@ margin:0 50px;
   position:absolute;
   top:19px;
   z-index:99999;
+  padding:10px;
 }
 
 .headerNavLogo {
@@ -502,7 +503,34 @@ float:left;
   height:48px;
   margin:0px 4px;
    opacity: 0.7;
+}
 
+#innerSR {
+max-width:70%;
+margin:0 auto;
+display:inline-block;
+vertical-align:top;
+}
+
+#categoryList {
+  width:25%;
+display:inline-block;
+vertical-align:top;
+-webkit-column-count: 3;
+-moz-column-count: 3;
+column-count: 3;
+}
+
+#plzHelp {
+  margin:12px;
+}
+
+#categoryList li {
+cursor:pointer;
+font-size:14px;
+margin:0 auto 7px auto;
+padding:0px 1% 0px 3%;
+word-wrap:break-word;
 }
 
 .headerNavLogo:hover {

@@ -6,8 +6,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 //load settings
                 window.settings = new Backbone.Model()
                 this.loadSettingsFromCookies()
-
-                window.subreddits = new MySubredditsCollection()
+                window.subreddits = {}
+                window.subreddits.mine = new MySubredditsCollection()
                 //caching subreddit json in a global because it takes about 3 seconds to query from reddit api
                 window.subs = []
                 App.headerRegion.show(new HeaderView());
@@ -201,8 +201,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 var self = this
                 setTimeout(function() {
 
-                    if (typeof window.subreddits !== 'undefined' && window.subreddits.length > 14) {
-                        var rand = window.subreddits.at(Math.floor((Math.random() * window.subreddits.length)))
+                    if (typeof window.subreddits.mine !== 'undefined' && window.subreddits.mine.length > 14) {
+                        var rand = window.subreddits.mine.at(Math.floor((Math.random() * window.subreddits.mine.length)))
                         // this.subreddit(rand.get('display_name'))
                         Backbone.history.navigate('r/' + rand.get('display_name'), {
                             trigger: true

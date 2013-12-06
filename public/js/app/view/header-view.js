@@ -1,14 +1,13 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/userbar-view', 'view/basem-view', 'model/sidebar', 'cookie'],
-	function(App, $, _, Backbone, HeaderTmpl, UserbarView, BaseView, SidebarModel, Cookie) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/userbar-view', 'view/header-sr-display', 'view/basem-view', 'model/sidebar', 'cookie'],
+	function(App, $, _, Backbone, HeaderTmpl, UserbarView, SRDisplay, BaseView, SidebarModel, Cookie) {
 		return BaseView.extend({
 			template: HeaderTmpl,
 			events: {
 				'click .tabmenu-right li': 'changeGridOption',
 				'click .drop-down-header-toggle': 'toggleDropdown',
-				'click #header-nav-logo-area': 'toggleDropdown', //will close the menu after the user makes a selection
+				//'click #sr-display': 'toggleDropdown', //will close the menu after the user makes a selection
 				'click #userbar-logged-out': 'showLoginPopup'
 			},
-
 			ui: {
 				'siteTable': '#siteTable',
 				'nextprev': '.nextprev',
@@ -23,29 +22,24 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				'small': '#small',
 				'large': '#large',
 				'grid': '#grid',
-				'headerNavLogoArea': '#header-nav-logo-area',
+				'srDisplay': '#sr-display',
 				'srBar': '#sr-bar'
-
 			},
 			regions: {
 				'btmRightHeader': '#header-bottom-right',
-				'popupWindow': '#popupWindow'
+				'popupWindow': '#popupWindow',
+				'srDisplay': '#sr-display'
 			},
 			initialize: function(data) {
 				_.bindAll(this);
-				//console.log("I should only render the header once")
-
 				App.on("header:update", this.updateHeader, this);
 				App.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
 				App.on("header:updateSortOrder", this.updateSortOrder, this);
 				App.on("header:refreshSubreddits", this.refreshSubreddits, this);
-
 				App.on('header:showLoginBox', this.showLoginPopup, this)
-
 				//load the subreddits on the top bar
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
-
-				this.listenTo(window.subreddits, 'sync', this.displayMySubreddits)
+				this.listenTo(window.subreddits.mine, 'sync', this.displayMySubreddits)
 
 			},
 			onRender: function() {
@@ -53,6 +47,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				this.changeActiveGrid($.cookie('gridOption')) //so we are highlighting the correct grid option on page load
 
 				this.btmRightHeader.show(new UserbarView())
+				this.srDisplay.show(new SRDisplay())
 				this.displayMySubreddits()
 
 			},
@@ -145,39 +140,17 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				this.updateSubreddits()
 			},
 			updateSubreddits: function() {
-				window.subreddits.reset()
+				window.subreddits.mine.reset()
 				//query the api for /me.json
-				window.subreddits.fetch();
-
+				window.subreddits.mine.fetch();
 			},
-
 			toggleDropdown: function() {
-				var self = this
-				if (this.ui.headerNavLogoArea.is(':visible')) {
-					this.ui.headerNavLogoArea.slideUp("slow")
-				} else {
-					this.ui.headerNavLogoArea.empty()
-					window.subreddits.each(function(model) {
-
-						var headerImg = model.get('header_img')
-						var displayName = model.get('display_name')
-						if (headerImg === null) {
-							self.ui.headerNavLogoArea.append("<span class='headerNavLogo' ><a class='text-header-nav'  href='/r/" + displayName + "' >" + displayName + "</span></a> ")
-						} else {
-							self.ui.headerNavLogoArea.append("<span class='headerNavLogo'><a href='/r/" + displayName + "' title='" + displayName + "' ><img src='" + headerImg + "' /></a></span>")
-						}
-
-					})
-
-					this.ui.headerNavLogoArea.slideDown("slow")
-				}
+				App.trigger('header-sr-display:toggle')
 
 			},
-
 			displayMySubreddits: function(response, subreddits) {
 				var self = this;
 				this.ui.srBar.html(" ") //clear the top
-				this.ui.headerNavLogoArea.empty()
 
 				//    Normal Format: 
 				//			<li><a href="/r/pics/">pics</a></li>
@@ -189,7 +162,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				//window.subreddits = this.mySubreddits
 				var seperator = '';
 				var count = 0;
-				window.subreddits.each(function(model) {
+				window.subreddits.mine.each(function(model) {
 
 					if (count !== 0) {
 						seperator = '<span class="separator">-</span>';

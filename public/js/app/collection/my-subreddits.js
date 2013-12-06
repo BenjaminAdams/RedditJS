@@ -139,7 +139,7 @@ define(['backbone', 'model/single', 'localstorage'], function(Backbone, SingleMo
 				display_name: "blog"
 			});
 
-			window.subreddits = this
+			window.subreddits.mine = this
 
 		}
 
