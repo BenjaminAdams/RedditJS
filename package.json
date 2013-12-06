@@ -33,7 +33,8 @@
         "grunt": "~0.4.1",
         "grunt-contrib-requirejs": "~0.4.0",
         "grunt-contrib-jshint": "~0.3.0",
-        "uglify-js": "~2.2.5"
+        "uglify-js": "~2.2.5",
+        "nodemon": "*"
     },
     "main": "./server/server",
     "keywords": ["Marionette.js", "Backbone.js", "Require.js", "Marionette and Require Boilerplate"]

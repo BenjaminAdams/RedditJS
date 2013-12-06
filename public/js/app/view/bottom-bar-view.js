@@ -222,7 +222,7 @@
                  var rightThreshold = docWidthMiddle + bounds
                  if ((direction == 'left' && clientX < leftThreshold) || (direction == 'right' && clientX > rightThreshold)) {
                      this.curInterval = setInterval(function() {
-                         var currentLeft = this.ui.bottomBar.css('left').replace('px', '')
+                         var currentLeft = self.ui.bottomBar.css('left').replace('px', '')
                          if (direction == 'left' && currentLeft < 0) {
                              self.ui.bottomBar.css('left', amount);
                          } else if (direction == 'right') {
