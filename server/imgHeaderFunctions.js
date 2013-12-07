@@ -38,11 +38,17 @@ module.exports = {
 		}
 
 		request.get(options, function(error, response, body) {
-			if (error) {
-				next('null') //an actual error happened tell the next function we had an error
+			//for some reason its responding with ' undefined'  with a space sometimes
+			if (error || typeof body === 'undefined' || body == 'undefined') {
+				next('null')
+				return
 			}
 
+			console.log('body=', body)
+			console.log('resp from url=', options.url)
+
 			var body = JSON.parse(body)
+
 			if (typeof body.data !== 'undefined') {
 				next(body.data.header_img)
 			} else {
@@ -66,12 +72,12 @@ module.exports = {
 
 				async.forEach(Object.keys(data), function(key, callback) {
 					var category = data[key];
-					console.log(key)
+					//console.log(key)
 					async.forEach(Object.keys(category), function(srkey, secondCallback) {
 						var category = data[key];
 						srHeaderImgs[key] = []
 						self.fetchHeaderImg(category[srkey], function(img) {
-							//console.log(img)
+							console.log(img)
 							//srHeaderImgs[category].imgUrl = img
 							srHeaderImgs[key].push({
 								header_img: img,
