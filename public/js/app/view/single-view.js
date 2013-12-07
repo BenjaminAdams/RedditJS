@@ -176,18 +176,17 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
 			/**************UI functions ****************/
 			resize: function() {
-				var mobileWidth = 1000; //when to change to mobile CSS
-				//change css of 
 
-				var docWidth = $(document).width()
-				var newWidth = 0;
-				if (docWidth > mobileWidth) {
-					//if the website is in responsive mode
-					newWidth = docWidth - 522;
-				} else {
-					newWidth = docWidth - 222;
-				}
-				$('#dynamicWidth').html('<style> .embed img { max-width: ' + newWidth + 'px };   </style>');
+				//var docWidth = $(document).width()
+				//var newWidth = 0;
+				//if (docWidth > App.mobileWidth) {
+				//if the website is in responsive mode
+				//newWidth = docWidth - 522;
+				//$('#dynamicWidth').html('<style> .embed img { max-width: ' + newWidth + 'px };   </style>');
+				//} else {
+				//newWidth = docWidth - 222;
+				//$('#dynamicWidth').html('<style></style>');
+				//}
 
 			},
 

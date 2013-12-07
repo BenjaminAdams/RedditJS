@@ -177,6 +177,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					$('.side').hide()
 					this.ui.siteTable.css('margin-right', '0') //some custom CSS was making this bad in grid mode
 					//calculate how many columns we will have
+
 					var colCount = Math.floor($(document).width() / 305)
 
 					for (var i = 0; i < colCount; i++) {
@@ -218,9 +219,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			},
 
 			resize: function() {
-				//var mobileWidth = 1000; //when to change to mobile CSS
 				if (this.gridOption == "large") {
-					//change css of 
+
 					var docWidth = $(document).width()
 					var newWidth = 0;
 					if (docWidth > App.mobileWidth) {
@@ -228,7 +228,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					} else {
 						newWidth = docWidth;
 					}
-					$('#dynamicWidth').html(' < style > .large - thumb {width: ' + newWidth + 'px} < /style>');
+
+					console.log('newwidth=', newWidth)
+
+					$('#dynamicWidth').html(' <style> .large-img {width: ' + newWidth + 'px;} </style>');
 				}
 
 				if (window.settings.get('showSidebar') === true && this.gridOption != "grid") {

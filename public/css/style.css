@@ -97,7 +97,7 @@ max-height:45px;
 
 .large-img{
 max-width: 98%;
-margin: 1%;
+margin: 1% 0;
 
   -webkit-box-shadow: 3px 3px 3px #7C7C7C;
     box-shadow: 3px 3px 3px #7C7C7C;
@@ -433,7 +433,11 @@ color:#9494ff;
 
 /* When the user expands an img on the subreddit screen */
 .link img {
-  max-width:65%;
+max-width: 95%;
+}
+
+.large-thumb .link img {
+max-width: 69%;
 }
 
 

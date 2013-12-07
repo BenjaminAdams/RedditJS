@@ -41,7 +41,7 @@ max-width: 85%;
 
 
 .side {
-display:none;
+display:none !important;
 }
 
 #categoryList {
@@ -82,6 +82,11 @@ font-size: 40px;
 .thumbnail img {
 width: 70px;
 height: 63px;
+}
+
+.link img {
+max-width: 97% !important;
+margin:1% auto;
 }
 
 .sr-list {
@@ -163,6 +168,11 @@ border: none;
 .link .title {
 font-size: 25px;
 }
+
+#thepost .entry  {
+    overflow: visible;
+}
+
 .entry  {
     font-size:22px;
 }
