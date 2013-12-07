@@ -7,7 +7,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				'click .drop-down-header-toggle': 'toggleDropdown',
 				//'click #sr-display': 'toggleDropdown', //will close the menu after the user makes a selection
 				'click #userbar-logged-out': 'showLoginPopup',
-				'click #mobileOptions': 'showMobileOptions'
+				'click #mobileOptions': 'showMobileOptions',
+				'click .tabmenu li': 'closeMobileOptions'
 			},
 			ui: {
 				'siteTable': '#siteTable',
@@ -54,8 +55,14 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 
 			},
 			showMobileOptions: function() {
-				console.log('mobile opts')
-				this.ui.tabmenu.toggle()
+				this.ui.tabmenu.slideToggle()
+			},
+			closeMobileOptions: function() {
+				if ($(document).width() < App.mobileWidth) {
+					//only close the mobile options menu if we are in mobile mode
+					this.ui.tabmenu.slideUp()
+				}
+
 			},
 
 			showLoginPopup: function(e) {

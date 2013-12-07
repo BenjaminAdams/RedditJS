@@ -2,7 +2,7 @@
     (function(ua, w, d, undefined) {
 
         // App Environment
-        // ---------------
+        // --------------- 
         //  Tip: Set to true to turn on "production" mode
         window.production = true;
         var production = window.production //set this so the index file can use it normally
