@@ -32,7 +32,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
                 this.gridOption = data.gridOption
 
                 // this.isSingle = data.isSingle || false
-                if (data.isSingle) {
+                if (data.isSingle && this.model.get('is_self') === false) {
                     //changes the main post link to be external instead of linking back to itself
                     this.model.set('url', this.model.get('actualUrl'))
                     this.model.set('external', 'data-bypass')

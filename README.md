@@ -12,7 +12,7 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * **Comment Links:** If you hover over a link to an image or Youtube video, it becomes fullsize inside of the comment box.  (Future plans to be able to add MEME text to this image right from the image)
  * **Permalink Comments:** If you visit a link to a permalink of a comment in Reddit it only shows that comment, I've always found this annoying.  RedditJS will show that linked comment first and all of the comments from that post in the thread
  * **Keyboard Navigation:** Use the left and right arrow keys to navigate between posts
- * **Subreddit Dropdown Menu:** I've turned the top left subreddit dropdown menu to graphical subreddit selection with logo's instead of a list of their names.  
+ * **Subreddit Explorer:** I've turned the top left subreddit dropdown menu into a list of subreddits based on category.  There are currently about 1,000 subreddits listed here.  It helps you discover new subreddits and waist even more time on reddit!
 
 
 ####RedditJS is built with :

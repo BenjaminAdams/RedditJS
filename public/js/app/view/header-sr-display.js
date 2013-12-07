@@ -5,7 +5,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 			id: "header-nav-logo-area",
 			events: {
 				'click a': 'toggleDropdown',
-				'click #categoryList li': "changeSelectedCat"
+				'click #categoryList li': "changeSelectedCat",
+				'click .srDisplayType': 'changeDisplayType'
 			},
 			ui: {
 				'innerSR': '#innerSR',
@@ -17,6 +18,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 				this.srListCollection = new SRListCollection()
 				this.fetchedSRList = false
 				this.selectedCategory = 'mine'
+				this.displayType = 0
 
 			},
 			onRender: function() {
@@ -49,11 +51,20 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 				this.displayCategory(name)
 			},
 			displayCategory: function(name) {
+
 				if (name == 'mine') {
 					this.renderMySubreddits()
 				} else {
 					this.renderRegularSubreddit(window.subreddits[name])
 				}
+			},
+			changeDisplayType: function(e) {
+				var target = $(e.currentTarget)
+				console.log(target.val())
+				this.displayType = target.val()
+				this.ui.innerSR.empty()
+				this.displayCategory(this.selectedCategory)
+
 			},
 			renderCategories: function() {
 				var self = this
@@ -63,17 +74,27 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 			},
 			renderRegularSubreddit: function(subreddits) {
 				var self = this
-				_.each(subreddits, function(displayName) {
-					self.ui.innerSR.append("<span class='headerNavLogo' ><a class='text-header-nav'  href='/r/" + displayName + "' >" + displayName + "</span></a> ")
+				//_.each(subreddits, function(model) {
+				//subreddits.each(function(model) {
+				for (item in subreddits) {
 
-				})
+					var headerImg = subreddits[item]['header_img']
+					var displayName = subreddits[item]['display_name']
+
+					if (typeof headerImg === 'undefined' || headerImg == 'null' || self.displayType == 1) {
+						self.ui.innerSR.append("<span class='headerNavLogo' ><a class='text-header-nav'  href='/r/" + displayName + "' >" + displayName + "</span></a> ")
+					} else {
+						self.ui.innerSR.append("<span class='headerNavLogo'><a href='/r/" + displayName + "' title='" + displayName + "' ><img src='" + headerImg + "' /></a></span>")
+					}
+
+				}
 			},
 			renderMySubreddits: function() {
 				var self = this
 				window.subreddits.mine.each(function(model) {
 					var headerImg = model.get('header_img')
 					var displayName = model.get('display_name')
-					if (headerImg === null) {
+					if (headerImg === null || self.displayType == 1) {
 						self.ui.innerSR.append("<span class='headerNavLogo' ><a class='text-header-nav'  href='/r/" + displayName + "' >" + displayName + "</span></a> ")
 					} else {
 						self.ui.innerSR.append("<span class='headerNavLogo'><a href='/r/" + displayName + "' title='" + displayName + "' ><img src='" + headerImg + "' /></a></span>")

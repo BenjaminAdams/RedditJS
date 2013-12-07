@@ -517,14 +517,17 @@ margin:0 auto;
 display:inline-block;
 vertical-align:top;
 }
-
-#categoryList {
+#srLeftContainer {
   width:29%;
 display:inline-block;
 vertical-align:top;
+}
+
+#categoryList {
 -webkit-column-count: 3;
 -moz-column-count: 3;
 column-count: 3;
+background-color: #FFEBDE;
 }
 
 #plzHelp {
@@ -537,6 +540,18 @@ font-size:14px;
 margin:0 auto 7px auto;
 padding:0px 1% 0px 3%;
 word-wrap:break-word;
+
+border-radius: 1px;
+border: 1px solid #F60;
+
+
+}
+
+#dspTypeRadio {
+vertical-align: middle;
+font-size: 18px;
+margin-left: 25%;
+margin-top: 35px;
 }
 
 .headerNavLogo:hover {

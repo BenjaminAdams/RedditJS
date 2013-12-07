@@ -26,7 +26,8 @@
     },
     "dependencies": {
         "express": "3.x",
-        "request": "*"
+        "request": "*",
+        "async": "0.2.x"
     },
     "devDependencies": {
         "express": "3.x",

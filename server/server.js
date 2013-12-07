@@ -21,6 +21,7 @@ server.configure(function() {
     server.use(express.favicon(__dirname + "/../public/img/favicon.ico"));
 
     if (process.env.NODE_ENV !== 'production') {
+        api.checkTimeStampToRefreshImgs()
         server.use(express.errorHandler({
             dumpExceptions: true,
             showStack: true
@@ -36,6 +37,10 @@ server.get('/api', function(req, res) {
 });
 server.post('/api', function(req, res) {
     api.post(res, req)
+});
+
+server.get('/getSrList', function(req, res) {
+    api.getSrList(res, req)
 });
 
 server.get('/api/getTitle', function(req, res) {

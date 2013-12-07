@@ -4,7 +4,9 @@ define(['backbone', 'model/single'], function(Backbone, SingleModel) {
 
 		},
 		//model: SingleModel,
-		url: '/data/subredditList.json',
+		//url: '/data/subredditList.json',
+		//url: '/getSrList',
+		url: '/data/TMPsubredditList.json',
 		parse: function(response) {
 			//window.subreddits.concat(response);
 			_.merge(window.subreddits, response);
