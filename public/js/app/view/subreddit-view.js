@@ -1,13 +1,11 @@
-define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'hbs!template/post-row-grid', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'collection/subreddit', 'cView/subreddit', 'cookie'],
-	function(App, _, Backbone, subredditTmpl, PostViewSmallTpl, PostRowGrid, PostRowView, SidebarView, BaseView, SubredditCollection, SrCView, Cookie) {
+define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template/post-row-small', 'hbs!template/post-row-grid', 'view/post-row-view', 'view/basem-view', 'collection/subreddit', 'cView/subreddit', 'cookie'],
+	function(App, _, Backbone, subredditTmpl, PostViewSmallTpl, PostRowGrid, PostRowView, BaseView, SubredditCollection, SrCView, Cookie) {
 		return BaseView.extend({
 			template: subredditTmpl,
 			events: {
-				//'click .tabmenu-right li': 'changeGridOption',
 				'click #retry': 'tryAgain',
 				'click .thumbnailSmall': 'gotoSingle',
 				'click .nextprev': 'fetchMore'
-
 			},
 			ui: {
 				'siteTable': '#siteTable',
@@ -222,7 +220,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			resize: function() {
 				var mobileWidth = 1000; //when to change to mobile CSS
 				if (this.gridOption == "large") {
-					$('.side').hide()
 					//change css of 
 					var docWidth = $(document).width()
 					var newWidth = 0;
@@ -232,7 +229,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 						newWidth = docWidth;
 					}
 					$('#dynamicWidth').html(' < style > .large - thumb {width: ' + newWidth + 'px} < /style>');
-				} else if (window.settings.get('showSidebar') === true && this.gridOption != "grid") {
+				}
+
+				if (window.settings.get('showSidebar') === true && this.gridOption != "grid") {
 
 					if (mobileWidth > $(document).width()) {
 						$('.side').hide()
@@ -282,7 +281,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					//this.subredditCollectionView.changeGridView(this.gridOption)
 
 				}
-
+				this.resize()
 				this.helpFillUpScreen()
 
 			},

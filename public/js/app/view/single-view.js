@@ -11,7 +11,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				'click .toggleDropdownCmntSort': 'toggleDropDownCmtSort',
 				'click .drop-choices-single a': 'changeCmntSort',
 				'click .mdHelpShow': 'showMdHelp',
-				'click .mdHelpHide': 'hideMdHelp'
+				'click .mdHelpHide': 'hideMdHelp',
+				'submit #mainComment': 'comment'
 
 			},
 
@@ -26,7 +27,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				commentreply: '.commentreply',
 				'mdHelp': '.mdHelp',
 				'mdHelpShow': '.mdHelpShow',
-				'mdHelpHide': '.mdHelpHide'
+				'mdHelpHide': '.mdHelpHide',
+				'status': '.status'
 			},
 
 			initialize: function(options) {
