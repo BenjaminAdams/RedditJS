@@ -528,6 +528,7 @@ vertical-align:top;
 -moz-column-count: 3;
 column-count: 3;
 background-color: #FFEBDE;
+padding:5px;
 }
 
 #plzHelp {
@@ -536,22 +537,23 @@ background-color: #FFEBDE;
 
 #categoryList li {
 cursor:pointer;
-font-size:14px;
+font-size:12px;
 margin:0 auto 7px auto;
 padding:0px 1% 0px 3%;
 word-wrap:break-word;
+color: #369;
+text-align: center;
 
-border-radius: 1px;
-border: 1px solid #F60;
+}
 
-
+#categoryList li:hover {
+  color:#F60;
 }
 
 #dspTypeRadio {
 vertical-align: middle;
 font-size: 18px;
-margin-left: 25%;
-margin-top: 35px;
+margin: 35px 0 15px 25%;
 }
 
 .headerNavLogo:hover {

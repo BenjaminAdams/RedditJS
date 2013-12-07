@@ -69,17 +69,17 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 			renderCategories: function() {
 				var self = this
 				_.each(window.subreddits, function(item, name) {
-					self.ui.categoryList.append('<li data-id="' + name + '">' + name + '<li>')
+					self.ui.categoryList.append('<li data-id="' + name + '">' + name + '</li>')
 				})
 			},
 			renderRegularSubreddit: function(subreddits) {
 				var self = this
 				//_.each(subreddits, function(model) {
 				//subreddits.each(function(model) {
-				for (item in subreddits) {
+				for (var item in subreddits) {
 
-					var headerImg = subreddits[item]['header_img']
-					var displayName = subreddits[item]['display_name']
+					var headerImg = subreddits[item].header_img
+					var displayName = subreddits[item].display_name
 
 					if (typeof headerImg === 'undefined' || headerImg == 'null' || self.displayType == 1) {
 						self.ui.innerSR.append("<span class='headerNavLogo' ><a class='text-header-nav'  href='/r/" + displayName + "' >" + displayName + "</span></a> ")
