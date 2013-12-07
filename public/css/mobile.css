@@ -1,30 +1,17 @@
 @media (max-width: 1000px) {
-/*
-.tabmenu {
-font-size: 20px;
+
+body {
+    min-width: 630px;
 }
 
-.tabmenu-right {
-position: relative;
-right: 11px;
-top: 2px;
-z-index: 3333;
-width: 100%;
-text-align: center;
-margin: 12px 0;
+.rank {
+    display:none;
 }
 
-.tabmenu li.selected a {
-color: #FF4500;
+.midcol {
+margin:0px !important;
+font-size:20px !important;
 
-border: 1px solid #5f99cf;
-background-color: #eff7ff;
-z-index: 100;
-}
-*/
-
-.entry {
-overflow: visible;
 }
 
 .comment .child, .comment .showreplies {
@@ -47,14 +34,157 @@ max-width: 85%;
 
 
 .side {
-	display:none;
+display:none;
 }
 
+#categoryList {
+-webkit-column-count: 1;
+-moz-column-count: 1;
+column-count: 1;
+}
+
+#dspTypeRadio {
+margin: 14px 0 0 20px;
+font-size: 33px;
+}
+
+#dspTypeRadio label {
+display:block;
+}
+
+#categoryList li {
+font-size: 22px;
+text-align: left;
+}
+
+#sr-more-link {
+    display:none;
+}
 
 #sr-header-area {
-	display:none;
+font-size: 25px;
+height: 35px;
+line-height: 35px;
+}
+
+#header-nav-logo-area {
+top: 36px;
+}
+
+.tabmenu li {
+font-size: 40px;
+}
+
+.thumbnail img {
+width: 70px;
+height: 63px;
+}
+
+.sr-list {
+    display:none;
+}
+
+.tabmenu li {
+display: list-item;
+margin:5px;
+}
+
+#mobileOptions {
+    float:right;
+    cursor:pointer;
+}
+
+.tabmenu {
+display:none;
+max-height: 310px;
+width: 509px;
+margin: 0 auto;
+}
+
+.tabmenu-right {
+left: 326px;
+bottom: 256px;
+}
+
+#page {
+    overflow-x :hidden;
+}
+
+#header-bottom-right {
+font-size: 17px;
+padding: 7px;
+text-align: center;
+position: relative;
+}
+
+#userbar-logged-in {
+    font-size:20px;
+}
+
+#header-img {
+    visibility: hidden;
+   height: 45px;
+}
+
+#siteTableComments {
+    font-size:20px;
+}
+
+.md {
+font-size: 20px;
+}
+
+.tagline, .comment .score,.comment .collapsed {
+font-size: 19px;
+}
+
+.arrow, #mail {
+    zoom:1.7;
+}
+
+.comment .midcol {
+width: 35px;
+}
+
+.tabmenu li.selected a {
+border: none;
+}
+
+#mobileFrontLink {
+    float:left;
+    display:block;
+}
+
+.link .title {
+font-size: 25px;
+}
+.entry  {
+    font-size:22px;
+}
+
+.arrowNav {
+    display:none;
 }
 
       }
 
  
+
+
+
+
+
+
+
+
+
+/*To hide things from non-mobile users*/
+ @media (min-width: 1000px) {
+#mobileOptions {
+    display:none;
+}
+#mobileFrontLink {
+    display:none;
+}
+
+ }

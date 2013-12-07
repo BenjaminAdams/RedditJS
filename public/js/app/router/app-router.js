@@ -114,7 +114,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     }));
 
                     //only update btm bar if the subreddit changes
-                    if ((typeof App.bottombarRegion.currentView === 'undefined' || App.bottombarRegion.currentView.subName != subName) && window.settings.get('btmbar') === true) {
+                    if ((typeof App.bottombarRegion.currentView === 'undefined' || App.bottombarRegion.currentView.subName != subName) && window.settings.get('btmbar') === true && $(document).width() > App.mobileWidth) {
                         App.bottombarRegion.show(new BottomBarView({
                             subName: subName,
                             id: id

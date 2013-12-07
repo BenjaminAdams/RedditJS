@@ -4,6 +4,9 @@ define(['jquery', 'backbone', 'marionette', 'underscore', 'handlebars'],
     function($, Backbone, Marionette, _, Handlebars) {
         var App = new Backbone.Marionette.Application();
 
+        //the width to strart showing mobile
+        App.mobileWidth = 1000;
+
         //Organize Application into regions corresponding to DOM elements
         //Regions can contain views, Layouts, or subregions nested as necessary
         App.addRegions({

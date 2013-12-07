@@ -554,6 +554,11 @@ text-align: center;
 vertical-align: middle;
 font-size: 18px;
 margin: 35px 0 15px 25%;
+width:200px;
+}
+
+#dspTypeRadio label {
+  margin:5px;
 }
 
 .headerNavLogo:hover {

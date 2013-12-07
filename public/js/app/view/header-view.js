@@ -6,7 +6,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				'click .tabmenu-right li': 'changeGridOption',
 				'click .drop-down-header-toggle': 'toggleDropdown',
 				//'click #sr-display': 'toggleDropdown', //will close the menu after the user makes a selection
-				'click #userbar-logged-out': 'showLoginPopup'
+				'click #userbar-logged-out': 'showLoginPopup',
+				'click #mobileOptions': 'showMobileOptions'
 			},
 			ui: {
 				'siteTable': '#siteTable',
@@ -23,7 +24,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				'large': '#large',
 				'grid': '#grid',
 				'srDisplay': '#sr-display',
-				'srBar': '#sr-bar'
+				'srBar': '#sr-bar',
+				'tabmenu': '.tabmenu'
 			},
 			regions: {
 				'btmRightHeader': '#header-bottom-right',
@@ -50,6 +52,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				this.srDisplay.show(new SRDisplay())
 				this.displayMySubreddits()
 
+			},
+			showMobileOptions: function() {
+				console.log('mobile opts')
+				this.ui.tabmenu.toggle()
 			},
 
 			showLoginPopup: function(e) {

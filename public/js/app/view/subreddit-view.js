@@ -218,12 +218,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			},
 
 			resize: function() {
-				var mobileWidth = 1000; //when to change to mobile CSS
+				//var mobileWidth = 1000; //when to change to mobile CSS
 				if (this.gridOption == "large") {
 					//change css of 
 					var docWidth = $(document).width()
 					var newWidth = 0;
-					if (docWidth > mobileWidth) {
+					if (docWidth > App.mobileWidth) {
 						newWidth = docWidth - 355;
 					} else {
 						newWidth = docWidth;
@@ -233,7 +233,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 				if (window.settings.get('showSidebar') === true && this.gridOption != "grid") {
 
-					if (mobileWidth > $(document).width()) {
+					if (App.mobileWidth > $(document).width()) {
 						$('.side').hide()
 					} else {
 						$('.side').show()
