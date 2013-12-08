@@ -8,11 +8,11 @@ define(['backbone', 'model/single'], function(Backbone, SingleModel) {
 		//url: '/getSrList',
 		url: '/data/TMPsubredditList.json',
 		parse: function(response) {
-			//window.subreddits.concat(response);
-			_.merge(window.subreddits, response);
 			//TODO: Make this less of a hack....
-			//_.each(response, function(item, i, test) {
-			//})
+			for (var key in response) {
+				window.subreddits[key] = response[key];
+			}
+
 			return null;
 		}
 

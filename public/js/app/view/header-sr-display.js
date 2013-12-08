@@ -81,7 +81,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 					var headerImg = subreddits[item].header_img
 					var displayName = subreddits[item].display_name
 
-					if (typeof headerImg === 'undefined' || headerImg == 'null' || self.displayType == 1) {
+					if (self.displayType == 1 || typeof headerImg === 'undefined' || headerImg == 'null' || headerImg === null) {
 						self.ui.innerSR.append("<span class='headerNavLogo' ><a class='text-header-nav'  href='/r/" + displayName + "' >" + displayName + "</span></a> ")
 					} else {
 						self.ui.innerSR.append("<span class='headerNavLogo'><a href='/r/" + displayName + "' title='" + displayName + "' ><img src='" + headerImg + "' /></a></span>")
