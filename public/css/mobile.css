@@ -176,6 +176,10 @@ font-size: 25px;
     overflow: visible;
 }
 
+#thepost .entry, .large-thumb .entry  {
+    overflow: visible;
+}
+
 .entry  {
     font-size:22px;
 }
