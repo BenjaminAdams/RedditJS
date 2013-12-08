@@ -6,6 +6,13 @@ define(['jquery', 'backbone', 'marionette', 'underscore', 'handlebars'],
 
         //the width to strart showing mobile
         App.mobileWidth = 1000;
+        App.isMobile = function() {
+            if ($(document).width() > App.mobileWidth) {
+                return false
+            } else {
+                return true
+            }
+        }
 
         //Organize Application into regions corresponding to DOM elements
         //Regions can contain views, Layouts, or subregions nested as necessary

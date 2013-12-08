@@ -179,6 +179,15 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					//calculate how many columns we will have
 
 					var colCount = Math.floor($(document).width() / 305)
+					if (App.isMobile() === true) {
+						var fakeMobileWidth = $(document).width()
+						if (fakeMobileWidth < 550) {
+							fakeMobileWidth = 550
+						}
+						console.log('fake=', fakeMobileWidth)
+
+						colCount = Math.floor(fakeMobileWidth / 249)
+					}
 
 					for (var i = 0; i < colCount; i++) {
 						self.ui.siteTable.append('<div class="column"> </div>')

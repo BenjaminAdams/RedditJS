@@ -10,6 +10,9 @@ min-width:550px;
 padding:0px;
 }
 
+.content {
+margin:2px 0;
+}
 
 .rank {
     display:none;
@@ -180,6 +183,19 @@ font-size: 25px;
 .arrowNav {
     display:none;
 }
+.block {
+width: 275px;
+margin: 0px;
+padding: 2% 0;
+}
+
+.column {
+width: 264px;
+}
+.block img {
+max-width: 263px;
+}
+
 
       }
 
