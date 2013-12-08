@@ -16,7 +16,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			},
 			initialize: function(options) {
 				//_.bindAll(this);
-				_.bindAll(this, 'gotNewPosts')
+				_.bindAll(this, 'gotNewPosts', 'fetchError')
 				var self = this;
 				this.subName = options.subName
 				if (this.subName == 'front') {
