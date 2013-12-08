@@ -21,7 +21,8 @@
              },
 
              initialize: function(options) {
-                 _.bindAll(this);
+                 //_.bindAll(this);
+                 _.bindAll(this, 'gotNewPosts', 'keyPress')
                  var self = this;
 
                  this.subName = options.subName

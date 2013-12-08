@@ -38,7 +38,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
                     this.model.set('external', 'data-bypass')
                 }
 
-                if (typeof data.expand !== 'undefined') {
+                if (typeof data.expand !== 'undefined' && (this.model.get('embededImg') === true || this.model.get('selftext_html'))) {
+                    console.log('expandhtml=', this.model.get('expandHTML'))
                     this.expand = true;
                 }
                 if (this.gridOption == "normal") {

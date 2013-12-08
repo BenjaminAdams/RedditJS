@@ -4,7 +4,7 @@ define(['App', 'backbone', 'jquery', 'view/comment-view'],
         return Marionette.CollectionView.extend({
             itemView: CommentView,
             initialize: function(options) {
-                _.bindAll(this);
+                // _.bindAll(this);
             }
 
         });

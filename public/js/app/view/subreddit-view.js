@@ -15,7 +15,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				'siteTable': '#siteTable'
 			},
 			initialize: function(options) {
-				_.bindAll(this);
+				//_.bindAll(this);
+				_.bindAll(this, 'gotNewPosts')
 				var self = this;
 				this.subName = options.subName
 				if (this.subName == 'front') {
@@ -47,12 +48,17 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				//App.on("subreddit:remove", this.remove, this);
 				//this.render();
 				this.imagesAdded = 0; //keeps a total of how many images we are loading
-
 				this.imgAry = []
 
-				$(window).on("scroll", this.watchScroll);
+				//$(window).on("scroll", this.watchScroll);
+				$(window).on("scroll", this.debouncer(function(e) {
 
-				//in small thumbnail mode, its sometimes impossible for the infinite scroll event to fire because there is no scrollbar yet
+					self.watchScroll()
+				}));
+				$(window).resize(this.debouncer(function(e) {
+
+					self.resize()
+				}));
 
 				//this.target = $("#siteTable"); //the target to test for infinite scroll
 				this.target = $(window); //the target to test for infinite scroll
@@ -63,10 +69,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				this.errorRetries = 0; //keeps track of how many errors we will retry after
 
 				//$(window).bind("resize.app", _.bind(this.debouncer));
-				$(window).resize(this.debouncer(function(e) {
-
-					self.resize()
-				}));
 
 				setTimeout(function() {
 					self.changeHeaderLinks()
@@ -80,8 +82,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				console.log('closing subreddit-view')
 				//window.stop() //prevents new images from being downloaded
 				this.removePendingGrid()
-				$(window).off("scroll", this.watchScroll);
-				$(window).off('resize', this.debouncer);
+
+				//$(window).off('resize', this.debouncer);
+				//$(window).off("scroll", this.watchScroll);
+				//$(window).off("scroll", this.debouncer);
+				$(window).off('resize');
+				$(window).off("scroll");
+
 				App.off("subreddit:changeGridOption", this.changeGridOption, this);
 				App.off("subreddit:remove", this.remove, this);
 			},
@@ -437,7 +444,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					//if we are not checking for this it will reset the scrolltop back to zero when we reach this subreddit
 					var windowScrollTop = $(window).scrollTop()
 					if (typeof this.subID !== 'undefined') {
-						this.collection.scroll = windowScrollTop
+						//this.collection.scroll = windowScrollTop
 						window.subs[this.subID].scroll = windowScrollTop
 
 					}
@@ -455,7 +462,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				}
 			},
 			helpFillUpScreen: function() {
-
+				//in small thumbnail mode, its sometimes impossible for the infinite scroll event to fire because there is no scrollbar yet
 				if (this.collection.length < 301 && (this.gridOption == 'small')) {
 					this.watchScroll()
 				}

@@ -40,7 +40,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 			}, //so we resize it does not do a resize for every pixel the user resizes
 			//it has a timeout that fires after the user is done resizing
 			debouncer: function(func) {
-				var timeoutID, timeout = timeout || 20;
+				var timeoutID, timeout = timeout || 100;
 				return function() {
 					var scope = this,
 						args = arguments;

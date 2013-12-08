@@ -42,7 +42,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 			},
 
 			initialize: function(options) {
-				_.bindAll(this);
+				//_.bindAll(this);
 				var self = this;
 
 				this.model = options.model

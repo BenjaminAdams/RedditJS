@@ -243,15 +243,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 			},
 			loadLinkedCommentView: function() {
 				if (typeof this.linkedCommentModel !== 'undefined') {
+					var self = this
 					console.log('loading linked comment view')
-					//this.linkedCommentView.render()
-					var comment = new CommentView({
-						model: this.linkedCommentModel,
-						id: this.linkedCommentModel.get('id'),
-						root: "#linkedComment"
-						//root: "#commentarea"
-					})
-					this.$('#linkedComment .usertext-body').first().css('background-color', '#F5F5A7')
+					//add this model to the start of the reply collection
+					this.model.attributes.replies.unshift(this.linkedCommentModel)
+					setTimeout(function() {
+						self.$('#siteTableComments .usertext-body').first().css('background-color', '#F5F5A7')
+					}, 300)
+					//this.$('.usertext-body').first().css('background-color', '#F5F5A7')
 
 				}
 			},
