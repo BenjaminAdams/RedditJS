@@ -1,4 +1,4 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!template/post-row', ],
+define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!template/post-row'],
     function(App, $, _, Backbone, BaseView, PostRowTmpl) {
         return BaseView.extend({
             events: {
