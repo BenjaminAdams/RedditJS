@@ -2,6 +2,7 @@ define(['App', 'marionette', 'hbs!template/post-row', 'hbs!template/post-row-sma
     function(App, Marionette, PostRowTmpl, PostRowSmallTmpl, PostRowLargeTmpl, PostRowGridTmpl) {
         //return Marionette.FasterCollectionView.extend({
         return Backbone.Marionette.CollectionView.extend({
+            //    return FastCollectionView.extend({
             //itemView: PostRowTmpl,
             initialize: function(options) {
                 this.gridOption = options.gridOption;

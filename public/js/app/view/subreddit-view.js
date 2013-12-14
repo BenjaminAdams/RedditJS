@@ -124,6 +124,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 						itemView: PostRowView,
 						gridOption: this.gridOption
 					})
+
 					this.siteTable.show(this.subredditCollectionView)
 				}
 

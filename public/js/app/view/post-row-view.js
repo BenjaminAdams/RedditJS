@@ -1,7 +1,6 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs!template/post-row-large', 'hbs!template/post-row-small', 'view/basem-view'],
-    function(App, $, _, Backbone, PostRowTmpl, PostRowLargeTmpl, PostRowSmallTmpl, BaseView) {
+define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!template/post-row', ],
+    function(App, $, _, Backbone, BaseView, PostRowTmpl) {
         return BaseView.extend({
-            //template: PostRowTmpl,
             events: {
                 'click a': "gotoSingle",
                 'click .upArrow': 'upvote',
@@ -25,9 +24,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/post-row', 'hbs
                 'save': '.save',
                 'unsave': '.unsave'
             },
-
             initialize: function(data) {
-                _.bindAll(this);
+                //  _.bindAll(this);
                 this.model = data.model;
                 this.gridOption = data.gridOption
 
