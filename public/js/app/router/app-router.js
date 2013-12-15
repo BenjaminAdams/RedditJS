@@ -10,6 +10,17 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 window.subreddits.mine = new MySubredditsCollection()
                 //caching subreddit json in a global because it takes about 3 seconds to query from reddit api
                 window.subs = []
+
+                if (window.location.hash) {
+                    var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+                    if (hash == 'grid' || hash == 'small' || hash == 'large' || hash == 'normal')
+
+                        $.cookie('gridOption', hash, {
+                            path: '/'
+                        });
+
+                }
+
                 App.headerRegion.show(new HeaderView());
             },
             routes: {
@@ -21,6 +32,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'subreddits(/):q': 'subreddits',
                 '(:sortOrder)(/)': 'home',
                 'r/:subName(/)': 'subreddit',
+                'r/:subName?mode=:mode': 'subreddit',
                 'r/:subName/:sortOrder(/)': 'subreddit',
                 'r/:subName/:sortOrder/:timeFrame': 'subreddit',
                 'domain/:domain(/)': 'subredditDomain',
@@ -72,10 +84,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 })
             },
 
-            subreddit: function(subName, sortOrder, timeFrame) {
+            subreddit: function(subName, sortOrder, timeFrame, mode) {
                 if (window.subs.length > 1) {
                     window.stop()
                 }
+
+                console.log('mode=', mode)
                 this.doSidebar(subName);
                 require(['view/subreddit-view'], function(SubredditView) {
                     App.mainRegion.show(new SubredditView({
