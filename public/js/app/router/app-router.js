@@ -22,6 +22,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 '(:sortOrder)(/)': 'home',
                 'r/:subName(/)': 'subreddit',
                 'r/:subName/:sortOrder(/)': 'subreddit',
+                'r/:subName/:sortOrder/:timeFrame': 'subreddit',
                 'domain/:domain(/)': 'subredditDomain',
                 'domain/:domain/:sortOrder(/)': 'subredditDomain',
 
@@ -71,7 +72,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 })
             },
 
-            subreddit: function(subName, sortOrder) {
+            subreddit: function(subName, sortOrder, timeFrame) {
                 if (window.subs.length > 1) {
                     window.stop()
                 }
@@ -79,7 +80,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 require(['view/subreddit-view'], function(SubredditView) {
                     App.mainRegion.show(new SubredditView({
                         subName: subName,
-                        sortOrder: sortOrder || 'hot'
+                        sortOrder: sortOrder || 'hot',
+                        timeFrame: timeFrame || 'month'
                     }));
 
                 })

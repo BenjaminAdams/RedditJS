@@ -227,7 +227,9 @@ display: none;
 	left: 219px;
 }
 
-.drop-sort-orderA {
+
+
+.drop-sort-orderA, .drop-time-frameSR {
 	left: 88px;
 }
 

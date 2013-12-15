@@ -29,6 +29,12 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 				this.domainStr = ''
 			}
 
+			if (typeof data.timeFrame !== "undefined" && (this.sortOrder == 'controversial' || this.sortOrder == 'top')) { //known as "t" in the reddit API
+				this.timeFrame = "&t=" + data.timeFrame
+			} else {
+				this.timeFrame = '' //blank if not in top/contrive
+			}
+
 			this.instanceUrl = this.getUrl()
 
 		},
@@ -42,10 +48,10 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			var linkCount = window.settings.get('linkCount')
 
 			if (typeof username !== "undefined") {
-				return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + "&cookie=" + $.cookie('reddit_session');
+				return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + this.timeFrame + "&cookie=" + $.cookie('reddit_session');
 			} else {
-				console.log("http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + "&limit=" + linkCount + "&jsonp=?")
-				return "http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + "&limit=" + linkCount + "&jsonp=?"
+				console.log("http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?")
+				return "http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
 			}
 		},
 		parse: function(response) {

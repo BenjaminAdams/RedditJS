@@ -5,11 +5,17 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			events: {
 				'click #retry': 'tryAgain',
 				'click .thumbnailSmall': 'gotoSingle',
-				'click .nextprev': 'fetchMore'
+				'click .nextprev': 'fetchMore',
+				//events for dropdown timeframe
+				'click .drop-time-frame': 'toggleTimeFrame',
+				'click .drop-time-frameSR': 'toggleTimeFrame'
+
 			},
 			ui: {
 				'siteTable': '#siteTable',
-				'nextprev': '.nextprev'
+				'nextprev': '.nextprev',
+				'srTimeFrame': '#srTimeFrame',
+				'dropTimeFrameSR': '.drop-time-frameSR'
 			},
 			regions: {
 				'siteTable': '#siteTable'
@@ -26,18 +32,21 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				}
 
 				this.gridOption = $.cookie('gridOption') || 'normal';
-				//if (typeof this.gridOption === 'undefined' || this.gridOption === null || this.gridOption === "") {
-				//this.gridOption = 'normal'
-				//}
-
-				this.template = subredditTmpl;
 				this.sortOrder = options.sortOrder
 				this.domain = options.domain
+				this.timeFrame = options.timeFrame
+
+				//putting stuff in model so we can pass to handlebars template
+				this.model = new Backbone.Model({
+					sortOrder: this.sortOrder,
+					subName: this.subName,
+					timeFrame: this.timeFrame
+				})
 
 				if (typeof this.domain === 'undefined') {
 					this.domain = null
 				}
-				this.subID = this.subName + this.domain + this.sortOrder
+				this.subID = this.subName + this.domain + this.sortOrder + this.timeFrame
 				if (typeof this.sortOrder === 'undefined') {
 					this.sortOrder = 'hot'
 				}
@@ -104,7 +113,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					this.collection = new SubredditCollection([], {
 						domain: this.domain,
 						subName: this.subName,
-						sortOrder: this.sortOrder
+						sortOrder: this.sortOrder,
+						timeFrame: this.timeFrame
 					});
 
 					this.fetchMore();
@@ -135,8 +145,18 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 				}
 
+				//show or hide the timeframe option
+				if (this.sortOrder == 'controversial' || this.sortOrder == 'top') {
+					this.ui.srTimeFrame.show()
+				} else {
+					this.ui.srTimeFrame.hide()
+				}
+
 				this.hideMoarBtn()
 				this.resize()
+			},
+			toggleTimeFrame: function() {
+				this.ui.dropTimeFrameSR.toggle()
 			},
 
 			//the image callback from waiting it to be loaded before being display
