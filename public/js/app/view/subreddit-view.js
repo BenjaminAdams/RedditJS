@@ -268,7 +268,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 					console.log('newwidth=', newWidth)
 
-					$('#dynamicWidth').html(' <style> .large-img {width: ' + newWidth + 'px;} </style>');
+					$('#dynamicWidth').html(' <style> .large-img {max-width: ' + newWidth + 'px;} </style>');
 				}
 
 				if (window.settings.get('showSidebar') === true && this.gridOption != "grid") {
