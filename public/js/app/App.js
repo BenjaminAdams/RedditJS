@@ -37,15 +37,17 @@ define(['jquery', 'backbone', 'marionette', 'underscore', 'handlebars'],
         });
 
         //prevent page reload
-        $(window.document).on('click', 'a[href]:not([data-bypass])', function(evt) {
-            var protocol = this.protocol + '//';
-            var href = this.href;
-            href = href.slice(protocol.length);
-            href = href.slice(href.indexOf("/") + 1);
+        $(window.document).on('click', 'a[href]:not([data-bypass])', function(e) {
+            if (!e.metaKey && !e.ctrlKey && !e.shiftKey) {
+                var protocol = this.protocol + '//';
+                var href = this.href;
+                href = href.slice(protocol.length);
+                href = href.slice(href.indexOf("/") + 1);
 
-            if (href.slice(protocol.length) !== protocol) {
-                evt.preventDefault();
-                Backbone.history.navigate(href, true);
+                if (href.slice(protocol.length) !== protocol) {
+                    e.preventDefault();
+                    Backbone.history.navigate(href, true);
+                }
             }
         });
 
