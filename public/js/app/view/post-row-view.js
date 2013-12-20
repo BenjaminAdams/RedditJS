@@ -41,6 +41,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     //changes the main post link to be external instead of linking back to itself
                     this.model.set('url', this.model.get('actualUrl'))
                     this.model.set('external', 'data-bypass')
+                } else {
+                    //so when the user returns to the subreddit page, we set the model back to non-external link
+                    this.model.set('url', this.model.get('permalink'))
+                    this.model.set('external', '')
                 }
 
                 if (typeof data.expand !== 'undefined' && (this.model.get('embededImg') === true || this.model.get('selftext_html'))) {
