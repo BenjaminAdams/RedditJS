@@ -438,8 +438,7 @@ color:#9494ff;
 
 
 /* When the user expands an img on the subreddit screen */
-.link img {
-max-width: 95%;
+.link img { 
 object-fit: contain;
 }
 
