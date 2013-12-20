@@ -123,7 +123,7 @@
                  if (typeof prevModel !== 'undefined') {
                      window.curModel = prevModel
                      var prevId = prevModel.get('id')
-                     Backbone.history.navigate('/r/' + this.subName + "/comments/" + prevId, {
+                     Backbone.history.navigate('/r/' + this.subName + "/comments/" + prevId + '/x', {
                          trigger: true
                      })
                  }
@@ -138,7 +138,7 @@
                  if (typeof nextModel !== 'undefined') {
                      window.curModel = nextModel
                      var nextId = nextModel.get('id')
-                     Backbone.history.navigate('/r/' + this.subName + "/comments/" + nextId, {
+                     Backbone.history.navigate('/r/' + this.subName + "/comments/" + nextId + '/x', {
                          trigger: true
                      })
                  }

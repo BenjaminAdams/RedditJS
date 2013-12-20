@@ -11,7 +11,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 'click .report': 'reportShow',
                 'click .reportConfirmYes': 'reportYes',
                 'click .reportConfirmNo': 'reportShow',
-                'click .expando-button': 'toggleExpando'
+                'click .expando-button': 'toggleExpando',
+                'drag .dragImg': 'dragImg'
+
             },
             ui: {
                 'expandoButton': '.expando-button',
@@ -23,11 +25,16 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 'reportConfirmYes': '.reportConfirmYes',
                 'save': '.save',
                 'unsave': '.unsave'
+
             },
             initialize: function(data) {
                 //  _.bindAll(this);
                 this.model = data.model;
                 this.gridOption = data.gridOption
+
+                this.lastDragPos = {} //keeps track of what direction the user is dragging the image
+                this.dragTimeout = null;
+                this.dragImgMinWidth = 100
 
                 // this.isSingle = data.isSingle || false
                 if (data.isSingle && this.model.get('is_self') === false) {
@@ -74,6 +81,32 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 }
 
             },
+
+            dragImg: function(e) {
+                var self = this
+
+                var target = $(e.currentTarget)
+                var targetWidth = target.width()
+                var position = target.position();
+
+                if ($.isEmptyObject(this.lastDragPos)) {
+                    this.lastDragPos.x = e.originalEvent.pageX
+                    this.lastDragPos.y = e.originalEvent.pageY
+                }
+                console.log(target.width())
+                if ((this.lastDragPos.x > e.originalEvent.pageX || this.lastDragPos.y > e.originalEvent.pageY) && targetWidth > this.dragImgMinWidth) {
+                    target.width(targetWidth - 20)
+                } else {
+                    target.width(targetWidth + 20)
+                }
+
+                clearTimeout(this.dragTimeout);
+                this.dragTimeout = setTimeout(function() {
+                    this.lastDragPos = {} //resets the direction the user wants to drag the image
+                }, 400);
+
+            },
+
             toggleExpando: function() {
                 //if (this.model.get('embededImg') === false && this.expand === false) {
                 // this.ui.expandoButton.hide()
@@ -93,7 +126,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     if (this.model.get('is_self') === true) {
                         str = '<div class="expando"><div class="usertext-body blueborder">' + this.model.get('selftext_html') + '</div></div>'
                     } else {
-                        str = '<div class="expando"><div class="usertext-body"><p>' + this.model.get('media_embed') + '</p></div></div>'
+                        str = this.model.get('media_embed')
                     }
 
                     this.ui.postRowContent.html(str).show()

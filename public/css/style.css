@@ -140,7 +140,7 @@ text-align: center;
 	color:red;
 }
 
-.embed img {
+.embed img, .embedImg {
 padding: 0 5px;
 background-color: #fafafa;
 border: 1px solid #369;
@@ -148,6 +148,10 @@ border-radius: 7px;
 display:block;
 padding:5px;
 
+}
+
+.embedImg {
+  cursor:inherit;
 }
 
 

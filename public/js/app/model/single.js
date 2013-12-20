@@ -125,7 +125,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				//this is a single image we can embed
 				data.embededImg = true
 				//data.media_embed = new Array()
-				data.media_embed = "<div class='embed'><p><a data-bypass  href='" + data.url + "' target='_blank'> <img src='" + data.imgUrl + "' /> </a></p></div>"
+				data.media_embed = "<img class='embedImg dragImg' src='" + data.imgUrl + "' />"
 				data.expandHTML = "<li><div class='expando-button " + expandedOrCollapsed + " video'></div></li>"
 
 			} else if (typeof data.media_embed.content !== 'undefined') {
