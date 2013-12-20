@@ -1,4 +1,3 @@
-
 #main {
    padding-bottom:100px;
 }
@@ -61,6 +60,7 @@ border-bottom: 1px dotted #808080;
 .thumbnailSmall img {
 height: 70px;
 width: 90px;
+object-fit: contain;
 }
 
 .thumbnail {
@@ -440,6 +440,7 @@ color:#9494ff;
 /* When the user expands an img on the subreddit screen */
 .link img {
 max-width: 95%;
+object-fit: contain;
 }
 
 .large-thumb .link img {
