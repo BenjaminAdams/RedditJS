@@ -46,6 +46,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 					byPassAuth: true //this will pass through the user logged in check
 				};
 
+				console.log('params=', params)
+
 				//http://www.reddit.com/api/login/?user=faketestuser&passwd=abc123&api_type=json
 				//https://ssl.reddit.com/api/login/?user=faketestuser&passwd=abc123&api_type=json
 				//url: "http://www.reddit.com/api/login",

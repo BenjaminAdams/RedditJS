@@ -96,8 +96,16 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 if ($.isEmptyObject(this.lastDragPos)) {
                     this.lastDragPos.x = e.originalEvent.pageX
                     this.lastDragPos.y = e.originalEvent.pageY
+                    //create img where person clicked mouse to indicate draging direction
+
+                    var posIndicator = $('<div class="dragIndicatorImg"> </div>').css({
+                        top: e.originalEvent.clientY,
+                        left: e.originalEvent.clientX
+                    })
+                    $('body').append(posIndicator)
+
                 }
-                console.log(target.width())
+
                 if ((this.lastDragPos.x > e.originalEvent.pageX || this.lastDragPos.y > e.originalEvent.pageY) && targetWidth > this.dragImgMinWidth) {
                     target.width(targetWidth - 20)
                 } else {
@@ -106,8 +114,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 
                 clearTimeout(this.dragTimeout);
                 this.dragTimeout = setTimeout(function() {
-                    this.lastDragPos = {} //resets the direction the user wants to drag the image
-                }, 400);
+                    self.lastDragPos = {} //resets the direction the user wants to drag the image
+                    $('.dragIndicatorImg').remove()
+                }, 1000);
 
             },
 
