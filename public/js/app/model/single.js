@@ -177,7 +177,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 		fixImgur: function(url) {
 			if (this.containsStr("imgur.com", url)) {
 				//check if its a gallery
-				if (this.containsStr("imgur.com/a", url) === true || this.containsStr("gallery", url) === true) {
+				if (this.containsStr("imgur.com/a/", url) === true || this.containsStr("gallery", url) === true) {
 					return false
 				} else {
 					url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")

@@ -107,9 +107,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 }
 
                 if ((this.lastDragPos.x > e.originalEvent.pageX || this.lastDragPos.y > e.originalEvent.pageY) && targetWidth > this.dragImgMinWidth) {
-                    target.width(targetWidth - 20)
+                    target.width(targetWidth - 40)
                 } else {
-                    target.width(targetWidth + 20)
+                    target.width(targetWidth + 40)
                 }
 
                 clearTimeout(this.dragTimeout);

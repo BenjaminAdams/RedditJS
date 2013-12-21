@@ -89,6 +89,10 @@ text-align: center;
 margin-bottom: 10px;
 }
 
+.textGridTitle {
+  padding: 0 12px;
+}
+
 
 .small-thumb-for-large-view  {
 margin-top:3px;
