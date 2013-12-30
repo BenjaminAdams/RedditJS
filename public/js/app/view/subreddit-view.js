@@ -365,6 +365,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				}
 			},
 
+			//this function is for grid mode only
+			//TODO: replace this and use collectionView somehow
+			//Hard to use collectionView because its not calculating the shortest column
 			appendPosts: function(collection) {
 				var self = this
 				var count = 0;
@@ -378,6 +381,30 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 						var newPost = $(PostRowGrid({
 							model: model.attributes
 						}))
+
+						var biggerImg = model.get('imgUrl')
+						if (self.gridOption == "grid" && model.get('smallImg')) {
+							//only load scroll over event if user is in grid mode and that grid mode has a smaller imgur img displaying
+							//this is so the user can hover over the post and load the full size img/full gif
+							newPost.one("mouseenter", function() {
+								console.log("Loading bigger IMG");
+								if (biggerImg.split('.').pop() == 'gif') {
+									newPost.find('.gridLoading').show() //only show loading icon if its a gif
+								}
+
+								$('<img src="' + biggerImg + '" />').load(function() {
+									console.log('loaded img')
+									newPost.find('img').attr('src', biggerImg);
+									newPost.find('.gridLoading').hide() //hide loading gif
+								}).error(function() {
+									console.log("ERROR loading img")
+									newPost.find('.gridLoading').hide() //hide loading gif
+									//TODO show a failed to load img
+								});
+
+							});
+						}
+
 						if (count < 20) {
 
 							var col = self.shortestCol()

@@ -5,7 +5,7 @@ define(['jquery', 'backbone', 'marionette', 'underscore', 'handlebars'],
         var App = new Backbone.Marionette.Application();
 
         //the width to strart showing mobile
-        App.mobileWidth = 1000;
+        App.mobileWidth = 900;
         App.isMobile = function() {
             if ($(document).width() > App.mobileWidth) {
                 return false

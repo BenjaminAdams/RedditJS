@@ -51,22 +51,17 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     console.log('expandhtml=', this.model.get('expandHTML'))
                     this.expand = true;
                 }
+
                 if (this.gridOption == "normal") {
                     this.template = PostRowTmpl
                 }
-                // if (this.gridOption == "normal") {
-                //     this.template = PostRowTmpl
-                // } else if (this.gridOption == "large") {
-                //     this.template = PostRowLargeTmpl
-                // } else if (this.gridOption == "small") {
-                //     this.template = PostRowSmallTmpl
-                // }
 
             },
             onRender: function() {
                 if (this.expand === true) {
                     this.toggleExpando()
                 }
+
             },
             gotoSingle: function(e) {
                 var self = this
