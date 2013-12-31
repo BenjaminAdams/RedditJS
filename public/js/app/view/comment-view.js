@@ -172,7 +172,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 			toggleReply: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				this.ui.commentreply.toggle()
+				this.ui.commentreply.toggle().find('.text').focus()
 			},
 			commentLinkHover: function(e) {
 				//console.log('hovering over a comment')
