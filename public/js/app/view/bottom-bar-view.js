@@ -76,13 +76,16 @@
                  this.posts.show(this.subredditCollectionView)
                  this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
 
+                 $('#bottom-bar-container').show()
+
                  //setTimeout(function() {
                  //self.selected()
                  //}, 5000)
 
              },
              onBeforeClose: function() {
-                 // $('#bottom-bar').hide()
+                 $('#bottom-bar-container').hide()
+
                  $(window).unbind('keydown', this.keyPress);
                  App.off("btmbar:remove", this.remove, this);
                  App.off("bottombar:selected", this.selected, this)
