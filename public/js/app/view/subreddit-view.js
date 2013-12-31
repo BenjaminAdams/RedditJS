@@ -204,6 +204,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 					$('.side').hide()
 					this.ui.siteTable.css('margin-right', '0') //some custom CSS was making this bad in grid mode
+					this.ui.siteTable.css('text-align', 'center')
 					//calculate how many columns we will have
 
 					var colCount = Math.floor($(document).width() / 305)
@@ -223,15 +224,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 					this.ui.siteTable.append('<div id="fullImgCache"></div>')
 
-				} else {
-
-					if (window.settings.get('showSidebar') === false) {
-						$('.side').hide()
-					} else {
-						$('.side').show()
-					}
-
-					this.resize()
 				}
 			},
 			shortestCol: function() {
@@ -310,7 +302,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				} else {
 
 					//this.ui.siteTable.empty();
-
+					this.ui.siteTable.css('text-align', 'left')
 					this.subredditCollectionView = new SrCView({
 						collection: this.collection,
 						itemView: PostRowView,
@@ -482,7 +474,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 					var self = this;
 					if (this.gridOption == 'grid') {
-						this.triggerPoint = 3500; // px from the bottom 
+						this.triggerPoint = 5000; // px from the bottom 
 					} else {
 						this.triggerPoint = 2000; // px from the bottom 
 					}
