@@ -42,7 +42,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				App.on('header:showLoginBox', this.showLoginPopup, this)
 				//load the subreddits on the top bar
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
-				this.listenTo(window.subreddits.mine, 'sync', this.displayMySubreddits)
+				this.listenTo(App.subreddits.mine, 'sync', this.displayMySubreddits)
 
 			},
 			onRender: function() {
@@ -153,9 +153,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				this.updateSubreddits()
 			},
 			updateSubreddits: function() {
-				window.subreddits.mine.reset()
+				App.subreddits.mine.reset()
 				//query the api for /me.json
-				window.subreddits.mine.fetch();
+				App.subreddits.mine.fetch();
 			},
 			toggleDropdown: function() {
 				App.trigger('header-sr-display:toggle')
@@ -170,12 +170,12 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				//   Every Subreddit after the first one has a seperator:  
 				//			<li><span class="separator">-</span><a href= "/r/funny/">funny</a></li>
 				//if (this.checkIfLoggedIn() === false) {
-				//window.subreddits.loadDefaultSubreddits()
+				//App.subreddits.loadDefaultSubreddits()
 				//}
-				//window.subreddits = this.mySubreddits
+				//App.subreddits = this.mySubreddits
 				var seperator = '';
 				var count = 0;
-				window.subreddits.mine.each(function(model) {
+				App.subreddits.mine.each(function(model) {
 
 					if (count !== 0) {
 						seperator = '<span class="separator">-</span>';

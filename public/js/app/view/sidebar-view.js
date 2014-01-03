@@ -32,7 +32,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 				this.loadLoginView()
 				App.trigger("header:update", this.model);
 				App.trigger('submit:type', this.model.get('submission_type'))
-				if (window.settings.get('showSidebar') === false) {
+				if (App.settings.get('showSidebar') === false) {
 					$('.side').hide()
 				}
 				this.addOutboundLink()

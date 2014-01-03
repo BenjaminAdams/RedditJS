@@ -178,8 +178,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				//console.log('hovering over a comment')
 				e.preventDefault()
 				e.stopPropagation()
-				if (window.settings.get('cmtLoad') === true) {
-					if (window.Delay !== true) {
+				if (App.settings.get('cmtLoad') === true) {
+					if (App.Delay !== true) {
 						var target = $(e.currentTarget)
 
 						var url = $(target).attr("href")

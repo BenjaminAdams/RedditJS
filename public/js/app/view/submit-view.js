@@ -81,7 +81,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 
 			loadSubreddits: function() {
 				var self = this
-				window.subreddits.mine.each(function(model) {
+				App.subreddits.mine.each(function(model) {
 					var str = '<li>\n<a href="#">' + model.get('display_name') + '</a>\n</li>'
 					self.$('#suggested-reddits ul').append(str)
 

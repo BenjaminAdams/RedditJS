@@ -108,7 +108,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				//console.log("window.subs=", window.subs)
 
-				if (typeof window.subs[this.subID] === 'undefined') {
+				if (typeof App.subs[this.subID] === 'undefined') {
 
 					this.collection = new SubredditCollection([], {
 						domain: this.domain,
@@ -121,7 +121,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 				} else {
 					console.log('loading collection from memory')
-					this.collection = window.subs[this.subID]
+					this.collection = App.subs[this.subID]
 					//this.appendPosts(this.collection)
 
 					this.showMoarBtn()
@@ -174,7 +174,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 			gotoSingle: function(e) {
 				var name = this.$(e.currentTarget).data('id')
-				window.curModel = this.collection.findWhere({
+				App.curModel = this.collection.findWhere({
 					name: name
 				})
 			},
@@ -262,7 +262,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					$('#dynamicWidth').html(' <style> .large-img {max-width: ' + newWidth + 'px;} </style>');
 				}
 
-				if (window.settings.get('showSidebar') === true && this.gridOption != "grid") {
+				if (App.settings.get('showSidebar') === true && this.gridOption != "grid") {
 
 					if (App.mobileWidth > $(document).width()) {
 						$('.side').hide()
@@ -459,7 +459,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				}
 
 				this.loading = false; //turn the flag on to go ahead and fetch more!
-				window.subs[this.subID] = this.collection
+				App.subs[this.subID] = this.collection
 				this.showMoarBtn()
 				this.helpFillUpScreen()
 				//fetch more  posts with the After
@@ -475,7 +475,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			watchScroll: function(e) {
 				console.log('watching scroll in ', this.subID)
 
-				if (window.settings.get('infin') === true) {
+				if (App.settings.get('infin') === true) {
 
 					var self = this;
 					if (this.gridOption == 'grid') {
@@ -490,7 +490,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					var windowScrollTop = $(window).scrollTop()
 					if (typeof this.subID !== 'undefined') {
 						//this.collection.scroll = windowScrollTop
-						window.subs[this.subID].scroll = windowScrollTop
+						App.subs[this.subID].scroll = windowScrollTop
 
 					}
 

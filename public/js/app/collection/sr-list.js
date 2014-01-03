@@ -1,4 +1,4 @@
-define(['backbone', 'model/single'], function(Backbone, SingleModel) {
+define(['App', 'backbone', 'model/single'], function(App, Backbone, SingleModel) {
 	return Backbone.Collection.extend({
 		initialize: function() {
 
@@ -10,7 +10,7 @@ define(['backbone', 'model/single'], function(Backbone, SingleModel) {
 		parse: function(response) {
 			//TODO: Make this less of a hack....
 			for (var key in response) {
-				window.subreddits[key] = response[key];
+				App.subreddits[key] = response[key];
 			}
 
 			return null;

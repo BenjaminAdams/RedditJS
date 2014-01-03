@@ -1,4 +1,4 @@
-define(['backbone', 'model/single', 'localstorage'], function(Backbone, SingleModel, Localstorage) {
+define(['App', 'backbone', 'model/single', 'localstorage'], function(App, Backbone, SingleModel, Localstorage) {
 	var MySubreddits = Backbone.Collection.extend({
 		initialize: function() {
 
@@ -139,7 +139,7 @@ define(['backbone', 'model/single', 'localstorage'], function(Backbone, SingleMo
 				display_name: "blog"
 			});
 
-			window.subreddits.mine = this
+			App.subreddits.mine = this
 
 		}
 

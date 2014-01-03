@@ -106,7 +106,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/login-popup', '
 							//load the captcha into the image box
 							var loginData = data.json.data;
 							console.log(loginData)
-							window.me = loginData
+							App.me = loginData
 							self.setLoginCookies(loginData.cookie, loginData.modhash, user)
 							self.loginSuccess()
 						}

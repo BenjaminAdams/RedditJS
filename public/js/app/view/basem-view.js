@@ -59,7 +59,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 			},
 			dynamicStylesheet: function(name) {
 
-				if (window.settings.get('customCSS') === true && $(document).width() > App.mobileWidth) {
+				if (App.settings.get('customCSS') === true && $(document).width() > App.mobileWidth) {
 					if (this.subName == 'front') {
 						$("#subredditStyle").attr("href", "");
 					} else {

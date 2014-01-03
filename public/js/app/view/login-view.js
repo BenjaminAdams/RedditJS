@@ -64,7 +64,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 
 						var loginData = data.json.data;
 						console.log(loginData)
-						window.me = loginData
+						App.me = loginData
 						self.setLoginCookies(loginData.cookie, loginData.modhash, user)
 
 						App.trigger("login");

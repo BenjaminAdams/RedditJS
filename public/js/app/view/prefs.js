@@ -3,8 +3,8 @@
 Change site settings
 
 */
-define(['underscore', 'backbone', 'hbs!template/prefs', 'view/basem-view'],
-	function(_, Backbone, PrefsTmpl, BaseView) {
+define(['App', 'underscore', 'backbone', 'hbs!template/prefs', 'view/basem-view'],
+	function(App, _, Backbone, PrefsTmpl, BaseView) {
 		return BaseView.extend({
 			template: PrefsTmpl,
 			events: {
@@ -15,7 +15,7 @@ define(['underscore', 'backbone', 'hbs!template/prefs', 'view/basem-view'],
 
 			initialize: function(options) {
 				_.bindAll(this);
-				this.model = window.settings
+				this.model = App.settings
 			},
 			onRender: function() {
 				this.showSettings()
@@ -25,18 +25,14 @@ define(['underscore', 'backbone', 'hbs!template/prefs', 'view/basem-view'],
 			showSettings: function() {
 				var self = this
 
-				for (var item in window.settings.attributes) {
-					//console.log('name =' + item, 'value=' + window.settings.attributes[item])
+				for (var item in App.settings.attributes) {
 					var input = self.$('#' + item)
 					var type = input.prop('type')
-					//console.log(input.prop('type'))
 					if (type == 'checkbox') {
-						//console.log(window.settings.attributes[item])
-						input.prop('checked', self.stringToBoolean(window.settings.attributes[item]));
+						input.prop('checked', self.stringToBoolean(App.settings.attributes[item]));
 					} else if (type == 'select-one') {
-						//$('#' + item).val(window.settings.attributes[item]);
-						input.val(window.settings.attributes[item]);
-						//$('#' + item + ' option[value=' + window.settings.attributes[item] + ']').attr('selected', 'selected');
+						input.val(App.settings.attributes[item]);
+						//$('#' + item + ' option[value=' + App.settings.attributes[item] + ']').attr('selected', 'selected');
 
 					}
 				}
@@ -67,8 +63,7 @@ define(['underscore', 'backbone', 'hbs!template/prefs', 'view/basem-view'],
 					}
 
 				});
-				window.settings.set(o);
-				//console.log(window.settings)
+				App.settings.set(o);
 				for (var item in o) {
 					//console.log('name =' + item, 'value=' + o[item])
 					$.cookie(item, o[item], {

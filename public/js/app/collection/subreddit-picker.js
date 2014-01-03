@@ -1,4 +1,4 @@
-define(['backbone', "moment"], function(Backbone) {
+define(['App', 'backbone', "moment"], function(App, Backbone) {
 
 	return Backbone.Collection.extend({
 		initialize: function(data) {
@@ -48,7 +48,7 @@ define(['backbone', "moment"], function(Backbone) {
 				//data.description = markdown.toHTML(data.description)
 				//item.data.description_html = (typeof item.data.description_html === 'undefined') ? '' : $('<div/>').html(item.data.description_html).text();
 
-				var findInUsrSubs = window.subreddits.mine.findWhere({
+				var findInUsrSubs = App.subreddits.mine.findWhere({
 					display_name: item.data.display_name
 				})
 				if (typeof findInUsrSubs === 'undefined') {

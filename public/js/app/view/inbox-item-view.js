@@ -6,8 +6,8 @@ sent
 all
 
 */
-define(['underscore', 'backbone', 'hbs!template/inbox-item', 'view/basem-view'],
-	function(_, Backbone, InboxItemTmpl, BaseView) {
+define(['App', 'underscore', 'backbone', 'hbs!template/inbox-item', 'view/basem-view'],
+	function(App, _, Backbone, InboxItemTmpl, BaseView) {
 		return BaseView.extend({
 			template: InboxItemTmpl,
 			events: {

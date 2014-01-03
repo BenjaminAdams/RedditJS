@@ -1,4 +1,4 @@
-define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbone, SingleModel, CommentModel) {
+define(['App', 'backbone', 'model/single', 'model/comment', "moment"], function(App, Backbone, SingleModel, CommentModel) {
 
 	var User = Backbone.Collection.extend({
 		initialize: function(tmp, data) {

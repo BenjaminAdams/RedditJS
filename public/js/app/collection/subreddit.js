@@ -1,4 +1,4 @@
-define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
+define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, SingleModel) {
 
 	var SubredditCollection = Backbone.Collection.extend({
 
@@ -45,7 +45,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 		getUrl: function() {
 			var username = $.cookie('username')
-			var linkCount = window.settings.get('linkCount')
+			var linkCount = App.settings.get('linkCount')
 
 			if (typeof username !== "undefined") {
 				return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + this.timeFrame + "&cookie=" + $.cookie('reddit_session');

@@ -40,7 +40,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				this.commentLink = options.commentLink
 				this.hasRendered = false
 
-				if (typeof window.curModel === 'undefined') {
+				if (typeof App.curModel === 'undefined') {
 
 					this.fetchComments(this.loaded)
 					this.template = loadingTmpl
@@ -48,9 +48,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				} else {
 					console.log('loading a model from memory')
 					//this is what we do when we pass in a model with out the comments
-					this.model = window.curModel;
+					this.model = App.curModel;
 					this.updatePageTitle(this.model.get('title'));
-					delete window.curModel; //memory management
+					delete App.curModel; //memory management
 					this.renderStuff(this.model);
 					//well now we need to get the comments for this post!
 					this.fetchComments(this.loadComments)

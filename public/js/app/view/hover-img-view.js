@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
-	function(_, Backbone, HoverImgTemplate, BaseView) {
+define(['App', 'underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
+	function(App, _, Backbone, HoverImgTemplate, BaseView) {
 		return BaseView.extend({
 			template: HoverImgTemplate,
 			//tagName: 'span',
@@ -111,9 +111,9 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 				e.preventDefault()
 				e.stopPropagation()
 
-				window.Delay = true //we have to have a delay on the closing of this because the users mouse will be right on the link and it will just reopen
+				App.Delay = true //we have to have a delay on the closing of this because the users mouse will be right on the link and it will just reopen
 				setTimeout(function() {
-					window.Delay = false
+					App.Delay = false
 				}, 1500)
 
 				//console.log('closing', this.originalHtml)
@@ -126,7 +126,7 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 				var url = $(target).attr("href")
 				console.log(url, this.url)
 
-				if (url == this.url || window.Delay === true) {
+				if (url == this.url || App.Delay === true) {
 					return; //do not process if already have the same selected img
 				}
 				var youtubeID = this.youtubeChecker(url);
@@ -160,9 +160,9 @@ define(['underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-view'],
 					this.ui.ahrefDescription.attr('href', this.url)
 					this.ui.ahrefDescription.html(this.ahrefDescription)
 
-					window.Delay = true //delay the user from switching images because it could hover over a lot at once
+					App.Delay = true //delay the user from switching images because it could hover over a lot at once
 					setTimeout(function() {
-						window.Delay = false
+						App.Delay = false
 					}, 300)
 
 				}

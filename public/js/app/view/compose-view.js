@@ -3,8 +3,8 @@
 Sends an outgoing to message to another reddit user
 
 */
-define(['underscore', 'backbone', 'hbs!template/compose', 'view/basem-view'],
-	function(_, Backbone, ComposeTmpl, BaseView) {
+define(['App', 'underscore', 'backbone', 'hbs!template/compose', 'view/basem-view'],
+	function(App, _, Backbone, ComposeTmpl, BaseView) {
 		return BaseView.extend({
 			template: ComposeTmpl,
 			events: {

@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'hbs!template/user-sidebar', 'view/basem-view', 'view/login-view', 'model/user-about', 'cookie'],
-	function($, _, Backbone, UserSidebarTmpl, BaseView, LoginView, UserAboutModel, Cookie) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/user-sidebar', 'view/basem-view', 'view/login-view', 'model/user-about', 'cookie'],
+	function(App, $, _, Backbone, UserSidebarTmpl, BaseView, LoginView, UserAboutModel, Cookie) {
 		return BaseView.extend({
 			events: {
 				'click .remove-friend': 'removeFriend',

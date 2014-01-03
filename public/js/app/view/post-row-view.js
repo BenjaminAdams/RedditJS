@@ -74,9 +74,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     //I've made the choice here to pass the current model as a global so we do not have to have a long load time
                     //the single post page takes 2-3 seconds to load the get request
                     setTimeout(function() {
-                        window.curModel = self.model //the small view closes too fast and is unable to pass the model to the single
+                        App.curModel = self.model //the small view closes too fast and is unable to pass the model to the single
                     }, 5)
-                    window.curModel = this.model
+                    App.curModel = this.model
                 }
 
             },

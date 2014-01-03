@@ -45,7 +45,7 @@
                  this.scrolling = false; //timer for when the users movement over the bottom bar
                  this.guessedWidth = 0 //calculated later by how many posts are in the scrollbar
 
-                 if (typeof window.subs[this.subID] === 'undefined') {
+                 if (typeof App.subs[this.subID] === 'undefined') {
                      this.collection = new SubredditCollection([], {
                          domain: this.domain,
                          subName: this.subName,
@@ -61,9 +61,9 @@
                  //$('#bottom-bar').show()
                  App.trigger("single:giveBtnBarID"); //ask the single view to give you the btm bar ID to make active
 
-                 if (typeof window.subs[this.subID] !== 'undefined') {
+                 if (typeof App.subs[this.subID] !== 'undefined') {
                      console.log('loading collection from memory')
-                     this.collection = window.subs[this.subID]
+                     this.collection = App.subs[this.subID]
                      //   this.appendPosts(this.collection)
                      // this.selected(this.selectedID)
                  }
@@ -124,7 +124,7 @@
                  this.shouldWeFetchMore(index)
                  var prevModel = this.collection.at(index - 1);
                  if (typeof prevModel !== 'undefined') {
-                     window.curModel = prevModel
+                     App.curModel = prevModel
                      var prevId = prevModel.get('id')
                      Backbone.history.navigate('/r/' + this.subName + "/comments/" + prevId + '/x', {
                          trigger: true
@@ -139,7 +139,7 @@
                  this.shouldWeFetchMore(index)
                  var nextModel = this.collection.at(index + 1);
                  if (typeof nextModel !== 'undefined') {
-                     window.curModel = nextModel
+                     App.curModel = nextModel
                      var nextId = nextModel.get('id')
                      Backbone.history.navigate('/r/' + this.subName + "/comments/" + nextId + '/x', {
                          trigger: true
@@ -282,17 +282,17 @@
                  }
                  this.loading = false; //turn the flag on to go ahead and fetch more!
                  this.hideLoading()
-                 window.subs[this.subID] = this.collection
+                 App.subs[this.subID] = this.collection
                  this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
                  this.markSelected()
              },
              gotoSingle: function(e) {
                  //   var name = this.$(e.currentTarget).data('id')
                  var name = this.$(e.currentTarget).attr('id')
-                 window.curModel = this.collection.findWhere({
+                 App.curModel = this.collection.findWhere({
                      name: name
                  })
-                 console.log('curmodel=', window.curModel)
+                 console.log('curmodel=', App.curModel)
                  this.selected(name) //using the router to goto the selected link, pre selecting this post before we travel there
              },
              showLoading: function() {

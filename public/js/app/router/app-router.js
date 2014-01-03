@@ -4,12 +4,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
         var AppRouter = Backbone.Marionette.AppRouter.extend({
             initialize: function(options) {
                 //load settings
-                window.settings = new Backbone.Model()
+                App.settings = new Backbone.Model()
                 this.loadSettingsFromCookies()
-                window.subreddits = {}
-                window.subreddits.mine = new MySubredditsCollection()
+                App.subreddits = {}
+                App.subreddits.mine = new MySubredditsCollection()
                 //caching subreddit json in a global because it takes about 3 seconds to query from reddit api
-                window.subs = []
+                App.subs = []
 
                 if (window.location.hash) {
                     var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
@@ -71,8 +71,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             home: function(sortOrder) {
 
                 // channel.trigger("header:updateSortOrder")
-                if (window.subs.length > 1) {
-                    window.stop()
+                if (App.subs.length > 1) {
+                    App.stop()
                 }
                 this.doSidebar('front');
                 require(['view/subreddit-view'], function(SubredditView) {
@@ -85,8 +85,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             },
 
             subreddit: function(subName, sortOrder, timeFrame, mode) {
-                if (window.subs.length > 1) {
-                    window.stop()
+                if (App.subs.length > 1) {
+                    App.stop()
                 }
 
                 console.log('mode=', mode)
@@ -116,8 +116,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
             //'r/:subName/comments/:id/:slug(/):commentLink(/)': 'single',
             single: function(subName, id, slug, commentLink) {
-                if (window.subs.length > 1) {
-                    window.stop()
+                if (App.subs.length > 1) {
+                    App.stop()
                 }
                 this.doSidebar(subName);
 
@@ -130,7 +130,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     }));
 
                     //only update btm bar if the subreddit changes
-                    if ((typeof App.bottombarRegion.currentView === 'undefined' || App.bottombarRegion.currentView.subName != subName) && window.settings.get('btmbar') === true && $(document).width() > App.mobileWidth) {
+                    if ((typeof App.bottombarRegion.currentView === 'undefined' || App.bottombarRegion.currentView.subName != subName) && App.settings.get('btmbar') === true && $(document).width() > App.mobileWidth) {
                         App.bottombarRegion.show(new BottomBarView({
                             subName: subName,
                             id: id
@@ -217,8 +217,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 var self = this
                 setTimeout(function() {
 
-                    if (typeof window.subreddits.mine !== 'undefined' && window.subreddits.mine.length > 14) {
-                        var rand = window.subreddits.mine.at(Math.floor((Math.random() * window.subreddits.mine.length)))
+                    if (typeof App.subreddits.mine !== 'undefined' && App.subreddits.mine.length > 14) {
+                        var rand = App.subreddits.mine.at(Math.floor((Math.random() * App.subreddits.mine.length)))
                         // this.subreddit(rand.get('display_name'))
                         Backbone.history.navigate('r/' + rand.get('display_name'), {
                             trigger: true
@@ -267,17 +267,17 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 for (var i in checkboxes) {
 
                     if (typeof $.cookie(checkboxes[i]) === 'undefined' || $.cookie(checkboxes[i]) == 'true') {
-                        window.settings.set(checkboxes[i], true)
+                        App.settings.set(checkboxes[i], true)
                     } else {
-                        window.settings.set(checkboxes[i], false)
+                        App.settings.set(checkboxes[i], false)
                     }
                 }
 
                 for (var x in selectboxes) {
                     if (typeof $.cookie(selectboxes[x]) === 'undefined') {
-                        window.settings.set(selectboxes[x], 50)
+                        App.settings.set(selectboxes[x], 50)
                     } else {
-                        window.settings.set(selectboxes[x], $.cookie(selectboxes[x]))
+                        App.settings.set(selectboxes[x], $.cookie(selectboxes[x]))
                     }
                 }
 

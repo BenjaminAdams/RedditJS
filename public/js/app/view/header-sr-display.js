@@ -55,7 +55,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 				if (name == 'mine') {
 					this.renderMySubreddits()
 				} else {
-					this.renderRegularSubreddit(window.subreddits[name])
+					this.renderRegularSubreddit(App.subreddits[name])
 				}
 			},
 			changeDisplayType: function(e) {
@@ -68,7 +68,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 			},
 			renderCategories: function() {
 				var self = this
-				_.each(window.subreddits, function(item, name) {
+				_.each(App.subreddits, function(item, name) {
 					self.ui.categoryList.append('<li data-id="' + name + '">' + name + '</li>')
 				})
 			},
@@ -91,7 +91,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 			},
 			renderMySubreddits: function() {
 				var self = this
-				window.subreddits.mine.each(function(model) {
+				App.subreddits.mine.each(function(model) {
 					var headerImg = model.get('header_img')
 					var displayName = model.get('display_name')
 					if (headerImg === null || self.displayType == 1) {

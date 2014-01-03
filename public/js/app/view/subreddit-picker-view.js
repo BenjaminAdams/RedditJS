@@ -87,7 +87,7 @@ define(['App', 'view/basem-view', 'collection/subreddit-picker', 'hbs!template/s
             },
             /**************Infinite Scroll functions ****************/
             watchScroll: function(e) {
-                if (window.settings.get('infin') === true) {
+                if (App.settings.get('infin') === true) {
 
                     var self = this;
                     this.triggerPoint = 1500; // px from the bottom 
