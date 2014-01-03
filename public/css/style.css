@@ -644,3 +644,7 @@ text-align: center;
 
 }
 
+
+.entry .buttons li {
+float: none !important;
+}
