@@ -47,6 +47,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					this.domain = null
 				}
 				this.subID = this.subName + this.domain + this.sortOrder + this.timeFrame
+				console.log('subid in SR', this.subID)
 				if (typeof this.sortOrder === 'undefined') {
 					this.sortOrder = 'hot'
 				}

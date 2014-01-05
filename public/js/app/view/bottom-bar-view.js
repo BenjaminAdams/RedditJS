@@ -28,10 +28,13 @@
                  this.subName = options.subName
                  this.sortOrder = 'hot'
                  this.domain = options.domain
+                 this.timeFrame = 'month' //added to make this.subID similar to the subreddit subids, bottom bar does not have a timeframe
                  if (typeof this.domain === 'undefined') {
                      this.domain = null
                  }
-                 this.subID = this.subName + this.domain + this.sortOrder
+
+                 this.subID = this.subName + this.domain + this.sortOrder + this.timeFrame
+                 console.log('subid in btm bar', this.subID)
                  this.selectedID = false;
                  this.pixelsOfOneImg = 97.5
 
