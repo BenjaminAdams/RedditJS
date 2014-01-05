@@ -73,6 +73,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     //TODO: fix ugly hack for it to select all on click
                     var shareUrl = $("<div class='shareLinkDown'><input onclick='this.select()' type='text' value='http://redditjs.com" + this.model.get('permalink') + "' />")
                     this.$('.flat-list').after(shareUrl)
+                    shareUrl.show()
                     //shareUrl.delay(10).focus().select()
                 }
 
