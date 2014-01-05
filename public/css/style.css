@@ -648,3 +648,15 @@ text-align: center;
 .entry .buttons li {
 float: none !important;
 }
+
+.shareLinkDown {
+  text-align: center;
+  margin: 10px 0px;
+}
+.shareLinkDown input {
+width:400px; 
+border: 1px #000 solid;
+color: #808080;
+padding: 2px 5px;
+font-size:11px;
+}

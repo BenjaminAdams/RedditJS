@@ -11,14 +11,13 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 //caching subreddit json in a global because it takes about 3 seconds to query from reddit api
                 App.subs = []
 
+                //so you can link users to a subreddit with a particular view.  Ex:  http://redditjs.com/r/aww#grid
                 if (window.location.hash) {
                     var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
                     if (hash == 'grid' || hash == 'small' || hash == 'large' || hash == 'normal')
-
                         $.cookie('gridOption', hash, {
                             path: '/'
                         });
-
                 }
 
                 App.headerRegion.show(new HeaderView());
@@ -31,10 +30,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'subreddits(/)': 'subreddits',
                 'subreddits(/):q': 'subreddits',
                 '(:sortOrder)(/)': 'home',
+
                 'r/:subName(/)': 'subreddit',
                 'r/:subName?mode=:mode': 'subreddit',
                 'r/:subName/:sortOrder(/)': 'subreddit',
                 'r/:subName/:sortOrder/:timeFrame': 'subreddit',
+
                 'domain/:domain(/)': 'subredditDomain',
                 'domain/:domain/:sortOrder(/)': 'subredditDomain',
 
@@ -44,6 +45,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 'user/:username(/)': 'user',
                 'user/:username/:sortOrder(/)': 'user',
+
                 'message/compose/:username(/)': 'compose',
                 'message/:type(/)': 'inbox',
 
@@ -53,6 +55,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'search/:q/:timeFrame/:sortOrder(/)': 'search'
 
             },
+            //we override the route function 
             //middleware, this will be fired before every route
             route: function(route, name, callback) {
                 var router = this;
