@@ -715,3 +715,24 @@ padding-right: 5px;
   cursor:pointer;
   text-decoration: underline;
 }
+
+#popupPostList {
+height: 500px;
+width: 70%;
+display:none;
+position: fixed;
+top: 13%;
+left: 20%;
+background: white;
+z-index: 9999999;
+overflow-y: scroll;
+border: 2px solid black;
+}
+
+.closepopupSiteTable {
+position: fixed;
+left: 90%;
+top: 11%;
+cursor: pointer;
+padding: 5px;
+}

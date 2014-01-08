@@ -22,7 +22,6 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		url: function() {
 			return this.instanceUrl //keeps a dynamic URL so we can give it a new "after"
 		},
-
 		getUrl: function() {
 			//this works http://www.reddit.com/search.json?q=test&after=t3_18irx&sort=hot&t=week
 			//console.log('/api/?url=search.json&t=' + this.timeFrame + '&syntax=plain&after=' + this.after + "&sort=" + this.sortOrder + '&q=' + this.searchQ)

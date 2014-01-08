@@ -53,7 +53,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     this.expand = true;
                 }
 
-                if (this.gridOption == "normal") {
+                if (this.gridOption == "normal" || typeof this.gridOption === 'undefined' || this.gridOption === null) {
                     this.template = PostRowTmpl
                 }
 

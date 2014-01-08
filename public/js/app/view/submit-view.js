@@ -1,8 +1,8 @@
 /* Submit-view.js View
 Submit a link or text post to any subreddit
 */
-define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view'],
-	function(App, _, Backbone, SubmitTmpl, BaseView) {
+define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view', 'collection/search'],
+	function(App, _, Backbone, SubmitTmpl, BaseView, SearchCollection) {
 		return BaseView.extend({
 			template: SubmitTmpl,
 			events: {
@@ -14,7 +14,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				'click #mdHelpHide': 'hideMdHelp',
 				'click #suggestTitle': 'suggestTitle',
 				'blur #title': "leaveTitle",
-				'blur #url': "leaveUrl"
+				'blur #url': "leaveUrl",
+				'click .similarTitles': 'openPopupPostList'
 			},
 			ui: {
 				urlDetails: '#urlDetails',
@@ -23,6 +24,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				alreadySubmittedUL: '#alreadySubmitted ul',
 				searchResults: '#searchResults'
 			},
+			regions: {
+				popupPostList: '#popupPostList'
+			},
 			initialize: function(options) {
 				_.bindAll(this);
 				this.subName = options.subName
@@ -30,6 +34,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 					subName: this.subName
 				})
 				this.type = 'link'
+
+				this.searchCollection = null
 
 				App.on("submit:type", this.changeType, this);
 				App.on("submit:subreddits", this.loadSubreddits, this);
@@ -45,6 +51,19 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				this.loadSubreddits()
 			},
 
+			openPopupPostList: function() {
+				var self = this
+				if (this.searchCollection !== null) {
+
+					require(['view/subredditPopupView'], function(SubredditPopupView) {
+
+						self.popupPostList.show(new SubredditPopupView({
+							collection: self.searchCollection
+						}));
+					})
+				}
+			},
+
 			leaveTitle: function(e) {
 				var self = this
 				var target = $(e.currentTarget)
@@ -52,22 +71,21 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 
 				self.ui.searchResults.html('').addClass('loadingSubmit') //clear results
 
-				console.log('http://www.reddit.com/search.json?q=' + searchTerm + '&sort=hot&t=all')
-				$.ajax({
-					url: 'http://www.reddit.com/search.json?q=' + searchTerm + '&sort=hot&t=all',
-					type: 'GET',
-					//dataType: "jsonp",
-					//data: params,
+				this.searchCollection = new SearchCollection([], {
+					timeFrame: this.timeFrame,
+					sortOrder: this.sortOrder,
+					searchQ: this.searchQ
+				});
+				this.searchCollection.fetch({
 					success: function(data) {
 						console.log(data)
-						var postsLength = data.data.children.length
+						var postsLength = data.length
 						console.log('length=', postsLength)
 						if (postsLength > 0) {
 							self.ui.searchResults.html('found <span class="similarTitles">' + postsLength + '</span> similar titles').removeClass('loadingSubmit')
 						} else {
 							self.ui.searchResults.html('good job, this is an original title').removeClass('loadingSubmit')
 						}
-
 					},
 					error: function(data) {
 						console.log("ERROR inrequest details: ", data);
