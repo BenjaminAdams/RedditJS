@@ -14,10 +14,18 @@ background-position: center center;
 
 
 .loadingS {
-height: 50px;
-width:50px;
+height: 30px;
+width: 30px;
 position:relative;
 left:10px;
+background-image: url('../img/loading.gif');
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.loadingSubmit {
+height: 20px;
+width:20px;
 background-image: url('../img/loading.gif');
 background-repeat: no-repeat;
 background-position: center center;
@@ -666,6 +674,10 @@ padding: 2px 5px;
 font-size:11px;
 }
 
+.sameURL {
+  color:red;cursor:pointer;
+  text-decoration: underline;
+}
 
 #urlDetails {
   float:left;
@@ -675,4 +687,31 @@ font-size:11px;
 .lineThrough
 {
 text-decoration:line-through;
+}
+
+#alreadySubmitted {
+margin-top: 5px;
+font-size: small;
+display:none;
+} 
+
+#alreadySubmitted h3 {
+font-size: 1em;
+font-weight: 400;
+margin-top: .5em;
+}
+
+#alreadySubmitted li {
+display: inline;
+padding-right: 5px;
+}
+
+#searchResults {
+
+}
+
+.similarTitles {
+  color:blue;
+  cursor:pointer;
+  text-decoration: underline;
 }

@@ -20,9 +20,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 		model: SingleModel,
 		url: function() {
-
 			return this.instanceUrl //keeps a dynamic URL so we can give it a new "after"
-
 		},
 
 		getUrl: function() {

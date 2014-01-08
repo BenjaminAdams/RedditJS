@@ -18,7 +18,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			},
 			ui: {
 				urlDetails: '#urlDetails',
-				suggestedReddits: '#suggested-reddits'
+				suggestedReddits: '#suggested-reddits',
+				alreadySubmitted: '#alreadySubmitted',
+				alreadySubmittedUL: '#alreadySubmitted ul',
+				searchResults: '#searchResults'
 			},
 			initialize: function(options) {
 				_.bindAll(this);
@@ -43,9 +46,34 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			},
 
 			leaveTitle: function(e) {
+				var self = this
 				var target = $(e.currentTarget)
 				var searchTerm = target.val()
-				console.log(searchTerm)
+
+				self.ui.searchResults.html('').addClass('loadingSubmit') //clear results
+
+				console.log('http://www.reddit.com/search.json?q=' + searchTerm + '&sort=hot&t=all')
+				$.ajax({
+					url: 'http://www.reddit.com/search.json?q=' + searchTerm + '&sort=hot&t=all',
+					type: 'GET',
+					//dataType: "jsonp",
+					//data: params,
+					success: function(data) {
+						console.log(data)
+						var postsLength = data.data.children.length
+						console.log('length=', postsLength)
+						if (postsLength > 0) {
+							self.ui.searchResults.html('found <span class="similarTitles">' + postsLength + '</span> similar titles').removeClass('loadingSubmit')
+						} else {
+							self.ui.searchResults.html('good job, this is an original title').removeClass('loadingSubmit')
+						}
+
+					},
+					error: function(data) {
+						console.log("ERROR inrequest details: ", data);
+						self.ui.searchResults.html('unable to fetch data from reddit api').removeClass('loadingSubmit')
+					}
+				})
 
 			},
 			leaveUrl: function(e) {
@@ -55,6 +83,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 
 				//always clear strike outs
 				this.removeStrikeOutSRs()
+				this.ui.urlDetails.html('').addClass('loadingSubmit')
+				this.ui.alreadySubmitted.slideUp()
 
 				if (this.validURL(linkUrl)) {
 					//query /api/info
@@ -71,7 +101,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 							var postsLength = data.data.children.length
 							console.log('length=', postsLength)
 							if (postsLength > 0) {
-								self.ui.urlDetails.html('this url has been submitted <span style="color:red;cursor:pointer;" >' + postsLength + '</span> times before')
+								self.ui.urlDetails.html('this url has been submitted <span class="sameURL" >' + postsLength + '</span> times before').removeClass('loadingSubmit')
 								//get array of subreddits that link has been submitted too
 								var subreddits = []
 
@@ -86,18 +116,18 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 
 								self.strikeOutSRs(subreddits)
 							} else {
-								self.ui.urlDetails.html('good job, this link has never been submit before')
+								self.ui.urlDetails.html('good job, this link has never been submit before').removeClass('loadingSubmit')
 							}
 
 						},
 						error: function(data) {
 							console.log("ERROR inrequest details: ", data);
+							self.ui.urlDetails.html('unable to fetch data from reddit api').removeClass('loadingSubmit')
 
 						}
-
 					})
 				} else {
-					self.ui.urlDetails.html('Please enter a valid URL')
+					self.ui.urlDetails.html('please enter a valid url').removeClass('loadingSubmit')
 				}
 			},
 			//data-srname="' + model.get('display_name')
@@ -105,16 +135,20 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			//INPUT: an array of Subreddit names
 			strikeOutSRs: function(subreddits) {
 				var self = this
+				self.ui.alreadySubmittedUL.html('') //clear current list
 				_.forEach(subreddits, function(sub) {
 					console.log(sub)
 					self.ui.suggestedReddits.find('li[data-srname=' + sub + ']').addClass('lineThrough')
-					//$('li[data-attribute=true]')
+					var str = '<li data-srname="' + sub + '">\n<a href="#">' + sub + '</a>\n</li>'
+
+					self.ui.alreadySubmittedUL.append(str)
 
 				})
+				this.ui.alreadySubmitted.slideDown()
 			},
 			//remove all strikeouts
 			removeStrikeOutSRs: function() {
-
+				this.ui.suggestedReddits.find('li').removeClass('lineThrough')
 			},
 
 			changeType: function(type) {
