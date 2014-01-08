@@ -5,9 +5,6 @@ define(['App', 'view/basem-view', 'hbs!template/subredditPopup', 'view/post-row-
             events: {
                 'click .closepopupSiteTable': 'close'
             },
-            ui: {
-
-            },
             regions: {
                 'popupSiteTable': '#popupSiteTable'
             },

@@ -1,8 +1,8 @@
 /* Submit-view.js View
 Submit a link or text post to any subreddit
 */
-define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view', 'collection/search'],
-	function(App, _, Backbone, SubmitTmpl, BaseView, SearchCollection) {
+define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view', 'collection/search', 'collection/info'],
+	function(App, _, Backbone, SubmitTmpl, BaseView, SearchCollection, InfoCollection) {
 		return BaseView.extend({
 			template: SubmitTmpl,
 			events: {
@@ -15,7 +15,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				'click #suggestTitle': 'suggestTitle',
 				'blur #title': "leaveTitle",
 				'blur #url': "leaveUrl",
-				'click .similarTitles': 'openPopupPostList'
+				'click .similarTitles': 'openSearchPopupPostList',
+				'click .sameURL': 'openURLPopupPostList'
 			},
 			ui: {
 				urlDetails: '#urlDetails',
@@ -36,6 +37,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				this.type = 'link'
 
 				this.searchCollection = null
+				this.urlCollection = null
 
 				App.on("submit:type", this.changeType, this);
 				App.on("submit:subreddits", this.loadSubreddits, this);
@@ -51,7 +53,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				this.loadSubreddits()
 			},
 
-			openPopupPostList: function() {
+			openSearchPopupPostList: function() {
 				var self = this
 				if (this.searchCollection !== null) {
 
@@ -59,6 +61,18 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 
 						self.popupPostList.show(new SubredditPopupView({
 							collection: self.searchCollection
+						}));
+					})
+				}
+			},
+			openURLPopupPostList: function() {
+				var self = this
+				if (this.urlCollection !== null) {
+
+					require(['view/subredditPopupView'], function(SubredditPopupView) {
+
+						self.popupPostList.show(new SubredditPopupView({
+							collection: self.urlCollection
 						}));
 					})
 				}
@@ -108,26 +122,26 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 					//query /api/info
 					//example url https://pay.reddit.com/api/info.json?url=http://i.imgur.com/40y06q0.jpg&r=funny&jsonp=?
 					//"http://api.reddit.com/api/info?url= " + linkUrl + ".json?jsonp=?" 
-					$.ajax({
-						//url: "http://api.reddit.com/api/info.json?url=" + linkUrl + ".json&jsonp=?",
-						url: 'https://pay.reddit.com/api/info.json?url=' + linkUrl + '&r=funny',
-						type: 'GET',
-						//dataType: "jsonp",
-						//data: params,
+
+					this.urlCollection = new InfoCollection([], {
+						linkUrl: linkUrl,
+						srname: "funny",
+
+					});
+					this.urlCollection.fetch({
 						success: function(data) {
 							console.log(data)
-							var postsLength = data.data.children.length
+							var postsLength = data.length
 							console.log('length=', postsLength)
 							if (postsLength > 0) {
 								self.ui.urlDetails.html('this url has been submitted <span class="sameURL" >' + postsLength + '</span> times before').removeClass('loadingSubmit')
 								//get array of subreddits that link has been submitted too
 								var subreddits = []
+								console.log('data=', data)
+								_.forEach(data.models, function(post) {
 
-								_.forEach(data.data.children, function(post) {
-
-									if ($.inArray(post.data.subreddit, subreddits)) {
-										console.log(post.data.subreddit)
-										subreddits.push(post.data.subreddit)
+									if ($.inArray(post.get('subreddit'), subreddits)) {
+										subreddits.push(post.get('subreddit'))
 									}
 
 								})
@@ -136,14 +150,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 							} else {
 								self.ui.urlDetails.html('good job, this link has never been submit before').removeClass('loadingSubmit')
 							}
-
 						},
 						error: function(data) {
 							console.log("ERROR inrequest details: ", data);
 							self.ui.urlDetails.html('unable to fetch data from reddit api').removeClass('loadingSubmit')
-
 						}
 					})
+
 				} else {
 					self.ui.urlDetails.html('please enter a valid url').removeClass('loadingSubmit')
 				}
