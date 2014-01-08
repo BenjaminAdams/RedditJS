@@ -665,3 +665,14 @@ color: #808080;
 padding: 2px 5px;
 font-size:11px;
 }
+
+
+#urlDetails {
+  float:left;
+  margin-top:10px;
+}
+
+.lineThrough
+{
+text-decoration:line-through;
+}

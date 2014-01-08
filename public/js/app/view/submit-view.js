@@ -1,7 +1,5 @@
 /* Submit-view.js View
-
 Submit a link or text post to any subreddit
-
 */
 define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view'],
 	function(App, _, Backbone, SubmitTmpl, BaseView) {
@@ -14,10 +12,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				'click #suggested-reddits a': 'changeSubreddit',
 				'click #mdHelpShow': 'showMdHelp',
 				'click #mdHelpHide': 'hideMdHelp',
-				'click #suggestTitle': 'suggestTitle'
-
+				'click #suggestTitle': 'suggestTitle',
+				'blur #title': "leaveTitle",
+				'blur #url': "leaveUrl"
 			},
-
+			ui: {
+				urlDetails: '#urlDetails',
+				suggestedReddits: '#suggested-reddits'
+			},
 			initialize: function(options) {
 				_.bindAll(this);
 				this.subName = options.subName
@@ -39,6 +41,82 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			onRender: function() {
 				this.loadSubreddits()
 			},
+
+			leaveTitle: function(e) {
+				var target = $(e.currentTarget)
+				var searchTerm = target.val()
+				console.log(searchTerm)
+
+			},
+			leaveUrl: function(e) {
+				var self = this
+				var target = $(e.currentTarget)
+				var linkUrl = target.val()
+
+				//always clear strike outs
+				this.removeStrikeOutSRs()
+
+				if (this.validURL(linkUrl)) {
+					//query /api/info
+					//example url https://pay.reddit.com/api/info.json?url=http://i.imgur.com/40y06q0.jpg&r=funny&jsonp=?
+					//"http://api.reddit.com/api/info?url= " + linkUrl + ".json?jsonp=?" 
+					$.ajax({
+						//url: "http://api.reddit.com/api/info.json?url=" + linkUrl + ".json&jsonp=?",
+						url: 'https://pay.reddit.com/api/info.json?url=' + linkUrl + '&r=funny',
+						type: 'GET',
+						//dataType: "jsonp",
+						//data: params,
+						success: function(data) {
+							console.log(data)
+							var postsLength = data.data.children.length
+							console.log('length=', postsLength)
+							if (postsLength > 0) {
+								self.ui.urlDetails.html('this url has been submitted <span style="color:red;cursor:pointer;" >' + postsLength + '</span> times before')
+								//get array of subreddits that link has been submitted too
+								var subreddits = []
+
+								_.forEach(data.data.children, function(post) {
+
+									if ($.inArray(post.data.subreddit, subreddits)) {
+										console.log(post.data.subreddit)
+										subreddits.push(post.data.subreddit)
+									}
+
+								})
+
+								self.strikeOutSRs(subreddits)
+							} else {
+								self.ui.urlDetails.html('good job, this link has never been submit before')
+							}
+
+						},
+						error: function(data) {
+							console.log("ERROR inrequest details: ", data);
+
+						}
+
+					})
+				} else {
+					self.ui.urlDetails.html('Please enter a valid URL')
+				}
+			},
+			//data-srname="' + model.get('display_name')
+			//strike out a subreddit name if the link has already been submitted here
+			//INPUT: an array of Subreddit names
+			strikeOutSRs: function(subreddits) {
+				var self = this
+				_.forEach(subreddits, function(sub) {
+					console.log(sub)
+					self.ui.suggestedReddits.find('li[data-srname=' + sub + ']').addClass('lineThrough')
+					//$('li[data-attribute=true]')
+
+				})
+			},
+			//remove all strikeouts
+			removeStrikeOutSRs: function() {
+
+			},
+
 			changeType: function(type) {
 				console.log('type from channel=', type)
 				if (type == 'link') {
@@ -82,7 +160,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			loadSubreddits: function() {
 				var self = this
 				App.subreddits.mine.each(function(model) {
-					var str = '<li>\n<a href="#">' + model.get('display_name') + '</a>\n</li>'
+					var str = '<li data-srname="' + model.get('display_name') + '">\n<a href="#">' + model.get('display_name') + '</a>\n</li>'
 					self.$('#suggested-reddits ul').append(str)
 
 				});
