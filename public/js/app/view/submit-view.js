@@ -10,6 +10,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				'click .link-button': 'changeToLink',
 				'click .text-button': 'changeToText',
 				'click #suggested-reddits a': 'changeSubreddit',
+				'click #alreadySubmitted a': 'changeSubreddit',
 				'click #mdHelpShow': 'showMdHelp',
 				'click #mdHelpHide': 'hideMdHelp',
 				'click #suggestTitle': 'suggestTitle',
@@ -35,6 +36,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 					subName: this.subName
 				})
 				this.type = 'link'
+				this.selectedSubreddit = this.subName || null
 
 				this.searchCollection = null
 				this.urlCollection = null
@@ -83,12 +85,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				var target = $(e.currentTarget)
 				var searchTerm = target.val()
 
-				self.ui.searchResults.html('').addClass('loadingSubmit') //clear results
+				this.ui.searchResults.html('').addClass('loadingSubmit') //clear results
 
 				this.searchCollection = new SearchCollection([], {
+					subName: this.selectedSubreddit,
 					timeFrame: this.timeFrame,
 					sortOrder: this.sortOrder,
-					searchQ: this.searchQ
+					searchQ: searchTerm
 				});
 				this.searchCollection.fetch({
 					success: function(data) {
@@ -96,7 +99,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 						var postsLength = data.length
 						console.log('length=', postsLength)
 						if (postsLength > 0) {
-							self.ui.searchResults.html('found <span class="similarTitles">' + postsLength + '</span> similar titles').removeClass('loadingSubmit')
+							self.ui.searchResults.html('found <span class="similarTitles">' + postsLength + '</span> similar title(s)').removeClass('loadingSubmit')
 						} else {
 							self.ui.searchResults.html('good job, this is an original title').removeClass('loadingSubmit')
 						}
@@ -134,7 +137,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 							var postsLength = data.length
 							console.log('length=', postsLength)
 							if (postsLength > 0) {
-								self.ui.urlDetails.html('this url has been submitted <span class="sameURL" >' + postsLength + '</span> times before').removeClass('loadingSubmit')
+								self.ui.urlDetails.html('this url has been submitted <span class="sameURL" >' + postsLength + '</span> time(s) before').removeClass('loadingSubmit')
 								//get array of subreddits that link has been submitted too
 								var subreddits = []
 								console.log('data=', data)

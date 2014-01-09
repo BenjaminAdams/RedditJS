@@ -3,7 +3,12 @@ define(['App', 'view/basem-view', 'hbs!template/subredditPopup', 'view/post-row-
         return BaseView.extend({
             template: subredditPopup,
             events: {
-                'click .closepopupSiteTable': 'close'
+                'click .closepopupSiteTable': 'close',
+                'click .blackOverlay': 'clickBackground'
+            },
+            ui: {
+                popupSiteTable: '#popupSiteTable',
+                blackOverlay: '.blackOverlay'
             },
             regions: {
                 'popupSiteTable': '#popupSiteTable'
@@ -20,13 +25,17 @@ define(['App', 'view/basem-view', 'hbs!template/subredditPopup', 'view/post-row-
 
             },
             onRender: function() {
-
-                $('#popupPostList').slideDown()
+                this.ui.popupSiteTable.slideDown()
+                this.ui.blackOverlay.show()
                 this.popupSiteTable.show(this.CollectionView)
             },
             onBeforeClose: function() {
-                $('#popupPostList').slideUp()
+                this.ui.popupSiteTable.slideUp()
+                this.ui.blackOverlay.hide()
             },
+            clickBackground: function(e) {
+                this.close()
+            }
 
         });
 

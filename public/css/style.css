@@ -673,9 +673,13 @@ font-size:11px;
   text-decoration: underline;
 }
 
-#urlDetails {
+#urlDetails{
   float:left;
   margin-top:10px;
+  font-size:15px;
+}
+#searchResults {
+  font-size:15px;
 }
 
 .lineThrough
@@ -711,14 +715,19 @@ padding-right: 5px;
 }
 
 #popupPostList {
-height: 500px;
+
+}
+
+#popupSiteTable {
+  height: 500px;
 width: 70%;
 display:none;
 position: fixed;
 top: 13%;
 left: 20%;
+padding: 5px 5px 5px 0px;
 background: white;
-z-index: 9999999;
+z-index: 114;
 overflow-y: scroll;
 border: 2px solid black;
 }
@@ -729,4 +738,22 @@ left: 90%;
 top: 11%;
 cursor: pointer;
 padding: 5px;
+z-index: 114;
+}
+
+#popupSiteTable {
+  z-index:115;
+}
+
+.blackOverlay {
+  position:fixed;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  z-index: 114;
+  
+  background-color:black;
+  opacity:0.9;
+  filter:alpha(opacity=90); /* For IE8 and earlier */
 }

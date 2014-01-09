@@ -4,6 +4,8 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		initialize: function(x, data) {
 			_.bindAll(this);
 			this.after = ""
+			this.subNameStr = ''
+			this.subName = data.subName
 			this.sortOrder = data.sortOrder
 			this.searchQ = data.searchQ
 			if (typeof this.sortOrder === 'undefined') {
@@ -14,6 +16,11 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			if (typeof this.timeFrame === 'undefined') {
 				this.timeFrame = 'month' //the default sort order is hot
 			}
+
+			if (typeof data.subName !== 'undefined') {
+				this.subNameStr = '/r/' + this.subName + '/' //the default sort order is hot
+			}
+
 			this.count = 1
 			this.instanceUrl = this.getUrl()
 
@@ -24,10 +31,8 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 		getUrl: function() {
 			//this works http://www.reddit.com/search.json?q=test&after=t3_18irx&sort=hot&t=week
-			//console.log('/api/?url=search.json&t=' + this.timeFrame + '&syntax=plain&after=' + this.after + "&sort=" + this.sortOrder + '&q=' + this.searchQ)
-			return 'http://www.reddit.com/search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&jsonp=?"
-			//return '/api/?url=search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame
-			// return '/api/?url=search.json?q=' + this.searchQ + '&t=' + this.timeFrame + '&syntax=plain&after=' + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+			console.log('http://www.reddit.com/' + this.subNameStr + 'search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&restrict_sr=true&jsonp=?")
+			return 'http://www.reddit.com/' + this.subNameStr + 'search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&restrict_sr=true&jsonp=?"
 
 			//jsonp search? 
 			//http://www.reddit.com/search.json?q=test&after=t3_18irx&sort=hot&t=week&jsonp=?
