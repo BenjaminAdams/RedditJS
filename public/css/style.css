@@ -651,12 +651,6 @@ float: none !important;
 
 .shareLinkDown {
   margin: 10px 0px;
-  display:none;
--webkit-transition: all 0.8s;
--moz-transition: all 0.8s;
--o-transition: all 0.8s;
-transition: all 0.8s;
-
 }
 .shareLinkDown input {
 width:400px; 
