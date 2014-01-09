@@ -14,10 +14,18 @@ background-position: center center;
 
 
 .loadingS {
-height: 50px;
-width:50px;
+height: 30px;
+width: 30px;
 position:relative;
 left:10px;
+background-image: url('../img/loading.gif');
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.loadingSubmit {
+height: 20px;
+width:20px;
 background-image: url('../img/loading.gif');
 background-repeat: no-repeat;
 background-position: center center;
@@ -658,4 +666,67 @@ border: 1px #000 solid;
 color: #808080;
 padding: 2px 5px;
 font-size:11px;
+}
+
+.sameURL {
+  color:red;cursor:pointer;
+  text-decoration: underline;
+}
+
+#urlDetails {
+  float:left;
+  margin-top:10px;
+}
+
+.lineThrough
+{
+text-decoration:line-through;
+}
+
+#alreadySubmitted {
+margin-top: 5px;
+font-size: small;
+display:none;
+} 
+
+#alreadySubmitted h3 {
+font-size: 1em;
+font-weight: 400;
+margin-top: .5em;
+}
+
+#alreadySubmitted li {
+display: inline;
+padding-right: 5px;
+}
+
+#searchResults {
+
+}
+
+.similarTitles {
+  color:blue;
+  cursor:pointer;
+  text-decoration: underline;
+}
+
+#popupPostList {
+height: 500px;
+width: 70%;
+display:none;
+position: fixed;
+top: 13%;
+left: 20%;
+background: white;
+z-index: 9999999;
+overflow-y: scroll;
+border: 2px solid black;
+}
+
+.closepopupSiteTable {
+position: fixed;
+left: 90%;
+top: 11%;
+cursor: pointer;
+padding: 5px;
 }

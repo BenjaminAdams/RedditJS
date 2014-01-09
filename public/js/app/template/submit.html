@@ -1,3 +1,4 @@
+  <div id='popupPostList'></div>
   <form  id="" class="pretty-form sharelink" style="display:none">
     <div class="clearleft">
       <!--IEsux-->
@@ -34,11 +35,14 @@
           <span class="title">
             title
           </span>
-          
+        
+
           <div class="roundfield-content">
             <textarea name="title" rows="2" id='title'></textarea>
-
           </div>
+          <div id='searchResults'> </div>
+
+
         </div>
       </div>
       <div class="spacer">
@@ -62,6 +66,9 @@
             </span>
             <span class="error NO_SELFS field-sr" style="display:none">
             </span>
+
+            <div id="urlDetails"></div>
+
             <div id="suggest-title">
               <span class="title-status">
               </span>
@@ -148,6 +155,16 @@
           </ul>
         </div>
         
+        <div id="alreadySubmitted">
+          <h3>
+            this link has already been submitted to:
+          </h3>
+          <ul>
+      
+          </ul>
+        </div>
+
+
 
         <div id="suggested-reddits">
           <h3>

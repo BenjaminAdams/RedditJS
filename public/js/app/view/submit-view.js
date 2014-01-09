@@ -1,10 +1,8 @@
 /* Submit-view.js View
-
 Submit a link or text post to any subreddit
-
 */
-define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view'],
-	function(App, _, Backbone, SubmitTmpl, BaseView) {
+define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view', 'collection/search', 'collection/info'],
+	function(App, _, Backbone, SubmitTmpl, BaseView, SearchCollection, InfoCollection) {
 		return BaseView.extend({
 			template: SubmitTmpl,
 			events: {
@@ -14,10 +12,22 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				'click #suggested-reddits a': 'changeSubreddit',
 				'click #mdHelpShow': 'showMdHelp',
 				'click #mdHelpHide': 'hideMdHelp',
-				'click #suggestTitle': 'suggestTitle'
-
+				'click #suggestTitle': 'suggestTitle',
+				'blur #title': "leaveTitle",
+				'blur #url': "leaveUrl",
+				'click .similarTitles': 'openSearchPopupPostList',
+				'click .sameURL': 'openURLPopupPostList'
 			},
-
+			ui: {
+				urlDetails: '#urlDetails',
+				suggestedReddits: '#suggested-reddits',
+				alreadySubmitted: '#alreadySubmitted',
+				alreadySubmittedUL: '#alreadySubmitted ul',
+				searchResults: '#searchResults'
+			},
+			regions: {
+				popupPostList: '#popupPostList'
+			},
 			initialize: function(options) {
 				_.bindAll(this);
 				this.subName = options.subName
@@ -25,6 +35,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 					subName: this.subName
 				})
 				this.type = 'link'
+
+				this.searchCollection = null
+				this.urlCollection = null
 
 				App.on("submit:type", this.changeType, this);
 				App.on("submit:subreddits", this.loadSubreddits, this);
@@ -39,6 +52,136 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			onRender: function() {
 				this.loadSubreddits()
 			},
+
+			openSearchPopupPostList: function() {
+				var self = this
+				if (this.searchCollection !== null) {
+
+					require(['view/subredditPopupView'], function(SubredditPopupView) {
+
+						self.popupPostList.show(new SubredditPopupView({
+							collection: self.searchCollection
+						}));
+					})
+				}
+			},
+			openURLPopupPostList: function() {
+				var self = this
+				if (this.urlCollection !== null) {
+
+					require(['view/subredditPopupView'], function(SubredditPopupView) {
+
+						self.popupPostList.show(new SubredditPopupView({
+							collection: self.urlCollection
+						}));
+					})
+				}
+			},
+
+			leaveTitle: function(e) {
+				var self = this
+				var target = $(e.currentTarget)
+				var searchTerm = target.val()
+
+				self.ui.searchResults.html('').addClass('loadingSubmit') //clear results
+
+				this.searchCollection = new SearchCollection([], {
+					timeFrame: this.timeFrame,
+					sortOrder: this.sortOrder,
+					searchQ: this.searchQ
+				});
+				this.searchCollection.fetch({
+					success: function(data) {
+						console.log(data)
+						var postsLength = data.length
+						console.log('length=', postsLength)
+						if (postsLength > 0) {
+							self.ui.searchResults.html('found <span class="similarTitles">' + postsLength + '</span> similar titles').removeClass('loadingSubmit')
+						} else {
+							self.ui.searchResults.html('good job, this is an original title').removeClass('loadingSubmit')
+						}
+					},
+					error: function(data) {
+						console.log("ERROR inrequest details: ", data);
+						self.ui.searchResults.html('unable to fetch data from reddit api').removeClass('loadingSubmit')
+					}
+				})
+
+			},
+			leaveUrl: function(e) {
+				var self = this
+				var target = $(e.currentTarget)
+				var linkUrl = target.val()
+
+				//always clear strike outs
+				this.removeStrikeOutSRs()
+				this.ui.urlDetails.html('').addClass('loadingSubmit')
+				this.ui.alreadySubmitted.slideUp()
+
+				if (this.validURL(linkUrl)) {
+					//query /api/info
+					//example url https://pay.reddit.com/api/info.json?url=http://i.imgur.com/40y06q0.jpg&r=funny&jsonp=?
+					//"http://api.reddit.com/api/info?url= " + linkUrl + ".json?jsonp=?" 
+
+					this.urlCollection = new InfoCollection([], {
+						linkUrl: linkUrl,
+						srname: "funny",
+
+					});
+					this.urlCollection.fetch({
+						success: function(data) {
+							console.log(data)
+							var postsLength = data.length
+							console.log('length=', postsLength)
+							if (postsLength > 0) {
+								self.ui.urlDetails.html('this url has been submitted <span class="sameURL" >' + postsLength + '</span> times before').removeClass('loadingSubmit')
+								//get array of subreddits that link has been submitted too
+								var subreddits = []
+								console.log('data=', data)
+								_.forEach(data.models, function(post) {
+
+									if ($.inArray(post.get('subreddit'), subreddits)) {
+										subreddits.push(post.get('subreddit'))
+									}
+
+								})
+
+								self.strikeOutSRs(subreddits)
+							} else {
+								self.ui.urlDetails.html('good job, this link has never been submit before').removeClass('loadingSubmit')
+							}
+						},
+						error: function(data) {
+							console.log("ERROR inrequest details: ", data);
+							self.ui.urlDetails.html('unable to fetch data from reddit api').removeClass('loadingSubmit')
+						}
+					})
+
+				} else {
+					self.ui.urlDetails.html('please enter a valid url').removeClass('loadingSubmit')
+				}
+			},
+			//data-srname="' + model.get('display_name')
+			//strike out a subreddit name if the link has already been submitted here
+			//INPUT: an array of Subreddit names
+			strikeOutSRs: function(subreddits) {
+				var self = this
+				self.ui.alreadySubmittedUL.html('') //clear current list
+				_.forEach(subreddits, function(sub) {
+					console.log(sub)
+					self.ui.suggestedReddits.find('li[data-srname=' + sub + ']').addClass('lineThrough')
+					var str = '<li data-srname="' + sub + '">\n<a href="#">' + sub + '</a>\n</li>'
+
+					self.ui.alreadySubmittedUL.append(str)
+
+				})
+				this.ui.alreadySubmitted.slideDown()
+			},
+			//remove all strikeouts
+			removeStrikeOutSRs: function() {
+				this.ui.suggestedReddits.find('li').removeClass('lineThrough')
+			},
+
 			changeType: function(type) {
 				console.log('type from channel=', type)
 				if (type == 'link') {
@@ -82,7 +225,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			loadSubreddits: function() {
 				var self = this
 				App.subreddits.mine.each(function(model) {
-					var str = '<li>\n<a href="#">' + model.get('display_name') + '</a>\n</li>'
+					var str = '<li data-srname="' + model.get('display_name') + '">\n<a href="#">' + model.get('display_name') + '</a>\n</li>'
 					self.$('#suggested-reddits ul').append(str)
 
 				});
