@@ -14,7 +14,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				'click #mdHelpShow': 'showMdHelp',
 				'click #mdHelpHide': 'hideMdHelp',
 				'click #suggestTitle': 'suggestTitle',
-				'blur #title': "leaveTitle",
+				//'blur #title': "leaveTitle",
 				'blur #url': "leaveUrl",
 				'click .similarTitles': 'openSearchPopupPostList',
 				'click .sameURL': 'openURLPopupPostList',
@@ -37,7 +37,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 					subName: this.subName
 				})
 				this.type = 'link'
-				this.selectedSubreddit = this.subName || null
 
 				this.searchCollection = null
 				this.urlCollection = null
@@ -62,8 +61,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				var self = this
 				var target = $(e.currentTarget)
 				var searchQ = target.val().trim()
+				console.log(searchQ.length)
 				//make sure the last input actually has new values before performing new search
-				if (this.lastTitleInput != searchQ) {
+				if (this.lastTitleInput != searchQ && searchQ.length > 1) {
 					this.lastTitleInput = searchQ
 					clearTimeout(this.inputTimer);
 					this.inputTimer = setTimeout(function() {
@@ -97,20 +97,19 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				}
 			},
 
-			leaveTitle: function(e) {
+			//leaveTitle: function(e) {
 
-				var target = $(e.currentTarget)
-				var searchQ = target.val()
-				clearTimeout(this.inputTimer);
-				this.searchTitle(searchQ)
+			//var target = $(e.currentTarget)
+			//var searchQ = target.val()
+			//clearTimeout(this.inputTimer);
+			//this.searchTitle(searchQ)
 
-			},
-
+			//},
 			searchTitle: function(searchQ) {
 				var self = this
 				this.ui.searchResults.html('').addClass('loadingSubmit') //clear results
 				this.searchCollection = new SearchCollection([], {
-					subName: this.selectedSubreddit,
+					subName: this.subName,
 					timeFrame: this.timeFrame,
 					sortOrder: this.sortOrder,
 					searchQ: searchQ
@@ -122,7 +121,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 						var addPlus = '';
 						if (postsLength >= 100) {
 							addPlus = '+'
-
 						}
 						if (postsLength > 0) {
 							self.ui.searchResults.html('found <span class="similarTitles">' + postsLength + addPlus + '</span> similar title(s)').removeClass('loadingSubmit')

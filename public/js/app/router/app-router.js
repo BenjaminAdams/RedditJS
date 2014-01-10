@@ -43,6 +43,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'r/:subName/comments/:id/:slug(/)': 'single',
                 'r/:subName/comments/:id/:slug/:commentLink(/)': 'single',
 
+                'u/:username(/)': 'user',
                 'user/:username(/)': 'user',
                 'user/:username/:sortOrder(/)': 'user',
 

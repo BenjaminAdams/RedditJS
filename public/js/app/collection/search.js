@@ -1,5 +1,4 @@
 define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
-
 	return Backbone.Collection.extend({
 		initialize: function(x, data) {
 			_.bindAll(this);
@@ -8,8 +7,10 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			this.restrict_sr = false
 			this.field_name = 'text'
 			this.subName = data.subName
+
 			this.sortOrder = data.sortOrder
-			this.searchQ = data.searchQ
+			this.searchQ = data.searchQ.replace(/\s/g, '+').toLowerCase();
+
 			if (typeof this.sortOrder === 'undefined') {
 				this.sortOrder = 'hot' //the default sort order is hot
 			}
@@ -19,11 +20,11 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 				this.timeFrame = 'month' //the default sort order is hot
 			}
 
-			if (typeof data.subName !== 'undefined') {
+			if (typeof this.subName !== 'undefined') {
 				//actions for when the user is using search for finding similar titles
-				this.subNameStr = '/r/' + this.subName + '/' //the default sort order is hot
-				this.restrict_srStr = true
-				this.searchQ = "title:" + this.searchQ.replace(/\s+/g, ' and ').toLowerCase();
+				this.subNameStr = 'r/' + this.subName + '/' //the default sort order is hot
+				this.restrict_sr = true
+				this.searchQ = "title:" + this.searchQ
 			}
 
 			this.count = 1
@@ -36,6 +37,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 		getUrl: function() {
 			//this works http://www.reddit.com/search.json?q=test&after=t3_18irx&sort=hot&t=week
+			console.log('http://www.reddit.com/' + this.subNameStr + 'search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&restrict_sr=" + this.restrict_sr + "&limit=100&jsonp=?")
 			return 'http://www.reddit.com/' + this.subNameStr + 'search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&restrict_sr=" + this.restrict_sr + "&limit=100&jsonp=?"
 
 			//jsonp search? 
