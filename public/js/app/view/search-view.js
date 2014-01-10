@@ -122,7 +122,7 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
 				}
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				this.helpFillUpScreen()
-				//window.subs[this.subID] = this.collection
+				App.subs[this.subID] = this.collection
 
 			},
 

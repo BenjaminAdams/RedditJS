@@ -18,7 +18,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				'blur #url': "leaveUrl",
 				'click .similarTitles': 'openSearchPopupPostList',
 				'click .sameURL': 'openURLPopupPostList',
-				'keydown #title': 'keyDownTitle'
+				'keyup #title': 'keyDownTitle'
 			},
 			ui: {
 				urlDetails: '#urlDetails',
