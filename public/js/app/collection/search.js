@@ -5,6 +5,8 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			_.bindAll(this);
 			this.after = ""
 			this.subNameStr = ''
+			this.restrict_sr = false
+			this.field_name = 'text'
 			this.subName = data.subName
 			this.sortOrder = data.sortOrder
 			this.searchQ = data.searchQ
@@ -18,7 +20,10 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			}
 
 			if (typeof data.subName !== 'undefined') {
+				//actions for when the user is using search for finding similar titles
 				this.subNameStr = '/r/' + this.subName + '/' //the default sort order is hot
+				this.restrict_srStr = true
+				this.searchQ = "title:" + this.searchQ.replace(/\s+/g, ' and ').toLowerCase();
 			}
 
 			this.count = 1
@@ -31,8 +36,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 		getUrl: function() {
 			//this works http://www.reddit.com/search.json?q=test&after=t3_18irx&sort=hot&t=week
-			console.log('http://www.reddit.com/' + this.subNameStr + 'search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&restrict_sr=true&jsonp=?")
-			return 'http://www.reddit.com/' + this.subNameStr + 'search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&restrict_sr=true&jsonp=?"
+			return 'http://www.reddit.com/' + this.subNameStr + 'search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&restrict_sr=" + this.restrict_sr + "&limit=100&jsonp=?"
 
 			//jsonp search? 
 			//http://www.reddit.com/search.json?q=test&after=t3_18irx&sort=hot&t=week&jsonp=?

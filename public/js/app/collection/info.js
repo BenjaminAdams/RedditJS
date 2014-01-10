@@ -3,8 +3,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 	return Backbone.Collection.extend({
 		initialize: function(x, data) {
 			_.bindAll(this);
-
-			this.srname = data.srname
+			this.subNameStr = ''
 			this.linkUrl = data.linkUrl
 			this.count = 1
 			this.instanceUrl = this.getUrl()
@@ -15,11 +14,8 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 			return this.instanceUrl //keeps a dynamic URL so we can give it a new "after"
 		},
 		getUrl: function() {
-
 			//https://pay.reddit.com/api/info.json?url=' + linkUrl + '&r=funny
-			console.log('https://pay.reddit.com/api/info.json?url=' + this.linkUrl + '&r=' + this.srname)
-			return 'https://pay.reddit.com/api/info.json?url=' + this.linkUrl + '&r=' + this.srname
-			//return 'http://www.reddit.com/search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&jsonp=?"
+			return 'https://pay.reddit.com/api/info.json?url=' + this.linkUrl + "&limit=100"
 
 		},
 		parse: function(response) {

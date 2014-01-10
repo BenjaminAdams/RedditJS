@@ -17,7 +17,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				'blur #title': "leaveTitle",
 				'blur #url': "leaveUrl",
 				'click .similarTitles': 'openSearchPopupPostList',
-				'click .sameURL': 'openURLPopupPostList'
+				'click .sameURL': 'openURLPopupPostList',
+				'keydown #title': 'keyDownTitle'
 			},
 			ui: {
 				urlDetails: '#urlDetails',
@@ -41,6 +42,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				this.searchCollection = null
 				this.urlCollection = null
 
+				this.inputTimer = 0 //keeps track of user input and when they stop input it performs a search
+				this.lastTitleInput = null //keeps track of the last input in keyboard on title field
+
 				App.on("submit:type", this.changeType, this);
 				App.on("submit:subreddits", this.loadSubreddits, this);
 
@@ -54,7 +58,20 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			onRender: function() {
 				this.loadSubreddits()
 			},
+			keyDownTitle: function(e) {
+				var self = this
+				var target = $(e.currentTarget)
+				var searchQ = target.val().trim()
+				//make sure the last input actually has new values before performing new search
+				if (this.lastTitleInput != searchQ) {
+					this.lastTitleInput = searchQ
+					clearTimeout(this.inputTimer);
+					this.inputTimer = setTimeout(function() {
+						self.searchTitle(searchQ)
+					}, 750);
+				}
 
+			},
 			openSearchPopupPostList: function() {
 				var self = this
 				if (this.searchCollection !== null) {
@@ -81,25 +98,34 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			},
 
 			leaveTitle: function(e) {
-				var self = this
+
 				var target = $(e.currentTarget)
-				var searchTerm = target.val()
+				var searchQ = target.val()
+				clearTimeout(this.inputTimer);
+				this.searchTitle(searchQ)
 
+			},
+
+			searchTitle: function(searchQ) {
+				var self = this
 				this.ui.searchResults.html('').addClass('loadingSubmit') //clear results
-
 				this.searchCollection = new SearchCollection([], {
 					subName: this.selectedSubreddit,
 					timeFrame: this.timeFrame,
 					sortOrder: this.sortOrder,
-					searchQ: searchTerm
+					searchQ: searchQ
 				});
 				this.searchCollection.fetch({
 					success: function(data) {
 						console.log(data)
 						var postsLength = data.length
-						console.log('length=', postsLength)
+						var addPlus = '';
+						if (postsLength >= 100) {
+							addPlus = '+'
+
+						}
 						if (postsLength > 0) {
-							self.ui.searchResults.html('found <span class="similarTitles">' + postsLength + '</span> similar title(s)').removeClass('loadingSubmit')
+							self.ui.searchResults.html('found <span class="similarTitles">' + postsLength + addPlus + '</span> similar title(s)').removeClass('loadingSubmit')
 						} else {
 							self.ui.searchResults.html('good job, this is an original title').removeClass('loadingSubmit')
 						}
@@ -109,8 +135,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 						self.ui.searchResults.html('unable to fetch data from reddit api').removeClass('loadingSubmit')
 					}
 				})
-
 			},
+
 			leaveUrl: function(e) {
 				var self = this
 				var target = $(e.currentTarget)
@@ -127,8 +153,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 					//"http://api.reddit.com/api/info?url= " + linkUrl + ".json?jsonp=?" 
 
 					this.urlCollection = new InfoCollection([], {
-						linkUrl: linkUrl,
-						srname: "funny",
+						linkUrl: linkUrl
+						//subName: this.selectedSubreddit  //don't filter by subreddit
 
 					});
 					this.urlCollection.fetch({
@@ -137,7 +163,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 							var postsLength = data.length
 							console.log('length=', postsLength)
 							if (postsLength > 0) {
-								self.ui.urlDetails.html('this url has been submitted <span class="sameURL" >' + postsLength + '</span> time(s) before').removeClass('loadingSubmit')
+								var addPlus = '';
+								if (postsLength >= 100) {
+									addPlus = '+'
+
+								}
+								self.ui.urlDetails.html('this url has been submitted <span class="sameURL" >' + postsLength + addPlus + '</span> time(s) before').removeClass('loadingSubmit')
 								//get array of subreddits that link has been submitted too
 								var subreddits = []
 								console.log('data=', data)
@@ -164,7 +195,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 					self.ui.urlDetails.html('please enter a valid url').removeClass('loadingSubmit')
 				}
 			},
-			//data-srname="' + model.get('display_name')
+			//data.subName="' + model.get('display_name')
 			//strike out a subreddit name if the link has already been submitted here
 			//INPUT: an array of Subreddit names
 			strikeOutSRs: function(subreddits) {
@@ -172,8 +203,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				self.ui.alreadySubmittedUL.html('') //clear current list
 				_.forEach(subreddits, function(sub) {
 					console.log(sub)
-					self.ui.suggestedReddits.find('li[data-srname=' + sub + ']').addClass('lineThrough')
-					var str = '<li data-srname="' + sub + '">\n<a href="#">' + sub + '</a>\n</li>'
+					self.ui.suggestedReddits.find('li[data-subName=' + sub + ']').addClass('lineThrough')
+					var str = '<li data-subName="' + sub + '">\n<a href="#">' + sub + '</a>\n</li>'
 
 					self.ui.alreadySubmittedUL.append(str)
 
@@ -228,7 +259,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			loadSubreddits: function() {
 				var self = this
 				App.subreddits.mine.each(function(model) {
-					var str = '<li data-srname="' + model.get('display_name') + '">\n<a href="#">' + model.get('display_name') + '</a>\n</li>'
+					var str = '<li data-subName="' + model.get('display_name') + '">\n<a href="#">' + model.get('display_name') + '</a>\n</li>'
 					self.$('#suggested-reddits ul').append(str)
 
 				});
