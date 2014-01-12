@@ -35,7 +35,12 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 				this.timeFrame = '' //blank if not in top/contrive
 			}
 
-			this.instanceUrl = this.getUrl()
+			if (typeof data.instanceUrl !== 'undefined') {
+				//so we can override the URL to pull in 1000 posts test data
+				this.instanceUrl = data.instanceUrl
+			} else {
+				this.instanceUrl = this.getUrl()
+			}
 
 		},
 		// Reference to this collection's model.

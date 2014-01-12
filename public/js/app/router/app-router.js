@@ -27,6 +27,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'r/:subName/submit(/)': 'submit',
                 'submit(/)': 'submit',
                 'prefs(/)': 'prefs',
+                'test(/)': 'test',
                 'subreddits(/)': 'subreddits',
                 'subreddits(/):q': 'subreddits',
                 '(:sortOrder)(/)': 'home',
@@ -215,6 +216,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     App.mainRegion.show(new PrefsView())
                 });
 
+            },
+            test: function() {
+                console.log('in TEST view')
+                require(['view/test'], function(TestView) {
+                    App.mainRegion.show(new TestView())
+                });
             },
             //loads a random subreddit that the user is subscribed to
             myrandom: function() {

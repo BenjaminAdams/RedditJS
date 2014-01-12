@@ -757,3 +757,10 @@ z-index: 114;
   opacity:0.9;
   filter:alpha(opacity=90); /* For IE8 and earlier */
 }
+
+
+.testItems {
+  font-size:16px;
+  color:black;
+  padding:10px;
+}

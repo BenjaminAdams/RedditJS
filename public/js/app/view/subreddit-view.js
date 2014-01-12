@@ -123,21 +123,22 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				} else {
 					console.log('loading collection from memory')
 					this.collection = App.subs[this.subID]
-					//this.appendPosts(this.collection)
+
+					this.appendPosts(this.collection) //WE DONT NEED THIS WITH MARIONETTE COLLECTION VIEWS
 
 					this.showMoarBtn()
 					//this.fetchMore();
 				}
 
-				if (this.gridOption != 'grid') {
-					this.subredditCollectionView = new SrCView({
-						collection: this.collection,
-						itemView: PostRowView,
-						gridOption: this.gridOption
-					})
+				// if (this.gridOption != 'grid') {
+				// 	this.subredditCollectionView = new SrCView({
+				// 		collection: this.collection,
+				// 		itemView: PostRowView,
+				// 		gridOption: this.gridOption
+				// 	})
 
-					this.siteTable.show(this.subredditCollectionView)
-				}
+				// 	this.siteTable.show(this.subredditCollectionView)
+				// }
 
 				if (typeof this.collection !== 'undefined' && typeof this.collection.scroll !== 'undefined') {
 					setTimeout(function() {
@@ -291,7 +292,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					path: '/'
 				});
 
-				this.siteTable.close()
+				//this.siteTable.close()
+				this.ui.siteTable.html('')
 
 				if (this.gridOption == "grid") {
 					//this.changeActiveGrid()
@@ -303,12 +305,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 					//this.ui.siteTable.empty();
 					this.ui.siteTable.css('text-align', 'left')
-					this.subredditCollectionView = new SrCView({
-						collection: this.collection,
-						itemView: PostRowView,
-						gridOption: this.gridOption
-					})
-					this.siteTable.show(this.subredditCollectionView)
+					this.appendPosts(this.collection)
+					// this.subredditCollectionView = new SrCView({
+					// 	collection: this.collection,
+					// 	itemView: PostRowView,
+					// 	gridOption: this.gridOption
+					// })
+					// this.siteTable.show(this.subredditCollectionView)
 
 					//this.subredditCollectionView.changeGridView(this.gridOption)
 
@@ -364,12 +367,33 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				var self = this
 				var count = 0;
 				var countSelfs = 0
+				var startTime = new Date()
 
 				collection.each(function(model) {
 
-					if (model.get('imgUrl')) {
-						count++;
-						self.imagesAdded++
+					//if (model.get('imgUrl')) {
+					count++;
+					self.imagesAdded++
+
+					console.log(self.gridOption)
+
+					if (self.gridOption != 'grid') {
+
+						require(['hbs!template/post-row'], function(PostRowTmpl) {
+							//var newPost = $(PostRowTmpl(model.attributes))
+
+							var newPost = new PostRowView({
+								model: model,
+								//gridOption: 'normal'
+								gridOption: this.gridOption
+							})
+							self.ui.siteTable.append(newPost.el)
+
+							//$('#siteTable').append(newPost)
+						});
+
+					} else if (model.get('imgUrl')) {
+
 						var newPost = $(PostRowGrid({
 							model: model.attributes
 						}))
@@ -436,6 +460,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 				this.resize()
 
+				var endTime = new Date()
+				console.log('loaded posts in ', endTime.getTime() - startTime.getTime())
+
 				if (this.gridOption == 'grid' && count === 0 && countSelfs > 0) {
 					//if the grid image finder did not find any images, we need to find some more!
 					console.log('found no images, searching for more')
@@ -448,16 +475,16 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			gotNewPosts: function(models, res) {
 				//this.$('.loading').hide()
 
-				if (this.gridOption == 'grid') {
-					//displaying posts with collection view for everything besides gridview
-					if (typeof res.data.children.length === 'undefined') {
-						return; //we might have an undefined length?
-					}
-					var newCount = res.data.children.length
-					var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
-
-					this.appendPosts(newModels)
+				//if (this.gridOption == 'grid') {
+				//displaying posts with collection view for everything besides gridview
+				if (typeof res.data.children.length === 'undefined') {
+					return; //we might have an undefined length?
 				}
+				var newCount = res.data.children.length
+				var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
+
+				this.appendPosts(newModels)
+				//}
 
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				App.subs[this.subID] = this.collection

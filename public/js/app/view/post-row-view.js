@@ -14,7 +14,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 'click .expando-button': 'toggleExpando',
                 'click .share-button': 'toggleShare',
                 'drag .dragImg': 'dragImg'
-
             },
             ui: {
                 'expandoButton': '.expando-button',
@@ -26,7 +25,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 'reportConfirmYes': '.reportConfirmYes',
                 'save': '.save',
                 'unsave': '.unsave'
-
             },
             initialize: function(data) {
                 //  _.bindAll(this);
@@ -56,6 +54,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 if (this.gridOption == "normal" || typeof this.gridOption === 'undefined' || this.gridOption === null) {
                     this.template = PostRowTmpl
                 }
+
+                this.render()
 
             },
             onRender: function() {

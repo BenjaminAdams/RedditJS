@@ -7,7 +7,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 			},
 			ui: {
 				'loggedIn': '#loggedIn',
-				'loggedOut': '#loggedOut'
+				'loggedOut': '#loggedOut',
+				'mail': '#mail'
 			},
 
 			initialize: function(data) {
@@ -32,6 +33,12 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 				} else {
 					//this.render();
 					this.showLoggedOut()
+				}
+
+				if (window.production == false) {
+					console.log('apennding to mail')
+					var str = '<a class="pref-lang" href="/test">test </a> | '
+					this.ui.mail.before(str)
 				}
 			},
 			showLoggedIn: function() {
