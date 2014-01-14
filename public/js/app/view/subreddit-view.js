@@ -26,9 +26,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				var self = this;
 				this.subName = options.subName
 				if (this.subName == 'front') {
-					document.title = "RedditJS Beta"
+					document.title = "redditjs beta"
 				} else {
-					document.title = this.subName + " - RedditJS Beta"
+					document.title = this.subName + " - redditjs beta"
 				}
 
 				this.gridOption = $.cookie('gridOption') || 'normal';
@@ -148,19 +148,19 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 			setupCollectionView: function() {
 				var self = this
 				if (this.gridOption == 'grid') {
-					self.subredditCollectionView = new SrCGridView({
-						collection: self.collection,
-						itemView: PostRowGridView
+					this.subredditCollectionView = new SrCGridView({
+						collection: this.collection,
+						//itemView: PostRowGridView
 					})
 
 				} else {
-					self.subredditCollectionView = new SrCView({
-						collection: self.collection,
+					this.subredditCollectionView = new SrCView({
+						collection: this.collection,
 						itemView: PostRowView,
-						gridOption: self.gridOption
+						gridOption: this.gridOption
 					})
 				}
-				self.siteTable.show(self.subredditCollectionView)
+				this.siteTable.show(this.subredditCollectionView)
 			},
 			gotoSingle: function(e) {
 				var name = this.$(e.currentTarget).data('id')
@@ -231,12 +231,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 					//do nothingif the user already clicked this once
 				}
 
-				//this.subredditCollectionView.close()
 				this.gridOption = data.gridOption
 				$.cookie('gridOption', this.gridOption, {
 					path: '/'
 				});
 
+				this.subredditCollectionView.close()
 				this.setupCollectionView()
 				this.resize()
 				this.helpFillUpScreen()
@@ -279,24 +279,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 			},
 
 			gotNewPosts: function(models, res) {
-				//this.$('.loading').hide()
-
-				// if (this.gridOption == 'grid') {
-				// 	//displaying posts with collection view for everything besides gridview
-				// 	if (typeof res.data.children.length === 'undefined') {
-				// 		return; //we might have an undefined length?
-				// 	}
-				// 	var newCount = res.data.children.length
-				// 	var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
-
-				// 	this.appendPosts(newModels)
-				// }
-
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				App.subs[this.subID] = this.collection
 				this.showMoarBtn()
 
-				//this.helpFillUpScreen()
 				//fetch more  posts with the After
 				if (this.collection.after == "stop") {
 					console.log("AFTER = stop")

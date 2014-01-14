@@ -3,17 +3,25 @@ define(['App', 'marionette', 'view/post-row-grid-view'],
         return Backbone.Marionette.CollectionView.extend({
             itemView: PostRowGridView,
             initialize: function(options) {
+                var self = this
+                //this.on("render", function() {
+                // self.gridViewSetup()
+                // console.log("the collection view is about to be rendered");
+                //});
 
             },
             onRender: function() {
+                // this.gridViewSetup()
+            },
+            onBeforeRender: function() {
                 this.gridViewSetup()
             },
             gridViewSetup: function() {
                 var self = this
 
                 $('.side').hide()
-                $('#siteTable').css('margin-right', '0') //some custom CSS was making this bad in grid mode
-                $('#siteTable').css('text-align', 'center')
+                this.$el.css('margin-right', '0') //some custom CSS was making this bad in grid mode
+                this.$el.css('text-align', 'center')
                 //calculate how many columns we will have
 
                 var colCount = Math.floor($(document).width() / 305)
@@ -27,10 +35,8 @@ define(['App', 'marionette', 'view/post-row-grid-view'],
                 }
 
                 for (var i = 0; i < colCount; i++) {
-                    $('#siteTable').append('<div class="column"> </div>')
+                    self.$el.append('<div class="column"> </div>')
                 }
-
-                //this.ui.siteTable.append('<div id="fullImgCache"></div>')
 
             }
 

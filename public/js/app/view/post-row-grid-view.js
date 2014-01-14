@@ -37,15 +37,19 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 //this.once("mouseenter", this.loadBiggerImg, this)
 
             },
-            // render: function() {
-            //     var newPost = $(PostRowGridTmpl({
-            //         model: this.model
-            //     }))
-            //     var col = this.shortestCol()
-            //     if (col) {
-            //         col.append(newPost);
-            //     }
-            // },
+            render: function() {
+                var self = this
+                var attempts = 0
+                //console.log('rendering grid block')
+                var newPost = $(PostRowGridTmpl({
+                    model: this.model.attributes
+                }))
+
+                //sometimes the columns are not setup yet, wait until they are
+                //TODO: fix this, bad practice
+                this.appendToShortest(newPost)
+
+            },
             onRender: function() {
                 if (this.smallerImg) {
                     console.log('setting up event')
@@ -111,6 +115,19 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 });
                 return shortest;
             },
+            appendToShortest: function(newPost) {
+                var self = this
+                var attempts = 0
+                var col = this.shortestCol()
+                if (col) {
+                    col.append(newPost);
+                } else {
+                    setTimeout(function() {
+                        self.appendToShortest(newPost)
+                        attempts++;
+                    }, 2 * attempts)
+                }
+            }
 
         });
     });
