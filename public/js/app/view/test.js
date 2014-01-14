@@ -71,7 +71,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/test', 'view/basem-view',
                 if (this.collection.after == "stop") {
                     this.ui.load1000.html('1000 posts now in memory, goto <a href="/r/funny">/r/funny</a> ')
                 } else {
-                    this.ui.load1000.html('You have ' + this.collection.length + ' posts in /r/funny <span class="loadingSubmit"></span>  ')
+                    this.ui.load1000.html('You have ' + this.collection.length + ' posts in /r/funny <img src="/img/loading.gif" />  ')
                     this.collection.fetch({
                         success: this.fetchMore,
                         error: function(data, x, y) {

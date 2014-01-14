@@ -1,8 +1,6 @@
 define(['App', 'marionette', 'hbs!template/post-row', 'hbs!template/post-row-small', 'hbs!template/post-row-large', 'hbs!template/post-row-grid'],
     function(App, Marionette, PostRowTmpl, PostRowSmallTmpl, PostRowLargeTmpl, PostRowGridTmpl) {
-        //return Marionette.FasterCollectionView.extend({
         return Backbone.Marionette.CollectionView.extend({
-            //    return FastCollectionView.extend({
             //itemView: PostRowTmpl,
             initialize: function(options) {
                 this.gridOption = options.gridOption;
@@ -20,6 +18,7 @@ define(['App', 'marionette', 'hbs!template/post-row', 'hbs!template/post-row-sma
                 }
             },
             onRender: function() {
+                $('#siteTable').css('text-align', 'left')
                 setTimeout(function() {
                     App.trigger("bottombar:selected");
                 }, 1000)

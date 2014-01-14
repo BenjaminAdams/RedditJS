@@ -1620,6 +1620,7 @@ var Marionette = (function(global, Backbone, _) {
     // collection view and show it
     showCollection: function() {
       var ItemView;
+
       this.collection.each(function(item, index) {
         ItemView = this.getItemView(item);
         this.addItemView(item, ItemView, index);

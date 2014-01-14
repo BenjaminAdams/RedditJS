@@ -1,16 +1,16 @@
 <div class='block'>
-	<a data-bypass data-id='{{model.name}}' class='' {{model.external}} href="{{model.url}}" target="_blank">
-		{{#if model.smallImg}}
+	<a data-bypass data-id='{{name}}' class='' {{external}} href="{{url}}" target="_blank">
+		{{#if smallImg}}
 			<img class='gridLoading' src='/img/play-btn.png' />
-			<img src="{{model.smallImg}}" />
+			<img src="{{smallImg}}" />
 		{{else}}
-			<img src="{{model.imgUrl}}" />
+			<img src="{{imgUrl}}" />
 		{{/if}}
 	</a>
 	<div class='textGridTitle'>
-		{{#unless model.imgUrl}}
-		<img class='gridThumb' src="{{model.thumbnail}}" />
+		{{#unless imgUrl}}
+		<img class='gridThumb' src="{{thumbnail}}" />
 		{{/unless}}
 
-		<a data-bypass  {{model.external}} href="{{model.permalink}}" target="_blank">{{{model.title}}}</a></div>
+		<a data-bypass  {{external}} href="{{permalink}}" target="_blank">{{{title}}}</a></div>
 </div>

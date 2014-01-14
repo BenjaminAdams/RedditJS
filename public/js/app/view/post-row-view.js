@@ -54,11 +54,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 
                 if (this.gridOption == "normal" || typeof this.gridOption === 'undefined' || this.gridOption === null) {
                     this.template = PostRowTmpl
-                } else if (this.gridOption == "small") {
-                    this.template = PostRowSmallTmpl
-                } else if (this.gridOption == "large") {
-                    this.template = PostRowLargeTmpl
-                }
+                } //else if (this.gridOption == "small") {
+                //     this.template = PostRowSmallTmpl
+                // } else if (this.gridOption == "large") {
+                //     this.template = PostRowLargeTmpl
+                // }
 
             },
             onRender: function() {
