@@ -2,44 +2,39 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
     function(App, $, _, Backbone, BaseView, PostRowGridTmpl) {
         return BaseView.extend({
             template: PostRowGridTmpl,
+
             events: {
-                'click a': "gotoSingle",
-                // 'click .upArrow': 'upvote',
-                // 'click .downArrow': 'downvote',
-                // 'click .save': 'savePost',
-                // 'click .unsave': 'unSavePost',
-                // 'click .hide': 'hidePost',
-                // 'click .report': 'reportShow',
-                // 'click .reportConfirmYes': 'reportYes',
-                // 'click .reportConfirmNo': 'reportShow',
-                // 'click .expando-button': 'toggleExpando',
-                // 'click .share-button': 'toggleShare',
-                // 'drag .dragImg': 'dragImg'
+                'click a': "gotoSingle"
             },
             ui: {
                 'gridLoading': '.gridLoading',
-                // 'postRowContent': '.postRowContent',
-                // upArrow: '.upArrow',
-                // downArrow: '.downArrow',
-                // midcol: '.midcol',
-                // 'reportConfirm': '.reportConfirm',
-                // 'reportConfirmYes': '.reportConfirmYes',
-                // 'save': '.save',
-                // 'unsave': '.unsave'
+                'mainGridImg': '.mainGridImg'
             },
             initialize: function(data) {
                 var self = this
-                //  _.bindAll(this);
+                _.bindAll('this.preloadImg');
                 this.model = data.model;
                 this.biggerImg = this.model.get('imgUrl')
                 this.smallerImg = this.model.get('smallImg')
+                this.attempts = 0 //how many times we attempt to render the view
+                if (this.biggerImg) { //don't preload/check for loading if the grid block does not have an img
 
+                    if (this.detectIfCached(this.smallerImg)) {
+                        this.allowedToRender = true
+                    } else { //so dont try and preload self text posts or links
+                        this.allowedToRender = false //so we only load x number of images at the same time
+                        this.preloadImg()
+                    }
+                }
                 //this.once("mouseenter", this.loadBiggerImg, this)
 
             },
             render: function() {
                 var self = this
-                var attempts = 0
+
+                if (!this.biggerImg || !this.allowedToRender) {
+                    return false //so we dont render non image posts
+                }
                 //console.log('rendering grid block')
                 var newPost = $(PostRowGridTmpl({
                     model: this.model.attributes
@@ -48,6 +43,15 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 //sometimes the columns are not setup yet, wait until they are
                 //TODO: fix this, bad practice
                 this.appendToShortest(newPost)
+
+                //var col = this.shortestCol()  //we can't do this because if we re-render this view it treats the onRender differently and theres no columns yet
+                //if (col) {
+                //col.append(newPost);
+                //} else {
+                //console.log('no cols available')
+                //}
+
+                return this
 
             },
             onRender: function() {
@@ -60,6 +64,27 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                         //newPost.find('.gridLoading').show() //only show loading icon if its a gif
                     }
 
+                }
+            },
+            onBeforeClose: function() {
+                App.off("gridView:imageLoaded");
+
+            },
+            preloadImg: function() {
+                var self = this
+                if (App.gridImagesLoadingCount < 10 && this.allowedToRender === false) {
+                    App.gridImagesLoadingCount++;
+                    this.imgLoad = $('<img />').attr('src', this.smallerImg).load(function(data) {
+                        self.allowedToRender = true
+                        self.render()
+                        App.gridImagesLoadingCount--;
+                        App.trigger("gridView:imageLoaded")
+                    }).error(function() {
+                        App.gridImagesLoadingCount--;
+                    })
+
+                } else if (this.allowedToRender === false) {
+                    App.once("gridView:imageLoaded", this.preloadImg, this);
                 }
             },
             loadBiggerImg: function() {
@@ -80,6 +105,12 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     self.find('.gridLoading').hide() //hide loading gif
                     //TODO show a failed to load img
                 });
+
+            },
+            detectIfCached: function(url) {
+                var testImg = document.createElement("img");
+                testImg.src = url;
+                return testImg.complete || testImg.width + testImg.height > 0;
 
             },
 
@@ -117,15 +148,16 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
             },
             appendToShortest: function(newPost) {
                 var self = this
-                var attempts = 0
                 var col = this.shortestCol()
                 if (col) {
                     col.append(newPost);
                 } else {
-                    setTimeout(function() {
-                        self.appendToShortest(newPost)
-                        attempts++;
-                    }, 2 * attempts)
+                    if (this.attempts < 5) { //prevents infinte loop
+                        this.attempts++;
+                        setTimeout(function() {
+                            self.appendToShortest(newPost)
+                        }, 5)
+                    }
                 }
             }
 

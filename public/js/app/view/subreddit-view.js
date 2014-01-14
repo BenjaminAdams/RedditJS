@@ -4,7 +4,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 			template: subredditTmpl,
 			events: {
 				'click #retry': 'tryAgain',
-				'click .thumbnailSmall': 'gotoSingle',
+				//'click .thumbnailSmall': 'gotoSingle',
+				'click a': 'gotoSingle',
 				'click .nextprev': 'fetchMore',
 				//events for dropdown timeframe
 				'click .drop-time-frame': 'toggleTimeFrame',
@@ -24,6 +25,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				//_.bindAll(this);
 				_.bindAll(this, 'gotNewPosts', 'fetchError')
 				var self = this;
+				this.subredditCollectionView = null;
 				this.subName = options.subName
 				if (this.subName == 'front') {
 					document.title = "redditjs beta"
@@ -80,8 +82,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				setTimeout(function() {
 					self.changeHeaderLinks()
 				}, 100);
-
-				//this.helpFillUpScreen();
 
 			},
 
@@ -141,6 +141,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
 				this.hideMoarBtn()
 				this.resize()
+				this.helpFillUpScreen();
 			},
 			toggleTimeFrame: function() {
 				this.ui.dropTimeFrameSR.toggle()
@@ -149,7 +150,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				var self = this
 				if (this.gridOption == 'grid') {
 					this.subredditCollectionView = new SrCGridView({
-						collection: this.collection,
+						collection: this.collection
 						//itemView: PostRowGridView
 					})
 
@@ -236,7 +237,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 					path: '/'
 				});
 
-				this.subredditCollectionView.close()
+				//this.subredditCollectionView.close()  //we don't need to close view before showing new one
 				this.setupCollectionView()
 				this.resize()
 				this.helpFillUpScreen()
@@ -309,7 +310,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 					//bad?
 					//if we are not checking for this it will reset the scrolltop back to zero when we reach this subreddit
 					var windowScrollTop = $(window).scrollTop()
-					if (typeof this.subID !== 'undefined') {
+					if (typeof App.subs[this.subID] !== 'undefined') {
 						//this.collection.scroll = windowScrollTop
 						App.subs[this.subID].scroll = windowScrollTop
 
