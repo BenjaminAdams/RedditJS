@@ -764,3 +764,8 @@ z-index: 114;
   color:black;
   padding:10px;
 }
+
+#displayAllSRS li {
+  font-size:11px;
+  color:green;
+}

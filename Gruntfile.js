@@ -10,9 +10,18 @@ module.exports = function(grunt) {
                     "findNestedDependencies": true,
                     wrap: true,
                     // Cannot use almond since it does not currently appear to support requireJS's config-map
-                    name: "../lib/almond",
+                    //name: "../lib/almond",
                     preserveLicenseComments: false,
                     optimize: "uglify",
+                    hbs: {
+                        disableI18n: true,
+                        disableHelpers: true,
+                        templateExtension: "html",
+                        //  helperDirectory: "template/helpers/",
+                        //  i18nDirectory: "template/i18n/",
+
+                        compileOptions: {} // options object which is passed to Handlebars compiler
+                    },
                     mainConfigFile: "public/js/app/config/config.js",
                     include: ["init/DesktopInit"],
                     out: "public/js/app/init/DesktopInit.min.js"

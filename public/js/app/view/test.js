@@ -32,7 +32,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/test', 'view/basem-view',
                     domain: null,
                     subName: 'funny',
                     sortOrder: 'hot',
-                    timeFrame: null,
+                    timeFrame: null
                     //instanceUrl: '/data/1000posts.json' //override the auto generated subreddit URL
                 });
                 this.fetchMore()
@@ -48,7 +48,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/test', 'view/basem-view',
                 //         console.log('error getting test SR', data, x, y)
                 //     }
                 // })
-                App.subs['funnynullhotmonth'] = self.collection
+                App.subs.funnynullhotmonth = self.collection
 
             },
             countSubreddits: function() {
@@ -57,7 +57,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/test', 'view/basem-view',
                 for (var k in App.subs) {
                     if (App.subs.hasOwnProperty(k)) {
                         ++count;
-                        self.ui.displayAllSRS.append('<li>' + k + '</li>')
+                        self.ui.displayAllSRS.append('<li>' + k + '  length= ' + App.subs[k].length + '</li>')
                     }
                 }
 
@@ -71,7 +71,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/test', 'view/basem-view',
                 if (this.collection.after == "stop") {
                     this.ui.load1000.html('1000 posts now in memory, goto <a href="/r/funny">/r/funny</a> ')
                 } else {
-                    this.ui.load1000.html('You have ' + this.collection.length + ' posts in /r/funny')
+                    this.ui.load1000.html('You have ' + this.collection.length + ' posts in /r/funny <span class="loadingSubmit"></span>  ')
                     this.collection.fetch({
                         success: this.fetchMore,
                         error: function(data, x, y) {
@@ -80,7 +80,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/test', 'view/basem-view',
                         remove: false
                     });
                 }
-            },
+            }
 
         });
     });

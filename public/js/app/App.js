@@ -1,7 +1,6 @@
 //code from https://github.com/BoilerplateMVC/Marionette-Require-Boilerplate
-
-define(['jquery', 'backbone', 'marionette', 'underscore', 'handlebars'],
-    function($, Backbone, Marionette, _, Handlebars) {
+define(['jquery', 'backbone', 'marionette', 'underscore'],
+    function($, Backbone, Marionette, _) {
         var App = new Backbone.Marionette.Application();
 
         //the width to strart showing mobile

@@ -9,10 +9,21 @@ require.config({
         'underscore': '../lib/lodash2.4.1',
         "backbone": "../lib/backbone",
         //"marionette": "../lib/marionette",
-        "marionette": "../lib/marionettev1.2.3",
+        //"marionette": "../lib/marionettev1.2.3",
+        "marionette": "../lib/marionette.v1.4.1",
         //'fasterCollectioView': '../lib/marionette.FasterCollectionView',
+        /* original handlebars setup */
         'handlebars': '../lib/handlebars',
         "hbs": "../lib/hbs",
+        /* end setup */
+
+        /* test handlebars setup */
+        // 'handlebars': '../lib/handlebars.amd',
+        // 'handlebars.runtime': '../lib/handlebars.runtime',
+        // "hbs": "../lib/hb",
+        /* end setup */
+
+        //"tmpl": "../lib/tmpl",
         "i18nprecompile": "../lib/i18nprecompile",
         "json2": "../lib/json2",
         //  "jasmine": "../lib/jasmine",
@@ -21,9 +32,9 @@ require.config({
         'localstorage': '../lib/jquery.total-storage',
         'moment': '../lib/moment',
         'console': '../lib/console',
+        text: '../lib/text'
         //"backbone.validateAll": "../lib/plugins/Backbone.validateAll",
         //"bootstrap": "../lib/plugins/bootstrap",
-        "text": "../lib/plugins/text"
         //"wookmark": "../lib/jquery.wookmark",
         //   "imagesLoaded": "../lib/imagesLoaded",
         //"jasminejquery": "../lib/plugins/jasmine-jquery"
@@ -65,6 +76,7 @@ require.config({
         //},
 
     },
+
     // hbs config - must duplicate in Gruntfile.js Require build
     hbs: {
         disableI18n: true,

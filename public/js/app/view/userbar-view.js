@@ -35,7 +35,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 					this.showLoggedOut()
 				}
 
-				if (window.production == false) {
+				if (window.production === false) {
 					console.log('apennding to mail')
 					var str = '<a class="pref-lang" href="/test">test </a> | '
 					this.ui.mail.before(str)
