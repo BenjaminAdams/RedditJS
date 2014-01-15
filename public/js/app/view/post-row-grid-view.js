@@ -1,8 +1,8 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!template/post-row-grid'],
-    function(App, $, _, Backbone, BaseView, PostRowGridTmpl) {
+define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!template/post-row-grid', 'hbs!template/blank'],
+    function(App, $, _, Backbone, BaseView, PostRowGridTmpl, BlankTmpl) {
         return BaseView.extend({
-            template: PostRowGridTmpl,
-
+            //template: PostRowGridTmpl,
+            template: BlankTmpl, //we generate the html for this view after we have the image loaded
             events: {
                 'click a': "gotoSingle"
             },
@@ -16,22 +16,20 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 this.model = data.model;
                 this.biggerImg = this.model.get('imgUrl')
                 this.smallerImg = this.model.get('smallImg')
+                this.viewClosed = false //need a way to prevent the image to preload if the view is closed
                 this.attempts = 0 //how many times we attempt to render the view
+                this.allowedToRender = false
                 if (this.biggerImg) { //don't preload/check for loading if the grid block does not have an img
+                    this.preloadImg()
 
-                    if (this.detectIfCached(this.smallerImg) || this.detectIfCached(this.biggerImg)) {
-                        this.allowedToRender = true
-                    } else { //so dont try and preload self text posts or links
-                        this.allowedToRender = false //so we only load x number of images at the same time
-                        this.preloadImg()
-                    }
                 }
 
             },
             render: function() {
                 var self = this
 
-                if (!this.biggerImg || !this.allowedToRender) {
+                if (!this.biggerImg || !this.allowedToRender || this.viewClosed === true) {
+                    console.log('not rendering this')
                     return false //so we dont render non image posts
                 }
                 //console.log('rendering grid block')
@@ -80,28 +78,29 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 return this
 
             },
-            onRender: function() {
-                if (this.smallerImg) {
-                    console.log('setting up event')
-                    //only load scroll over event if user is in grid mode and that grid mode has a smaller imgur img displaying
-                    //this is so the user can hover over the post and load the full size img/full gif
-                    if (this.biggerImg.split('.').pop() == 'gif') {
-                        this.ui.gridLoading.show()
-                        //newPost.find('.gridLoading').show() //only show loading icon if its a gif
-                    }
-
-                }
-            },
+            //onRender: function() {  //functions like onRender() wont work when we override the render() function like here
+            //},
             onBeforeClose: function() {
-                App.off("gridView:imageLoaded");
+                App.off("gridView:imageLoaded", this.preloadImg)
+                this.viewClosed = true
+                console.log('closed grid block')
 
             },
             preloadImg: function() {
                 var self = this
+
+                if (this.viewClosed === true) {
+                    console.log('trying to preload a grid block that has been closed')
+                    return
+                }
+
                 var imgToPreload = this.smallerImg || this.biggerImg
-                if (App.gridImagesLoadingCount < 10 && this.allowedToRender === false) {
+                if (App.gridImagesLoadingCount < 10) {
                     App.gridImagesLoadingCount++;
-                    this.imgLoad = $('<img />').attr('src', imgToPreload).load(function(data) {
+                    App.off("gridView:imageLoaded", this.preloadImg)
+
+                    $('<img />').attr('src', imgToPreload).load(function(data) {
+                        console.log('done preload img from ', self.model.get('subreddit'))
                         self.allowedToRender = true
                         self.render()
                         App.gridImagesLoadingCount--;
@@ -136,32 +135,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 });
 
             },
-            detectIfCached: function(url) {
-                var testImg = document.createElement("img");
-                testImg.src = url;
-                return testImg.complete || testImg.width + testImg.height > 0;
-
-            },
-
-            //puts the model in a temporary space to pass it to the single page so it loads instantly
-            gotoSingle: function(e) {
-                var self = this
-
-                var target = $(e.currentTarget)
-                var permalink = this.model.get('permalink')
-                var targetLink = target.attr('href')
-                if (permalink == targetLink) {
-                    // console.log('it worked', this.model)
-                    //I've made the choice here to pass the current model as a global so we do not have to have a long load time
-                    //the single post page takes 2-3 seconds to load the get request
-                    setTimeout(function() {
-                        App.curModel = self.model //the small view closes too fast and is unable to pass the model to the single
-                    }, 5)
-                    App.curModel = this.model
-                }
-
-            },
-
             shortestCol: function() {
                 var shortest = null
                 var count = 0
