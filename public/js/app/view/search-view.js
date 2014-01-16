@@ -71,16 +71,6 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
 
 			},
 
-			onBeforeClose: function() {
-				console.log('closing subreddit-view')
-				//window.stop() //prevents new images from being downloaded
-				this.removePendingGrid()
-				$(window).off("scroll", this.watchScroll);
-				$(window).off('resize', this.debouncer);
-				App.off("subreddit:changeGridOption", this.changeGridOption, this);
-				App.off("subreddit:remove", this.remove, this);
-			},
-
 			onRender: function() {
 				this.initGridOption();
 				this.siteTable.show(this.subredditCollectionView)

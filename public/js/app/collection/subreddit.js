@@ -9,6 +9,7 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 			this.subName = data.subName
 			this.sortOrder = data.sortOrder
 			this.domain = data.domain
+			this.forceJSONP = data.forceJSONP || false //so we force the user to download the subreddit with jsonp
 			this.count = 1
 			if (typeof this.sortOrder === 'undefined') {
 				this.sortOrder = 'hot' //the default sort order is hot
@@ -52,7 +53,7 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 			var username = $.cookie('username')
 			var linkCount = App.settings.get('linkCount')
 
-			if (typeof username !== "undefined") {
+			if (typeof username !== "undefined" && this.forceJSONP === false) {
 				return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + this.timeFrame + "&cookie=" + $.cookie('reddit_session');
 			} else {
 				console.log("http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?")

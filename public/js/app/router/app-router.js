@@ -50,6 +50,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 'message/compose/:username(/)': 'compose',
                 'message/:type(/)': 'inbox',
+                'download(/)': 'download',
+                'download/:subName(/)': 'download',
 
                 'search': 'search',
                 'search/:q(/)': 'search',
@@ -177,6 +179,14 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                         type: type
                     }));
 
+                });
+            },
+            download: function(subName) {
+                require(['view/download-view'], function(DownloadView) {
+                    App.mainRegion.show(new DownloadView({
+                        subName: subName
+                    }));
+                    App.sidebarRegion.close()
                 });
             },
             subreddits: function(searchQ) {

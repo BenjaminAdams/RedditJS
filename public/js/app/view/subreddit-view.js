@@ -77,8 +77,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				this.prevScrollY = 0; //makes sure you are not checking when the user scrolls upwards
 				this.errorRetries = 0; //keeps track of how many errors we will retry after
 
-				//$(window).bind("resize.app", _.bind(this.debouncer));
-
 				setTimeout(function() {
 					self.changeHeaderLinks()
 				}, 100);
@@ -88,16 +86,22 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 			onBeforeClose: function() {
 				console.log('closing subreddit-view')
 				//window.stop() //prevents new images from being downloaded
-				//this.removePendingGrid()
 
-				//$(window).off('resize', this.debouncer);
-				//$(window).off("scroll", this.watchScroll);
-				//$(window).off("scroll", this.debouncer);
 				$(window).off('resize');
 				$(window).off("scroll");
 
 				App.off("subreddit:changeGridOption", this.changeGridOption, this);
 				App.off("subreddit:remove", this.remove, this);
+
+				//sometimes we hide the sidebar with gridview, in single post view we want to see it.
+				if (App.settings.get('showSidebar') === true) {
+					if (App.mobileWidth > $(document).width()) {
+						$('.side').hide()
+					} else {
+						$('.side').show()
+					}
+				}
+
 			},
 
 			onRender: function() {

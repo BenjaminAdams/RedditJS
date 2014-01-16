@@ -26,6 +26,7 @@ require.config({
         //"tmpl": "../lib/tmpl",
         "i18nprecompile": "../lib/i18nprecompile",
         "json2": "../lib/json2",
+        "jszip": '../lib/jszip',
         //  "jasmine": "../lib/jasmine",
         // "jasmine-html": "../lib/jasmine-html",
         'cookie': '../lib/jquery.cookie',

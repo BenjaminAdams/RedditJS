@@ -769,3 +769,35 @@ z-index: 114;
   font-size:11px;
   color:green;
 }
+
+
+#downloadFrame {
+  margin:150px auto;
+  border: 1px solid gray;
+  padding:20px;
+  width:450px;
+  min-height:300px;
+  font-size: 14px;
+}
+
+#downloadFrame input {
+    width: auto;  
+    padding: 5px 10px;  
+    border:2px solid #FF8B24 !important;
+    border: 0;  
+    font-size: 14px;  
+    color: black; 
+}
+
+#downloadFrame  textarea:focus, input:focus {
+  border: 2px solid #900;
+}
+
+#downloadFrame label {
+  color:green;
+  float: left;
+  text-align: right;
+  padding: 5px 10px;   
+  margin-right: 15px;
+  width: 95px;
+}

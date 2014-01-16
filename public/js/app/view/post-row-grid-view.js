@@ -29,7 +29,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 var self = this
 
                 if (!this.biggerImg || !this.allowedToRender || this.viewClosed === true) {
-                    console.log('not rendering this')
                     return false //so we dont render non image posts
                 }
                 //console.log('rendering grid block')
@@ -44,15 +43,13 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 
                 if (this.smallerImg !== false) { //only need to hover over img when we have bigger img available
                     newPost.one("mouseenter", function() {
-                        console.log("Loading bigger IMG");
-
                         if (self.biggerImg.split('.').pop() == 'gif') {
                             newPost.find('.gridLoading').attr('src', '/img/loading.gif')
                             //newPost.find('.gridLoading').show() //only show loading icon if its a gif
                         }
 
                         $('<img src="' + self.biggerImg + '" />').load(function() {
-                            console.log('loaded img')
+
                             newPost.find('img').attr('src', self.biggerImg);
                             newPost.find('.gridLoading').hide() //hide loading gif
                         }).error(function() {
@@ -83,7 +80,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
             onBeforeClose: function() {
                 App.off("gridView:imageLoaded", this.preloadImg)
                 this.viewClosed = true
-                console.log('closed grid block')
 
             },
             preloadImg: function() {
@@ -100,7 +96,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     App.off("gridView:imageLoaded", this.preloadImg)
 
                     $('<img />').attr('src', imgToPreload).load(function(data) {
-                        console.log('done preload img from ', self.model.get('subreddit'))
                         self.allowedToRender = true
                         self.render()
                         App.gridImagesLoadingCount--;

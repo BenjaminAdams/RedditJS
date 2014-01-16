@@ -10,7 +10,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 			regions: {
 				'theLogin': '#theLogin'
 			},
-
 			initialize: function(data) {
 				_.bindAll(this);
 				this.template = SidebarTmpl;
@@ -19,6 +18,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 				this.model = data.model
 				if (this.subName == "front") {
 					this.model.set('isFront', true)
+					this.model.set('display_name_for_download', 'front')
+				} else {
+					this.model.set('display_name_for_download', this.model.get('display_name'))
 				}
 			},
 			onRender: function() {
