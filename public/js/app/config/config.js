@@ -27,6 +27,7 @@ require.config({
         "i18nprecompile": "../lib/i18nprecompile",
         "json2": "../lib/json2",
         "jszip": '../lib/jszip',
+        "fileSaver": '../lib/fileSaver',
         //  "jasmine": "../lib/jasmine",
         // "jasmine-html": "../lib/jasmine-html",
         'cookie': '../lib/jquery.cookie',
