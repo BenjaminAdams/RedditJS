@@ -186,7 +186,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     App.mainRegion.show(new DownloadView({
                         subName: subName
                     }));
-                    App.sidebarRegion.close()
+
                 });
             },
             subreddits: function(searchQ) {

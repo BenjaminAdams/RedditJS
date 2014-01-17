@@ -1,17 +1,60 @@
 
 
 <div id='downloadFrame'>
-    <label for='subName'> Subreddit: </label>
+<div class='inputContainer'>
+<label for='subName'> Subreddit: </label>
 <input type='text' id='subName' name='subName'  value= "{{subName}}" placeholder="ex:funny"  />
-    
-
-
-
-<div id='postsCount'>0</div>
+</div>
+<div class='inputContainer'>
+<label for='collectionLength'> Count: </label>
+<select id='collectionLength' name='collectionLength'>
+  <option>100</option>
+  <option>200</option>
+  <option>300</option>
+  <option>400</option>
+  <option selected>500</option>
+  <option>600</option>
+  <option>700</option>
+  <option>800</option>
+  <option>900</option>
+  <option >1000</option>
+</select>
+</div>
 
 <button id='startDownload' class="blueBtn">Start</button>
+<div id='statusBox'></div>
 
-<a href="#" id="zipBlob" style='display:none;'>click to download</a>
+
+<div id='infoBoxRow'>
+<div class='infoBox'>
+<div class='infoBoxLbl'>Total</div>
+<div class='infoBoxNum' id='postsCount'>0</div>
+</div>
+
+<div class='infoBox'>
+<div class='infoBoxLbl'>Pending</div>
+<div class='infoBoxNum' id='pendingCount'>0</div>
+</div>
+
+<div class='infoBox'>
+<div class='infoBoxLbl'>Success</div>
+<div class='infoBoxNum' id='successCount'>0</div>
+</div>
+
+<div class='infoBox'>
+<div class='infoBoxLbl'>Errors*</div>
+<div class='infoBoxNum' id='errorCount'>0</div>
+</div>
+
+
+</div>
+
+
+
+<div class='footnote'>
+
+<p>*Errors occur when the domain does not have <a target='_blank' data-bypass href='http://en.wikipedia.org/wiki/Cross-origin_resource_sharing'>CORS</a> enabled</p>
+</div>
 
 </div>
 

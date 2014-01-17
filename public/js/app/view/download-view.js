@@ -10,43 +10,65 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
             className: 'fullBackground',
             events: {
                 'click #startDownload': "fetchAllPosts",
-                'change input': 'updateSettings',
-                "change select": "updateSettings"
+                'change #collectionLength': 'changeLength',
+                "change select": "updateSettings",
+                'keyup #subName': "changeSubName"
             },
             ui: {
                 postsCount: '#postsCount',
-                numberofSrsInMemory: '#numberofSrsInMemory',
-                displayAllSRS: '#displayAllSRS',
+                pendingCount: '#pendingCount',
+                successCount: '#successCount',
+                errorCount: '#errorCount',
                 subName: '#subName',
-                zipBlob: '#zipBlob'
+                startDownload: '#startDownload',
+                statusBox: '#statusBox'
+
             },
             initialize: function(options) {
                 _.bindAll(this);
                 this.model = new Backbone.Model()
                 this.model.set('subName', options.subName)
                 this.manifest = '' // for keeping a detailed record of the images downloaded
-                this.count = 0
+                this.running = false
+                this.postCount = 500
+
+                //feature detection
                 try {
                     var isFileSaverSupported = !! new Blob();
-                    console.log('yay')
                 } catch (e) {
-                    console.log('not supported', e)
+                    this.ui.statusBox.html("Your browser might not be supported, trying anyway....")
                 }
 
+            },
+            onBeforeClose: function() {
+                $('.side').show()
             },
             onRender: function() {
 
             },
+            resetScreen: function() {
+                this.running = false
+                this.ui.startDownload.html('Start')
+                this.ui.pendingCount.html('0')
+                this.ui.successCount.html('0')
+                this.ui.errorCount.html('0')
+                this.ui.postsCount.html('0')
+                this.ui.statusBox.html(" ")
+            },
             fetchAllPosts: function() {
-                var subName = this.ui.subName.val().trim()
-                this.collection = new SubredditCollection([], {
-                    domain: null,
-                    subName: subName,
-                    sortOrder: 'hot',
-                    timeFrame: null,
-                    forceJSONP: true
-                });
-                this.fetchMore()
+                if (this.running === false) {
+                    this.running = true
+                    this.ui.startDownload.html('<img src="/img/loadingH.gif" />')
+                    var subName = this.ui.subName.val().trim()
+                    this.collection = new SubredditCollection([], {
+                        domain: null,
+                        subName: subName,
+                        sortOrder: 'hot',
+                        timeFrame: null,
+                        forceJSONP: true
+                    });
+                    this.fetchMore()
+                }
             },
             startZip: function() {
                 this.zip = new JSZip();
@@ -55,33 +77,30 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
             endZip: function() {
                 var self = this
                 console.log('starting to make zip now')
-                // this.zip.file("manifest.txt", "Hello World\n");
-                //var content = this.zip.generate();
-                try {
 
-                    // var blob = window.URL.createObjectURL(this.zip.generate({
-                    //     type: "blob"
-                    // }));
-                    //var blob = window.URL.createObjectURL("data:application/zip;base64," + this.zip.generate());
-                    //var blob = "data:application/zip;base64," + this.zip.generate();
-                    var blob = new Blob([this.zip.generate({
-                        type: 'blob'
-                    })], {
-                        type: "application/zip;base64"
-                    });
-                    //blob = new Blob([blob])
-                    //  saveAs(blob, "testxx.zip");
+                this.ui.statusBox.html('Your browser will freeze while the zip is being compressed.  Could take several minutes.')
 
-                    var fileSaver = window.saveAs(blob, "testasdasd.zip");
-                    //fileSaver.onwriteend = myOnWriteEnd;
-                    self.ui.zipBlob.show()
-                } catch (e) {
-                    console.log("error:" + e)
-                    //blobLink.innerHTML += " (not supported on this browser)";
-                }
-                // location.href = "data:application/zip;base64," + content;
-                //window.location = "data:application/zip;base64," + content;
-                //console.log('zip should have downloaded')
+                setTimeout(function() {
+                    self.zip.file("manifest.txt", self.manifest);
+                    //var content = this.zip.generate();
+                    try {
+
+                        var blob = new Blob([self.zip.generate({
+                            type: 'blob'
+                        })], {
+                            type: "application/zip;base64"
+                        });
+
+                        var fileSaver = saveAs(blob, "redditjs-" + self.model.get('subName') + ".zip");
+                        console.log('done making zip')
+                    } catch (e) {
+                        console.log("error:" + e)
+                        //blobLink.innerHTML += " (not supported on this browser)";
+                    }
+
+                    self.resetScreen()
+                }, 50)
+
             },
             generateZip: function() {
                 var self = this
@@ -93,28 +112,33 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                         self.addImgToZip(model)
                     } else {
                         //add post to non img post counter
-                        //self.manifest += "\n"
+                        self.manifest += "NOT IMG " + model.get('name') + " " + model.get('permalink') + "\n"
+                        self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
                         model.set('done', true)
                     }
 
                 })
 
             },
-            addImgToZip: function(post) {
+            addImgToZip: function(model) {
 
                 var self = this
-                var imgUrl = post.get('imgUrl')
+                var imgUrl = model.get('imgUrl')
                 this.convertImgToBase64(imgUrl, 'image/png', function(imgData) {
                     imgData = imgData.replace(/^data:image\/(png|jpg|jpeg|gif);base64,/, "");
-                    self.imgFolder.file(post.get('id') + '.png', imgData, {
+                    self.imgFolder.file(model.get('id') + '.png', imgData, {
                         base64: true
                     });
-
-                    post.set('done', true)
+                    self.manifest += "SUCCESS " + model.get('name') + " " + model.get('imgUrl') + " " + model.get('permalink') + "\n"
+                    self.ui.successCount.html(parseInt(self.ui.successCount.html()) + 1)
+                    self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
+                    model.set('done', true)
                     self.checkIfDone()
                 }, function(str) {
-                    post.set('done', true)
-                    console.log(str)
+                    model.set('done', true)
+                    self.ui.errorCount.html(parseInt(self.ui.successCount.html()) + 1)
+                    self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
+                    self.manifest += "FAILED:  *" + str + "* " + model.get('name') + " " + model.get('imgUrl') + " http://redditjs.com" + model.get('permalink') + "\n"
                     self.checkIfDone()
                 });
 
@@ -175,17 +199,28 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 }
                 img.src = url;
             },
+            changeLength: function(e) {
+                var target = $(e.currentTarget)
+                this.postCount = parseInt(target.val())
+            },
+            changeSubName: function(e) {
+                var target = $(e.currentTarget)
+                this.model.set('subName', this.ui.subName.val())
+            },
 
             fetchMore: function() {
 
                 //$(this.el).append("<div class='loading'> </div>")
                 this.loading = true
 
-                if (this.collection.after == "stop" || this.collection.length > 5) {
-                    this.ui.postsCount.html(this.collection.length + ' posts loaded')
+                if (this.collection.after == "stop" || this.collection.length >= this.postCount) {
+                    this.ui.postsCount.html(this.collection.length)
+                    this.ui.pendingCount.html(this.collection.length)
                     this.generateZip()
                 } else {
-                    this.ui.postsCount.html(this.collection.length + ' posts loaded')
+                    if (this.collection.length > 0) {
+                        this.ui.postsCount.html(this.collection.length)
+                    }
                     this.collection.fetch({
                         success: this.fetchMore,
                         error: function(data, x, y) {

@@ -809,7 +809,7 @@ z-index: 114;
   text-align: right;
   padding: 5px 10px;   
   margin-right: 15px;
-  width: 95px;
+  width: 140px;
 }
 
 .blueBtn {
@@ -824,4 +824,56 @@ color: #FF4500;
 border:2px solid #5F99CF;
 border-radius: 3px;
 background:white;
+}
+
+#startDownload {
+  margin: 2px 0 0 71px;
+}
+
+.infoBox {
+  display: inline-block;
+  position:relative;
+  text-align: center;
+  width:90px;
+  height:75px;
+  padding:3px;
+  border:2px solid #5F99CF;
+}
+
+.infoBoxLbl {
+  color: #369 !important; 
+  font-weight: bold;
+}
+
+.infoBoxNum {
+margin-top:10px;
+font-size: 26px;
+color:#FF4500;
+}
+
+#infoBoxRow {
+  width:420px;
+  margin:40px auto 8px auto;
+}
+
+.footnote {
+  color: #369 !important; 
+  font-size:12px;
+  margin-top:20px;
+}
+
+.footnote a {
+ text-decoration: underline;
+}
+
+.inputContainer {
+  height:40px;
+  margin:2px 0;
+}
+
+#statusBox {
+  color: #369 !important; 
+  font-size:12px;
+  margin-left:22px;
+  margin-top:7px;
 }
