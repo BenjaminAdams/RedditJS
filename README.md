@@ -13,7 +13,7 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * **Permalink Comments:** If you visit a link to a permalink of a comment in Reddit it only shows that comment, I've always found this annoying.  RedditJS will show that linked comment first and all of the comments from that post in the thread
  * **Keyboard Navigation:** Use the left and right arrow keys to navigate between posts
  * **Subreddit Explorer:** I've turned the top left subreddit dropdown menu into a list of subreddits based on category.  There are currently about 1,000 subreddits listed here.  It helps you discover new subreddits and waist even more time on reddit!
-
+ * **Download Images:** Download all images and compress them into a zip.  Done all on the client side. [example](http://www.redditjs.com/download/aww)
 
 ####RedditJS is built with :
  * Node.js <http://nodejs.org/>

@@ -22,8 +22,8 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 		},
 		// Default attributes 
 		defaults: {
-			done: false
-			// image:"some img",
+			done: false,
+			startedDL: false
 			//  slug: "slug"
 		},
 		parse: function(response) {
@@ -185,7 +185,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 					url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
 					//first remove query parameters from the url
 
-					return url + ".png"
+					return url + ".jpg"
 				}
 
 			}

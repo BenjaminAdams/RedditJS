@@ -782,7 +782,7 @@ z-index: 114;
   margin:25px auto;
   border: 1px solid #5F99CF;
   padding:20px;
-  width:450px;
+  width:600px;
   min-height:300px;
   font-size: 14px;
 }
@@ -791,16 +791,26 @@ z-index: 114;
   color:#FF4500 !important;
 }
 
-#downloadFrame input, #collectionLength {
+.disabledInput {
+  background-color:#E9E9E9 !important;
+}
+
+#downloadFrame input, #collectionLength,#subNameSelect,#sortOrder,#timeFrame {
     width: auto;  
     padding: 5px 10px;  
     border:2px solid #5F99CF !important;
     font-size: 14px;  
     color: #369 !important; 
     background-color:white;
-
 }
 
+.rightLabel {
+  float:none !important;
+  margin-right:0px !important;
+}
+#timeFrame {
+  display:none;
+}
 
 #downloadFrame label {
   color: #369 !important; 
@@ -810,6 +820,7 @@ z-index: 114;
   padding: 5px 10px;   
   margin-right: 15px;
   width: 140px;
+
 }
 
 .blueBtn {
@@ -852,7 +863,7 @@ color:#FF4500;
 }
 
 #infoBoxRow {
-  width:420px;
+  width:540px;
   margin:40px auto 8px auto;
 }
 
@@ -883,9 +894,11 @@ margin: 5px 0 0 30px;
   text-align: center;
 }
 
-#downloadTitle {
+#downloadFrame h1 {
   text-align: center;
   position:relative;
   bottom:10px;
+  color: #369 !important; 
+  font-weight: bold;
 }
 

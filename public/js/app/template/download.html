@@ -1,40 +1,67 @@
 
 
 <div id='downloadFrame'>
-
-<div id='downloadTitle'> 
 <h1>Download Images from Subreddit</h1>
-</div>
+
 
 <div class='inputContainer'>
 <label for='subName'> Subreddit: </label>
 <input type='text' id='subName' name='subName'  value= "{{subName}}" placeholder="ex:funny"  />
+
+<select id='subNameSelect' name='subNameSelect'></select>
+
+
 </div>
 <div class='inputContainer'>
 <label for='collectionLength'> Count: </label>
 <select id='collectionLength' name='collectionLength'>
-  <option selected='selected'>50</option>
+  <option>50</option>
   <option>100</option>
   <option>200</option>
   <option>300</option>
   <option>400</option>
-  <option>500</option>
+  <option selected='selected'>500</option>
   <option>600</option>
   <option>700</option>
   <option>800</option>
   <option>900</option>
   <option >1000</option>
 </select>
+
+
+<label class='rightLabel' for='sortOrder'> Sort: </label>
+<select id='sortOrder' name='sortOrder'>
+  <option selected='selected'>hot</option>
+  <option>new</option>
+  <option>controversial</option>
+  <option>rising</option>
+  <option>top</option>
+</select>
+
+<select id='timeFrame' name='timeFrame'>
+  <option value='hour'>this hour</option>
+  <option value='day'>day</option>
+  <option value='month' selected='selected'>month</option>
+  <option value='year'>year</option>
+  <option value='all'>all time</option>
+</select>
+
+
 </div>
 
 <button id='startDownload' class="blueBtn">Start</button>
-<div id='statusBox'></div>
+<span id='statusBox'></span>
 
 
 <div id='infoBoxRow'>
 <div class='infoBox'>
 <div class='infoBoxLbl'>Total</div>
 <div class='infoBoxNum' id='postsCount'>0</div>
+</div>
+
+<div class='infoBox' title='posts that do not contain images'>
+<div class='infoBoxLbl'>Non-Img</div>
+<div class='infoBoxNum' id='nonImgCount'>0</div>
 </div>
 
 <div class='infoBox'>
@@ -58,9 +85,11 @@
     <li>This will download all of the images in a particular subreddit.</li>
     <li>This will only work for subreddits that contain hotlinked images.</li>
     <li>Subreddits that contain a lot of gifs may take really really long to download</li>
+    <li>May not work in all browsers</li>
+    <li>Downloading GIF heavy subreddits will take a long time or crash.  /r/gifs was 2+ gigs and took me over an hour to get 1000 posts.</li>
     <li>*Errors occur when the domain does not have <a target='_blank' data-bypass href='http://en.wikipedia.org/wiki/Cross-origin_resource_sharing'>CORS</a> enabled</li>
 </ul>
-<div id='testCollection'>test</div>
+
 </div>
 
 

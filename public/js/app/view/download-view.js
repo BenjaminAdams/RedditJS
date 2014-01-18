@@ -11,18 +11,24 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
             events: {
                 'click #startDownload': "fetchAllPosts",
                 'change #collectionLength': 'changeLength',
-                "change select": "updateSettings",
-                'keyup #subName': "changeSubName",
-                'click #testCollection': 'testCollection'
+                "change #subNameSelect": 'subNameSelectChange',
+                'change #sortOrder': 'sortOrderChange',
+                'change #timeFrame': 'timeFrameChange',
+                'keyup #subName': "changeSubName"
             },
             ui: {
                 postsCount: '#postsCount',
                 pendingCount: '#pendingCount',
                 successCount: '#successCount',
                 errorCount: '#errorCount',
+                nonImgCount: '#nonImgCount',
                 subName: '#subName',
                 startDownload: '#startDownload',
-                statusBox: '#statusBox'
+                timeFrame: '#timeFrame',
+                statusBox: '#statusBox',
+                sortOrder: '#sortOrder',
+                subNameSelect: '#subNameSelect',
+                collectionLength: '#collectionLength'
 
             },
             initialize: function(options) {
@@ -31,7 +37,12 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 this.model.set('subName', options.subName)
                 this.manifest = '' // for keeping a detailed record of the images downloaded
                 this.running = false
-                this.postCount = 50
+                this.postCount = 500
+                this.activeDownloads = 0 //we want to limit how many images we try and download at once
+                this.downloadLimit = 14 //how many imgs we want to download at once
+                this.sortOrder = 'hot'
+                this.timeFrame = 'month'
+                this.totalImagesFound = 0
 
                 //feature detection
                 try {
@@ -46,6 +57,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
             },
             onRender: function() {
                 $('.side').hide()
+                this.loadSubreddits()
             },
             resetScreen: function() {
 
@@ -55,19 +67,33 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 this.ui.successCount.html('0')
                 this.ui.errorCount.html('0')
                 this.ui.postsCount.html('0')
+                this.ui.nonImgCount.html('0')
                 this.ui.statusBox.html(" ")
+
+                this.ui.subName.prop('disabled', false).removeClass('disabledInput')
+                this.ui.subNameSelect.prop('disabled', false).removeClass('disabledInput')
+                this.ui.collectionLength.prop('disabled', false).removeClass('disabledInput')
+                this.ui.timeFrame.prop('disabled', false).removeClass('disabledInput')
+                this.ui.sortOrder.prop('disabled', false).removeClass('disabledInput')
             },
             fetchAllPosts: function() {
                 if (this.running === false) {
                     this.running = true
                     this.resetScreen()
+
+                    this.ui.subName.prop('disabled', true).addClass('disabledInput')
+                    this.ui.subNameSelect.prop('disabled', true).addClass('disabledInput')
+                    this.ui.collectionLength.prop('disabled', true).addClass('disabledInput')
+                    this.ui.timeFrame.prop('disabled', true).addClass('disabledInput')
+                    this.ui.sortOrder.prop('disabled', true).addClass('disabledInput')
+
                     this.ui.statusBox.html('Fetching data from reddit')
                     this.ui.startDownload.html('<img src="/img/loadingH.gif" />')
                     var subName = this.ui.subName.val().trim()
                     this.collection = new SubredditCollection([], {
                         domain: null,
                         subName: subName,
-                        sortOrder: 'hot',
+                        sortOrder: this.sortOrder,
                         timeFrame: null,
                         forceJSONP: true
                     });
@@ -80,84 +106,75 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
             },
             endZip: function() {
                 var self = this
-                console.log('starting to make zip now')
 
-                this.ui.statusBox.html('Your browser will freeze while the zip is being compressed.')
+                if (this.totalImagesFound === 0) {
+                    this.resetScreen()
+                    this.ui.statusBox.html("No images found")
+                } else {
 
-                setTimeout(function() {
-                    self.zip.file("manifest.txt", self.manifest);
-                    //var content = this.zip.generate();
-                    try {
+                    console.log('starting to make zip now')
+                    this.ui.statusBox.html('Your browser will freeze while the zip is being compressed.')
 
-                        var blob = new Blob([self.zip.generate({
-                            type: 'blob'
-                        })], {
-                            type: "application/zip;base64"
-                        });
+                    setTimeout(function() {
+                        self.zip.file("manifest.txt", self.manifest);
+                        //var content = this.zip.generate();
+                        try {
 
-                        var fileSaver = saveAs(blob, "redditjs-" + self.model.get('subName') + ".zip");
-                        console.log('done making zip')
-                        self.resetScreen()
-                        self.ui.statusBox.html("Done")
-                    } catch (e) {
-                        console.log("error:" + e)
-                        self.ui.statusBox.html("error:" + e)
-                    }
+                            var blob = new Blob([self.zip.generate({
+                                type: 'blob'
+                            })], {
+                                type: "application/zip;base64"
+                            });
 
-                }, 50)
+                            var fileSaver = saveAs(blob, "redditjs-" + self.model.get('subName') + ".zip");
+                            console.log('done making zip')
+                            self.resetScreen()
+                            self.ui.statusBox.html("Done")
+                        } catch (e) {
+                            console.log("error:" + e)
+                            self.resetScreen()
+                            self.ui.statusBox.html("error:" + e)
+                        }
+
+                    }, 50)
+                }
 
             },
             generateZip: function() {
                 var self = this
 
-                //var fetchThesePosts = this.collection.where({
-                //done: false
-                //})
+                if (this.activeDownloads < this.downloadLimit) {
+                    var fetchThesePosts = this.collection.where({
+                        done: false,
+                        startedDL: false
+                    })
 
-                //_.each(fetchThesePosts, function(model) {
-                this.collection.each(function(model) {
+                    _.each(fetchThesePosts, function(model) {
+                        //this.collection.each(function(model) {
+                        if (self.activeDownloads < self.downloadLimit) {
+                            model.set('startedDL', true)
+                            if (model.get('imgUrl')) {
+                                self.activeDownloads++;
+                                self.addImgToZip(model)
+                            } else {
+                                //add post to non img post counter
+                                self.manifest += "NOT IMG " + model.get('name') + " " + model.get('permalink') + "\n"
+                                self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html(), 10) - 1)
+                                self.ui.nonImgCount.html(parseInt(self.ui.nonImgCount.html(), 10) + 1)
+                                model.set('done', true)
+                            }
+                        }
 
-                    if (model.get('imgUrl')) {
-                        self.addImgToZip(model)
-                    } else {
-                        //add post to non img post counter
-                        self.manifest += "NOT IMG " + model.get('name') + " " + model.get('permalink') + "\n"
-                        self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html(), 10) - 1)
-                        model.set('done', true)
-                    }
-
-                })
+                    })
+                }
 
             },
-            testCollection: function() {
-                console.log(this.collection.where({
-                    done: false
 
-                }))
-            },
             addImgToZip: function(model) {
 
                 var self = this
                 var imgUrl = model.get('imgUrl')
                 var ext = self.getFileExtension(imgUrl)
-
-                //this.convertImgToBase64(imgUrl, ext, function(imgData) {
-                //imgData = imgData.replace(/^data:image\/(png|jpg|jpeg|gif);base64,/, "");
-                //self.imgFolder.file(model.get('id') + '.png', imgData, {
-                //base64: true
-                //});
-                //self.manifest += "SUCCESS " + model.get('name') + " " + model.get('imgUrl') + " " + model.get('permalink') + "\n"
-                //self.ui.successCount.html(parseInt(self.ui.successCount.html()) + 1)
-                //self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
-                //model.set('done', true)
-                //self.checkIfDone()
-                //},function(str) {
-                //model.set('done', true)
-                //self.ui.errorCount.html(parseInt(self.ui.successCount.html()) + 1)
-                //self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
-                //self.manifest += "FAILED:  *" + str + "* " + model.get('name') + " " + model.get('imgUrl') + " http://redditjs.com" + model.get('permalink') + "\n"
-                //self.checkIfDone()
-                //});
 
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', imgUrl, true);
@@ -168,7 +185,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 //xhr.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2001 00:00:00 GMT");
 
                 xhr.onerror = function(e) {
-
+                    self.activeDownloads--;
                     self.ui.errorCount.html(parseInt(self.ui.errorCount.html(), 10) + 1)
                     self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html(), 10) - 1)
                     self.manifest += "FAILED:  *CORS prevented from downloading* " + model.get('name') + " " + model.get('imgUrl') + " http://redditjs.com" + model.get('permalink') + "\n"
@@ -177,31 +194,20 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
 
                 }
 
-                //xhr.onabort = xhr.onerror
-
-                //xhr.loadend = function() {
-                //console.log('done')
-                //model.set('done', true)
-                //self.checkIfDone()
-                //}
+                xhr.onabort = xhr.onerror
 
                 xhr.onload = function(e) {
-                    console.log(this.status)
-                    if (this.status == 200) {
-                        //Do your stuff here
 
+                    if (this.status == 200) {
+                        self.totalImagesFound++;
                         var arrayBuffer = xhr.response;
                         if (arrayBuffer) {
-                            // var binary = ''
-                            // var byteArray = new Uint8Array(arrayBuffer);  
-                            // for (var i = 0; i < byteArray.byteLength; i++) {
-                            //     binary += String.fromCharCode(byteArray[i])
-                            // }
-
                             var ext = self.getFileExtension(imgUrl)
-
-                            //self.imgFolder.file(model.get('id') + '.jpeg', "data:image/jpeg;base64," + window.btoa(binary), {
-                            self.imgFolder.file(model.get('id') + ext, arrayBuffer, {
+                            var fileName = model.get('permalink')
+                            var split = fileName.split('/')
+                            fileName = split[split.length - 3] + "_" + split[split.length - 2] + "_" + split[split.length - 1]
+                            fileName = fileName.replace(/\//g, "_") + ext
+                            self.imgFolder.file(fileName, arrayBuffer, {
                                 base64: false,
                                 binary: false
                             });
@@ -210,10 +216,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                             self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html(), 10) - 1)
                             model.set('done', true)
 
-                            arrayBuffer = null
-                            //binary = null
-                            //byteArray = null
-
+                            self.activeDownloads--;
                             self.checkIfDone()
 
                         } else {
@@ -225,52 +228,25 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
 
                 xhr.send();
 
-                // $.ajax({
-                //url: imgUrl,
-                //crossDomain: true,
-                //contentType: 'text/plain; charset=x-user-defined',
-                //success: function(imgData) {
-                ////"data:image/gif;base64,"
-                // var bytes = [];
-                //for (var i = 0; i < imgData.length; i++) {
-                //bytes.push(String.fromCharCode(imgData.charCodeAt(i) & 0xff));
-                //}
-                ////var blob = window.URL.createObjectURL(imgData)
-                //imgData = window.btoa(bytes)
-                //self.imgFolder.file(model.get('id') + '.jpg', "data:image/jpg;base64," + imgData, {
-                //base64: true,
-                //binary: false
-                //});
-                //self.manifest += "SUCCESS " + model.get('name') + " " + model.get('imgUrl') + " " + model.get('permalink') + "\n"
-                //self.ui.successCount.html(parseInt(self.ui.successCount.html()) + 1)
-                //self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
-                //model.set('done', true)
-                //self.checkIfDone()
-                //},
-                //error: function() {
-                //model.set('done', true)
-                //self.ui.errorCount.html(parseInt(self.ui.successCount.html()) + 1)
-                //self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
-                //self.manifest += "FAILED:  *CORS prevented from downloading* " + model.get('name') + " " + model.get('imgUrl') + " http://redditjs.com" + model.get('permalink') + "\n"
-                //self.checkIfDone()
-                //}
-                // });
-
             },
 
             checkIfDone: function() {
                 var self = this
                 var isDone = true
-                this.collection.each(function(model) {
-                    //check if each model is marked done
-                    if (model.get('done') !== true) {
-                        isDone = false
+                if (this.activeDownloads < this.downloadLimit) {
+                    this.collection.each(function(model) {
+                        //check if each model is marked done
+                        if (model.get('done') !== true) {
+                            isDone = false
+                        }
+
+                    })
+
+                    if (isDone === true && this.activeDownloads <= 0) {
+                        this.endZip()
+                    } else {
+                        this.generateZip()
                     }
-
-                })
-
-                if (isDone === true) {
-                    this.endZip()
                 }
 
             },
@@ -315,6 +291,38 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
             changeSubName: function(e) {
                 var target = $(e.currentTarget)
                 this.model.set('subName', this.ui.subName.val())
+            },
+            subNameSelectChange: function(e) {
+                var target = $(e.currentTarget)
+                console.log(target.val())
+                this.ui.subName.val(target.val())
+                this.model.set('subName', target.val())
+                target.val('')
+            },
+            sortOrderChange: function(e) {
+                var target = $(e.currentTarget)
+                var val = target.val()
+                console.log(val)
+                this.sortOrder = val
+                if (val === 'top' || val === 'controversial') {
+                    this.ui.timeFrame.show()
+                } else {
+                    this.ui.timeFrame.hide()
+                }
+            },
+            timeFrameChange: function(e) {
+                var target = $(e.currentTarget)
+                console.log(target.val())
+                this.timeFrame = target.val()
+            },
+            loadSubreddits: function() {
+                var self = this
+                this.ui.subNameSelect.append('<option selected="selected">-</option>')
+                App.subreddits.mine.each(function(model) {
+                    if (model.get('display_name') != "announcements" && model.get('display_name') != "blog") {
+                        self.ui.subNameSelect.append('<option>' + model.get('display_name') + ' </option>')
+                    }
+                })
             },
 
             fetchMore: function() {
