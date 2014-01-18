@@ -22,7 +22,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 		},
 		// Default attributes 
 		defaults: {
-			// name: "Beer name",
+			done: false
 			// image:"some img",
 			//  slug: "slug"
 		},
@@ -177,13 +177,15 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 		fixImgur: function(url) {
 			if (this.containsStr("imgur.com", url)) {
 				//check if its a gallery
+				url = url.replace('http://imgur.com', 'http://i.imgur.com')
+				url = url.replace('/g/memes', '')
 				if (this.containsStr("imgur.com/a/", url) === true || this.containsStr("gallery", url) === true) {
 					return false
 				} else {
 					url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
 					//first remove query parameters from the url
 
-					return url + ".jpg"
+					return url + ".png"
 				}
 
 			}
