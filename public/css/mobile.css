@@ -1,12 +1,12 @@
 @media (max-width: 900px) {
 
 body {
-    min-width: 550px;
+    min-width: 600px;
 }
 
 #header-nav-logo-area {
 top: 36px;
-min-width:550px;
+min-width:600px;
 padding:0px;
 }
 

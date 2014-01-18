@@ -43,6 +43,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 this.sortOrder = 'hot'
                 this.timeFrame = 'month'
                 this.totalImagesFound = 0
+                this.totalNonImagesFound = 0
 
                 //feature detection
                 try {
@@ -60,7 +61,11 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 this.loadSubreddits()
             },
             resetScreen: function() {
-
+                this.zip = null
+                this.manifest = ''
+                this.activeDownloads = 0
+                this.totalImagesFound = 0
+                this.totalNonImagesFound = 0
                 this.running = false
                 this.ui.startDownload.html('Start')
                 this.ui.pendingCount.html('0')
@@ -140,7 +145,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 }
 
             },
-            generateZip: function() {
+            combPosts: function() {
                 var self = this
 
                 if (this.activeDownloads < this.downloadLimit) {
@@ -158,6 +163,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                                 self.addImgToZip(model)
                             } else {
                                 //add post to non img post counter
+                                self.totalNonImagesFound++;
                                 self.manifest += "NOT IMG " + model.get('name') + " " + model.get('permalink') + "\n"
                                 self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html(), 10) - 1)
                                 self.ui.nonImgCount.html(parseInt(self.ui.nonImgCount.html(), 10) + 1)
@@ -166,6 +172,11 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                         }
 
                     })
+
+                    if (this.totalNonImagesFound === this.collection.length) {
+                        this.endZip() // this is to detect if this subreddit has zero images and display a msg to the user
+                    }
+
                 }
 
             },
@@ -245,7 +256,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                     if (isDone === true && this.activeDownloads <= 0) {
                         this.endZip()
                     } else {
-                        this.generateZip()
+                        this.combPosts()
                     }
                 }
 
@@ -336,7 +347,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                     this.ui.postsCount.html(this.collection.length)
                     this.ui.pendingCount.html(this.collection.length)
                     this.startZip()
-                    this.generateZip()
+                    this.combPosts()
                 } else {
                     if (this.collection.length > 0) {
                         this.ui.postsCount.html(this.collection.length)
