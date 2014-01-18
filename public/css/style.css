@@ -791,13 +791,13 @@ z-index: 114;
   color:#FF4500 !important;
 }
 
-#downloadFrame input {
+#downloadFrame input, #collectionLength {
     width: auto;  
     padding: 5px 10px;  
     border:2px solid #5F99CF !important;
-    border: 0;  
     font-size: 14px;  
     color: #369 !important; 
+    background-color:white;
 
 }
 
@@ -859,7 +859,11 @@ color:#FF4500;
 .footnote {
   color: #369 !important; 
   font-size:12px;
-  margin-top:20px;
+  margin-top:40px;
+  list-style-type: disc;
+}
+.footnote li {
+margin: 5px 0 0 30px;
 }
 
 .footnote a {
@@ -876,4 +880,12 @@ color:#FF4500;
   font-size:12px;
   margin-left:22px;
   margin-top:7px;
+  text-align: center;
 }
+
+#downloadTitle {
+  text-align: center;
+  position:relative;
+  bottom:10px;
+}
+

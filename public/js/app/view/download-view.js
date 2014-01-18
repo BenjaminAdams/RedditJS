@@ -30,7 +30,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 this.model.set('subName', options.subName)
                 this.manifest = '' // for keeping a detailed record of the images downloaded
                 this.running = false
-                this.postCount = 500
+                this.postCount = 50
 
                 //feature detection
                 try {
@@ -44,7 +44,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 $('.side').show()
             },
             onRender: function() {
-
+                $('.side').hide()
             },
             resetScreen: function() {
                 this.running = false
@@ -58,6 +58,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
             fetchAllPosts: function() {
                 if (this.running === false) {
                     this.running = true
+                    this.ui.statusBox.html('Fetching data from reddit')
                     this.ui.startDownload.html('<img src="/img/loadingH.gif" />')
                     var subName = this.ui.subName.val().trim()
                     this.collection = new SubredditCollection([], {
@@ -78,7 +79,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 var self = this
                 console.log('starting to make zip now')
 
-                this.ui.statusBox.html('Your browser will freeze while the zip is being compressed.  Could take several minutes.')
+                this.ui.statusBox.html('Your browser will freeze while the zip is being compressed.')
 
                 setTimeout(function() {
                     self.zip.file("manifest.txt", self.manifest);
@@ -113,7 +114,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                     } else {
                         //add post to non img post counter
                         self.manifest += "NOT IMG " + model.get('name') + " " + model.get('permalink') + "\n"
-                        self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
+                        self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html(), 10) - 1)
                         model.set('done', true)
                     }
 
@@ -124,39 +125,107 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
 
                 var self = this
                 var imgUrl = model.get('imgUrl')
-                this.convertImgToBase64(imgUrl, 'image/png', function(imgData) {
-                    imgData = imgData.replace(/^data:image\/(png|jpg|jpeg|gif);base64,/, "");
-                    self.imgFolder.file(model.get('id') + '.png', imgData, {
-                        base64: true
-                    });
-                    self.manifest += "SUCCESS " + model.get('name') + " " + model.get('imgUrl') + " " + model.get('permalink') + "\n"
-                    self.ui.successCount.html(parseInt(self.ui.successCount.html()) + 1)
-                    self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
-                    model.set('done', true)
-                    self.checkIfDone()
-                }, function(str) {
-                    model.set('done', true)
-                    self.ui.errorCount.html(parseInt(self.ui.successCount.html()) + 1)
-                    self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
-                    self.manifest += "FAILED:  *" + str + "* " + model.get('name') + " " + model.get('imgUrl') + " http://redditjs.com" + model.get('permalink') + "\n"
-                    self.checkIfDone()
-                });
+                var ext = self.getFileExtension(imgUrl)
 
-                //$.ajax({
-                //url: imgUrl,
-                //success: function(imgData) {
-                //self.imgFolder.file(post.get('id') + '.png', imgData, {
-                //base64: false,
-                //binary: true
+                //this.convertImgToBase64(imgUrl, ext, function(imgData) {
+                //imgData = imgData.replace(/^data:image\/(png|jpg|jpeg|gif);base64,/, "");
+                //self.imgFolder.file(model.get('id') + '.png', imgData, {
+                //base64: true
                 //});
-                //post.set('done', true)
+                //self.manifest += "SUCCESS " + model.get('name') + " " + model.get('imgUrl') + " " + model.get('permalink') + "\n"
+                //self.ui.successCount.html(parseInt(self.ui.successCount.html()) + 1)
+                //self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
+                //model.set('done', true)
+                //self.checkIfDone()
+                //},function(str) {
+                //model.set('done', true)
+                //self.ui.errorCount.html(parseInt(self.ui.successCount.html()) + 1)
+                //self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
+                //self.manifest += "FAILED:  *" + str + "* " + model.get('name') + " " + model.get('imgUrl') + " http://redditjs.com" + model.get('permalink') + "\n"
+                //self.checkIfDone()
+                //});
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', imgUrl, true);
+                xhr.overrideMimeType('text/plain; charset=x-user-defined');
+                xhr.responseType = 'arraybuffer';
+
+                xhr.onerror = function(e) {
+
+                    model.set('done', true)
+                    self.ui.errorCount.html(parseInt(self.ui.errorCount.html(), 10) + 1)
+                    self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html(), 10) - 1)
+                    self.manifest += "FAILED:  *CORS prevented from downloading* " + model.get('name') + " " + model.get('imgUrl') + " http://redditjs.com" + model.get('permalink') + "\n"
+                    self.checkIfDone()
+                }
+
+                xhr.onabort = xhr.onerror
+
+                xhr.onload = function(e) {
+                    if (this.status == 200) {
+                        //Do your stuff here
+                        var arrayBuffer = xhr.response;
+                        if (arrayBuffer) {
+                            var binary = ''
+                            var byteArray = new Uint8Array(arrayBuffer);
+                            for (var i = 0; i < byteArray.byteLength; i++) {
+                                binary += String.fromCharCode(byteArray[i])
+                            }
+
+                            var ext = self.getFileExtension(imgUrl)
+
+                            //self.imgFolder.file(model.get('id') + '.jpeg', "data:image/jpeg;base64," + window.btoa(binary), {
+                            self.imgFolder.file(model.get('id') + ext, binary, {
+                                base64: false,
+                                binary: true
+                            });
+                            self.manifest += "SUCCESS " + model.get('name') + " " + model.get('imgUrl') + " " + model.get('permalink') + "\n"
+                            self.ui.successCount.html(parseInt(self.ui.successCount.html(), 10) + 1)
+                            self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html(), 10) - 1)
+                            model.set('done', true)
+                            self.checkIfDone()
+
+                        }
+                    } else if (this.status > 200) {
+                        console.log('ooops')
+                        xhr.onerror()
+                    } else {
+                        console.log('status code of', this.status)
+                    }
+                }
+
+                xhr.send();
+
+                // $.ajax({
+                //url: imgUrl,
+                //crossDomain: true,
+                //contentType: 'text/plain; charset=x-user-defined',
+                //success: function(imgData) {
+                ////"data:image/gif;base64,"
+                // var bytes = [];
+                //for (var i = 0; i < imgData.length; i++) {
+                //bytes.push(String.fromCharCode(imgData.charCodeAt(i) & 0xff));
+                //}
+                ////var blob = window.URL.createObjectURL(imgData)
+                //imgData = window.btoa(bytes)
+                //self.imgFolder.file(model.get('id') + '.jpg', "data:image/jpg;base64," + imgData, {
+                //base64: true,
+                //binary: false
+                //});
+                //self.manifest += "SUCCESS " + model.get('name') + " " + model.get('imgUrl') + " " + model.get('permalink') + "\n"
+                //self.ui.successCount.html(parseInt(self.ui.successCount.html()) + 1)
+                //self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
+                //model.set('done', true)
                 //self.checkIfDone()
                 //},
                 //error: function() {
-                //post.set('done', true)
+                //model.set('done', true)
+                //self.ui.errorCount.html(parseInt(self.ui.successCount.html()) + 1)
+                //self.ui.pendingCount.html(parseInt(self.ui.pendingCount.html()) - 1)
+                //self.manifest += "FAILED:  *CORS prevented from downloading* " + model.get('name') + " " + model.get('imgUrl') + " http://redditjs.com" + model.get('permalink') + "\n"
                 //self.checkIfDone()
                 //}
-                //});
+                // });
 
             },
 
@@ -188,6 +257,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                     canvas.height = img.height;
                     canvas.width = img.width;
                     ctx.drawImage(img, 0, 0);
+
                     //var dataURL = canvas.toDataURL(outputFormat || 'image/png');
                     var dataURL = canvas.toDataURL(outputFormat);
                     callback.call(this, dataURL);
@@ -199,9 +269,20 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 }
                 img.src = url;
             },
+
+            getFileExtension: function(fname) {
+                var ext = fname.substr((Math.max(0, fname.lastIndexOf(".")) || Infinity) + 1);
+                if (!ext || ext === "" || typeof ext === 'undefined') {
+                    return '.gif'
+                } else {
+                    return "." + ext
+                }
+
+            },
+
             changeLength: function(e) {
                 var target = $(e.currentTarget)
-                this.postCount = parseInt(target.val())
+                this.postCount = parseInt(target.val(), 10)
             },
             changeSubName: function(e) {
                 var target = $(e.currentTarget)
@@ -209,11 +290,13 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
             },
 
             fetchMore: function() {
-
+                var self = this
                 //$(this.el).append("<div class='loading'> </div>")
                 this.loading = true
+                clearTimeout(this.jsonpTimer);
 
                 if (this.collection.after == "stop" || this.collection.length >= this.postCount) {
+                    this.ui.statusBox.html('Downloading images')
                     this.ui.postsCount.html(this.collection.length)
                     this.ui.pendingCount.html(this.collection.length)
                     this.generateZip()
@@ -221,6 +304,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                     if (this.collection.length > 0) {
                         this.ui.postsCount.html(this.collection.length)
                     }
+
                     this.collection.fetch({
                         success: this.fetchMore,
                         error: function(data, x, y) {
@@ -228,6 +312,12 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                         },
                         remove: false
                     });
+
+                    this.jsonpTimer = setTimeout(function() {
+                        self.resetScreen()
+                        self.ui.statusBox.html('Error fetching data from subreddit')
+                    }, 2000); // assuming 2sec is the max wait time for results
+
                 }
             }
 

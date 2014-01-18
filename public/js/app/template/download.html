@@ -1,6 +1,11 @@
 
 
 <div id='downloadFrame'>
+
+<div id='downloadTitle'> 
+<h1>Download Images from Subreddit</h1>
+</div>
+
 <div class='inputContainer'>
 <label for='subName'> Subreddit: </label>
 <input type='text' id='subName' name='subName'  value= "{{subName}}" placeholder="ex:funny"  />
@@ -8,11 +13,12 @@
 <div class='inputContainer'>
 <label for='collectionLength'> Count: </label>
 <select id='collectionLength' name='collectionLength'>
+  <option selected='selected'>50</option>
   <option>100</option>
   <option>200</option>
   <option>300</option>
   <option>400</option>
-  <option selected>500</option>
+  <option>500</option>
   <option>600</option>
   <option>700</option>
   <option>800</option>
@@ -46,17 +52,16 @@
 <div class='infoBoxNum' id='errorCount'>0</div>
 </div>
 
-
 </div>
 
-
-
-<div class='footnote'>
-
-<p>*Errors occur when the domain does not have <a target='_blank' data-bypass href='http://en.wikipedia.org/wiki/Cross-origin_resource_sharing'>CORS</a> enabled</p>
+<ul class='footnote'>
+    <li>This will download all of the images in a particular subreddit.</li>
+    <li>This will only work for subreddits that contain hotlinked images.</li>
+    <li>Subreddits that contain a lot of gifs may take really really long to download</li>
+    <li>*Errors occur when the domain does not have <a target='_blank' data-bypass href='http://en.wikipedia.org/wiki/Cross-origin_resource_sharing'>CORS</a> enabled</li>
+</ul>
 </div>
 
-</div>
 
 
 
