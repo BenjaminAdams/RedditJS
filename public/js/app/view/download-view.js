@@ -83,8 +83,8 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
             },
             fetchAllPosts: function() {
                 if (this.running === false) {
-                    this.running = true
                     this.resetScreen()
+                    this.running = true
 
                     this.ui.subName.prop('disabled', true).addClass('disabledInput')
                     this.ui.subNameSelect.prop('disabled', true).addClass('disabledInput')
