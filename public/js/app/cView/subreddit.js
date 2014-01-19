@@ -2,6 +2,8 @@ define(['App', 'marionette', 'hbs!template/post-row', 'hbs!template/post-row-sma
     function(App, Marionette, PostRowTmpl, PostRowSmallTmpl, PostRowLargeTmpl, PostRowGridTmpl) {
         return Backbone.Marionette.CollectionView.extend({
             //itemView: PostRowTmpl,
+            id: 'siteTable',
+            className: 'sitetable linklisting',
             initialize: function(options) {
                 this.gridOption = options.gridOption;
                 this.setTemplate(this.gridOption)

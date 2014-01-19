@@ -37,7 +37,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 this.model.set('subName', options.subName)
                 this.manifest = '' // for keeping a detailed record of the images downloaded
                 this.running = false
-                this.postCount = 500
+                this.postCount = 100
                 this.activeDownloads = 0 //we want to limit how many images we try and download at once
                 this.downloadLimit = 14 //how many imgs we want to download at once
                 this.sortOrder = 'hot'
@@ -210,10 +210,40 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 xhr.onload = function(e) {
 
                     if (this.status == 200) {
+                        var ext;
                         self.totalImagesFound++;
                         var arrayBuffer = xhr.response;
                         if (arrayBuffer) {
-                            var ext = self.getFileExtension(imgUrl)
+                            //var binary = ''
+                            //var byteArray = new Uint8Array(arrayBuffer); 
+                            //for (var i = 0; i < byteArray.byteLength; i++) {
+                            //binary += String.fromCharCode(byteArray[i])
+                            //}
+
+                            try { //putting in try/catch because not all browsers support this
+                                var bufferInt = new Uint8Array(arrayBuffer)
+                                switch (bufferInt[0]) {
+                                    case 255:
+                                        ext = ".jpg";
+                                        break;
+                                    case 71:
+                                        ext = ".gif";
+                                        break;
+                                    case 137:
+                                        ext = ".png";
+                                        break;
+                                    case -520103681:
+                                        ext = "image/jpg";
+                                        break;
+                                    default:
+                                        ext = self.getFileExtension(imgUrl)
+                                        break;
+                                }
+                            } catch (e) {
+                                ext = self.getFileExtension(imgUrl)
+                            }
+
+                            console.log(ext, bufferInt[0], imgUrl)
                             var fileName = model.get('permalink')
                             var split = fileName.split('/')
                             fileName = split[split.length - 3] + "_" + split[split.length - 2] + "_" + split[split.length - 1]

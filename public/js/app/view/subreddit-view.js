@@ -2,6 +2,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 	function(App, _, Backbone, subredditTmpl, BaseView, SubredditCollection, SrCGridView, PostRowGridView, SrCView, PostRowView, Cookie) {
 		return BaseView.extend({
 			template: subredditTmpl,
+			//className: 'content',
 			events: {
 				'click #retry': 'tryAgain',
 				//'click .thumbnailSmall': 'gotoSingle',
@@ -13,13 +14,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
 			},
 			ui: {
-				'siteTable': '#siteTable',
+				'siteTableContainer': '#siteTableContainer',
 				'nextprev': '.nextprev',
 				'srTimeFrame': '#srTimeFrame',
 				'dropTimeFrameSR': '.drop-time-frameSR'
 			},
 			regions: {
-				'siteTable': '#siteTable'
+				'siteTableContainer': '#siteTableContainer'
 			},
 			initialize: function(options) {
 				//_.bindAll(this);
@@ -69,7 +70,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 					self.resize()
 				}));
 
-				//this.target = $("#siteTable"); //the target to test for infinite scroll
+				//this.target = $("#siteTableContainer"); //the target to test for infinite scroll
 				this.target = $(window); //the target to test for infinite scroll
 				this.loading = false;
 
@@ -165,7 +166,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 						gridOption: this.gridOption
 					})
 				}
-				this.siteTable.show(this.subredditCollectionView)
+				this.siteTableContainer.show(this.subredditCollectionView)
 			},
 			gotoSingle: function(e) {
 				var name = this.$(e.currentTarget).data('id')
@@ -256,7 +257,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				}
 
 				if (this.collection.length <= 5) {
-					this.ui.siteTable.html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
+					this.ui.siteTableContainer.html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
 				}
 				this.errorRetries++;
 

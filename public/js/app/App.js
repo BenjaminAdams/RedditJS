@@ -18,7 +18,7 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         App.addRegions({
             headerRegion: "#theHeader",
             // mainRegion: "#main",
-            mainRegion: ".content",
+            mainRegion: "#content",
             popupRegion: "#popupWindow",
             sidebarRegion: '.side',
             bottombarRegion: '#bottom-bar-container '
