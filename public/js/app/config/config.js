@@ -10,7 +10,7 @@ require.config({
         "backbone": "../lib/backbone",
         //"marionette": "../lib/marionette",
         //"marionette": "../lib/marionettev1.2.3",
-        "marionette": "../lib/marionette.v1.4.1",
+        "marionette": "../lib/marionette.1.5.1",
         //'fasterCollectioView': '../lib/marionette.FasterCollectionView',
         /* original handlebars setup */
         'handlebars': '../lib/handlebars',

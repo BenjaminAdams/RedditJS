@@ -239,11 +239,10 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                                         ext = self.getFileExtension(imgUrl)
                                         break;
                                 }
-                            } catch (e) {
+                            } catch (detectImageTypeError) {
                                 ext = self.getFileExtension(imgUrl)
                             }
 
-                            console.log(ext, bufferInt[0], imgUrl)
                             var fileName = model.get('permalink')
                             var split = fileName.split('/')
                             fileName = split[split.length - 3] + "_" + split[split.length - 2] + "_" + split[split.length - 1]
