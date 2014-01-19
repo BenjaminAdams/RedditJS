@@ -39,7 +39,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 this.running = false
                 this.postCount = 100
                 this.activeDownloads = 0 //we want to limit how many images we try and download at once
-                this.downloadLimit = 14 //how many imgs we want to download at once
+                this.downloadLimit = 23 //how many imgs we want to download at once
                 this.sortOrder = 'hot'
                 this.timeFrame = 'month'
                 this.totalImagesFound = 0
@@ -125,16 +125,21 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                         //var content = this.zip.generate();
                         try {
 
-                            var blob = new Blob([self.zip.generate({
+                            // var blob = new Blob([self.zip.generate({
+                            //     type: 'blob'
+                            // })], {
+                            //     type: "application/zip;base64"
+                            // });
+
+                            var blob = self.zip.generate({
                                 type: 'blob'
-                            })], {
-                                type: "application/zip;base64"
-                            });
+                            })
 
                             var fileSaver = saveAs(blob, "redditjs-" + self.model.get('subName') + ".zip");
                             console.log('done making zip')
+                            var totalImages = self.totalImagesFound;
                             self.resetScreen()
-                            self.ui.statusBox.html("Done")
+                            self.ui.statusBox.html("Done, created a zip with " + totalImages + " image(s)")
                         } catch (e) {
                             console.log("error:" + e)
                             self.resetScreen()
@@ -185,7 +190,6 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
 
                 var self = this
                 var imgUrl = model.get('imgUrl')
-                var ext = self.getFileExtension(imgUrl)
 
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', imgUrl, true);
@@ -221,7 +225,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                             //}
 
                             try { //putting in try/catch because not all browsers support this
-                                var bufferInt = new Uint8Array(arrayBuffer)
+                                var bufferInt = new Uint8Array(arrayBuffer, 0, 1) //we only need the first byte to detect image type
                                 switch (bufferInt[0]) {
                                     case 255:
                                         ext = ".jpg";
