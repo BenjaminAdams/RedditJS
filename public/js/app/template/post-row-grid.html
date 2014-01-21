@@ -8,6 +8,12 @@
                 {{/if}}
         </a>
         <div class='textGridTitle'>
+
+        <div class="midcol {{model.voted}} " style="width:5ex;">
+            <div class="arrow login-required upArrow {{model.upmod}}" role='button' aria-label="upvote" tabindex="0"></div>
+           <div data-id='{{model.id}}' class="arrow login-required downArrow {{model.downmod}}" role="button" aria-label="downvote" tabindex="0"></div>
+        </div>
+
                 {{#unless model.imgUrl}}
                 <img class='gridThumb' src="{{model.thumbnail}}" />
                 {{/unless}}

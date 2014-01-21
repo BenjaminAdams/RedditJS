@@ -94,7 +94,14 @@ margin-bottom: 10px;
 }
 
 .textGridTitle {
-  padding: 0 12px;
+  display: table; 
+  height: 30px; 
+  overflow: hidden;
+  margin-right: 16px;
+}
+
+.textGridTitle a {
+  display: table-cell; vertical-align: middle;
 }
 
 

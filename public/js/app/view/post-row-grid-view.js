@@ -4,11 +4,16 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
             //template: PostRowGridTmpl,
             template: BlankTmpl, //we generate the html for this view after we have the image loaded
             events: {
-                'click a': "gotoSingle"
+                'click a': "gotoSingle",
+                'click .upArrow': 'upvote',
+                'click .downArrow': 'downvote'
             },
             ui: {
                 'gridLoading': '.gridLoading',
-                'mainGridImg': '.mainGridImg'
+                'mainGridImg': '.mainGridImg',
+                upArrow: '.upArrow',
+                downArrow: '.downArrow',
+                midcol: '.midcol'
             },
             initialize: function(data) {
                 var self = this
@@ -32,38 +37,41 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     return false //so we dont render non image posts
                 }
                 //console.log('rendering grid block')
-                var newPost = $(PostRowGridTmpl({
+                this.$el.html($(PostRowGridTmpl({
                     model: this.model.attributes
-                }))
+                })))
 
                 if (this.biggerImg.split('.').pop() == 'gif') {
-                    newPost.find('.gridLoading').show()
+                    this.$el.find('.gridLoading').show()
                     //newPost.find('.gridLoading').show() //only show loading icon if its a gif
                 }
 
                 if (this.smallerImg !== false) { //only need to hover over img when we have bigger img available
-                    newPost.one("mouseenter", function() {
+                    this.$el.one("mouseenter", function() {
                         if (self.biggerImg.split('.').pop() == 'gif') {
-                            newPost.find('.gridLoading').attr('src', '/img/loading.gif')
+                            self.$el.find('.gridLoading').attr('src', '/img/loading.gif')
                             //newPost.find('.gridLoading').show() //only show loading icon if its a gif
                         }
 
                         $('<img src="' + self.biggerImg + '" />').load(function() {
 
-                            newPost.find('img').attr('src', self.biggerImg);
-                            newPost.find('.gridLoading').hide() //hide loading gif
+                            self.$el.find('img').attr('src', self.biggerImg);
+                            self.$el.find('.gridLoading').hide() //hide loading gif
                         }).error(function() {
                             console.log("ERROR loading img")
-                            newPost.find('.gridLoading').hide() //hide loading gif
+                            self.$el.find('.gridLoading').hide() //hide loading gif
                             //TODO show a failed to load img
                         });
 
                     });
                 }
 
+                //this.$el = newPost
                 //sometimes the columns are not setup yet, wait until they are
                 //TODO: fix this, bad practice
-                this.appendToShortest(newPost)
+                //this.$el.html(html);
+                this.bindUIElements();
+                this.appendToShortest(this.$el)
 
                 //var col = this.shortestCol()  //we can't do this because if we re-render this view it treats the onRender differently and theres no columns yet
                 //if (col) {
