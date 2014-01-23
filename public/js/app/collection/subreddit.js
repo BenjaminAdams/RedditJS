@@ -106,6 +106,13 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 			//reset the url to have the new after tag
 			this.instanceUrl = this.getUrl()
 			return models;
+		},
+		//checks the subreddit to make sure it has no image posts.
+		//returns true if it contains at least one image
+		hasNoImages: function() {
+			var nonImgs = this.where({
+				imgUrl: false
+			})
 		}
 
 	});

@@ -97,11 +97,14 @@ margin-bottom: 10px;
   display: table; 
   height: 30px; 
   overflow: hidden;
-  margin-right: 16px;
+  margin-right: 4px;
+
 }
 
 .textGridTitle a {
-  display: table-cell; vertical-align: middle;
+  display: table-cell; 
+  vertical-align: middle;
+  text-align: left;
 }
 
 
@@ -269,9 +272,10 @@ display: none;
 }
 
 .block {
-  width: 300px;
+  width: 291px;
   padding:2px;
   text-align: center;
+  border:1px solid #369;
   overflow: hidden;
   position: relative;
  background-color: #CEE3F8;
@@ -283,13 +287,21 @@ display: none;
           transition-duration: 0.8s;
 }
 
-.gridThumb {
-float: left;
-width: 40px;
-padding-bottom: 0px;
-margin-right: 3px;
-margin-top: 3px;
-margin:3px 3px 0px 0px;
+.gridThumb  {
+  display: table-cell;
+vertical-align: middle;
+margin-right:5px;
+padding: 5px 0;
+}
+
+.midcolGrid {
+display: table-cell;
+vertical-align: middle;
+float:none !important;
+}
+
+.mainGridImg {
+  margin-top:3px;
 }
 
 .gridLoading {

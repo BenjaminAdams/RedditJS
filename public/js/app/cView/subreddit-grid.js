@@ -5,16 +5,12 @@ define(['App', 'marionette', 'view/post-row-grid-view'],
             id: 'colContainer',
             initialize: function(options) {
                 var self = this
-                // this.on("collection:before:render", function() {
-                //     self.gridViewSetup()
-                //     console.log("the collection view is about to be rendered");
-                // });
                 App.gridImagesLoadingCount = 0 //keeps track of how many images we load at once
-
             },
             onRender: function() {
                 this.gridViewSetup()
             },
+
             gridViewSetup: function() {
                 //calculate how many columns we will have
                 var colCount = Math.floor($(document).width() / 305)

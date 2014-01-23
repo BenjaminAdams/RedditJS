@@ -24,22 +24,29 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 this.viewClosed = false //need a way to prevent the image to preload if the view is closed
                 this.attempts = 0 //how many times we attempt to render the view
                 this.allowedToRender = false
+                this.nonImg = false
                 if (this.biggerImg) { //don't preload/check for loading if the grid block does not have an img
                     this.preloadImg()
-
+                } else {
+                    this.allowedToRender = true
+                    this.biggerImg = ''
+                    this.nonImg = true
                 }
 
             },
             render: function() {
                 var self = this
 
-                if (!this.biggerImg || !this.allowedToRender || this.viewClosed === true) {
+                //if (!this.biggerImg || !this.allowedToRender || this.viewClosed === true) {
+                if (!this.allowedToRender || this.viewClosed === true) {
                     return false //so we dont render non image posts
                 }
                 //console.log('rendering grid block')
                 this.$el.html($(PostRowGridTmpl({
                     model: this.model.attributes
                 })))
+
+                this.$el.hide()
 
                 if (this.biggerImg.split('.').pop() == 'gif') {
                     this.$el.find('.gridLoading').show()
@@ -66,22 +73,24 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     });
                 }
 
-                //this.$el = newPost
-                //sometimes the columns are not setup yet, wait until they are
-                //TODO: fix this, bad practice
-                //this.$el.html(html);
-                this.bindUIElements();
-                this.appendToShortest(this.$el)
-
-                //var col = this.shortestCol()  //we can't do this because if we re-render this view it treats the onRender differently and theres no columns yet
-                //if (col) {
-                //col.append(newPost);
-                //} else {
-                //console.log('no cols available')
-                //}
+                if (this.nonImg) {
+                    setTimeout(function() {
+                        self.fakeRender()
+                    }, Math.floor((Math.random() * 1000) + 1))
+                } else {
+                    this.fakeRender()
+                }
 
                 return this
 
+            },
+            fakeRender: function() {
+                this.bindUIElements();
+                this.appendToShortest(this.$el)
+                this.$el.show()
+                if (this.nonImg === true) {
+                    this.ui.mainGridImg.hide()
+                }
             },
             //onRender: function() {  //functions like onRender() wont work when we override the render() function like here
             //},
