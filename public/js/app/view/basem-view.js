@@ -391,6 +391,24 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 			containsStr: function(needle, haystack) {
 				return (haystack.indexOf(needle) >= 0)
 			},
+
+			//puts the model in a temporary space to pass it to the single page so it loads instantly
+			gotoSingle: function(e) {
+				var self = this
+				var target = $(e.currentTarget)
+				var permalink = this.model.get('permalink')
+				var targetLink = target.attr('href')
+				if (permalink == targetLink) {
+					// console.log('it worked', this.model)
+					//I've made the choice here to pass the current model as a global so we do not have to have a long load time
+					//the single post page takes 2-3 seconds to load the get request
+					setTimeout(function() {
+						App.curModel = self.model //the small view closes too fast and is unable to pass the model to the single
+					}, 5)
+					App.curModel = this.model
+				}
+
+			},
 			//so users can hide a post/link 
 			hidePost: function(e) {
 				e.preventDefault()

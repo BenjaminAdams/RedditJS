@@ -6,7 +6,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 			events: {
 				'click #retry': 'tryAgain',
 				//'click .thumbnailSmall': 'gotoSingle',
-				'click a': 'gotoSingle',
+				//'click a': 'gotoSingle',
 				'click .nextprev': 'fetchMore',
 				//events for dropdown timeframe
 				'click .drop-time-frame': 'toggleTimeFrame',
@@ -168,12 +168,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				}
 				this.siteTableContainer.show(this.subredditCollectionView)
 			},
-			gotoSingle: function(e) {
-				var name = this.$(e.currentTarget).data('id')
-				App.curModel = this.collection.findWhere({
-					name: name
-				})
-			},
+			//gotoSingle: function(e) {
+			//var name = this.$(e.currentTarget).data('id')
+			//App.curModel = this.collection.findWhere({
+			//name: name
+			//})
+			//},
 
 			/**************Grid functions ****************/
 			initGridOption: function() {

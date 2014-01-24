@@ -39,6 +39,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 // this.isSingle = data.isSingle || false
                 if (data.isSingle && this.model.get('is_self') === false) {
                     //changes the main post link to be external instead of linking back to itself
+                    this.tmpLink = this.model.get('url')
                     this.model.set('url', this.model.get('actualUrl'))
                     this.model.set('external', 'data-bypass')
                 } else {
@@ -62,29 +63,17 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 
             },
             onRender: function() {
+
                 if (this.expand === true) {
                     this.toggleExpando()
                 }
 
             },
-
-            //puts the model in a temporary space to pass it to the single page so it loads instantly
-            gotoSingle: function(e) {
-                var self = this
-
-                var target = $(e.currentTarget)
-                var permalink = this.model.get('permalink')
-                var targetLink = target.attr('href')
-                if (permalink == targetLink) {
-                    // console.log('it worked', this.model)
-                    //I've made the choice here to pass the current model as a global so we do not have to have a long load time
-                    //the single post page takes 2-3 seconds to load the get request
-                    setTimeout(function() {
-                        App.curModel = self.model //the small view closes too fast and is unable to pass the model to the single
-                    }, 5)
-                    App.curModel = this.model
+            onBeforeClose: function() {
+                if (this.tmpLink) {
+                    this.model.set('url', this.tmpLink)
+                    this.model.set('external', '')
                 }
-
             },
 
             dragImg: function(e) {

@@ -13,7 +13,7 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
 				});
 			},
 			regions: {
-				'siteTable': '#siteTable'
+				'siteTableContainer': '#siteTableContainer'
 			},
 			initialize: function(options) {
 				_.bindAll(this);
@@ -73,7 +73,7 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
 
 			onRender: function() {
 				this.initGridOption();
-				this.siteTable.show(this.subredditCollectionView)
+				this.siteTableContainer.show(this.subredditCollectionView)
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
 
 				$(this.el).append("<div class='loading'> </div>")

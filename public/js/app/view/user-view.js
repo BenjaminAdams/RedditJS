@@ -41,7 +41,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/user', 'view/comment-view
 					itemView: CommentView,
 					gridOption: 'normal'
 				})
-				this.siteTable.show(this.subredditCollectionView)
+				this.siteTableContainer.show(this.subredditCollectionView)
 				this.fetchMore()
 
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")

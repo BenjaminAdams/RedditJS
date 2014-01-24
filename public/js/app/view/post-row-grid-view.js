@@ -200,7 +200,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                         this.hoverTimeout = setTimeout(function() {
                             console.log('closing')
                             self.ui.flatList.slideUp(800)
-                        }, 1800)
+                        }, 1400)
 
                     }
                 );
