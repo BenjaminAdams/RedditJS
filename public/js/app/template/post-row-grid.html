@@ -19,7 +19,45 @@
 
 
             {{#unless model.imgUrl}}
-                <img class='gridThumb' src="{{model.thumbnail}}" />
+                <a {{model.external}} href="{{model.url}}" target="_blank" ><img class='gridThumb' src="{{model.thumbnail}}" /></a>
                 {{/unless}}
-                <a href="{{model.permalink}}" >    {{{model.title}}}</a></div>
+                <a {{model.external}} href="{{model.url}}" >{{{model.title}}}</a></div>
+
+
+
+         <ul class="flat-list buttons">
+                <li class="first">
+                <a class="comments" href="{{model.permalink}}"  target="_blank">{{model.num_comments}} comments</a>
+                </li>
+
+                <li class="share">
+                <span class="share-button toggle"><a class="option active login-required" href="#">share</a></span></li>
+                <li>
+
+                <span class="state-button save-button" >
+                     {{#if model.saved}}
+                        <span  class='unsave' ><a href='#'>unsave</a></span>
+                        <span  class='save' style='display:none;'><a href="#" >save</a></span>
+                    {{else}}
+                        <span class='unsave' style='display:none;'><a href='#'>unsave</a></span>
+                        <span class='save'><a href="#" >save</a></span>
+                    {{/if}}
+                </span>
+                </li>
+
+                <li>
+                <span class="state-button hide-button" >
+                   <span><a href="#" class='hide'>hide</a></span>
+                </span>
+                </li>
+                <li>
+                <span class="toggle remove-button">
+                    <span class="option main active">
+                    <a href="#"  class="togglebutton report">report</a></span>
+                    <span class="option error reportConfirm">are you sure? <a href="#"  class="reportConfirmYes yes">yes</a> / <a href="#" class="no reportConfirmNo" >no</a></span>
+                </span>
+                </li>
+            </ul>
+
+
 </div>

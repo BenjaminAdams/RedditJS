@@ -67,19 +67,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 }
 
             },
-            toggleShare: function(e) {
-                e.preventDefault()
-                e.stopPropagation()
-                if (this.$('.shareLinkDown').length > 0) {
-                    this.$('.shareLinkDown')[0].remove()
-                } else {
-                    //TODO: fix ugly hack for it to select all on click
-                    var shareUrl = $("<div class='shareLinkDown'><input onclick='this.select()' type='text' value='http://redditjs.com" + this.model.get('permalink') + "' />")
-                    this.$('.flat-list').after(shareUrl)
-                    //shareUrl.delay(10).focus().select()
-                }
-
-            },
 
             //puts the model in a temporary space to pass it to the single page so it loads instantly
             gotoSingle: function(e) {
@@ -121,9 +108,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 }
 
                 if ((this.lastDragPos.x > e.originalEvent.pageX || this.lastDragPos.y > e.originalEvent.pageY) && targetWidth > this.dragImgMinWidth) {
-                    target.width(targetWidth - 40)
+                    target.width(targetWidth - 5)
                 } else {
-                    target.width(targetWidth + 40)
+                    target.width(targetWidth + 5)
                 }
 
                 clearTimeout(this.dragTimeout);

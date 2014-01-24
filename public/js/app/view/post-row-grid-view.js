@@ -6,14 +6,26 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
             events: {
                 'click a': "gotoSingle",
                 'click .upArrow': 'upvote',
-                'click .downArrow': 'downvote'
+                'click .downArrow': 'downvote',
+                'click .save': 'savePost',
+                'click .unsave': 'unSavePost',
+                'click .hide': 'hidePost',
+                'click .report': 'reportShow',
+                'click .reportConfirmYes': 'reportYes',
+                'click .reportConfirmNo': 'reportShow',
+                'click .share-button': 'toggleShare'
             },
             ui: {
                 'gridLoading': '.gridLoading',
                 'mainGridImg': '.mainGridImg',
                 upArrow: '.upArrow',
                 downArrow: '.downArrow',
-                midcol: '.midcol'
+                midcol: '.midcol',
+                'flatList': '.flat-list',
+                'reportConfirm': '.reportConfirm',
+                'reportConfirmYes': '.reportConfirmYes',
+                'save': '.save',
+                'unsave': '.unsave'
             },
             initialize: function(data) {
                 var self = this
@@ -32,6 +44,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     this.biggerImg = ''
                     this.nonImg = true
                 }
+
+                this.setupMouseover()
 
             },
             render: function() {
@@ -56,17 +70,18 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 if (this.smallerImg !== false) { //only need to hover over img when we have bigger img available
                     this.$el.one("mouseenter", function() {
                         if (self.biggerImg.split('.').pop() == 'gif') {
-                            self.$el.find('.gridLoading').attr('src', '/img/loading.gif')
+                            self.ui.gridLoading.attr('src', '/img/loading.gif')
                             //newPost.find('.gridLoading').show() //only show loading icon if its a gif
                         }
 
+                        //self.$el.find('img').attr('src', self.biggerImg);
+                        //self.$el.find('.gridLoading').hide()
                         $('<img src="' + self.biggerImg + '" />').load(function() {
-
-                            self.$el.find('img').attr('src', self.biggerImg);
-                            self.$el.find('.gridLoading').hide() //hide loading gif
+                            self.ui.mainGridImg.attr('src', self.biggerImg);
+                            self.ui.gridLoading.hide()
                         }).error(function() {
                             console.log("ERROR loading img")
-                            self.$el.find('.gridLoading').hide() //hide loading gif
+                            self.ui.gridLoading.hide() //hide loading gif
                             //TODO show a failed to load img
                         });
 
@@ -173,6 +188,23 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                         }, 5)
                     }
                 }
+            },
+            setupMouseover: function() {
+                var self = this
+
+                this.$el.hover(
+                    function() {
+                        clearInterval(this.hoverTimeout);
+                        self.ui.flatList.slideDown(100)
+                    }, function() {
+                        this.hoverTimeout = setTimeout(function() {
+                            console.log('closing')
+                            self.ui.flatList.slideUp(800)
+                        }, 1800)
+
+                    }
+                );
+
             }
 
         });

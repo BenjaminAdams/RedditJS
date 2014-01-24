@@ -212,6 +212,19 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 					this.showLoginBox()
 				}
 			}, //callback after trying to write a comment
+			toggleShare: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				if (this.$('.shareLinkDown').length > 0) {
+					this.$('.shareLinkDown')[0].remove()
+				} else {
+					//TODO: fix ugly hack for it to select all on click
+					var shareUrl = $("<div class='shareLinkDown'><input onclick='this.select()' type='text' value='http://redditjs.com" + this.model.get('permalink') + "' />")
+					this.$('.flat-list').after(shareUrl)
+					//shareUrl.delay(10).focus().select()
+				}
+
+			},
 			commentCallback: function(data) {
 				console.log('callback comment=', data)
 				CommentModel = require('model/comment') //in order to have nested models inside of models we need to do this

@@ -80,6 +80,10 @@ height:33px;
   font-size:12px;
 }
 
+#siteTableComments {
+  padding-bottom:80px;
+}
+
 
 .tabmenu-right {
 position:relative;
@@ -303,6 +307,31 @@ box-shadow: 5px 5px 4px -2px rgba(163,184,94,1);
 vertical-align: middle;
 margin-right:5px;
 padding: 5px 0;
+}
+
+.block .flat-list {
+text-align: left;
+display:none;
+margin:2px 0  0 29px;
+}
+
+.block .flat-list  a {
+color: #888;
+font-weight: bold;
+padding: 0 3px 0 0;
+}
+
+.block .flat-list  a:hover {
+text-decoration: underline;
+}
+
+.block .shareLinkDown input {
+width: 270px;
+border: 1px rgb(51,102,153) solid;
+ background-color: #E4EBF3
+  color: #222;
+padding: 2px 5px;
+
 }
 
 .midcolGrid {
@@ -812,7 +841,7 @@ z-index: 114;
   min-height:300px;
   font-size: 14px;
 }
-#downloadFrame  textarea:focus, input:focus {
+#downloadFrame  textarea:focus, #downloadFrame input:focus {
   border: 2px solid #900 !important;
   color:#FF4500 !important;
 }
