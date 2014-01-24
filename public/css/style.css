@@ -274,17 +274,28 @@ display: none;
 .block {
   width: 291px;
   padding:2px;
+  margin:5px 0;
   text-align: center;
-  border:1px solid #369;
+  /* border:1px solid #369; */
   overflow: hidden;
   position: relative;
  background-color: #CEE3F8;
   color: #222;
- -webkit-transition-duration: 0.8s;
-     -moz-transition-duration: 0.8s;
-      -ms-transition-duration: 0.8s;
-       -o-transition-duration: 0.8s;
-          transition-duration: 0.8s;
+-webkit-transition-duration: 0.8s;
+-moz-transition-duration: 0.8s;
+-ms-transition-duration: 0.8s;
+-o-transition-duration: 0.8s;
+transition-duration: 0.8s;
+-webkit-box-shadow: 6px 5px 4px -2px rgba(51,102,153,0.78);
+-moz-box-shadow: 6px 5px 4px -2px rgba(51,102,153,0.78);
+box-shadow: 6px 5px 4px -2px rgba(51,102,153,0.78);
+}
+
+.block:hover {
+  background-color: #B7D5F3;
+-webkit-box-shadow: 5px 5px 4px -2px rgba(163,184,94,1);
+-moz-box-shadow: 5px 5px 4px -2px rgba(163,184,94,1);
+box-shadow: 5px 5px 4px -2px rgba(163,184,94,1);
 }
 
 .gridThumb  {
@@ -316,7 +327,7 @@ float:none !important;
 
 
 .column {
-	width:297px;
+	width:303px;
 	margin:0px;
 	display: inline-block;
 	vertical-align: top;
