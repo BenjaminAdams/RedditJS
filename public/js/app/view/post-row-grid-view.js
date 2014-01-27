@@ -45,8 +45,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     this.nonImg = true
                 }
 
-                this.setupMouseover()
-
             },
             render: function() {
                 var self = this
@@ -188,23 +186,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                         }, 5)
                     }
                 }
-            },
-            setupMouseover: function() {
-                var self = this
-
-                this.$el.hover(
-                    function() {
-                        clearInterval(this.hoverTimeout);
-                        self.ui.flatList.slideDown(100)
-                    }, function() {
-                        this.hoverTimeout = setTimeout(function() {
-                            console.log('closing')
-                            self.ui.flatList.slideUp(800)
-                        }, 1400)
-
-                    }
-                );
-
             }
 
         });
