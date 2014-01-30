@@ -37,13 +37,13 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 this.model.set('subName', options.subName)
                 this.manifest = '' // for keeping a detailed record of the images downloaded
                 this.running = false
-                this.postCount = 100
+                this.postCount = 100 // default post count download limit
                 this.activeDownloads = 0 //we want to limit how many images we try and download at once
                 this.downloadLimit = 23 //how many imgs we want to download at once
-                this.sortOrder = 'hot'
-                this.timeFrame = 'month'
-                this.totalImagesFound = 0
-                this.totalNonImagesFound = 0
+                this.sortOrder = 'hot' //default sort order
+                this.timeFrame = 'month' //default time frame
+                this.totalImagesFound = 0 //how many images we found are attempt to download
+                this.totalNonImagesFound = 0 //keeps track of how many posts were links or self posts
 
                 //feature detection
                 try {
@@ -236,8 +236,14 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                                     case 137:
                                         ext = ".png";
                                         break;
-                                    case -520103681:
-                                        ext = "image/jpg";
+                                    case 102:
+                                        ext = ".bmp";
+                                        break;
+                                    case 73:
+                                        ext = ".tiff";
+                                        break;
+                                    case 77:
+                                        ext = ".tiff2";
                                         break;
                                     default:
                                         ext = self.getFileExtension(imgUrl)
