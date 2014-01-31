@@ -189,12 +189,12 @@ font-size: 25px;
 }
 .block {
 width: 275px;
-margin: 0px;
+
 padding: 2% 0;
 }
 
 .column {
-width: 264px;
+width: 286px;
 }
 .block img {
 max-width: 263px;
