@@ -411,6 +411,12 @@ font-size: larger;
 list-style: none;
 }
 
+#starMe {
+position: relative;
+bottom: 22px;
+float: right;
+}
+
 .blueborder {
   padding: 0 5px;
 background-color: #fafafa;
