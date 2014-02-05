@@ -961,3 +961,8 @@ margin: 5px 0 0 30px;
   font-weight: bold;
 }
 
+
+#noImgsMsg {
+  text-align: center;
+  color:blue;
+}

@@ -5,6 +5,8 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 		initialize: function(models, data) {
 			_.bindAll(this);
 
+			this.countNonImg = 0 //keeps track of how many non image based posts are in the subreddit
+
 			this.after = ""
 			this.subName = data.subName
 			this.sortOrder = data.sortOrder
@@ -60,6 +62,7 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 			}
 		},
 		parse: function(response) {
+			var self = this;
 			if (typeof response === 'undefined' || response.length === 0) {
 				return
 			}
@@ -77,7 +80,6 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 				});
 			}
 
-			var self = this;
 			var models = Array();
 			_.each(response.data.children, function(item) {
 				if (item.data.hidden === false) {
@@ -97,6 +99,10 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 					}
 
 					self.count++;
+
+					if (item.data.imgUrl === false) {
+						self.countNonImg++;
+					}
 
 					models.push(item.data)
 

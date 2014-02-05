@@ -37,6 +37,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 this.attempts = 0 //how many times we attempt to render the view
                 this.allowedToRender = false
                 this.nonImg = false
+                this.forceNonImgToRender = false
                 if (this.biggerImg) { //don't preload/check for loading if the grid block does not have an img
                     this.preloadImg()
                 } else {
@@ -44,6 +45,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     this.biggerImg = ''
                     this.nonImg = true
                 }
+
+                App.on('showNonImgs', this.triggerNonImgShow, this)
 
             },
             render: function() {
@@ -53,6 +56,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 if (!this.allowedToRender || this.viewClosed === true) {
                     return false //so we dont render non image posts
                 }
+
+                if (App.settings.get('displaySelf') === true && !this.biggerImg) {
+                    //return false
+                }
+
                 //console.log('rendering grid block')
                 this.$el.html($(PostRowGridTmpl({
                     model: this.model.attributes
@@ -65,7 +73,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     //newPost.find('.gridLoading').show() //only show loading icon if its a gif
                 }
 
-                if (this.smallerImg !== false) { //only need to hover over img when we have bigger img available
+                if (this.smallerImg !== false && this.nonImg === false) { //only need to hover over img when we have bigger img available
                     this.$el.one("mouseenter", function() {
                         if (self.biggerImg.split('.').pop() == 'gif') {
                             self.ui.gridLoading.attr('src', '/img/loading.gif')
@@ -89,7 +97,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 if (this.nonImg) {
                     setTimeout(function() {
                         self.fakeRender()
-                    }, Math.floor((Math.random() * 1000) + 1))
+                    }, 1)
                 } else {
                     this.fakeRender()
                 }
@@ -100,16 +108,26 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
             fakeRender: function() {
                 this.bindUIElements();
                 this.appendToShortest(this.$el)
-                this.$el.show()
-                if (this.nonImg === true) {
-                    this.ui.mainGridImg.hide()
+
+                if (this.nonImg === false || App.settings.get('hideSelf') === false) {
+                    this.$el.show()
+                } else {
+                    //this.$el.css('visibility', 'hidden').show()
+                    this.$el.hide()
                 }
+
+            },
+            triggerNonImgShow: function() {
+                this.$el.show()
+                //this.$el.css('visibility', 'visible')
             },
             //onRender: function() {  //functions like onRender() wont work when we override the render() function like here
             //},
             onBeforeClose: function() {
                 App.off("gridView:imageLoaded", this.preloadImg)
                 this.viewClosed = true
+
+                this.$el.off("mouseenter")
 
             },
             preloadImg: function() {

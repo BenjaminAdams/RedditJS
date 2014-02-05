@@ -282,7 +282,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 }
             },
             loadSettingsFromCookies: function() {
-                var checkboxes = new Array("btmbar", "cmtLoad", "customCSS", "showSidebar", "infin");
+                var checkboxes = new Array("btmbar", "cmtLoad", "customCSS", "showSidebar", "infin", 'hideSelf');
                 var selectboxes = new Array('linkCount')
 
                 for (var i in checkboxes) {
