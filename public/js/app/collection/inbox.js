@@ -58,46 +58,52 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 	*/
 		parse: function(response) {
 			//set the after for pagination
-			this.after = response.data.after;
-			console.log('response=', response)
 
-			if (this.after === "" || this.after === null) {
-				this.after = "stop" //tells us we have finished downloading all of the possible posts in this subreddit
-			}
+			if (typeof response !== 'undefined' && typeof response.data !== 'undefined') {
 
-			var modhash = response.data.modhash;
-			if (typeof modhash == "string" && modhash.length > 5) {
-				$.cookie('modhash', modhash, {
-					path: '/'
-				});
-			}
+				this.after = response.data.after;
+				console.log('response=', response)
 
-			var self = this;
-			var models = Array();
-			_.each(response.data.children, function(item) {
-
-				if ((self.count % 2) === 0) {
-					item.data.evenOrOdd = "even"
-				} else {
-					item.data.evenOrOdd = "odd"
+				if (this.after === "" || this.after === null) {
+					this.after = "stop" //tells us we have finished downloading all of the possible posts in this subreddit
 				}
 
-				item.data.body_html = (typeof item.data.body_html === 'undefined') ? '' : $('<div/>').html(item.data.body_html).text();
+				var modhash = response.data.modhash;
+				if (typeof modhash == "string" && modhash.length > 5) {
+					$.cookie('modhash', modhash, {
+						path: '/'
+					});
+				}
 
-				var timeAgo = moment.unix(item.data.created).fromNow(true) //"true" removes the "ago"
-				timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
-				item.data.timeAgo = timeAgo
-				item.data.timeUgly = moment.unix(item.data.created).format()
-				item.data.timePretty = moment.unix(item.data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
+				var self = this;
+				var models = Array();
+				_.each(response.data.children, function(item) {
 
-				models.push(item.data)
+					if ((self.count % 2) === 0) {
+						item.data.evenOrOdd = "even"
+					} else {
+						item.data.evenOrOdd = "odd"
+					}
 
-			});
+					item.data.body_html = (typeof item.data.body_html === 'undefined') ? '' : $('<div/>').html(item.data.body_html).text();
 
-			//reset the url to have the new after tag
-			this.instanceUrl = this.getUrl()
-			console.log('returning models=', models)
-			return models;
+					var timeAgo = moment.unix(item.data.created).fromNow(true) //"true" removes the "ago"
+					timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
+					item.data.timeAgo = timeAgo
+					item.data.timeUgly = moment.unix(item.data.created).format()
+					item.data.timePretty = moment.unix(item.data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
+
+					models.push(item.data)
+
+				});
+
+				//reset the url to have the new after tag
+				this.instanceUrl = this.getUrl()
+				console.log('returning models=', models)
+				return models;
+			} else {
+				return response
+			}
 		}
 
 	});
