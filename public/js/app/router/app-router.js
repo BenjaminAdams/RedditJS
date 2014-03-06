@@ -14,10 +14,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 //so you can link users to a subreddit with a particular view.  Ex:  http://redditjs.com/r/aww#grid
                 if (window.location.hash) {
                     var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-                    if (hash == 'grid' || hash == 'small' || hash == 'large' || hash == 'normal')
+                    if (hash === 'grid' || hash === 'small' || hash === 'large' || hash === 'normal') {
                         $.cookie('gridOption', hash, {
                             path: '/'
                         });
+                    }
+
                 }
 
                 App.headerRegion.show(new HeaderView());

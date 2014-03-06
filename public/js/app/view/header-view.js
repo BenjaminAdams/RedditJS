@@ -53,7 +53,23 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				this.srDisplay.show(new SRDisplay())
 				this.displayMySubreddits()
 
+				this.checkHashOpt()
+
 			},
+
+			checkHashOpt: function() {
+				if (window.location.hash) {
+					var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+					if (hash === "hideOpts") {
+						setTimeout(function() {
+							$('.tabmenu-right').hide()
+						})
+
+					}
+
+				}
+			},
+
 			showMobileOptions: function() {
 				this.ui.tabmenu.slideToggle()
 			},
