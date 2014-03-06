@@ -25,7 +25,7 @@ define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/commen
 				data.editedTimeAgo = timeAgo
 			}
 
-			data.score = +data.ups + parseInt(data.downs, 10)
+			data.score = +data.ups - parseInt(data.downs, 10)
 			data.scoreUp = +data.score + 1
 			data.scoreDown = +data.score - 1
 
