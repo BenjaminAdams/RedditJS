@@ -5,7 +5,7 @@ body {
 }
 
 #header-nav-logo-area {
-top: 36px;
+top: 22px;
 min-width:600px;
 padding:0px;
 }
@@ -72,11 +72,17 @@ text-align: left;
 }
 
 #sr-header-area {
-font-size: 25px;
-height: 35px;
-line-height: 35px;
+font-size: 16px;
+height: 21px;
+line-height: 22px;
+border-bottom:none;
 }
 
+#theHeader .fa{
+font-size:18px;
+margin:0 5px;
+cursor: pointer;
+}
 
 .tabmenu li {
 font-size: 40px;
@@ -105,7 +111,17 @@ margin:5px;
     float:right;
     cursor:pointer;
     margin-right: 5px;
+    position:relative;
 }
+
+#mobileCenter {
+    position:absolute;
+    top:2px;
+    right:50%;
+    width:75px;
+}
+
+
 
 .tabmenu {
 display:none;
@@ -131,7 +147,7 @@ position: relative;
 }
 
 #userbar-logged-in {
-    font-size:20px;
+    font-size:16px;
 }
 
 #header-img {
@@ -144,15 +160,83 @@ position: relative;
 }
 
 .md {
-font-size: 20px;
+font-size: 15px;
 }
 
 .tagline, .comment .score,.comment .collapsed {
-font-size: 19px;
+font-size: 12px;
 }
 
-.arrow, #mail {
-    zoom:1.7;
+.midcol .score {
+    font-size:16px;
+}
+
+#mail {
+top: 1px;
+zoom: 1.5;
+margin-right: 3px;
+margin-left: 7px;
+}
+
+#hotornew {
+float: left;
+position: relative;
+height: 25px;
+width: 34px;
+z-index: 9999999999;
+}
+
+#hotornew:hover .mdropdown {
+    display:block;
+}
+#mobileChangeView {
+float:right;
+position: relative;
+height: 25px;
+width: 34px;
+z-index: 9999999999;
+}
+
+#mSortPickerBox {
+    left:-66px;
+}
+
+#mViewPickerBox {
+    right:-66px;
+}
+
+#mobileUserBar {
+    float:right;
+}
+
+.mdropdown {
+    display:none;
+    position:absolute;
+    top:21px;
+    text-align: center;
+    border:1px solid #5F99CF;
+
+}
+
+.mdropdown .selected {
+    color:red !important;
+}
+
+.mdropdown li {
+background: #CEE3F8;
+list-style: none;
+padding: 4px 12px;
+font-size: 20px;
+margin: 0 3px;
+clear: both;
+}
+
+li.dditem {
+margin: 0;
+}
+ li ul li {
+float: none;
+display: inline;
 }
 
 .comment .midcol {
@@ -169,7 +253,7 @@ border: none;
 }
 
 .link .title {
-font-size: 25px;
+font-size: 16px;
 }
 
 #thepost .entry  {
@@ -181,7 +265,7 @@ font-size: 25px;
 }
 
 .entry  {
-    font-size:20px;
+    font-size:14px;
 }
 
 .arrowNav {

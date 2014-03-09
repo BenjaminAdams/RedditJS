@@ -1,5 +1,5 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view/basem-view', 'model/user-about', 'cookie'],
-	function(App, $, _, Backbone, UserbarTmpl, BaseView, UserModel, Cookie) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view/basem-view', 'model/user-about', 'hbs!template/userbar-mobile', 'cookie'],
+	function(App, $, _, Backbone, UserbarTmpl, BaseView, UserModel, MobileUserbarTmpl, Cookie) {
 		return BaseView.extend({
 			template: UserbarTmpl,
 			events: {
@@ -14,6 +14,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 			initialize: function(data) {
 				_.bindAll(this);
 				var self = this
+
+				if (data.mobile === true) {
+					this.template = MobileUserbarTmpl
+					this.tagName = 'span'
+				}
 
 				if (this.checkIfLoggedIn() === true) {
 					var localstorageUsr = $.totalStorage('userinfo')
@@ -36,7 +41,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 				}
 
 				if (window.production === false) {
-					var str = '<a class="pref-lang" href="/test">test </a> | '
+					var str = '<a class="pref-lang" href="/test" title="test"><i class="fa fa-truck"></i></a>'
 					this.ui.mail.before(str)
 				}
 			},

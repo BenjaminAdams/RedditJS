@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view/sidebar-view', 'collection/my-subreddits', 'model/sidebar', 'event/channel'],
-    function(App, _, Backbone, Marionette, HeaderView, SidebarView, MySubredditsCollection, SidebarModel, channel) {
+define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view/sidebar-view', 'collection/my-subreddits', 'model/sidebar', 'event/channel', 'view/mobile-header'],
+    function(App, _, Backbone, Marionette, HeaderView, SidebarView, MySubredditsCollection, SidebarModel, channel, MobileHeaderView) {
 
         var AppRouter = Backbone.Marionette.AppRouter.extend({
             initialize: function(options) {
@@ -22,7 +22,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 }
 
-                App.headerRegion.show(new HeaderView());
+                //App.headerRegion.show(new HeaderView());
+                App.headerRegion.show(new MobileHeaderView());
+
             },
             routes: {
                 'r/myrandom(/)': 'myrandom',
