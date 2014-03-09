@@ -28,6 +28,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'r/myrandom(/)': 'myrandom',
                 'r/:subName/submit(/)': 'submit',
                 'submit(/)': 'submit',
+                'embed(/)': 'embed',
                 'prefs(/)': 'prefs',
                 'test(/)': 'test',
                 'subreddits(/)': 'subreddits',
@@ -233,6 +234,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 console.log('in TEST view')
                 require(['view/test'], function(TestView) {
                     App.mainRegion.show(new TestView())
+                });
+            },
+            embed: function() {
+                console.log('in embed view')
+                require(['view/embed'], function(EmbedView) {
+                    App.mainRegion.show(new EmbedView())
                 });
             },
             //loads a random subreddit that the user is subscribed to
