@@ -28,7 +28,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'r/myrandom(/)': 'myrandom',
                 'r/:subName/submit(/)': 'submit',
                 'submit(/)': 'submit',
-                'embed(/)': 'embed',
+                'embed/*q': 'embed', //ex http://redditjs.com/embed/url=http://dudelol.com/now-that-youre-big-dr-suess-style-sex-ed-book&as=4&fffff=123
                 'prefs(/)': 'prefs',
                 'test(/)': 'test',
                 'subreddits(/)': 'subreddits',
@@ -236,10 +236,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     App.mainRegion.show(new TestView())
                 });
             },
-            embed: function() {
+            embed: function(q) {
                 console.log('in embed view')
                 require(['view/embed'], function(EmbedView) {
-                    App.mainRegion.show(new EmbedView())
+                    App.mainRegion.show(new EmbedView({
+                        q: q
+                    }))
                 });
             },
             //loads a random subreddit that the user is subscribed to
