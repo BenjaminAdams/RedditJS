@@ -22,6 +22,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 				} else {
 					this.model.set('display_name_for_download', this.model.get('display_name'))
 				}
+
+				App.on("resized", this.resize, this);
+
 			},
 			onRender: function() {
 				console.log('sidebar rendered')
@@ -94,7 +97,16 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 
 				//now render the login view
 				//this.loginView.render();
-			}
+			},
+			resize: function() {
+
+				if (App.mobileWidth > $(document).width()) {
+					$('.side').hide()
+				} else if (App.settings.get('showSidebar') === true) {
+					$('.side').show()
+				}
+
+			},
 
 		});
 		return SidebarView;

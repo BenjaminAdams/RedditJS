@@ -65,10 +65,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
 					self.watchScroll()
 				}));
-				$(window).resize(this.debouncer(function(e) {
-
-					self.resize()
-				}));
+				//$(window).resize(this.debouncer(function(e) {
+				//self.resize()
+				//}));
 
 				//this.target = $("#siteTableContainer"); //the target to test for infinite scroll
 				this.target = $(window); //the target to test for infinite scroll
@@ -88,7 +87,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				console.log('closing subreddit-view')
 				//window.stop() //prevents new images from being downloaded
 
-				$(window).off('resize');
+				//$(window).off('resize');
 				$(window).off("scroll");
 
 				App.off("subreddit:changeGridOption", this.changeGridOption, this);
@@ -145,7 +144,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				}
 
 				this.hideMoarBtn()
-				this.resize()
+				//this.resize()
 				this.helpFillUpScreen();
 			},
 			toggleTimeFrame: function() {
@@ -186,8 +185,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				this.gridOption = $.cookie('gridOption');
 				if (typeof this.gridOption === 'undefined' || this.gridOption === null || this.gridOption === "") {
 					this.gridOption = 'normal'
-				} else if (this.gridOption == "large") {
-					this.resize()
 				}
 
 			},
@@ -201,29 +198,15 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 			},
 
 			resize: function() {
-				if (this.gridOption == "large") {
 
-					var docWidth = $(document).width()
-					var newWidth = 0;
-					if (docWidth > App.mobileWidth) {
-						newWidth = docWidth - 355;
-					} else {
-						newWidth = docWidth;
-					}
+				//if (App.settings.get('showSidebar') === true && this.gridOption != "grid") {
 
-					console.log('newwidth=', newWidth)
-
-					$('#dynamicWidth').html(' <style> .large-img {max-width: ' + newWidth + 'px;} </style>');
-				}
-
-				if (App.settings.get('showSidebar') === true && this.gridOption != "grid") {
-
-					if (App.mobileWidth > $(document).width()) {
-						$('.side').hide()
-					} else {
-						$('.side').show()
-					}
-				}
+				//if (App.mobileWidth > $(document).width()) {
+				//$('.side').hide()
+				//} else {
+				//$('.side').show()
+				//}
+				//}
 
 			},
 
@@ -244,7 +227,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
 				//this.subredditCollectionView.close()  //we don't need to close view before showing new one
 				this.setupCollectionView()
-				this.resize()
+				//this.resize()
 				this.helpFillUpScreen()
 
 			},

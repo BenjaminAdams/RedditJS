@@ -56,6 +56,13 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				this.checkHashOpt()
 
 			},
+			onBeforeClose: function() {
+				App.off("header:update", this.updateHeader, false);
+				App.off("login", this.updateSubreddits, false); //so we update the users subreddits after they login
+				App.off("header:updateSortOrder", this.updateSortOrder, false);
+				App.off("header:refreshSubreddits", this.refreshSubreddits, false);
+				App.off('header:showLoginBox', this.showLoginPopup, false);
+			},
 
 			checkHashOpt: function() {
 				if (window.location.hash) {

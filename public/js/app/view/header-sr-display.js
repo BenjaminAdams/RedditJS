@@ -24,6 +24,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 			onRender: function() {
 
 			},
+			onBeforeClose: function() {
+				App.off('header-sr-display:toggle', this.toggleDropdown)
+			},
 			toggleDropdown: function() {
 				var self = this
 

@@ -22,8 +22,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 }
 
-                //App.headerRegion.show(new HeaderView());
-                App.headerRegion.show(new MobileHeaderView());
+                this.currentHeader = null
+
+                this.initHeader()
 
             },
             routes: {
@@ -294,6 +295,58 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     // })
                 }
             },
+
+            initHeader: function() {
+                var self = this
+                if (App.isMobile() === true) {
+                    this.setMobileHeader()
+                } else {
+                    this.setRegularHeader()
+                }
+
+                var resizeFunction = _.debounce(function(e) {
+
+                    console.log('resizing')
+
+                    App.trigger('resized') //tells other views the page has been resized
+
+                    var docWidth = $(document).width()
+                    if (docWidth > App.mobileWidth && self.currentHeader === 1) {
+                        self.setRegularHeader()
+                    } else if (docWidth < App.mobileWidth && self.currentHeader === 0) {
+                        self.setMobileHeader()
+                    }
+
+                }, 50); // Maximum run of once per 500 milliseconds
+
+                // Add the event listener
+                window.addEventListener("resize", resizeFunction, false);
+
+                // $(window).resize(this.debouncer(function(e) {
+                //     console.log('resizing')
+                //     var docWidth = $(document).width()
+                //     if (docWidth > App.mobileWidth && self.currentHeader === 1) {
+                //         self.setRegularHeader()
+                //     } else if (docWidth < App.mobileWidth && self.currentHeader === 0) {
+                //         self.setMobileHeader()
+                //     }
+
+                // }));
+
+            },
+            setRegularHeader: function() {
+                console.log('set regular header')
+                this.currentHeader = 0
+                //App.headerRegion.close()
+                App.headerRegion.show(new HeaderView());
+            },
+            setMobileHeader: function() {
+                console.log('set mobile header')
+                this.currentHeader = 1
+                //App.headerRegion.close()
+                App.headerRegion.show(new MobileHeaderView());
+            },
+
             loadSettingsFromCookies: function() {
                 var checkboxes = new Array("btmbar", "cmtLoad", "customCSS", "showSidebar", "infin", 'hideSelf');
                 var selectboxes = new Array('linkCount')

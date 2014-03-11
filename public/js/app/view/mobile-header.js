@@ -15,7 +15,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				'siteTable': '#siteTable',
 				'nextprev': '.nextprev',
 				'headerImg': '#header-img',
-				'pagenameA': '#pagename-a',
+				//'pagenameA': '#pagename-a',
 				'hot': '.hot',
 				'New': '.new',
 				'rising': '.rising',
@@ -74,6 +74,15 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				});
 
 			},
+
+			onBeforeClose: function() {
+				App.off("header:update", this.updateHeader, false);
+				App.off("login", this.updateSubreddits, false); //so we update the users subreddits after they login
+				App.off("header:updateSortOrder", this.updateSortOrder, false);
+				App.off("header:refreshSubreddits", this.refreshSubreddits, false);
+				App.off('header:showLoginBox', this.showLoginPopup, false);
+			},
+
 			toggleDropDown: function(e) {
 				console.log('closing driopdown')
 				var target = this.$(e.currentTarget)
@@ -115,8 +124,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 			updateHeader: function(model) {
 				this.model = model
 				//this.userbar.render()
-				this.ui.pagenameA.prop("href", model.get('rname'))
-				this.ui.pagenameA.text(model.get('display_name'))
+				//this.ui.pagenameA.prop("href", model.get('rname'))
+				//this.ui.pagenameA.text(model.get('display_name'))
 
 				this.ui.hot.prop("href", model.get('rname'))
 				this.ui.New.prop("href", model.get('rname') + "/new")

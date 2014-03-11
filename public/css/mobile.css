@@ -1,12 +1,12 @@
 @media (max-width: 900px) {
 
 body {
-    min-width: 600px;
+    min-width: 400px;
 }
 
 #header-nav-logo-area {
 top: 22px;
-min-width:600px;
+min-width:400px;
 padding:0px;
 }
 
@@ -60,11 +60,6 @@ font-size: 33px;
 
 #dspTypeRadio label {
 display:block;
-}
-
-#categoryList li {
-font-size: 22px;
-text-align: left;
 }
 
 #sr-more-link {
@@ -282,6 +277,20 @@ width: 286px;
 }
 .block img {
 max-width: 263px;
+}
+
+#srLeftContainer {
+    width:35%;
+}
+
+#categoryList li {
+font-size: 12px;
+text-align: left;
+}
+
+#innerSR {
+max-width: 63%;
+width: 63%;
 }
 
 

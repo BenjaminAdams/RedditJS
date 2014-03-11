@@ -44,15 +44,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/user', 'view/comment-view
 				this.siteTableContainer.show(this.subredditCollectionView)
 				this.fetchMore()
 
-				$(this.el).prepend("<style id='dynamicWidth'> </style>")
-
 				$(this.el).append("<div class='loading'> </div>")
-				$(window).resize(this.debouncer(function(e) {
-					self.resize()
-				}));
-				this.resize()
 
 			},
+
 			toggleDropdown: function() {
 				this.$('.drop-choices-user').toggle()
 			},
