@@ -1,9 +1,10 @@
+   
     <span id="userbar-logged-in" >
-        <span class="user">
+        <span class="user" id='loggedIn'>
             
             <a href="/user/{{name}}/" title='{{name}} {{link_karma}} / {{comment_karma}}'><i class="fa fa-user"></i></a>
             <a class="nohavemail" href="/message/inbox/" id="mail" title="no new mail">messages</a>
-            <a class="pref-lang" href="/prefs/"><i class="fa fa-cog orange"></i></a>
+             <a class="pref-lang" href="/prefs/"><i class="fa fa-cog orange"></i></a>
 
         <form class="logout hover" >
                 <a href="#" title='logout'><i class="fa fa-sign-out purple"></i></a>
@@ -11,7 +12,8 @@
         </span>
  </span>
  <span id='loggedOut'>
-            <div id="userbar-logged-out"><span class="user">want to join? <a class="login-required" href="#">login or register</a> in seconds</span></div>
+             <a class="pref-lang" href="/prefs/"><i class="fa fa-cog orange"></i></a>
+            <span id='signInUserbar' class="fa fa-sign-in blue"></span>
         </div>
 </span>
 

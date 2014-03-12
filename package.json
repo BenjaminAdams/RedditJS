@@ -28,7 +28,8 @@
         "express": "3.x",
         "request": "*",
         "async": "0.2.x",
-        "handlebars": "*"
+        "handlebars": "*",
+        "passport-reddit": "*"
     },
     "devDependencies": {
         "express": "3.x",

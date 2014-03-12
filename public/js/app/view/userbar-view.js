@@ -3,7 +3,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 		return BaseView.extend({
 			template: UserbarTmpl,
 			events: {
-				'click .logout': 'logout'
+				'click .logout': 'logout',
+				'click #signInUserbar': 'showOathLogin'
 			},
 			ui: {
 				'loggedIn': '#loggedIn',
@@ -45,6 +46,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 					this.ui.mail.before(str)
 				}
 			},
+
+			showOathLogin: function() {
+				console.log('show oath login form')
+			},
+
 			showLoggedIn: function() {
 				this.model = new UserModel($.cookie('username'));
 				this.model.fetch({
