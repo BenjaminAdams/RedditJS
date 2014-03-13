@@ -1,13 +1,28 @@
 // DEPENDENCIES
 // ============
-var express = require("express"),
-    http = require("http"),
-    port = (process.env.PORT || 8002),
-    server = module.exports = express();
+var express = require("express")
+var http = require("http")
+var port = (process.env.PORT || 8002)
+var server = module.exports = express();
 var fs = require("fs");
-//var request = require('request');
+var passport = require('passport')
+crypto = require('crypto')
+var RedditStrategy = require('passport-reddit').Strategy;
+
+/*how to add heroku config variables
+heroku config:add REDDIT_KEY=
+heroku config:add REDDIT_SECRET=
+
+
+*/
+
+var REDDIT_CONSUMER_KEY = "--insert-reddit-consumer-key-here--";
+var REDDIT_CONSUMER_SECRET = "--insert-reddit-consumer-secret-here--";
+
+console.log('env=', process.env.REDDIT_KEY)
 
 var api = require('./api')
+var oauth = require('./oauth')
 
 // SERVER CONFIGURATION
 // ====================
@@ -29,6 +44,21 @@ server.configure(function() {
 
     server.use(express.bodyParser());
     server.use(server.router);
+
+    passport.use(new RedditStrategy({
+            clientID: REDDIT_CONSUMER_KEY,
+            clientSecret: REDDIT_CONSUMER_SECRET,
+            callbackURL: "http://127.0.0.1:3000/auth/reddit/callback"
+        },
+        function(accessToken, refreshToken, profile, done) {
+            User.findOrCreate({
+                redditId: profile.id
+            }, function(err, user) {
+                return done(err, user);
+            });
+        }
+    ));
+
 });
 
 server.get('/api', function(req, res) {
