@@ -121,10 +121,13 @@ server.get('/auth/reddit', function(req, res, next) {
 //   which, in this example, will redirect the user to the home page.
 server.get('/auth/reddit/callback', function(req, res, next) {
     // Check for origin via state token
-    console.log('got callback from reddit...req.session.state=', req.session.state)
+    console.log('got callback from reddit...req.query=', req.query)
     if (req.query.state == req.session.state) {
 
+        req.session.code = req.query.code
         //request users info at: https://oauth.reddit.com/api/v1/me.json
+
+        api.oauthGet(res, req)
 
         passport.authenticate('reddit', {
             successRedirect: '/',
@@ -138,6 +141,9 @@ server.get('/auth/reddit/callback', function(req, res, next) {
 
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
+
+    console.log('user=', req.user)
+
     fs.createReadStream(__dirname + "/../public/index.html").pipe(res);
 });
 

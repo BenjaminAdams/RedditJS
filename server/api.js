@@ -89,6 +89,54 @@ module.exports = {
 		});
 
 	},
+	oauthGet: function(res, req) {
+
+		//var url = require('url');
+
+		//var url_parts = url.parse(req.url, true);
+		//var urlStr = url_parts.query.url
+		//var cookie = url_parts.query.cookie
+		//var queryParams = url_parts.path.replace('/api/?url=', '');
+		//queryParams = queryParams.replace(urlStr, '')
+
+		//delete queryParams.url;
+		//queryParams = this.ltrim(queryParams, '&');
+
+		//https://oauth.reddit.com/api/v1/me.json
+		//urlStr = 'https://oauth.reddit.com/' + urlStr + '?' + queryParams.toString();
+		urlStr = 'https://oauth.reddit.com/api/v1/me.json'
+
+		var options = {
+			url: urlStr,
+			headers: {
+				//Cookie: 'reddit_session=' + cookie,
+				authorization_code: req.session.state
+				//req.session.state
+
+			}
+			//form: url_parts.query,
+		}
+
+		request.get(options, function(error, response, body) {
+			if (error) {
+				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
+					res.send(response.statusCode)
+				} else {
+					res.send(500)
+				}
+				return
+			}
+
+			if (!error && response.statusCode == 200 || response.statusCode == 304) {
+				console.log('SUCCESS=', body)
+				//res.json(JSON.parse(body))
+			} else {
+				console.log('SUCCESS=', body)
+				//res.send(response.statusCode)
+			}
+		});
+
+	},
 	getTitle: function(res, req) {
 
 		var url = require('url');
