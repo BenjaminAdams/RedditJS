@@ -31,8 +31,10 @@ passport.serializeUser(function(user, done) {
     done(null, user);
 });
 
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
+passport.deserializeUser(function(id, done) {
+    UserDB.findById(id, function(err, user) {
+        done(err, user);
+    });
 });
 
 passport.use(new RedditStrategy({
@@ -42,7 +44,8 @@ passport.use(new RedditStrategy({
         //callbackURL: "http://redditjs.com/auth/reddit/callback"
     },
     function(accessToken, refreshToken, profile, done) {
-        console.log('profile=', profile)
+        //console.log('profile=', profile)
+        profile.token = accessToken //set the recently updated access token
 
         UserDB.update({
             name: profile.name
@@ -54,17 +57,14 @@ passport.use(new RedditStrategy({
                 console.log('error=', err)
             }
 
-            usr.token = accessToken;
-            usr.save(function(err, usr, num) {
-                if (err) {
-                    console.log('error saving token');
-                }
-            });
+            console.log('usr=', usr)
+
             process.nextTick(function() {
                 // To keep the example simple, the user's Reddit profile is returned to
                 // represent the logged-in user.  In a typical application, you would want
                 // to associate the Reddit account with a user record in your database,
                 // and return that user instead.
+
                 return done(null, profile);
             });
         });
