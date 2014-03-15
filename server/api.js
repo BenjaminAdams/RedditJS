@@ -119,6 +119,7 @@ module.exports = {
 
 		request.get(options, function(error, response, body) {
 			if (error) {
+				console.log('ERROR=', error)
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
 					res.send(response.statusCode)
 				} else {

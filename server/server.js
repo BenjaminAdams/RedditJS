@@ -8,6 +8,8 @@ var fs = require("fs");
 var passport = require('passport')
 var crypto = require('crypto')
 var RedditStrategy = require('passport-reddit').Strategy;
+var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY;
+var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET;
 
 /*
 //reddit Oauth docs: https://github.com/reddit/reddit/wiki/OAuth2
@@ -20,10 +22,8 @@ for your local env run
     export REDDIT_SECRET='your secret'
     export SESSION_SECERET='make up some random string'
 */
-
-var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY;
-var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET;
-
+var db = require('./db').getDB()
+var UserDB = require('./models/user')
 var api = require('./api')
 //var oauth = require('./oauth')
 
@@ -42,17 +42,34 @@ passport.use(new RedditStrategy({
         //callbackURL: "http://redditjs.com/auth/reddit/callback"
     },
     function(accessToken, refreshToken, profile, done) {
-        // asynchronous verification, for effect...
-        process.nextTick(function() {
+        console.log('profile=', profile)
 
-            // To keep the example simple, the user's Reddit profile is returned to
-            // represent the logged-in user.  In a typical application, you would want
-            // to associate the Reddit account with a user record in your database,
-            // and return that user instead.
-            return done(null, profile);
+        UserDB.update({
+            name: profile.name
+        }, profile, {
+            upsert: true
+        }, function(err, usr) {
+
+            if (err) {
+                console.log('error=', err)
+            }
+
+            usr.token = accessToken;
+            usr.save(function(err, usr, num) {
+                if (err) {
+                    console.log('error saving token');
+                }
+            });
+            process.nextTick(function() {
+                // To keep the example simple, the user's Reddit profile is returned to
+                // represent the logged-in user.  In a typical application, you would want
+                // to associate the Reddit account with a user record in your database,
+                // and return that user instead.
+                return done(null, profile);
+            });
         });
-    }
-));
+
+    }));
 
 // SERVER CONFIGURATION
 // ====================
@@ -127,7 +144,7 @@ server.get('/auth/reddit/callback', function(req, res, next) {
         req.session.code = req.query.code
         //request users info at: https://oauth.reddit.com/api/v1/me.json
 
-        api.oauthGet(res, req)
+        //  api.oauthGet(res, req)
 
         passport.authenticate('reddit', {
             successRedirect: '/',
@@ -142,7 +159,11 @@ server.get('/auth/reddit/callback', function(req, res, next) {
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
 
-    console.log('user=', req.user)
+    //console.log('user=', passport)
+
+    passport.serializeUser(null, function(user) {
+        console.log('user=', user)
+    })
 
     fs.createReadStream(__dirname + "/../public/index.html").pipe(res);
 });

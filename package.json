@@ -32,7 +32,8 @@
     "async": "0.2.x",
     "handlebars": "*",
     "passport-reddit": "*",
-    "passport": "~0.2.0"
+    "passport": "~0.2.0",
+    "mongoose": "~3.8.8"
   },
   "devDependencies": {
     "express": "3.x",
