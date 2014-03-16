@@ -12,13 +12,17 @@ var db = require('./db').getDB()
 //var connect = require('connect');
 //var SessionStore = require("session-mongoose")(connect);
 var MongoStore = require('connect-mongo')(express);
+
+//store: new mongoStore({ host: 'session_server', port: 27017, db: 'seesion', collection: 'sessions' })
 var store = new MongoStore({
     //db: db,
     db: 'sessions',
-    auto_reconnect: true
+    auto_reconnect: true,
+    stringify: false
 });
 
-var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
+// var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
+var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
 var callbackURL = "http://localhost:8002/auth/reddit/callback"
 var loginAgainMsg = 'login to reddit please'
 
@@ -133,9 +137,13 @@ server.configure(function() {
 });
 
 server.get('/api', ensureAuthenticated, function(req, res) {
-
     api.get(res, req)
 });
+
+server.get('/me', ensureAuthenticated, function(req, res) {
+    api.get(res, req)
+});
+
 server.post('/api', ensureAuthenticated, function(req, res) {
     api.post(res, req)
 });
@@ -238,8 +246,8 @@ function ensureAuthenticated(req, res, next) {
 function refreshToken(req, res, next) {
     var now = Math.round(+new Date() / 1000)
 
-    // if (now < req.user.tokenExpires) {
-    if (false) {
+    if (now < req.user.tokenExpires) {
+        //if (false) {
         console.log('token is NOT expired')
         return next(true)
     } else {
@@ -311,11 +319,11 @@ function refreshToken(req, res, next) {
                         next(false)
                     }
 
-                    console.log('usr=', usr)
-
                     // req.session = usr
-                    req.session.tokenExpires = values.tokenExpires
-                    req.session.token = values.token
+                    req.user.tokenExpires = values.tokenExpires
+                    req.user.token = values.access_token
+
+                    console.log('SESSION', req.session)
 
                     process.nextTick(function() { //wait for the access token to be in the DB
                         return next(true)
