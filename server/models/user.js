@@ -1,0 +1,71 @@
+var mongoose = require('mongoose');
+
+var schema = new mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    name: {
+        type: String,
+        required: true
+    },
+    link_karma: {
+        type: Number,
+        required: true
+    },
+    comment_karma: {
+        type: Number,
+        required: true
+    },
+    created: {
+        type: Number,
+        required: true
+    },
+    created_utc: {
+        type: Number,
+        required: true
+    },
+    over_18: {
+        type: Boolean,
+        required: true
+    },
+    is_gold: {
+        type: Boolean,
+        required: true
+    },
+    is_mod: {
+        type: Boolean,
+        required: true
+    },
+    has_verified_email: {
+        type: Boolean,
+        required: false
+    },
+    token: {
+        type: String,
+        required: false
+    }
+});
+
+module.exports = mongoose.model('User', schema);
+
+//example model
+// name: 'armastevs',
+// created: 1267808541,
+// created_utc: 1267808541,
+// link_karma: 1660,
+// comment_karma: 861,
+// over_18: true,
+// is_gold: true,
+// is_mod: true,
+// has_verified_email: true,
+// id: '3x80r'
+
+//findOne example
+// UserDB.findOne({
+//     name: profile.name
+// }, function(err, usr) {
+
+//     console.log('user in findOne=', usr)
+
+//     process.nextTick(function() {
+//         return done(null, profile);
+//     });
+// });
