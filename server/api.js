@@ -2,6 +2,9 @@ var fs = require("fs");
 var request = require('request');
 var async = require('async');
 
+var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY;
+var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET;
+
 module.exports = {
 
 	get: function(res, req) {
@@ -10,25 +13,53 @@ module.exports = {
 
 		var url_parts = url.parse(req.url, true);
 		var urlStr = url_parts.query.url
-		var cookie = url_parts.query.cookie
 		var queryParams = url_parts.path.replace('/api/?url=', '');
 		queryParams = queryParams.replace(urlStr, '')
 
 		delete queryParams.url;
 		queryParams = this.ltrim(queryParams, '&');
 
-		urlStr = 'http://api.reddit.com/' + urlStr + '?' + queryParams.toString();
+		//urlStr = 'https://oauth.reddit.com/' + urlStr + '?' + queryParams.toString() + '&token=' + req.user.token;
+		urlStr = 'https://oauth.reddit.com/r/funny.json'
+		//urlStr = 'https://oauth.reddit.com/api/v1/me'
+		var authorization = "Basic " + Buffer("" + REDDIT_CONSUMER_KEY + ":" + REDDIT_CONSUMER_SECRET).toString('base64');
+		//console.log('AUTHORIZATION=', authorization)
+		//console.log('id and secret=', REDDIT_CONSUMER_KEY + ":" + REDDIT_CONSUMER_SECRET)
+		// var post_headers = {
+		// 	//'Content-Type': 'application/x-www-form-urlencoded',
+		// 	'Authorization': authorization,
+		// 	//'Authorization': "bearer " + req.user.token,
+		// 	'authToken': req.user.token,
+		// 	'access_token': req.user.token,
+		// 	'token': req.user.token
+		// };
+
+		console.log('url=', urlStr)
 
 		var options = {
 			url: urlStr,
+			//url: 'https://oauth.reddit.com/api/v1/me',
 			headers: {
-				Cookie: 'reddit_session=' + cookie,
+				//'Content-Type': 'application/x-www-form-urlencoded',
+				'User-Agent': 'RedditJS username:' + req.user.name,
+				//'Authorization': authorization,
+				'Authorization': "bearer " + req.user.token,
+				'authToken': req.user.token,
+				'access_token': req.user.token,
+				'token': req.user.token
 
 			},
-			form: url_parts.query,
+			form: url_parts.query
 		}
 
+		console.log('user =', req.user)
+
+		//this._request("POST", this._getAccessTokenUrl(), post_headers, post_data, null, function(error, data, response) {
+
+		//DATA https://ssl.reddit.com/api/v1/access_token { 'Content-Type': 'application/x-www-form-urlencoded',Authorization: 'Basic d0hBUWo2UEFEZzcxbkE6QWhubEpxdHBuY0Vuakt0WU5ORWRmbGdFdVZB'}grant_type = authorization_code & redirect_uri = http % 3A % 2F % 2Flocalhost % 3A8002 % 2Fauth % 2Freddit % 2Fcallback & type = web_server & code = Fa3JgiVgDsaB7hCD0dFcbunxVb0 null
+
 		request.get(options, function(error, response, body) {
+			//request.get(urlStr, post_headers, function(error, response, body) {
 			if (error) {
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
 					res.send(response.statusCode)
@@ -37,6 +68,8 @@ module.exports = {
 				}
 				return
 			}
+
+			console.log('body=', body)
 
 			if (!error && response.statusCode == 200 || response.statusCode == 304) {
 				res.json(JSON.parse(body))

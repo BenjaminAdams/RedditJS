@@ -56,7 +56,7 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 			var linkCount = App.settings.get('linkCount')
 
 			if (typeof username !== "undefined" && this.forceJSONP === false) {
-				return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + this.timeFrame + "&cookie=" + $.cookie('reddit_session');
+				return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + this.timeFrame
 			} else {
 				return "http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
 			}

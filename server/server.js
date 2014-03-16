@@ -7,6 +7,14 @@ var server = module.exports = express();
 var fs = require("fs");
 var passport = require('passport')
 var crypto = require('crypto')
+
+var connect = require('connect');
+var SessionStore = require("session-mongoose")(connect);
+var store = new SessionStore({
+    url: "mongodb://localhost/redditjs",
+    sweeper: false //store sessions forever
+});
+
 var RedditStrategy = require('passport-reddit').Strategy;
 var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY;
 var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET;
@@ -28,11 +36,24 @@ var api = require('./api')
 //var oauth = require('./oauth')
 
 passport.serializeUser(function(user, done) {
+    console.log('inside of serializeUser', user)
     done(null, user);
+    //done(null, user._id);
 });
 
-passport.deserializeUser(function(id, done) {
-    UserDB.findById(id, function(err, user) {
+passport.deserializeUser(function(User, done) {
+    //console.log('inside of deserializeUser id=', User)
+
+    // UserDB.findById(id, function(err, user) {
+    //     done(err, user);
+    // });
+
+    UserDB.findOne({
+        name: User.name
+    }, function(err, user) {
+
+        console.log('I found this user=', user)
+
         done(err, user);
     });
 });
@@ -90,9 +111,19 @@ server.configure(function() {
     }
 
     server.use(express.cookieParser());
+    // server.use(express.session({
+    //     secret: process.env.SESSION_SECRET
+    // }));
+
+    // configure session provider with mongodb
     server.use(express.session({
-        secret: process.env.SESSION_SECRET
+        store: store,
+        secret: process.env.SESSION_SECRET,
+        cookie: {
+            maxAge: 99999999999
+        }
     }));
+
     server.use(express.logger());
     server.use(express.bodyParser());
     server.use(express.methodOverride());
@@ -103,16 +134,31 @@ server.configure(function() {
 
 });
 
-server.get('/api', function(req, res) {
+server.get('/api', ensureAuthenticated, function(req, res) {
+
     api.get(res, req)
 });
-server.post('/api', function(req, res) {
+server.post('/api', ensureAuthenticated, function(req, res) {
     api.post(res, req)
 });
 
 //requests the <title> tag of any given URL, used for the submit page
 server.get('/api/getTitle', function(req, res) {
     api.getTitle(res, req)
+});
+
+server.get('/login', function(req, res) {
+    res.send(200, 'plz login <a href="/auth/reddit" >login herehere</a>')
+});
+
+//handles all other requests to the backbone router
+server.get("/test", ensureAuthenticated, function(req, res) {
+
+    //console.log('user=', passport)
+
+    console.log('req.user=', req.user)
+
+    res.json(req.user)
 });
 
 //Oauth routes
@@ -127,7 +173,9 @@ server.get('/auth/reddit', function(req, res, next) {
     req.session.state = crypto.randomBytes(32).toString('hex');
     passport.authenticate('reddit', {
         state: req.session.state,
+        scope: 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread',
         duration: 'permanent' //permanent or temporary
+        //duration: 'temporary' //permanent or temporary
     })(req, res, next);
 });
 
@@ -159,12 +207,6 @@ server.get('/auth/reddit/callback', function(req, res, next) {
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
 
-    //console.log('user=', passport)
-
-    passport.serializeUser(null, function(user) {
-        console.log('user=', user)
-    })
-
     fs.createReadStream(__dirname + "/../public/index.html").pipe(res);
 });
 
@@ -185,6 +227,11 @@ console.log('\nWelcome to redditjs.com!\nPlease go to http://localhost:' + port 
 // }
 
 function ensureAuthenticated(req, res, next) {
+
+    console.log('before req.isAuthenticated')
+
+    console.log(req.isAuthenticated())
+
     if (req.isAuthenticated()) {
         return next();
     }

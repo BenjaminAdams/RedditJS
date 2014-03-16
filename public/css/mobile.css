@@ -229,6 +229,11 @@ clear: both;
 li.dditem {
 margin: 0;
 }
+
+li.dditem a:hover {
+    color:#FF8B60;
+}
+
  li ul li {
 float: none;
 display: inline;
