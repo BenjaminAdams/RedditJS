@@ -14,7 +14,7 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 
 			var username = $.cookie('username')
 			if (typeof username !== "undefined") {
-				return "/api/?url=comments/" + this.id + ".json" + sortOrderStr + "&cookie=" + $.cookie('reddit_session');
+				return "/api/?url=comments/" + this.id + ".json" + sortOrderStr
 			} else {
 				//use jsonp if user is not logged in
 				return "http://api.reddit.com/comments/" + this.id + ".json?jsonp=?" + sortOrderStr

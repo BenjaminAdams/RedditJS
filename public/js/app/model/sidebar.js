@@ -15,7 +15,7 @@ define(['underscore', 'backbone', 'jquery', 'moment'], function(_, Backbone, $) 
 
 					return 'http://api.reddit.com/.json?jsonp=?';
 				} else {
-					return "/api/?url=r/" + this.subName + "/about.json&cookie=" + $.cookie('reddit_session');
+					return "/api/?url=r/" + this.subName + "/about.json"
 				}
 			} else {
 

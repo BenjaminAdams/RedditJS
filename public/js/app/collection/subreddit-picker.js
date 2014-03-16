@@ -16,7 +16,7 @@ define(['App', 'backbone', "moment"], function(App, Backbone) {
 				return 'http://www.reddit.com/subreddits.json?after=' + this.after + "&jsonp=?"
 			} else {
 				//http://www.reddit.com/subreddits/search.json?q=test
-				console.log('http://www.reddit.com/subreddits.json?q=' + this.searchQ + '&after=' + this.after + "&jsonp=?")
+
 				return 'http://www.reddit.com/subreddits/search.json?q=' + this.searchQ + '&after=' + this.after + "&jsonp=?"
 			}
 		},

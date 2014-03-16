@@ -1,5 +1,5 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view/basem-view', 'model/user-about', 'hbs!template/userbar-mobile', 'cookie'],
-	function(App, $, _, Backbone, UserbarTmpl, BaseView, UserModel, MobileUserbarTmpl, Cookie) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view/basem-view', 'model/user-about', 'hbs!template/userbar-mobile', 'cookie', 'localstorage'],
+	function(App, $, _, Backbone, UserbarTmpl, BaseView, UserModel, MobileUserbarTmpl, Cookie, Localstorage) {
 		return BaseView.extend({
 			template: UserbarTmpl,
 			events: {
@@ -79,6 +79,16 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 				e.stopPropagation()
 				App.trigger("logout");
 				this.showLoggedOut()
+
+				$.removeCookie('username', {
+					path: '/'
+				});
+
+				//localStorage.removeItem('subreddits');
+				//localStorage.removeItem('userinfo');
+				$.totalStorage.deleteItem('userinfo')
+				$.totalStorage.deleteItem('subreddits')
+
 			}
 		});
 

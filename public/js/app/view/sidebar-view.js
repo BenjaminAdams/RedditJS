@@ -1,5 +1,5 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view/basem-view', 'view/login-view', 'model/sidebar', 'cookie'],
-	function(App, $, _, Backbone, SidebarTmpl, BaseView, LoginView, SidebarModel, Cookie) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view/basem-view', 'model/sidebar', 'cookie'],
+	function(App, $, _, Backbone, SidebarTmpl, BaseView, SidebarModel, Cookie) {
 		var SidebarView = BaseView.extend({
 			events: {
 				'submit #search': 'gotoSearch',
@@ -28,13 +28,13 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 			},
 			onRender: function() {
 				console.log('sidebar rendered')
-				this.loadLoginView()
+				//this.loadLoginView()
 				if (this.subName == "front") {
 					//this.model.set('header_img', 'img/logo.png')
 					this.model.set('isFront', true)
 					this.$('.titlebox').hide()
 				}
-				this.loadLoginView()
+				//this.loadLoginView()
 				App.trigger("header:update", this.model);
 				App.trigger('submit:type', this.model.get('submission_type'))
 				if (App.settings.get('showSidebar') === false) {
@@ -93,7 +93,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 
 			},
 			loadLoginView: function() {
-				this.theLogin.show(new LoginView())
+				//this.theLogin.show(new LoginView())
 
 				//now render the login view
 				//this.loginView.render();
@@ -106,7 +106,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 					$('.side').show()
 				}
 
-			},
+			}
 
 		});
 		return SidebarView;

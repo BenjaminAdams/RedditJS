@@ -102,7 +102,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'view/basem-view'
                 } else {
                     self.ui.urlDetails.html('please enter a valid url').removeClass('loadingSubmit')
                 }
-            },
+            }
 
         });
     });
