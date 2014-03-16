@@ -5,15 +5,22 @@ var http = require("http")
 var port = (process.env.PORT || 8002)
 var server = module.exports = express();
 var fs = require("fs");
+var request = require('request')
 var passport = require('passport')
 var crypto = require('crypto')
-
-var connect = require('connect');
-var SessionStore = require("session-mongoose")(connect);
-var store = new SessionStore({
-    url: "mongodb://localhost/redditjs",
-    sweeper: false //store sessions forever
+var db = require('./db').getDB()
+//var connect = require('connect');
+//var SessionStore = require("session-mongoose")(connect);
+var MongoStore = require('connect-mongo')(express);
+var store = new MongoStore({
+    //db: db,
+    db: 'sessions',
+    auto_reconnect: true
 });
+
+var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
+var callbackURL = "http://localhost:8002/auth/reddit/callback"
+var loginAgainMsg = 'login to reddit please'
 
 var RedditStrategy = require('passport-reddit').Strategy;
 var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY;
@@ -30,30 +37,21 @@ for your local env run
     export REDDIT_SECRET='your secret'
     export SESSION_SECERET='make up some random string'
 */
-var db = require('./db').getDB()
+
 var UserDB = require('./models/user')
 var api = require('./api')
 //var oauth = require('./oauth')
 
 passport.serializeUser(function(user, done) {
-    console.log('inside of serializeUser', user)
     done(null, user);
     //done(null, user._id);
 });
 
 passport.deserializeUser(function(User, done) {
-    //console.log('inside of deserializeUser id=', User)
-
-    // UserDB.findById(id, function(err, user) {
-    //     done(err, user);
-    // });
 
     UserDB.findOne({
         name: User.name
     }, function(err, user) {
-
-        console.log('I found this user=', user)
-
         done(err, user);
     });
 });
@@ -61,12 +59,14 @@ passport.deserializeUser(function(User, done) {
 passport.use(new RedditStrategy({
         clientID: REDDIT_CONSUMER_KEY,
         clientSecret: REDDIT_CONSUMER_SECRET,
-        callbackURL: "http://localhost:8002/auth/reddit/callback"
+        callbackURL: callbackURL
         //callbackURL: "http://redditjs.com/auth/reddit/callback"
     },
     function(accessToken, refreshToken, profile, done) {
         //console.log('profile=', profile)
         profile.token = accessToken //set the recently updated access token
+        profile.refreshToken = refreshToken
+        profile.tokenExpires = Math.round(+new Date() / 1000) + (60 * 59) //expires one hour from now, with one minute to spare
 
         UserDB.update({
             name: profile.name
@@ -112,7 +112,7 @@ server.configure(function() {
 
     server.use(express.cookieParser());
     // server.use(express.session({
-    //     secret: process.env.SESSION_SECRET
+    //     secret: process.env.SESSION_SECRET  //using sessions in memory
     // }));
 
     // configure session provider with mongodb
@@ -123,13 +123,11 @@ server.configure(function() {
             maxAge: 99999999999
         }
     }));
-
     server.use(express.logger());
     server.use(express.bodyParser());
     server.use(express.methodOverride());
     server.use(passport.initialize());
     server.use(passport.session());
-
     server.use(server.router);
 
 });
@@ -147,17 +145,8 @@ server.get('/api/getTitle', function(req, res) {
     api.getTitle(res, req)
 });
 
-server.get('/login', function(req, res) {
-    res.send(200, 'plz login <a href="/auth/reddit" >login herehere</a>')
-});
-
-//handles all other requests to the backbone router
-server.get("/test", ensureAuthenticated, function(req, res) {
-
-    //console.log('user=', passport)
-
+server.get("/whoami", ensureAuthenticated, function(req, res) {
     console.log('req.user=', req.user)
-
     res.json(req.user)
 });
 
@@ -169,11 +158,12 @@ server.get("/test", ensureAuthenticated, function(req, res) {
 //   will redirect the user back to this application at /auth/reddit/callback
 //
 //   Note that the 'state' option is a Reddit-specific requirement.
-server.get('/auth/reddit', function(req, res, next) {
+server.get('/login', function(req, res, next) {
     req.session.state = crypto.randomBytes(32).toString('hex');
     passport.authenticate('reddit', {
         state: req.session.state,
-        scope: 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread',
+        //authorizationURL: 'https://ssl.reddit.com/api/v1/authorize.compact',
+        scope: scope,
         duration: 'permanent' //permanent or temporary
         //duration: 'temporary' //permanent or temporary
     })(req, res, next);
@@ -195,9 +185,8 @@ server.get('/auth/reddit/callback', function(req, res, next) {
         //  api.oauthGet(res, req)
 
         passport.authenticate('reddit', {
-            successRedirect: '/',
-            //failureRedirect: '/login'
-            failureRedirect: '/auth/reddit'
+            successRedirect: '/redirectBack',
+            failureRedirect: '/login'
         })(req, res, next);
     } else {
         next(new Error(403));
@@ -228,12 +217,118 @@ console.log('\nWelcome to redditjs.com!\nPlease go to http://localhost:' + port 
 
 function ensureAuthenticated(req, res, next) {
 
-    console.log('before req.isAuthenticated')
-
-    console.log(req.isAuthenticated())
-
     if (req.isAuthenticated()) {
-        return next();
+
+        refreshToken(req, res, function(isExpired) {
+            if (isExpired === true) {
+                return next();
+            } else {
+                res.send(419, loginAgainMsg)
+            }
+        })
+
+    } else {
+
+        res.send(419, loginAgainMsg)
+        //res.redirect('/login'); 
     }
-    res.redirect('/login');
+
+}
+
+function refreshToken(req, res, next) {
+    var now = Math.round(+new Date() / 1000)
+
+    // if (now < req.user.tokenExpires) {
+    if (false) {
+        console.log('token is NOT expired')
+        return next(true)
+    } else {
+        console.log('token is expired, lets refresh!')
+
+        var authorization = "Basic " + Buffer("" + REDDIT_CONSUMER_KEY + ":" + REDDIT_CONSUMER_SECRET).toString('base64');
+
+        var params = {
+            "client_id": REDDIT_CONSUMER_KEY,
+            "client_secret": REDDIT_CONSUMER_SECRET,
+            "grant_type": 'refresh_token',
+            "refresh_token": req.user.refreshToken,
+            'scope': scope,
+            'duration': 'permanent',
+            "redirect_uri": callbackURL
+
+        }
+
+        var options = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            url: 'https://ssl.reddit.com/api/v1/access_token?',
+            headers: {
+                'User-Agent': 'RedditJS/1.0 by ' + req.user.name,
+                'Authorization': authorization
+            },
+            form: params,
+        };
+
+        // $post = array(
+        //        "client_id" => $clientId,
+        //        "client_secret" => $clientSecret,
+        //        "grant_type" => "refresh_token",
+        //        "refresh_token" => "STORED_REFRESH_TOKEN_VALUE",
+        //        "scope" => "identity",
+        //        "state" => "WHATEVER_VALUE",
+        //        "duration" => "temporary",          
+        //        "redirect_uri" => "https://example.com/reddit",
+        //    );
+
+        request.post(options, function(error, response, body) {
+            //console.log('resp=', response)
+            if (error) {
+                res.send(419, loginAgainMsg)
+                return
+            } else if (!error && response.statusCode == 200 || response.statusCode == 304) {
+
+                // res.json(JSON.parse(body))
+
+                //set a new access token
+
+                console.log(JSON.parse(body))
+                //res.json(JSON.parse(body))
+
+                var values = JSON.parse(body)
+
+                values.tokenExpires = (now + values.expires_in) - 60 //give it 60 seconds grace time
+
+                console.log('updating refresh token user=', req.user, values)
+
+                UserDB.update({
+                    name: req.user.name
+                }, values, {
+                    upsert: true
+                }, function(err, usr) {
+
+                    if (err) {
+                        console.log('error saving user=', err)
+                        res.send(419, loginAgainMsg)
+                        next(false)
+                    }
+
+                    console.log('usr=', usr)
+
+                    // req.session = usr
+                    req.session.tokenExpires = values.tokenExpires
+                    req.session.token = values.token
+
+                    process.nextTick(function() { //wait for the access token to be in the DB
+                        return next(true)
+                    });
+
+                });
+
+            } else {
+                res.send(419, loginAgainMsg)
+            }
+
+        });
+
+    }
+
 }

@@ -16,12 +16,10 @@
   "bugs": {
     "url": "https://github.com/BoilerplateMVC/Marionette-Require-Boilerplate/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/BoilerplateMVC/Marionette-Require-Boilerplate/blob/master/LICENSE-MIT"
-    }
-  ],
+  "licenses": [{
+    "type": "MIT",
+    "url": "https://github.com/BoilerplateMVC/Marionette-Require-Boilerplate/blob/master/LICENSE-MIT"
+  }],
   "engines": {
     "node": "0.10.17",
     "npm": "1.3.9"
@@ -35,7 +33,7 @@
     "passport": "~0.2.0",
     "mongoose": "~3.8.8",
     "connect": "~2.14.2",
-    "session-mongoose": "~0.4.1"
+    "connect-mongo": "~0.4.0"
   },
   "devDependencies": {
     "express": "3.x",

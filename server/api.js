@@ -10,7 +10,6 @@ module.exports = {
 	get: function(res, req) {
 
 		var url = require('url');
-
 		var url_parts = url.parse(req.url, true);
 		var urlStr = url_parts.query.url
 		var queryParams = url_parts.path.replace('/api/?url=', '');

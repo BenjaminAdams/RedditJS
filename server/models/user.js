@@ -41,10 +41,19 @@ var schema = new mongoose.Schema({
     token: {
         type: String,
         required: false
+    },
+    refreshToken: {
+        type: String,
+        required: true
+    },
+    tokenExpires: {
+        type: Number,
+        required: true
     }
 });
 
 module.exports = mongoose.model('User', schema);
+//module.exports = mongoose.model('sessions', schema);
 
 //example model
 // name: 'armastevs',

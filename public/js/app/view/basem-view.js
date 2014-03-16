@@ -12,7 +12,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 					var cookie = $.cookie('reddit_session');
 
 					$.ajax({
-						url: "/api?url=" + url + "&cookie=" + cookie,
+						url: "/api?url=" + url,
 						type: type,
 						dataType: "json",
 						data: params,

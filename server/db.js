@@ -9,7 +9,7 @@ db.once('open', function callback() {
 module.exports = {
 
     getDB: function() {
-        return db;
+        return mongoose.createConnection()
     }
 
 }
