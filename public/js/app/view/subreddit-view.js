@@ -239,6 +239,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 					this.showMoarBtn()
 				}
 
+				if (error && error.status === 419) {
+					console.log('show them the relogin modal')
+				}
+
 				if (this.collection.length <= 5) {
 					this.ui.siteTableContainer.html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
 				}

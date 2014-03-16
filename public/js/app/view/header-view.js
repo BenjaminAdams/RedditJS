@@ -37,6 +37,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				_.bindAll(this);
 				App.on("header:update", this.updateHeader, this);
 				App.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
+				App.on("logout", this.updateSubreddits, this);
 				App.on("header:updateSortOrder", this.updateSortOrder, this);
 				App.on("header:refreshSubreddits", this.refreshSubreddits, this);
 				App.on('header:showLoginBox', this.showLoginPopup, this)
@@ -59,6 +60,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			onBeforeClose: function() {
 				App.off("header:update", this.updateHeader, false);
 				App.off("login", this.updateSubreddits, false); //so we update the users subreddits after they login
+				App.off("logout", this.updateSubreddits, false);
 				App.off("header:updateSortOrder", this.updateSortOrder, false);
 				App.off("header:refreshSubreddits", this.refreshSubreddits, false);
 				App.off('header:showLoginBox', this.showLoginPopup, false);
@@ -87,16 +89,20 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				}
 
 			},
-
+			//no longer using this popup, sending user directly to login reddit page
 			showLoginPopup: function(e) {
 				var self = this
 				if (e) {
 					e.preventDefault()
 					e.stopPropagation();
 				}
-				require(['view/login-popup-view'], function(LoginPopupView) {
-					self.popupWindow.show(new LoginPopupView())
-				});
+				//require(['view/login-popup-view'], function(LoginPopupView) {
+				//self.popupWindow.show(new LoginPopupView())
+				//});
+				//require(['view/oauth'], function(OauthPopupView) {
+				//self.popupWindow.show(new OauthPopupView())
+				//});
+
 			},
 
 			updateHeader: function(model) {
@@ -178,6 +184,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			updateSubreddits: function() {
 				App.subreddits.mine.reset()
 				//query the api for /me.json
+
 				App.subreddits.mine.fetch();
 			},
 			toggleDropdown: function() {

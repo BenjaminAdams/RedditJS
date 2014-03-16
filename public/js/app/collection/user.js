@@ -24,9 +24,9 @@ define(['App', 'backbone', 'model/single', 'model/comment', "moment"], function(
 			//http://api.reddit.com/user/armastevs.json
 			if (this.after.length < 3) {
 
-				return '/api/?url=user/' + this.username + ".json&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+				return '/api/?url=user/' + this.username + ".json&sort=" + this.sortOrder
 			} else {
-				return '/api/?url=user/' + this.username + ".json&after=" + this.after + "&sort=" + this.sortOrder + "&cookie=" + $.cookie('reddit_session');
+				return '/api/?url=user/' + this.username + ".json&after=" + this.after + "&sort=" + this.sortOrder
 			}
 		},
 		parse: function(response) {

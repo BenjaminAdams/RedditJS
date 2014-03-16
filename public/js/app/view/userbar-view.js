@@ -4,7 +4,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 			template: UserbarTmpl,
 			events: {
 				'click .logout': 'logout',
-				'click #signInUserbar': 'showOathLogin'
+				'click #userbar-logged-out': 'showOathLogin'
+				//'click #signInUserbar': 'showOathLogin'
 			},
 			ui: {
 				'loggedIn': '#loggedIn',
@@ -49,6 +50,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 
 			showOathLogin: function() {
 				console.log('show oath login form')
+				this.showLoginBox()
 			},
 
 			showLoggedIn: function() {

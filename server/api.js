@@ -22,13 +22,14 @@ module.exports = {
 		//urlStr = 'https://oauth.reddit.com/r/funny.json'
 		//urlStr = 'https://oauth.reddit.com/api/v1/me'
 
+		console.log(urlStr)
+
 		var options = {
 			url: urlStr,
 			headers: {
 				//'Content-Type': 'application/x-www-form-urlencoded',
 				'User-Agent': 'RedditJS/1.0 by ' + req.user.name,
 				'Authorization': "bearer " + req.user.token,
-
 			},
 			form: url_parts.query
 		}

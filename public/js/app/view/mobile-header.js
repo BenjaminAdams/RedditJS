@@ -41,6 +41,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				_.bindAll(this);
 				App.on("header:update", this.updateHeader, this);
 				App.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
+				App.on("logout", this.updateSubreddits, this);
 				App.on("header:updateSortOrder", this.updateSortOrder, this);
 				App.on("header:refreshSubreddits", this.refreshSubreddits, this);
 				App.on('header:showLoginBox', this.showLoginPopup, this)
@@ -78,6 +79,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 			onBeforeClose: function() {
 				App.off("header:update", this.updateHeader, false);
 				App.off("login", this.updateSubreddits, false); //so we update the users subreddits after they login
+				App.off("logout", this.updateSubreddits, false);
 				App.off("header:updateSortOrder", this.updateSortOrder, false);
 				App.off("header:refreshSubreddits", this.refreshSubreddits, false);
 				App.off('header:showLoginBox', this.showLoginPopup, false);

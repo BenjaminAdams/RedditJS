@@ -9,7 +9,6 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 			},
 			api: function(url, type, params, callback) {
 				if (this.checkIfLoggedIn() === true || params.byPassAuth === true) {
-					var cookie = $.cookie('reddit_session');
 
 					$.ajax({
 						url: "/api?url=" + url,
@@ -17,6 +16,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 						dataType: "json",
 						data: params,
 						success: function(data) {
+							console.log('SUCCESS=', data)
 							callback(data)
 						},
 						error: function(data) {
@@ -485,7 +485,21 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 
 			},
 			showLoginBox: function() {
-				App.trigger('header:showLoginBox')
+				//App.trigger('header:showLoginBox')
+				var currentRoute = Backbone.history.fragment || '/'
+
+				//$.cookie('redirect', window.location.href, {
+				//path: '/'
+				//});
+				$.cookie('redirect', currentRoute, {
+					path: '/'
+				});
+
+				setTimeout(function() {
+					console.log('cur location', currentRoute)
+					window.location = "/login"
+				}, 5)
+
 			}
 		});
 

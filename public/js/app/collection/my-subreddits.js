@@ -20,8 +20,8 @@ define(['App', 'backbone', 'model/single', 'localstorage'], function(App, Backbo
 			if (typeof $.cookie('username') !== 'undefined') {
 				return "/api/?url=reddits/mine.json&limit=100&cookie=" + $.cookie('reddit_session');
 			} else {
-				return "/api/?url=subreddits.json"
-				//return 'http://api.reddit.com/subreddits.json&jsonp=?'
+				//return "/api/?url=subreddits.json"
+				return 'http://api.reddit.com/subreddits.json?jsonp=?'
 			}
 		},
 		//so we have the attributes in the root of the model

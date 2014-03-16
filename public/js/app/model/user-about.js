@@ -1,5 +1,5 @@
 define(['underscore', 'backbone', 'jquery', 'localstorage'], function(_, Backbone, $, Localstorage) {
-	var UserAbout = Backbone.Model.extend({
+	return Backbone.Model.extend({
 		initialize: function(data) {
 			this.username = data
 		},
@@ -32,5 +32,4 @@ define(['underscore', 'backbone', 'jquery', 'localstorage'], function(_, Backbon
 		}
 
 	});
-	return UserAbout;
 });

@@ -141,7 +141,14 @@ server.get('/api', ensureAuthenticated, function(req, res) {
 });
 
 server.get('/me', ensureAuthenticated, function(req, res) {
-    api.get(res, req)
+    UserDB.findOne({
+        name: req.user.name
+    }, function(err, user) {
+        if (err) {
+            res.send(419, err)
+        }
+        res.json(200, user)
+    });
 });
 
 server.post('/api', ensureAuthenticated, function(req, res) {
@@ -245,6 +252,8 @@ function ensureAuthenticated(req, res, next) {
 
 function refreshToken(req, res, next) {
     var now = Math.round(+new Date() / 1000)
+
+    //  res.send(419, loginAgainMsg)
 
     if (now < req.user.tokenExpires) {
         //if (false) {

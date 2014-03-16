@@ -197,9 +197,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
 			/**************Fetching functions ****************/
 			fetchError: function(response, error) {
-				console.log("fetch error, this probly happened because you navigated away")
-
-				$(this.el).html("<div id='retry' >  <div class='loading'></div> </div> ")
+				console.log('error=', error)
+				if (error && error.status === 419) {
+					console.log('show them the relogin modal')
+				}
+				//$(this.el).html("<div id='retry' >  <div class='loading'></div> </div> ")
+				$(this.el).html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
 
 			},
 			tryAgain: function() {

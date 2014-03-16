@@ -34,6 +34,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'embed/*q': 'embed', //ex http://redditjs.com/embed/url=http://dudelol.com/now-that-youre-big-dr-suess-style-sex-ed-book&as=4&fffff=123
                 'prefs(/)': 'prefs',
                 'test(/)': 'test',
+                'redirectBack(/)': 'redirectBack',
                 'subreddits(/)': 'subreddits',
                 'subreddits(/):q': 'subreddits',
                 '(:sortOrder)(/)': 'home',
@@ -263,6 +264,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     }
 
                 }, 100)
+            },
+            //after the user returns from an Oauth login, send them to this view to "log them in"
+            redirectBack: function() {
+                require(['view/redirect'], function(RedirectView) {
+                    App.mainRegion.show(new RedirectView())
+                });
             },
 
             /*   Util functions
