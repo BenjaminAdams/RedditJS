@@ -114,10 +114,10 @@ server.configure(function() {
         }));
     }
 
-    //server.use(express.cookieParser());
-    server.use(express.session({
-        secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'  //using sessions in memory
-    }));
+    server.use(express.cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
+    // server.use(express.session({
+        // secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'  //using sessions in memory
+    // }));
 
     // configure session provider with mongodb
     server.use(express.session({
