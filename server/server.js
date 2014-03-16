@@ -114,15 +114,15 @@ server.configure(function() {
         }));
     }
 
-    server.use(express.cookieParser());
-    // server.use(express.session({
-    //     secret: process.env.SESSION_SECRET  //using sessions in memory
-    // }));
+    //server.use(express.cookieParser());
+    server.use(express.session({
+        secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'  //using sessions in memory
+    }));
 
     // configure session provider with mongodb
     server.use(express.session({
         store: store,
-        secret: process.env.SESSION_SECRET,
+        secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f',
         cookie: {
             maxAge: 99999999999
         }
