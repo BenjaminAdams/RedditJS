@@ -92,6 +92,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				this.fetchXhr.abort()
 
 			},
+			addOutboundLink: function() {
+				this.$('.md a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
+				this.$('.md a').attr('target', '_blank');
+			},
 			toggleDropDownCmtSort: function() {
 				this.$('.drop-choices-single').toggle()
 			},

@@ -116,7 +116,7 @@ server.configure(function() {
 
     server.use(express.cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
     // server.use(express.session({
-        // secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'  //using sessions in memory
+    // secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'  //using sessions in memory
     // }));
 
     // configure session provider with mongodb
@@ -137,6 +137,7 @@ server.configure(function() {
 });
 
 server.get('/api', ensureAuthenticated, function(req, res) {
+
     api.get(res, req)
 });
 
@@ -231,7 +232,7 @@ console.log('\nWelcome to redditjs.com!\nPlease go to http://localhost:' + port 
 // }
 
 function ensureAuthenticated(req, res, next) {
-
+    console.log('WWWWWWWWWWWWWWWWWWWWW')
     if (req.isAuthenticated()) {
 
         refreshToken(req, res, function(isExpired) {
