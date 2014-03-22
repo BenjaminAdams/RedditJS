@@ -13,6 +13,22 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
             }
         }
 
+        //if our server side returns a 419 error, have them login again with reddit oauth
+        $(document).ajaxError(function(event, jqxhr, settings, exception) {
+            if (jqxhr.status === 419) {
+                console.log('show them login msg')
+
+                oauthPopup({
+                    path: 'https://ssl.reddit.com/api/v1/authorize',
+                    callback: function() {
+                        console.log('callback');
+                        //do callback stuff
+                    }
+                });
+
+            }
+        });
+
         //Organize Application into regions corresponding to DOM elements
         //Regions can contain views, Layouts, or subregions nested as necessary
         App.addRegions({
@@ -52,3 +68,21 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
 
         return App;
     });
+
+function oauthPopup(options) {
+
+    options.windowName = options.windowName || 'ConnectWithOAuth'; // should not include space for IE
+    options.windowOptions = options.windowOptions || 'location=0,status=0,width=800,height=400';
+    options.callback = options.callback || function() {
+        window.location.reload();
+    };
+    var that = this;
+    console.log(options.path);
+    that._oauthWindow = window.open(options.path, options.windowName, options.windowOptions);
+    that._oauthInterval = window.setInterval(function() {
+        if (that._oauthWindow.closed) {
+            window.clearInterval(that._oauthInterval);
+            options.callback();
+        }
+    }, 1000);
+}

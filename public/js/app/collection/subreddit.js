@@ -120,7 +120,6 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 				imgUrl: false
 			})
 		}
-
 	});
 	return SubredditCollection;
 });

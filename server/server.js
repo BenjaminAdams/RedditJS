@@ -127,7 +127,7 @@ server.configure(function() {
             maxAge: 99999999999
         }
     }));
-    server.use(express.logger());
+    //server.use(express.logger());
     server.use(express.bodyParser());
     server.use(express.methodOverride());
     server.use(passport.initialize());
@@ -142,6 +142,7 @@ server.get('/api', ensureAuthenticated, function(req, res) {
 });
 
 server.get('/me', ensureAuthenticated, function(req, res) {
+    req.session.user.tokenExpires = 0
     UserDB.findOne({
         name: req.user.name
     }, function(err, user) {
@@ -232,7 +233,8 @@ console.log('\nWelcome to redditjs.com!\nPlease go to http://localhost:' + port 
 // }
 
 function ensureAuthenticated(req, res, next) {
-    console.log('WWWWWWWWWWWWWWWWWWWWW')
+    res.send(419, loginAgainMsg)
+    //if (true) {
     if (req.isAuthenticated()) {
 
         refreshToken(req, res, function(isExpired) {
@@ -244,7 +246,7 @@ function ensureAuthenticated(req, res, next) {
         })
 
     } else {
-
+        console.log(req.session)
         res.send(419, loginAgainMsg)
         //res.redirect('/login'); 
     }
@@ -286,17 +288,6 @@ function refreshToken(req, res, next) {
             form: params,
         };
 
-        // $post = array(
-        //        "client_id" => $clientId,
-        //        "client_secret" => $clientSecret,
-        //        "grant_type" => "refresh_token",
-        //        "refresh_token" => "STORED_REFRESH_TOKEN_VALUE",
-        //        "scope" => "identity",
-        //        "state" => "WHATEVER_VALUE",
-        //        "duration" => "temporary",          
-        //        "redirect_uri" => "https://example.com/reddit",
-        //    );
-
         request.post(options, function(error, response, body) {
             //console.log('resp=', response)
             if (error) {
@@ -330,8 +321,8 @@ function refreshToken(req, res, next) {
                     }
 
                     // req.session = usr
-                    req.user.tokenExpires = values.tokenExpires
-                    req.user.token = values.access_token
+                    req.session.user.tokenExpires = values.tokenExpires
+                    req.session.user.token = values.access_token
 
                     console.log('SESSION', req.session)
 
