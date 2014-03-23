@@ -215,6 +215,7 @@ server.get('/auth/reddit/callback', function(req, res, next) {
 
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
+
     console.log(req.user)
     if (req.user) {
         //logged in user
@@ -223,7 +224,9 @@ server.get("*", function(req, res) {
         })
     } else {
         //user not logged in
-        res.render('index')
+        res.render('index', {
+            user: false
+        })
     }
 
     //fs.createReadStream(__dirname + "/../public/index.html").pipe(res);

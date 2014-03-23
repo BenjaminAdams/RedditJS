@@ -1,7 +1,8 @@
 define(['underscore', 'backbone', 'jquery', 'localstorage'], function(_, Backbone, $, Localstorage) {
 	return Backbone.Model.extend({
 		initialize: function(data) {
-			this.username = data
+			//this.username = data
+			this.attributes = data
 		},
 		url: function() {
 			//console.log("/api/?url=user/" + this.username + "/about.json")

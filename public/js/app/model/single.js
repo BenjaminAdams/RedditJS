@@ -12,8 +12,8 @@ define(['underscore', 'backbone', 'collection/comments', 'model/base'], function
 				sortOrderStr = "&sort=" + this.sortOrder
 			}
 
-			var username = $.cookie('username')
-			if (typeof username !== "undefined") {
+			var username = App.user.username || false
+			if (username !== false) {
 				return "/api/?url=comments/" + this.id + ".json" + sortOrderStr
 			} else {
 				//use jsonp if user is not logged in

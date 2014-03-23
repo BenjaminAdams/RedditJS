@@ -9,8 +9,8 @@ define(['underscore', 'backbone', 'jquery', 'moment'], function(_, Backbone, $) 
 		},
 
 		url: function() {
-			var username = $.cookie('username')
-			if (typeof username !== "undefined") {
+			var username = App.user.username || false
+			if (username !== false) {
 				if (this.subName == "front") {
 
 					return 'http://api.reddit.com/.json?jsonp=?';

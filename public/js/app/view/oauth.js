@@ -29,9 +29,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/oauth', 'view/l
 
 				this.$el.empty()
 			},
-			displayCaptcha: function(iden) {
-				this.$('.capimage').attr("src", 'http://www.reddit.com/captcha/' + iden + '.png');
-			},
 
 			loginSuccess: function() {
 				var self = this

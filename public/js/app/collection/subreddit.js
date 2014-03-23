@@ -52,10 +52,12 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 			return this.instanceUrl //keeps a dynamic URL so we can give it a new "after"
 		},
 		getUrl: function() {
-			var username = $.cookie('username')
+			//var username = $.cookie('username')
+			var username = App.user.username || false
 			var linkCount = App.settings.get('linkCount')
 
-			if (typeof username !== "undefined" && this.forceJSONP === false) {
+			if (username !== false && this.forceJSONP === false) {
+
 				return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + this.timeFrame
 			} else {
 				return "http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"

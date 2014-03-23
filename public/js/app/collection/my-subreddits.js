@@ -17,7 +17,7 @@ define(['App', 'backbone', 'model/single', 'localstorage'], function(App, Backbo
 		},
 		model: SingleModel,
 		url: function() {
-			if (typeof $.cookie('username') !== 'undefined') {
+			if (App.user) {
 				return "/api/?url=reddits/mine.json&limit=100"
 			} else {
 				//return "/api/?url=subreddits.json"

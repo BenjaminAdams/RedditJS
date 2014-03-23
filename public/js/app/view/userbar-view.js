@@ -23,22 +23,16 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 				}
 
 				if (this.checkIfLoggedIn() === true) {
-					var localstorageUsr = $.totalStorage('userinfo')
-					this.model = new UserModel(localstorageUsr);
+					this.model = new UserModel(App.user);
+					console.log('model=', this.model)
 				}
-				App.on("login", this.showLoggedIn, this);
 
 			},
 			onRender: function() {
-
-				//this.showLoggedOut();
 				if (this.checkIfLoggedIn() === true) {
-					//this.showLoggedIn()
-					//this.getMyStatus()
 					this.ui.loggedOut.hide()
 					this.ui.loggedIn.show()
 				} else {
-					//this.render();
 					this.showLoggedOut()
 				}
 
@@ -53,26 +47,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 				this.showLoginBox()
 			},
 
-			showLoggedIn: function() {
-				this.model = new UserModel($.cookie('username'));
-				this.model.fetch({
-					success: this.updateUserInfo
-				})
-				//this.listenTo(this.model, 'sync', this.updateUserInfo)
-				//this.render()
-				this.ui.loggedOut.hide()
-				this.ui.loggedIn.show()
-
-			},
 			showLoggedOut: function() {
 				//this.$el.html(this.loggedOut)
 				this.ui.loggedOut.show()
 				this.ui.loggedIn.hide()
 				//$(this.el).html(this.loggedOut)
-			},
-			updateUserInfo: function() {
-				$.totalStorage('userinfo', this.model.attributes)
-				this.render()
 			},
 			logout: function(e) {
 				e.preventDefault()
@@ -80,13 +59,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 				App.trigger("logout");
 				this.showLoggedOut()
 
-				$.removeCookie('username', {
-					path: '/'
-				});
+				$.get("/logout");
 
-				//localStorage.removeItem('subreddits');
-				//localStorage.removeItem('userinfo');
-				$.totalStorage.deleteItem('userinfo')
 				$.totalStorage.deleteItem('subreddits')
 
 			}

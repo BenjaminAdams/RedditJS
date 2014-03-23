@@ -31,11 +31,10 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				}
 			},
 			checkIfLoggedIn: function() {
-				var username = $.cookie('username')
-				if (typeof username !== "undefined") {
-					return true;
+				if (App.user) {
+					return true
 				} else {
-					return false;
+					return false
 				}
 			}, //so we resize it does not do a resize for every pixel the user resizes
 			//it has a timeout that fires after the user is done resizing

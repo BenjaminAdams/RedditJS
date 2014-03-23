@@ -12,7 +12,7 @@ head
   meta(property='og:url', content='http://redditjs.com')
   meta(property='og:type', content='website')
   script.
-    window.redditUser="#{user}";
+    window.redditUser=  !{JSON.stringify(user)};
   //if lt IE 9
     script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
   script(src='/js/loader.js')

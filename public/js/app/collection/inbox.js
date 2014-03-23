@@ -68,13 +68,6 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 					this.after = "stop" //tells us we have finished downloading all of the possible posts in this subreddit
 				}
 
-				var modhash = response.data.modhash;
-				if (typeof modhash == "string" && modhash.length > 5) {
-					$.cookie('modhash', modhash, {
-						path: '/'
-					});
-				}
-
 				var self = this;
 				var models = Array();
 				_.each(response.data.children, function(item) {

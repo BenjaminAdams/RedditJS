@@ -3,6 +3,9 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
     function($, Backbone, Marionette, _) {
         var App = new Backbone.Marionette.Application();
 
+        //bootstrap the user variable
+        App.user = window.redditUser
+
         //the width to strart showing mobile
         App.mobileWidth = 900;
         App.isMobile = function() {
@@ -17,16 +20,7 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         $(document).ajaxError(function(event, jqxhr, settings, exception) {
             if (jqxhr.status === 419) {
                 console.log('show them login msg')
-
-                oauthPopup({
-                    path: '/login',
-                    callback: function() {
-                        console.log('callback');
-                        window.location.reload();
-                        //do callback stuff
-                    }
-                });
-
+                App.trigger('oauth:showPopup')
             }
         });
 
