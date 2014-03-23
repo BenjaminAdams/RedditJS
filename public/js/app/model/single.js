@@ -12,7 +12,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 				sortOrderStr = "&sort=" + this.sortOrder
 			}
 
-			var username = App.user.username || false
+			var username = App.user.name || false
 			if (username !== false) {
 				return "/api/?url=comments/" + this.id + ".json" + sortOrderStr
 			} else {

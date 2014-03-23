@@ -43,7 +43,7 @@ for your local env run
     export SESSION_SECERET='make up some random string'
 */
 
-var UserDB = require('./models/user')
+var User = require('./models/user')
 var api = require('./api')
 //var oauth = require('./oauth')
 
@@ -52,14 +52,22 @@ passport.serializeUser(function(user, done) {
     //done(null, user._id);
 });
 
-passport.deserializeUser(function(User, done) {
-
-    UserDB.findOne({
-        name: User.name
-    }, function(err, user) {
-        done(err, user);
+passport.deserializeUser(function(user, done) {
+    User.findOne({
+        name: user.name
+    }, function(err, usr) {
+        done(err, usr);
     });
 });
+// passport.serializeUser(function(user, done) {
+//     done(null, user.id);
+// });
+// passport.deserializeUser(function(id, done) {
+//     console.log('id=', id)
+//     User.findById(id, function(err, user) {
+//         done(err, user);
+//     });
+// });
 
 passport.use(new RedditStrategy({
         clientID: REDDIT_CONSUMER_KEY,
@@ -73,7 +81,7 @@ passport.use(new RedditStrategy({
         profile.refreshToken = refreshToken
         profile.tokenExpires = Math.round(+new Date() / 1000) + (60 * 59) //expires one hour from now, with one minute to spare
 
-        UserDB.update({
+        User.update({
             name: profile.name
         }, profile, {
             upsert: true
@@ -146,7 +154,7 @@ server.get('/api', ensureAuthenticated, function(req, res) {
 
 server.get('/me', ensureAuthenticated, function(req, res) {
     req.session.user.tokenExpires = 0
-    UserDB.findOne({
+    User.findOne({
         name: req.user.name
     }, function(err, user) {
         if (err) {
@@ -218,6 +226,7 @@ server.get('/auth/reddit/callback', function(req, res, next) {
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
     if (req.user) {
+        console.log('user is logged in')
         //logged in user
         res.render('index', {
             user: req.user
@@ -322,9 +331,9 @@ function refreshToken(req, res, next) {
 
                 values.tokenExpires = (now + values.expires_in) - 60 //give it 60 seconds grace time
 
-                console.log('updating refresh token user=', req.user, values)
+                console.log('updating refresh token user=', values)
 
-                UserDB.update({
+                User.update({
                     name: req.user.name
                 }, values, {
                     upsert: true
@@ -335,12 +344,12 @@ function refreshToken(req, res, next) {
                         res.send(419, loginAgainMsg)
                         next(false)
                     }
-
+                    // console.log('SESSION', req.session)
                     // req.session = usr
-                    req.session.user.tokenExpires = values.tokenExpires
-                    req.session.user.token = values.access_token
-
-                    console.log('SESSION', req.session)
+                    req.session.tokenExpires = values.tokenExpires
+                    req.session.access_token = values.access_token
+                    //req.user.tokenExpires = values.tokenExpires
+                    //req.user.token = values.access_token
 
                     process.nextTick(function() { //wait for the access token to be in the DB
                         return next(true)

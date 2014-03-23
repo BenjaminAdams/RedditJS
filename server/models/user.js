@@ -38,7 +38,7 @@ var schema = new mongoose.Schema({
         type: Boolean,
         required: false
     },
-    token: {
+    access_token: {
         type: String,
         required: false
     },

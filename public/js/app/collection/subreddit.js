@@ -53,13 +53,14 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 		},
 		getUrl: function() {
 			//var username = $.cookie('username')
-			var username = App.user.username || false
+			var username = App.user.name || false
 			var linkCount = App.settings.get('linkCount')
-
+			console.log('username=', username)
 			if (username !== false && this.forceJSONP === false) {
-
+				console.log('getting subreddit via redditjs server.....')
 				return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + this.timeFrame
 			} else {
+				console.log('getting subreddit via JSONP')
 				return "http://api.reddit.com/" + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
 			}
 		},

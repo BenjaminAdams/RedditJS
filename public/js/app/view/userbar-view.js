@@ -26,6 +26,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 					this.model = new UserModel(App.user);
 					console.log('model=', this.model)
 				}
+				App.on('oauth:showPopup', this.showLoginBox)
 
 			},
 			onRender: function() {
