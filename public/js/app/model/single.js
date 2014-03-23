@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'collection/comments', 'model/base'], function(_, Backbone, CommentsCollection, BaseModel) {
+define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], function(App, _, Backbone, CommentsCollection, BaseModel) {
 	var Single = BaseModel.extend({
 		initialize: function(data) {
 			this.id = data.id

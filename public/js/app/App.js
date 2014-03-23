@@ -4,7 +4,7 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         var App = new Backbone.Marionette.Application();
 
         //bootstrap the user variable
-        App.user = window.redditUser
+        App.user = window.redditUser || false
 
         //the width to strart showing mobile
         App.mobileWidth = 900;
@@ -63,18 +63,3 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
 
         return App;
     });
-
-//from http://www.jquery4u.com/social-networking/oauth-popup-window/
-function oauthPopup(options) {
-    options.windowName = options.windowName || 'Login with Reddit'; // should not include space for IE
-    options.windowOptions = options.windowOptions || 'location=0,status=0,width=800,height=700';
-    var that = this;
-    console.log(options.path);
-    that._oauthWindow = window.open(options.path, options.windowName, options.windowOptions);
-    that._oauthInterval = window.setInterval(function() {
-        if (that._oauthWindow.closed) {
-            window.clearInterval(that._oauthInterval);
-            options.callback();
-        }
-    }, 1000);
-}

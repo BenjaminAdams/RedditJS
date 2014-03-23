@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'jquery', 'moment'], function(_, Backbone, $) {
+define(['App', 'underscore', 'backbone', 'jquery', 'moment'], function(App, _, Backbone, $) {
 	var Sidebar = Backbone.Model.extend({
 		initialize: function(data) {
 			if (data === null) {

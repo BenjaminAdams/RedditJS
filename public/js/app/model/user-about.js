@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'jquery', 'localstorage'], function(_, Backbone, $, Localstorage) {
+define(['App', 'underscore', 'backbone', 'jquery', 'localstorage'], function(App, _, Backbone, $, Localstorage) {
 	return Backbone.Model.extend({
 		initialize: function(data) {
 			//this.username = data

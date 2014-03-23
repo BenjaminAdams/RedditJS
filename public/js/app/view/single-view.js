@@ -28,7 +28,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				'mdHelp': '.mdHelp',
 				'mdHelpShow': '.mdHelpShow',
 				'mdHelpHide': '.mdHelpHide',
-				'status': '.status'
+				'status': '.status',
+				'singleCommentText': '#singleCommentText'
 			},
 
 			initialize: function(options) {
@@ -78,6 +79,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				$(window).resize(this.debouncer(function(e) {
 					self.resize()
 				}));
+				this.disableComment()
+
 			},
 			onBeforeClose: function() {
 
@@ -91,6 +94,15 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				}
 				this.fetchXhr.abort()
 
+			},
+			disableComment: function() {
+				//disable textbox if user is not logged in
+				//because we have to refresh the page if they login via oauth
+				if (this.checkIfLoggedIn() === false) {
+					console.log('user is not logged in')
+					this.ui.singleCommentText.attr('disabled', true);
+					this.ui.singleCommentText.val('login to comment')
+				}
 			},
 			addOutboundLink: function() {
 				this.$('.md a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
@@ -234,6 +246,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				this.loadLinkedCommentView()
 				$(this.el).append("<style id='dynamicWidth'> </style>")
 				this.resize()
+				this.disableComment()
 
 				//shows the key navigation help on hover
 				this.$('.arrowNav').hover(

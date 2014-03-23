@@ -45,6 +45,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 			showOathLogin: function() {
 				console.log('show oath login form')
 				this.showLoginBox()
+
 			},
 
 			showLoggedOut: function() {
@@ -58,6 +59,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 				e.stopPropagation()
 				App.trigger("logout");
 				this.showLoggedOut()
+				App.user = false
 
 				$.get("/logout");
 

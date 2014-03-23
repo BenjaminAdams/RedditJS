@@ -189,6 +189,11 @@ server.get('/login', function(req, res, next) {
     })(req, res, next);
 });
 
+server.get('/logout', function(req, res, next) {
+    req.logout()
+    res.send(200, "ok")
+});
+
 // GET /auth/reddit/callback
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  If authentication fails, the user will be redirected back to the
@@ -201,9 +206,6 @@ server.get('/auth/reddit/callback', function(req, res, next) {
 
         req.session.code = req.query.code
         //request users info at: https://oauth.reddit.com/api/v1/me.json
-
-        //  api.oauthGet(res, req)
-
         passport.authenticate('reddit', {
             successRedirect: '/redirectBack',
             failureRedirect: '/login'
@@ -215,8 +217,6 @@ server.get('/auth/reddit/callback', function(req, res, next) {
 
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
-
-    console.log(req.user)
     if (req.user) {
         //logged in user
         res.render('index', {

@@ -484,21 +484,42 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 
 			},
 			showLoginBox: function() {
-				//App.trigger('header:showLoginBox')
-				var currentRoute = Backbone.history.fragment || '/'
 
-				//$.cookie('redirect', window.location.href, {
-				//path: '/'
-				//});
-				$.cookie('redirect', currentRoute, {
-					path: '/'
+				this.oauthPopup({
+					path: '/login',
+					callback: function() {
+						console.log('callback');
+						window.location.reload();
+						//do callback stuff
+					}
 				});
 
-				setTimeout(function() {
-					console.log('cur location', currentRoute)
-					window.location = "/login"
-				}, 5)
+			},
+			oauthPopup: function(options) {
+				//get center of page
+				// Fixes dual-screen position                         Most browsers      Firefox
+				var w = 800
+				var h = 700
+				var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+				var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
 
+				width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+				height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+				var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+				var top = ((height / 2) - (h / 2)) + dualScreenTop;
+
+				options.windowName = options.windowName || 'Login with Reddit'; // should not include space for IE
+				options.windowOptions = 'location=0,status=0,width=' + w + ',height=' + h + ',left=' + left + ',top=' + top
+				var that = this;
+				console.log(options.path);
+				that._oauthWindow = window.open(options.path, options.windowName, options.windowOptions);
+				that._oauthInterval = window.setInterval(function() {
+					if (that._oauthWindow.closed) {
+						window.clearInterval(that._oauthInterval);
+						options.callback();
+					}
+				}, 1000);
 			}
 		});
 

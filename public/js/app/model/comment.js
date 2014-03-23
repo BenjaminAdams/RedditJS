@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'jquery', 'collection/comments', 'model/comment-more-link', 'model/comment', 'model/base'], function(_, Backbone, $, CommentsCollection, CommentMoreLinkModel, CommentModel, BaseModel) {
+define(['App', 'underscore', 'backbone', 'jquery', 'collection/comments', 'model/comment-more-link', 'model/comment', 'model/base'], function(App, _, Backbone, $, CommentsCollection, CommentMoreLinkModel, CommentModel, BaseModel) {
 	return BaseModel.extend({
 		initialize: function(options) {
 			//this.self = this
