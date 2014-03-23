@@ -33,7 +33,9 @@
     "passport": "~0.2.0",
     "mongoose": "~3.8.8",
     "connect": "~2.14.2",
-    "connect-mongo": "~0.4.0"
+    "connect-mongo": "~0.4.0",
+    "jade": "*",
+    "path": "*"
   },
   "devDependencies": {
     "express": "3.x",

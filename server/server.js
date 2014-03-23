@@ -5,6 +5,7 @@ var http = require("http")
 var port = (process.env.PORT || 8002)
 var server = module.exports = express();
 var fs = require("fs");
+var path = require('path')
 var request = require('request')
 var passport = require('passport')
 var crypto = require('crypto')
@@ -133,6 +134,8 @@ server.configure(function() {
     server.use(passport.initialize());
     server.use(passport.session());
     server.use(server.router);
+    server.set('views', path.join(__dirname, 'views'))
+    server.set('view engine', 'jade')
 
 });
 
@@ -212,8 +215,18 @@ server.get('/auth/reddit/callback', function(req, res, next) {
 
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
+    console.log(req.user)
+    if (req.user) {
+        //logged in user
+        res.render('index', {
+            user: req.user
+        })
+    } else {
+        //user not logged in
+        res.render('index')
+    }
 
-    fs.createReadStream(__dirname + "/../public/index.html").pipe(res);
+    //fs.createReadStream(__dirname + "/../public/index.html").pipe(res);
 });
 
 // SERVER
@@ -233,7 +246,7 @@ console.log('\nWelcome to redditjs.com!\nPlease go to http://localhost:' + port 
 // }
 
 function ensureAuthenticated(req, res, next) {
-    res.send(419, loginAgainMsg)
+    // res.send(419, loginAgainMsg)
     //if (true) {
     if (req.isAuthenticated()) {
 

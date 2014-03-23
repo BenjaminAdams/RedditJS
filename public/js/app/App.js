@@ -19,9 +19,10 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
                 console.log('show them login msg')
 
                 oauthPopup({
-                    path: 'https://ssl.reddit.com/api/v1/authorize',
+                    path: '/login',
                     callback: function() {
                         console.log('callback');
+                        window.location.reload();
                         //do callback stuff
                     }
                 });
@@ -69,13 +70,10 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         return App;
     });
 
+//from http://www.jquery4u.com/social-networking/oauth-popup-window/
 function oauthPopup(options) {
-
-    options.windowName = options.windowName || 'ConnectWithOAuth'; // should not include space for IE
-    options.windowOptions = options.windowOptions || 'location=0,status=0,width=800,height=400';
-    options.callback = options.callback || function() {
-        window.location.reload();
-    };
+    options.windowName = options.windowName || 'Login with Reddit'; // should not include space for IE
+    options.windowOptions = options.windowOptions || 'location=0,status=0,width=800,height=700';
     var that = this;
     console.log(options.path);
     that._oauthWindow = window.open(options.path, options.windowName, options.windowOptions);

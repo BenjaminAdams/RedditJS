@@ -35,14 +35,12 @@ module.exports = {
 		}
 
 		request.get(options, function(error, response, body) {
-			//request.get(urlStr, post_headers, function(error, response, body) {
 			if (error) {
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
 					res.send(response.statusCode)
 				} else {
 					res.send(500)
 				}
-				return
 			}
 
 			//console.log('body=', body)

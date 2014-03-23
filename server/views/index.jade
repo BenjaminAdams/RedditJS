@@ -1,0 +1,33 @@
+doctype
+head
+  meta(charset='utf-8')
+  base(href='/')
+  title RedditJS Beta
+  meta(name='viewport', content='width=device-width, initial-scale=1.0')
+  meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+  meta(name='description', content='Much Javascript, wow, such features, such webscale')
+  meta(name='author', content='Benjamin Adams')
+  meta(property='og:image', content='http://redditjs.com/img/logo.png')
+  meta(property='og:title', content='A more better Reddit.')
+  meta(property='og:url', content='http://redditjs.com')
+  meta(property='og:type', content='website')
+  script.
+    window.redditUser="#{user}";
+  //if lt IE 9
+    script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+  script(src='/js/loader.js')
+  link#subredditStyle(href='', rel='stylesheet')
+body.listing-page.hot-page
+  #theHeader  
+  .side
+  #content.content
+  #bottom-bar-container
+  noscript
+    div Please enable JavaScript to view this website.
+  script.
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='//www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'))
+    ga('create','UA-4769553-53');ga('send','pageview')
