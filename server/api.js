@@ -31,11 +31,11 @@ module.exports = {
 				// 'User-Agent': 'RedditJS/1.0 by ' + req.session.name,
 				// 'Authorization': "bearer " + req.session.access_token,
 				'User-Agent': 'RedditJS/1.0 by ' + req.user.name,
-				'Authorization': "bearer " + req.user.access_token,
+				'Authorization': "bearer " + req.user.access_token
 			},
 			form: url_parts.query
 		}
-		console.log(options)
+		//console.log(options)
 
 		request.get(options, function(error, response, body) {
 			if (error) {
@@ -72,8 +72,8 @@ module.exports = {
 			url: urlStr,
 			headers: {
 				//'Content-Type': 'application/x-www-form-urlencoded',
-				'User-Agent': 'RedditJS/1.0 by ' + req.session.name,
-				'Authorization': "bearer " + req.session.access_token,
+				'User-Agent': 'RedditJS/1.0 by ' + req.user.name,
+				'Authorization': "bearer " + req.user.access_token
 			},
 			form: req.body,
 		};
@@ -137,9 +137,6 @@ module.exports = {
 				})
 			}
 		});
-
-	},
-	buildHead: function(url) {
 
 	},
 	ltrim: function(str, chr) {

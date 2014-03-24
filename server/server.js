@@ -10,11 +10,8 @@ var request = require('request')
 var passport = require('passport')
 var crypto = require('crypto')
 var db = require('./db').getDB()
-//var connect = require('connect');
-//var SessionStore = require("session-mongoose")(connect);
 var MongoStore = require('connect-mongo')(express);
-
-//store: new mongoStore({ host: 'session_server', port: 27017, db: 'seesion', collection: 'sessions' })
+var api = require('./api')
 var store = new MongoStore({
     //db: db,
     db: 'sessions',
@@ -26,11 +23,6 @@ var store = new MongoStore({
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
 var callbackURL = "http://localhost:8002/auth/reddit/callback"
 var loginAgainMsg = 'login to reddit please'
-
-var RedditStrategy = require('passport-reddit').Strategy;
-var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY;
-var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET;
-
 /*
 //reddit Oauth docs: https://github.com/reddit/reddit/wiki/OAuth2
 how to add heroku config variables for heroku
@@ -42,32 +34,17 @@ for your local env run
     export REDDIT_SECRET='your secret'
     export SESSION_SECERET='make up some random string'
 */
-
-var User = require('./models/user')
-var api = require('./api')
-//var oauth = require('./oauth')
+var RedditStrategy = require('passport-reddit').Strategy;
+var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY;
+var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET;
 
 passport.serializeUser(function(user, done) {
     done(null, user);
-    //done(null, user._id);
 });
 
-passport.deserializeUser(function(user, done) {
-    User.findOne({
-        name: user.name
-    }, function(err, usr) {
-        done(err, usr);
-    });
+passport.deserializeUser(function(obj, done) {
+    done(null, obj);
 });
-// passport.serializeUser(function(user, done) {
-//     done(null, user.id);
-// });
-// passport.deserializeUser(function(id, done) {
-//     console.log('id=', id)
-//     User.findById(id, function(err, user) {
-//         done(err, user);
-//     });
-// });
 
 passport.use(new RedditStrategy({
         clientID: REDDIT_CONSUMER_KEY,
@@ -76,31 +53,13 @@ passport.use(new RedditStrategy({
         //callbackURL: "http://redditjs.com/auth/reddit/callback"
     },
     function(accessToken, refreshToken, profile, done) {
-        //console.log('profile=', profile)
+        console.log('profile=', profile)
         profile.access_token = accessToken //set the recently updated access token
         profile.refresh_token = refreshToken
         profile.tokenExpires = Math.round(+new Date() / 1000) + (60 * 59) //expires one hour from now, with one minute to spare
 
-        User.update({
-            name: profile.name
-        }, profile, {
-            upsert: true
-        }, function(err, usr) {
-
-            if (err) {
-                console.log('error=', err)
-            }
-
-            console.log('usr=', usr)
-
-            process.nextTick(function() {
-                // To keep the example simple, the user's Reddit profile is returned to
-                // represent the logged-in user.  In a typical application, you would want
-                // to associate the Reddit account with a user record in your database,
-                // and return that user instead.
-
-                return done(null, profile);
-            });
+        process.nextTick(function() {
+            return done(null, profile);
         });
 
     }));
@@ -153,15 +112,8 @@ server.get('/api', ensureAuthenticated, function(req, res) {
 });
 
 server.get('/me', ensureAuthenticated, function(req, res) {
-    req.session.user.tokenExpires = 0
-    User.findOne({
-        name: req.user.name
-    }, function(err, user) {
-        if (err) {
-            res.send(419, err)
-        }
-        res.json(200, user)
-    });
+    res.json(200, req.user)
+
 });
 
 server.post('/api', ensureAuthenticated, function(req, res) {
@@ -173,13 +125,8 @@ server.get('/api/getTitle', function(req, res) {
     api.getTitle(res, req)
 });
 
-server.get("/whoami", ensureAuthenticated, function(req, res) {
-    console.log('req.user=', req.user)
-    res.json(req.user)
-});
-
 //Oauth routes
-// GET /auth/reddit
+//   GET /auth/reddit
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  The first step in Reddit authentication will involve
 //   redirecting the user to reddit.com.  After authorization, Reddit
@@ -314,47 +261,23 @@ function refreshToken(req, res, next) {
         };
 
         request.post(options, function(error, response, body) {
-            //console.log('resp=', response)
             if (error) {
                 res.send(419, loginAgainMsg)
                 return
             } else if (!error && response.statusCode == 200 || response.statusCode == 304) {
-
-                // res.json(JSON.parse(body))
-
                 //set a new access token
-
                 console.log(JSON.parse(body))
-                //res.json(JSON.parse(body))
-
                 var values = JSON.parse(body)
 
                 values.tokenExpires = (now + values.expires_in) - 60 //give it 60 seconds grace time
 
-                //console.log('updating refresh token user=', values)
+                req.session.tokenExpires = values.tokenExpires
+                req.session.access_token = values.access_token
+                //req.user.tokenExpires = values.tokenExpires
+                //req.user.token = values.access_token
 
-                User.update({
-                    name: req.user.name
-                }, values, {
-                    upsert: true
-                }, function(err, usr) {
-
-                    if (err) {
-                        console.log('error saving user=', err)
-                        res.send(419, loginAgainMsg)
-                        next(false)
-                    }
-                    // console.log('SESSION', req.session)
-                    // req.session = usr
-                    req.session.tokenExpires = values.tokenExpires
-                    req.session.access_token = values.access_token
-                    //req.user.tokenExpires = values.tokenExpires
-                    //req.user.token = values.access_token
-
-                    process.nextTick(function() { //wait for the access token to be in the DB
-                        return next(true)
-                    });
-
+                process.nextTick(function() { //wait for the access token to be in the DB
+                    return next(true)
                 });
 
             } else {
