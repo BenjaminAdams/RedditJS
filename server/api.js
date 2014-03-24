@@ -115,6 +115,7 @@ module.exports = {
 		var re = /(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/g;
 
 		request.get(urlOpts, function(error, response, body) {
+
 			if (error) {
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
 					res.send(response.statusCode)

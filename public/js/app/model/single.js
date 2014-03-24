@@ -34,7 +34,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 		},
 		//so we have the attributes in the root of the model
 		parseOnce: function(response) {
-			//console.log(response)
+			console.log(response)
 			var data;
 			//console.log("RESPONSE of single model", response)
 			if (typeof response[0] === 'undefined') {
@@ -47,12 +47,13 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 				data.replies = this.parseComments(response[1].data, data.name)
 			}
 
-			var timeAgo = moment.unix(data.created).fromNow(true) //"true" removes the "ago"
+			var timeAgo = moment.unix(data.created_utc).fromNow(true) //"true" removes the "ago"
 			timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
 			data.timeAgo = timeAgo
 
 			data.timeUgly = moment.unix(data.created).format()
-			data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
+			//format Sun Aug 18 12:51:06 2013 UTC
+			data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC"
 			data.rname = "/r/" + data.subreddit
 			//data.selftextMD = markdown.toHTML(this.decodeHTMLEntities(data.selftext))
 

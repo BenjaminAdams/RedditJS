@@ -119,6 +119,7 @@ server.post('/api', ensureAuthenticated, function(req, res) {
 
 //requests the <title> tag of any given URL, used for the submit page
 server.get('/api/getTitle', function(req, res) {
+    console.log('getting title')
     api.getTitle(res, req)
 });
 
@@ -181,8 +182,7 @@ server.get("*", function(req, res) {
             user: false
         })
     }
-
-    //fs.createReadStream(__dirname + "/../public/index.html").pipe(res);
+    //fs.createReadStream(__dirname + "/../public/index.html").pipe(res); //old way of serving html
 });
 
 // SERVER

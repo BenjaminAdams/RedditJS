@@ -373,8 +373,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 
 						} else if (typeof data.json.data.url !== 'undefined') { //means we have a good link!
 							//post was good
-							var newUrl = data.json.data.url.replace('http://www.reddit.com', '')
-							newUrl = newUrl.replace('http://reddit.com', '') //for good measure in case reddit.com does not have a www
+
+							var newUrl = data.json.data.url.replace('https://oauth.reddit.com', '')
+							newUrl = newUrl.replace('https://oauth.reddit.com', '') //for good measure in case reddit.com does not have a www
 							Backbone.history.navigate(newUrl, {
 								trigger: true
 							})
