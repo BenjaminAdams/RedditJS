@@ -10,14 +10,12 @@ var request = require('request')
 var passport = require('passport')
 var crypto = require('crypto')
 var db = require('./db').getDB()
-var MongoStore = require('connect-mongo')(express);
+
 var api = require('./api')
-var store = new MongoStore({
-    //db: db,
-    db: 'sessions',
-    auto_reconnect: true,
-    stringify: false
-});
+
+var redis = require("redis")
+var redisClient = redis.createClient();
+var redisStore = require('connect-redis')(express);
 
 // var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
@@ -53,7 +51,7 @@ passport.use(new RedditStrategy({
         //callbackURL: "http://redditjs.com/auth/reddit/callback"
     },
     function(accessToken, refreshToken, profile, done) {
-        console.log('profile=', profile)
+        //console.log('profile=', profile)
         profile.access_token = accessToken //set the recently updated access token
         profile.refresh_token = refreshToken
         profile.tokenExpires = Math.round(+new Date() / 1000) + (60 * 59) //expires one hour from now, with one minute to spare
@@ -83,18 +81,17 @@ server.configure(function() {
     }
 
     server.use(express.cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
-    // server.use(express.session({
-    // secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'  //using sessions in memory
-    // }));
 
-    // configure session provider with mongodb
     server.use(express.session({
-        store: store,
+        store: new redisStore({
+            client: redisClient
+        }),
         secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f',
         cookie: {
-            maxAge: 99999999999
+            maxAge: 999999999
         }
     }));
+
     //server.use(express.logger());
     server.use(express.bodyParser());
     server.use(express.methodOverride());
