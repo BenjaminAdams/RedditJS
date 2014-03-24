@@ -77,8 +77,8 @@ passport.use(new RedditStrategy({
     },
     function(accessToken, refreshToken, profile, done) {
         //console.log('profile=', profile)
-        profile.token = accessToken //set the recently updated access token
-        profile.refreshToken = refreshToken
+        profile.access_token = accessToken //set the recently updated access token
+        profile.refresh_token = refreshToken
         profile.tokenExpires = Math.round(+new Date() / 1000) + (60 * 59) //expires one hour from now, with one minute to spare
 
         User.update({
@@ -296,7 +296,7 @@ function refreshToken(req, res, next) {
             "client_id": REDDIT_CONSUMER_KEY,
             "client_secret": REDDIT_CONSUMER_SECRET,
             "grant_type": 'refresh_token',
-            "refresh_token": req.user.refreshToken,
+            "refresh_token": req.user.refresh_token,
             'scope': scope,
             'duration': 'permanent',
             "redirect_uri": callbackURL
@@ -331,7 +331,7 @@ function refreshToken(req, res, next) {
 
                 values.tokenExpires = (now + values.expires_in) - 60 //give it 60 seconds grace time
 
-                console.log('updating refresh token user=', values)
+                //console.log('updating refresh token user=', values)
 
                 User.update({
                     name: req.user.name

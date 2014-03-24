@@ -55,16 +55,15 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 				this.ui.loggedIn.hide()
 				//$(this.el).html(this.loggedOut)
 			},
+			//log user out, delete server side session and client side cookies
 			logout: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
 				App.trigger("logout");
 				this.showLoggedOut()
 				App.user = false
-
-				$.get("/logout");
-
 				$.totalStorage.deleteItem('subreddits')
+				$.get("/logout");
 
 			}
 		});

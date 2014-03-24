@@ -14,7 +14,7 @@ module.exports = {
 		var urlStr = url_parts.query.url
 		var queryParams = url_parts.path.replace('/api/?url=', '');
 		queryParams = queryParams.replace(urlStr, '')
-		console.log('getting URL =', urlStr)
+
 		delete queryParams.url;
 		queryParams = this.ltrim(queryParams, '&');
 
@@ -28,6 +28,8 @@ module.exports = {
 			url: urlStr,
 			headers: {
 				//'Content-Type': 'application/x-www-form-urlencoded',
+				// 'User-Agent': 'RedditJS/1.0 by ' + req.session.name,
+				// 'Authorization': "bearer " + req.session.access_token,
 				'User-Agent': 'RedditJS/1.0 by ' + req.user.name,
 				'Authorization': "bearer " + req.user.access_token,
 			},
@@ -69,8 +71,9 @@ module.exports = {
 		var options = {
 			url: urlStr,
 			headers: {
-				'User-Agent': 'RedditJS/1.0 by ' + req.user.name,
-				'Authorization': "bearer " + req.user.token
+				//'Content-Type': 'application/x-www-form-urlencoded',
+				'User-Agent': 'RedditJS/1.0 by ' + req.session.name,
+				'Authorization': "bearer " + req.session.access_token,
 			},
 			form: req.body,
 		};
@@ -134,6 +137,9 @@ module.exports = {
 				})
 			}
 		});
+
+	},
+	buildHead: function(url) {
 
 	},
 	ltrim: function(str, chr) {

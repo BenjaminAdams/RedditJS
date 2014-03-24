@@ -1,6 +1,5 @@
 define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view/sidebar-view', 'collection/my-subreddits', 'model/sidebar', 'event/channel', 'view/mobile-header'],
     function(App, _, Backbone, Marionette, HeaderView, SidebarView, MySubredditsCollection, SidebarModel, channel, MobileHeaderView) {
-
         var AppRouter = Backbone.Marionette.AppRouter.extend({
             initialize: function(options) {
                 //load settings
@@ -19,7 +18,6 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                             path: '/'
                         });
                     }
-
                 }
 
                 this.currentHeader = null

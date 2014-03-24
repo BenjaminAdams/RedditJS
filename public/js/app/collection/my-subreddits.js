@@ -1,23 +1,18 @@
 define(['App', 'backbone', 'model/single', 'localstorage'], function(App, Backbone, SingleModel, Localstorage) {
 	var MySubreddits = Backbone.Collection.extend({
 		initialize: function() {
-
 			var srcookie = $.totalStorage('subreddits')
 			if (typeof $.totalStorage('subreddits') !== 'undefined' && $.totalStorage('subreddits') !== null) {
-
 				this.loadFromCookie()
-
 			} else {
 
 				this.fetch()
 			}
-
-			//this.fetch()
-
 		},
 		model: SingleModel,
 		url: function() {
-			if (App.user) {
+			var username = App.user.name || false
+			if (username !== false) {
 				return "/api/?url=reddits/mine.json&limit=100"
 			} else {
 				//return "/api/?url=subreddits.json"

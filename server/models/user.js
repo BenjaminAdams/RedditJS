@@ -42,7 +42,7 @@ var schema = new mongoose.Schema({
         type: String,
         required: false
     },
-    refreshToken: {
+    refresh_token: {
         type: String,
         required: true
     },
