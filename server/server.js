@@ -268,10 +268,10 @@ function refreshToken(req, res, next) {
 
                 values.tokenExpires = (now + values.expires_in) - 60 //give it 60 seconds grace time
 
-                req.session.tokenExpires = values.tokenExpires
-                req.session.access_token = values.access_token
-                //req.user.tokenExpires = values.tokenExpires
-                //req.user.token = values.access_token
+                //req.session.tokenExpires = values.tokenExpires
+                //req.session.access_token = values.access_token
+                req.user.tokenExpires = values.tokenExpires
+                req.user.access_token = values.access_token
 
                 process.nextTick(function() { //wait for the access token to be in the DB
                     return next(true)
