@@ -229,7 +229,7 @@ function refreshToken(req, res, next) {
 
     if (now < req.user.tokenExpires) {
         //if (false) {
-        console.log('token is NOT expired')
+        //console.log('token is NOT expired')
         return next(true)
     } else {
         console.log('token is expired, lets refresh!')
