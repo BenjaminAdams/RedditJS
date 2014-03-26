@@ -500,8 +500,8 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				// Fixes dual-screen position                         Most browsers      Firefox
 				var w = 800
 				var h = 700
-				var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
-				var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+				var dualScreenLeft = typeof window.screenLeft !== 'undefined' ? window.screenLeft : screen.left;
+				var dualScreenTop = typeof window.screenTop !== 'undefined' ? window.screenTop : screen.top;
 
 				width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
 				height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
