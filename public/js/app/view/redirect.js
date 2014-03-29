@@ -5,6 +5,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 
 			initialize: function(data) {
 				_.bindAll(this);
+			},
+			onRender: function() {
+				
+				window.close()
 			}
 
 		});

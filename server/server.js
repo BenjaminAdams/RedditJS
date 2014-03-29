@@ -19,7 +19,7 @@ var redisStore = require('connect-redis')(express);
 
 // var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
-var callbackURL = "http://localhost:8002/auth/reddit/callback"
+var callbackURL = "http://redditjs.com/auth/reddit/callback"
 var loginAgainMsg = 'login to reddit please'
 /*
 //reddit Oauth docs: https://github.com/reddit/reddit/wiki/OAuth2
@@ -133,6 +133,7 @@ server.get('/api/getTitle', function(req, res) {
 //   Note that the 'state' option is a Reddit-specific requirement.
 server.get('/login', function(req, res, next) {
     req.session.state = crypto.randomBytes(32).toString('hex');
+
     passport.authenticate('reddit', {
         state: req.session.state,
         //authorizationURL: 'https://ssl.reddit.com/api/v1/authorize.compact',
@@ -155,6 +156,10 @@ server.get('/logout', function(req, res, next) {
 server.get('/auth/reddit/callback', function(req, res, next) {
     // Check for origin via state token
     console.log('got callback from reddit...req.query=', req.query)
+
+console.log('session=', req.session.state, 'and req.query.state=', req.query.state);
+
+
     if (req.query.state == req.session.state) {
 
         req.session.code = req.query.code
