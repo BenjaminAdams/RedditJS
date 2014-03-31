@@ -9,12 +9,8 @@ var path = require('path')
 var request = require('request')
 var passport = require('passport')
 var crypto = require('crypto')
-var db = require('./db').getDB()
 
 var api = require('./api')
-
-var redis = require("redis")
-var redisClient = redis.createClient();
 var redisStore = require('connect-redis')(express);
 
 // var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
@@ -35,6 +31,8 @@ for your local env run
 var RedditStrategy = require('passport-reddit').Strategy;
 var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY;
 var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET;
+
+console.log('key=', process.env.REDDIT_KEY)
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -81,15 +79,9 @@ server.configure(function() {
     }
 
     server.use(express.cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
-
     server.use(express.session({
-        store: new redisStore({
-            client: redisClient
-        }),
-        secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f',
-        cookie: {
-            maxAge: 999999999
-        }
+        store: new redisStore(),
+        secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
     }));
 
     //server.use(express.logger());
@@ -157,8 +149,7 @@ server.get('/auth/reddit/callback', function(req, res, next) {
     // Check for origin via state token
     console.log('got callback from reddit...req.query=', req.query)
 
-console.log('session=', req.session.state, 'and req.query.state=', req.query.state);
-
+    console.log('session=', req.session.state, 'and req.query.state=', req.query.state);
 
     if (req.query.state == req.session.state) {
 
@@ -183,6 +174,9 @@ server.get("*", function(req, res) {
         })
     } else {
         //user not logged in
+
+        console.log('session=', req.session)
+
         res.render('index', {
             user: false
         })
