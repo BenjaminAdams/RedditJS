@@ -37,7 +37,8 @@
     "redis": "~0.10.1",
     "connect-redis": "~1.4.7",
     "mongoose": "~3.8.8",
-    "crypto": "0.0.3"
+    "crypto": "0.0.3",
+    "underscore": "^1.6.0"
   },
   "devDependencies": {
     "express": "3.x",
