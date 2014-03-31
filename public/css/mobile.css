@@ -40,6 +40,10 @@ margin-left: 3px;
 max-width: 85%;
 }
 
+.thing.link {
+    margin-bottom:15px;
+}
+
 .smallThumb {
 	padding:5px;
 	float:left;
@@ -179,6 +183,7 @@ font-size: 12px;
 text-align: center;
 margin:0 auto;
 }
+
 
 
 
