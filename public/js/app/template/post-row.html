@@ -23,23 +23,27 @@
 		<a class="thumbnail loggedin" {{external}} href="{{url}}" target="_blank"><img alt="" height="52" src="{{thumbnail}}" width="70"></a>
 
         <div class="entry">
-            <p class="title">
-	  <a class="title loggedin" {{external}} href="{{url}}" target="_blank">{{{title}}}</a> 
-                <span class="domain">(<a href="/domain/{{domain}}/">{{domain}}</a>)</span>
-            </p>
+            <div class="title titleParent">
+                <div class='titleLink'>
+	                <a class="title loggedin" {{external}} href="{{url}}" target="_blank">{{{title}}}</a> 
+                    <span class="domain">(<a href="/domain/{{domain}}/">{{domain}}</a>)</span>
+                </div>
+            </div>
+            
+            <div class="tagline">
+
                 {{#if embededImg}} <li><div class='expando-button collapsed video'></div></li> {{/if}}
                 {{#if selftext_html}} <li><div class='expando-button collapsed video'></div></li> {{/if}}
 
-            <p class="tagline">
-            <span>{{score}}(<span class='orange'>{{ups}}</span>/<span class='purple'>{{downs}}</span>)</span>
-                submitted <time datetime="{{timeUgly}}" title="{{timePretty}}">{{timeAgo}}</time> ago by <a class="author" href="/user/{{author}}" target="_blank">{{author}}</a>
+            <span class='taglineScore'>{{score}}(<span class='orange'>{{ups}}</span>/<span class='purple'>{{downs}}</span>) submitted</span>
+                 <time datetime="{{timeUgly}}" title="{{timePretty}}">{{timeAgo}}</time> ago by <a class="author" href="/user/{{author}}" target="_blank">{{author}}</a>
             {{#if author_flair_css_class}}<span class="flair flair-{{author_flair_css_class}}" title=""></span>{{/if}}
             <span class="userattrs"></span>to <a href="/r/{{subreddit}}/" class="subreddit hover">{{subreddit}}</a>
-            </p>
+            </div>
             <ul class="flat-list buttons">
 
                 <li class="first">
-                <a class="comments" href="{{permalink}}"  target="_blank">{{num_comments}} comments</a>
+                <a class="comments" href="{{permalink}}"  target="_blank">{{num_comments}} <span class='commentWord'>comments</span> <span class='commentIcon fa fa-comments'> </span>  </a>
                 </li>
 
                 <li class="share">

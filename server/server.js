@@ -96,10 +96,15 @@ server.configure(function() {
 });
 
 server.get('/api', ensureAuthenticated, function(req, res) {
-
     api.get(res, req)
 });
 
+server.get('/apiNonAuth', function(req, res) {
+    api.getNonAuth(res, req)
+});
+server.post('/apiNonAuth', function(req, res) {
+    api.postNonAuth(res, req)
+});
 server.get('/me', ensureAuthenticated, function(req, res) {
     res.json(200, req.user)
 
@@ -166,22 +171,9 @@ server.get('/auth/reddit/callback', function(req, res, next) {
 
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
-    if (req.user) {
-        console.log('user is logged in')
-        //logged in user
-        res.render('index', {
-            user: req.user
-        })
-    } else {
-        //user not logged in
-
-        console.log('session=', req.session)
-
-        res.render('index', {
-            user: false
-        })
-    }
-    //fs.createReadStream(__dirname + "/../public/index.html").pipe(res); //old way of serving html
+    res.render('index', {
+        user: req.user || false //bootstrap user to client if they are logged in
+    })
 });
 
 // SERVER

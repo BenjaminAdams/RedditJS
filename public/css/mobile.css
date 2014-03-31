@@ -1,12 +1,12 @@
 @media (max-width: 900px) {
 
 body {
-    min-width: 400px;
+    min-width: 350px;
 }
 
 #header-nav-logo-area {
 top: 22px;
-min-width:400px;
+min-width:350px;
 padding:0px;
 }
 
@@ -19,10 +19,11 @@ margin:10px 0;
 }
 
 .midcol {
-margin:0px !important;
+margin:8px -7px !important;
 font-size:20px !important;
-
 }
+
+
 
 .comment .child, .comment .showreplies {
 margin-left: 0px;
@@ -31,15 +32,22 @@ margin-left: 0px;
 margin-left: 3px;
 }
 
+/*.child.replies .thing {
+    margin-left:-8px;
+}*/
+
 .large-thumb .thing {
-
 max-width: 85%;
-
 }
 
 .smallThumb {
 	padding:5px;
 	float:left;
+}
+
+.thumbnail {
+margin:2px;
+width: 65px;
 }
 
 
@@ -97,6 +105,11 @@ margin:1% auto;
     display:none;
 }
 
+#mainComment textarea, #mainComment .usertext-edit,.usertext .bottom-area {
+    width:90%;
+}
+
+
 .tabmenu li {
 display: list-item;
 margin:5px;
@@ -112,7 +125,7 @@ margin:5px;
 #mobileCenter {
     position:absolute;
     top:2px;
-    right:62%;
+    right:50%;
     width:75px;
 }
 
@@ -160,6 +173,17 @@ font-size: 15px;
 
 .tagline, .comment .score,.comment .collapsed {
 font-size: 12px;
+}
+
+.link .tagline,.flat-list.buttons {
+text-align: center;
+margin:0 auto;
+}
+
+
+
+.taglineScore{
+    display:none;
 }
 
 .midcol .score {
@@ -253,19 +277,47 @@ border: none;
 }
 
 .link .title {
-font-size: 16px;
+font-size: 15px;
 }
 
+.link .flat-list {
+padding:0; 
+}
+
+.entry .buttons li {
+padding-right: 0px;
+line-height: 1em; 
+margin-right: -4px;
+}
+
+.commentWord {
+display:none;
+}
+
+/*
 #thepost .entry  {
     overflow: visible;
-}
+}*/
 
-#thepost .entry, .large-thumb .entry  {
+/*#thepost .entry, .large-thumb .entry  {
     overflow: visible;
-}
+}*/
 
 .entry  {
     font-size:14px;
+    overflow: visible;
+}
+
+/*To verticle align the text in the middle of the title div*/
+.titleParent {
+    display:table;
+    min-height:70px;
+}
+
+.titleLink {
+    display: table-cell;
+    vertical-align: middle;
+
 }
 
 .arrowNav {
@@ -318,6 +370,9 @@ width: 63%;
 }
 #mobileFrontLink {
     display:none;
+}
+.commentIcon {
+display:none;
 }
 
  }

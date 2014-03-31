@@ -30,6 +30,24 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 					alert("Please login to do that")
 				}
 			},
+			apiNonAuth: function(url, type, params, callback) {
+				$.ajax({
+					url: "/apiNonAuth?url=" + url,
+					type: type,
+					dataType: "json",
+					data: params,
+					success: function(data) {
+						console.log('SUCCESS=', data)
+						callback(data)
+					},
+					error: function(data) {
+						console.log("ERROR inrequest details: ", data);
+						callback(data)
+
+					}
+				});
+
+			},
 			checkIfLoggedIn: function() {
 				if (App.user) {
 					return true

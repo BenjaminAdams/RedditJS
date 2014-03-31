@@ -42,7 +42,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 			},
 
 			initialize: function(options) {
-				//_.bindAll(this);
+				_.bindAll(this);
 				var self = this;
 
 				this.model = options.model
@@ -106,24 +106,32 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				};
 				console.log('MOAR=', params)
 
-				this.api("api/morechildren.json", 'POST', params, function(data) {
-					//console.log("MOAR done", data)
+				//TODO: move this URL generating logic to the model
+				if (this.checkIfLoggedIn() === true) {
 
-					if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
-						data.children = data.json.data.things
-						var tmpModel = new CommentModel({
-							skipParse: true
-						})
+					this.api("api/morechildren.json", 'POST', params, this.gotDataFromRenderMoar);
 
-						var newComments = tmpModel.parseComments(data, link_id)
-						self.reRenderMOAR(newComments)
-					} else {
+				} else {
 
-						self.render()
+					this.apiNonAuth("api/morechildren.json", 'POST', params, this.gotDataFromRenderMoar);
+				}
 
-					}
+			},
+			gotDataFromRenderMoar: function(data) {
+				var self = this
+				if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
+					data.children = data.json.data.things
+					var tmpModel = new CommentModel({
+						skipParse: true
+					})
 
-				});
+					var newComments = tmpModel.parseComments(data, self.model.get('link_id'))
+					self.reRenderMOAR(newComments)
+				} else {
+
+					self.render()
+
+				}
 			},
 			reRenderMOAR: function(newComments) {
 				if (typeof newComments !== 'undefined' && newComments.length > 0) {
