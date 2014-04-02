@@ -39,6 +39,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				'mdHelpHide': '.mdHelpHide',
 				'reportConfirm': '.reportConfirm',
 				'reportConfirmYes': '.reportConfirmYes'
+
 			},
 
 			initialize: function(options) {
@@ -48,6 +49,20 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				this.model = options.model
 				//this.collection = new CommentCollection()
 				this.collection = this.model.get('replies')
+				this.originalPoster = options.originalPoster
+				console.log('op', options.originalPoster)
+
+				if (this.model.get('author') === this.originalPoster) {
+					//$('.author').css('color', 'green')
+					//this.ui.authorNoncollapsed.css('color', 'green')
+					//this.ui.authorNoncollapsed.addClass('submitter')
+					this.model.set('showOriginalPoster', 'submitter')
+
+				} else {
+
+					this.model.set('showOriginalPoster', 'asdasdasd')
+				}
+
 				if (typeof this.collection === 'undefined' || this.collection === null || this.collection.length === 0) {
 					//console.log('empty')
 					this.collection = new CommentCollection()
@@ -68,13 +83,15 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
 				self.commentCollectionView = new CViewComments({
 					collection: self.collection,
-					itemView: CommentView
+					itemView: CommentView,
+					originalPoster: self.originalPoster
 				})
 
 				self.replies.show(self.commentCollectionView)
 
 				this.addOutboundLink()
 				this.permalinkParent = this.model.get('permalinkParent')
+
 				//this.model.set('permalinkParent', options.permalinkParent)
 				//this.renderChildren(this.model.get('replies'))
 			},

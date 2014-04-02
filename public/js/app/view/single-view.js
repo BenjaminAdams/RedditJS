@@ -276,6 +276,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				//this.$('.loadingS').remove()
 				this.ui.loadingC.remove()
 				this.permalinkParent = this.model.get('permalink') //this is for the comment callback so we can set the permalink after someone comments on a main post
+
 				this.renderComments(model.get('replies'))
 
 			},
@@ -302,10 +303,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
 				App.on("comment:addOneChild" + this.model.get('name'), this.addOneChild);
 
+				console.log('single view passing in op', self.model.get('author'))
+
 				require(['cView/comments', 'view/comment-view'], function(CViewComments, CommentView) {
 					self.commentCollectionView = new CViewComments({
 						collection: collection,
-						itemView: CommentView
+						itemView: CommentView,
+						originalPoster: self.model.get('author')
 					})
 					self.siteTableComments.show(self.commentCollectionView)
 
