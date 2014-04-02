@@ -80,11 +80,11 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 
 					item.data.body_html = (typeof item.data.body_html === 'undefined') ? '' : $('<div/>').html(item.data.body_html).text();
 
-					var timeAgo = moment.unix(item.data.created).fromNow(true) //"true" removes the "ago"
+					var timeAgo = moment.unix(item.data.created_utc).fromNow(true) //"true" removes the "ago"
 					timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
 					item.data.timeAgo = timeAgo
-					item.data.timeUgly = moment.unix(item.data.created).format()
-					item.data.timePretty = moment.unix(item.data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
+					item.data.timeUgly = moment.unix(item.data.created_utc).format()
+					item.data.timePretty = moment.unix(item.data.created_utc).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
 
 					models.push(item.data)
 

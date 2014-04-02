@@ -15,7 +15,8 @@ var redisStore = require('connect-redis')(express);
 
 // var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
-var callbackURL = "http://redditjs.com/auth/reddit/callback"
+//var callbackURL = "http://redditjs.com/auth/reddit/callback"
+var callbackURL = "http://localhost:8001/auth/reddit/callback"
 var loginAgainMsg = 'login to reddit please'
 /*
 //reddit Oauth docs: https://github.com/reddit/reddit/wiki/OAuth2
