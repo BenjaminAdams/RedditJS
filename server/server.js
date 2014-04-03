@@ -16,7 +16,7 @@ var redisStore = require('connect-redis')(express);
 // var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
 var callbackURL = "http://redditjs.com/auth/reddit/callback"
-//var callbackURL = "http://localhost:8001/auth/reddit/callback"
+//var callbackURL = "http://localhost:8002/auth/reddit/callback"
 var loginAgainMsg = 'login to reddit please'
 /*
 //reddit Oauth docs: https://github.com/reddit/reddit/wiki/OAuth2
@@ -142,6 +142,7 @@ server.get('/login', function(req, res, next) {
 });
 
 server.get('/logout', function(req, res, next) {
+    req.session.destroy();
     req.logout()
     res.send(200, "ok")
 });
@@ -168,6 +169,13 @@ server.get('/auth/reddit/callback', function(req, res, next) {
     } else {
         next(new Error(403));
     }
+});
+
+server.get("/redirectBack", function(req, res) {
+    delete req.session.state;
+    res.render('index', {
+        user: req.user || false //bootstrap user to client if they are logged in
+    })
 });
 
 //handles all other requests to the backbone router
