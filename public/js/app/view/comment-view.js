@@ -50,7 +50,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				//this.collection = new CommentCollection()
 				this.collection = this.model.get('replies')
 				this.originalPoster = options.originalPoster
-				console.log('op', options.originalPoster)
 
 				if (this.model.get('author') === this.originalPoster) {
 					//$('.author').css('color', 'green')

@@ -119,10 +119,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				//this.comments.reset()
 				this.fetchComments(this.loadComments, sortOrder)
 			},
-			addOutboundLink: function() {
-				this.$('.usertext-body a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
-				this.$('.usertext-body a').attr('target', '_blank');
-			},
+
 			updatePageTitle: function(title) {
 				document.title = title + "- RedditJS Beta"
 			},

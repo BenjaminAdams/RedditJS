@@ -408,6 +408,10 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 			containsStr: function(needle, haystack) {
 				return (haystack.indexOf(needle) >= 0)
 			},
+			addOutboundLink: function() {
+				this.$('.usertext-body a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
+				this.$('.usertext-body a').attr('target', '_blank');
+			},
 
 			//puts the model in a temporary space to pass it to the single page so it loads instantly
 			gotoSingle: function(e) {
