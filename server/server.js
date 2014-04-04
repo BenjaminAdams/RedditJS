@@ -178,6 +178,14 @@ server.get("/redirectBack", function(req, res) {
     })
 });
 
+server.all('/*', function(req, res, next) {
+    if (req.headers.host.match(/^www/) !== null) {
+        res.redirect('http://' + req.headers.host.replace(/^www\./, '') + req.url);
+    } else {
+        next();
+    }
+})
+
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
     res.render('index', {
