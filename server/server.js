@@ -178,9 +178,7 @@ server.get("/redirectBack", function(req, res) {
     })
 });
 
-
 //redirect to non-www
-=======
 server.all('/*', function(req, res, next) {
     if (req.headers.host.match(/^www/) !== null) {
         res.redirect('http://' + req.headers.host.replace(/^www\./, '') + req.url);
@@ -188,7 +186,6 @@ server.all('/*', function(req, res, next) {
         next();
     }
 })
-
 
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
