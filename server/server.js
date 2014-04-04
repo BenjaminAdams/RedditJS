@@ -178,6 +178,8 @@ server.get("/redirectBack", function(req, res) {
     })
 });
 
+//redirect to non-www
+
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
     res.render('index', {
