@@ -162,6 +162,10 @@ position: relative;
     font-size:20px;
 }
 
+.comments {
+    padding:0 4px !important;
+}
+
 .md {
 font-size: 15px;
 }
