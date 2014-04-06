@@ -3,42 +3,27 @@ require.config({
     paths: {
         // Core Libraries
         "jquery": "../lib/jquery",
-        // 'underscore': '../lib/underscore',
+        'underscore': '../lib/underscore',
         //'underscore': '../lib/lazy',
         //'underscore': '../lib/lodash',
-        'underscore': '../lib/lodash2.4.1',
+        // 'underscore': '../lib/lodash2.4.1',
         "backbone": "../lib/backbone",
-        //"marionette": "../lib/marionette",
-        //"marionette": "../lib/marionettev1.2.3",
-        "marionette": "../lib/marionette.1.5.1",
-        //'fasterCollectioView': '../lib/marionette.FasterCollectionView',
-        /* original handlebars setup */
+        "marionette": "../lib/marionette",
+        //"marionette": "../lib/marionette.1.5.1",
+
         'handlebars': '../lib/handlebars',
         "hbs": "../lib/hbs",
-        /* end setup */
 
-        /* test handlebars setup */
-        // 'handlebars': '../lib/handlebars.amd',
-        // 'handlebars.runtime': '../lib/handlebars.runtime',
-        // "hbs": "../lib/hb",
-        /* end setup */
-
-        //"tmpl": "../lib/tmpl",
         "i18nprecompile": "../lib/i18nprecompile",
         "json2": "../lib/json2",
         "jszip": '../lib/jszip',
         "fileSaver": '../lib/fileSaver',
-        //  "jasmine": "../lib/jasmine",
-        // "jasmine-html": "../lib/jasmine-html",
         'cookie': '../lib/jquery.cookie',
         'localstorage': '../lib/jquery.total-storage',
         'moment': '../lib/moment',
-        'console': '../lib/console',
-        text: '../lib/text'
-        //"backbone.validateAll": "../lib/plugins/Backbone.validateAll",
-        //"bootstrap": "../lib/plugins/bootstrap",
-        //"wookmark": "../lib/jquery.wookmark",
-        //   "imagesLoaded": "../lib/imagesLoaded",
+        'console': '../lib/console'
+        //'text': '../lib/text'
+
         //"jasminejquery": "../lib/plugins/jasmine-jquery"
     },
     // Sets the configuration for your third party scripts that are not AMD compatible

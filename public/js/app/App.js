@@ -28,7 +28,6 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         //Regions can contain views, Layouts, or subregions nested as necessary
         App.addRegions({
             headerRegion: "#theHeader",
-            // mainRegion: "#main",
             mainRegion: "#content",
             popupRegion: "#popupWindow",
             sidebarRegion: '.side',
@@ -36,14 +35,11 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         });
 
         App.addInitializer(function() {
-            // Backbone.history.start();
-
             var pushState = !! (window.history && window.history.pushState),
                 settings = {
                     pushState: pushState
                 };
             Backbone.history.start(settings);
-
         });
 
         //prevent page reload
