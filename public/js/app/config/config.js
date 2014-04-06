@@ -3,10 +3,10 @@ require.config({
     paths: {
         // Core Libraries
         "jquery": "../lib/jquery",
-        'underscore': '../lib/underscore',
+        //'underscore': '../lib/underscore',
         //'underscore': '../lib/lazy',
         //'underscore': '../lib/lodash',
-        // 'underscore': '../lib/lodash2.4.1',
+        'underscore': '../lib/lodash2.4.1',
         "backbone": "../lib/backbone",
         "marionette": "../lib/marionette",
         //"marionette": "../lib/marionette.1.5.1",

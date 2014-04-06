@@ -34,7 +34,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				'srDisplay': '#sr-display'
 			},
 			initialize: function(data) {
-				_.bindAll(this);
+				_.bindAll(this, _.functions(this));
 				App.on("header:update", this.updateHeader, this);
 				App.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
 				App.on("logout", this.updateSubreddits, this);
