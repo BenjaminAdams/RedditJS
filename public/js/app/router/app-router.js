@@ -75,6 +75,15 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     if (name != 'single') { //hide the bottom bar if not in single view
                         App.bottombarRegion.close()
                     }
+
+                    if (typeof ga === 'function') {
+                        var path = Backbone.history.getFragment();
+                        ga('send', 'pageview', {
+                            page: "/" + path
+                        });
+
+                    }
+
                     //end middleware functions
                     callback.apply(router, arguments); //call the actual route
                 };
