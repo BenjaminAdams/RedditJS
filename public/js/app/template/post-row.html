@@ -22,14 +22,12 @@
 
 		<a class="thumbnail loggedin" {{external}} href="{{url}}" target="_blank"><img alt="" height="52" src="{{thumbnail}}" width="70"></a>
 
-        <div class="entry">
-            <div class="title titleParent">
-                <div class='titleLink'>
+        <div class="entry entryParent">
+        <div class='entryChild'>
+            <div class="title ">
 	                <a class="title loggedin" {{external}} href="{{url}}" target="_blank">{{{title}}}</a> 
                     <span class="domain">(<a href="/domain/{{domain}}/">{{domain}}</a>)</span>
-                </div>
             </div>
-            
             <div class="tagline">
 
                 {{#if embededImg}} <li><div class='expando-button collapsed video'></div></li> {{/if}}
@@ -77,7 +75,7 @@
 
 <div class="expando postRowContent"></div>
 
-
+</div>
 </div>
 
         <div class="child"></div>

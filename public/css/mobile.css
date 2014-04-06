@@ -1,12 +1,12 @@
 @media (max-width: 900px) {
 
 body {
-    min-width: 350px;
+    min-width: 400px;
 }
 
 #header-nav-logo-area {
 top: 22px;
-min-width:350px;
+min-width:400px;
 padding:0px;
 }
 
@@ -41,7 +41,7 @@ max-width: 85%;
 }
 
 .thing.link {
-    margin-bottom:15px;
+    min-width:400px;
 }
 
 .smallThumb {
@@ -180,8 +180,10 @@ font-size: 12px;
 }
 
 .link .tagline,.flat-list.buttons {
-text-align: center;
 margin:0 auto;
+min-width: 275px;
+overflow: visible;
+
 }
 
 
@@ -314,15 +316,14 @@ display:none;
 }
 
 /*To verticle align the text in the middle of the title div*/
-.titleParent {
+.entryParent {
     display:table;
     min-height:70px;
 }
 
-.titleLink {
+.entryChild {
     display: table-cell;
     vertical-align: middle;
-
 }
 
 .arrowNav {
