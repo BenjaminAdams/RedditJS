@@ -133,6 +133,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     }
 
                     this.ui.postRowContent.html(str).show()
+
                     this.addOutboundLink()
                 }
             }
