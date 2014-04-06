@@ -15,7 +15,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 		getUrl: function() {
 			//https://pay.reddit.com/api/info.json?url=' + linkUrl + '&r=funny
-			return 'https://pay.reddit.com/api/info.json?url=' + this.linkUrl + "&limit=100"
+			return 'https://pay.reddit.com/api/info.json?url=' + this.linkUrl + "&limit=100&jsonp=?"
 
 		},
 		parse: function(response) {

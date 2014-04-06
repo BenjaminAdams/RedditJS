@@ -2,11 +2,11 @@
 
 Embed reddit in external websites
 
-//ex http://redditjs.com/embed/url=http://dudelol.com/now-that-youre-big-dr-suess-style-sex-ed-book&as=4&fffff=123
+//ex http://localhost:8002/embed/url=http://imgur.com/XZvyRhU&as=4&fffff=123
 
 */
-define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'view/basem-view'],
-    function(App, _, Backbone, Tmpl, BaseView, SubredditCollection) {
+define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'view/basem-view', 'collection/info'],
+    function(App, _, Backbone, Tmpl, BaseView, InfoCollection) {
         return BaseView.extend({
             template: Tmpl,
             events: {
@@ -29,8 +29,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'view/basem-view'
             },
             onRender: function() {
                 //hide the header with CSS because I am not sure if we still need it or not
-                //TODO: Do I really need it?
                 $('#theHeader').hide()
+
+                this.urlStatus() //find out if the link has already been submitted
 
             },
             onBeforeClose: function() {
@@ -45,50 +46,35 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'view/basem-view'
                 });
                 return opt
             },
-            leaveUrl: function(e) {
+            urlStatus: function() {
                 var self = this
-                var target = $(e.currentTarget)
-                var linkUrl = target.val()
 
-                //always clear strike outs
-                this.removeStrikeOutSRs()
-                this.ui.urlDetails.html('').addClass('loadingSubmit')
-                this.ui.alreadySubmitted.slideUp()
-
-                if (this.validURL(linkUrl)) {
-                    //query /api/info
-                    //example url https://pay.reddit.com/api/info.json?url=http://i.imgur.com/40y06q0.jpg&r=funny&jsonp=?
-                    //"http://api.reddit.com/api/info?url= " + linkUrl + ".json?jsonp=?" 
+                if (this.validURL(this.q.url)) {
 
                     this.urlCollection = new InfoCollection([], {
-                        linkUrl: linkUrl
-                        //subName: this.selectedSubreddit  //don't filter by subreddit
+                        linkUrl: this.q.url
 
                     });
+
                     this.urlCollection.fetch({
                         success: function(data) {
                             console.log(data)
                             var postsLength = data.length
                             console.log('length=', postsLength)
                             if (postsLength > 0) {
-                                var addPlus = '';
-                                if (postsLength >= 100) {
-                                    addPlus = '+'
 
-                                }
-                                self.ui.urlDetails.html('this url has been submitted <span class="sameURL" >' + postsLength + addPlus + '</span> time(s) before').removeClass('loadingSubmit')
-                                //get array of subreddits that link has been submitted too
-                                var subreddits = []
-                                console.log('data=', data)
-                                _.forEach(data.models, function(post) {
-
-                                    if ($.inArray(post.get('subreddit'), subreddits)) {
-                                        subreddits.push(post.get('subreddit'))
+                                var sendUserToPost = self.urlCollection.first()
+                                self.urlCollection.each(function(post) {
+                                    //redirect the user to the post with the highest number of comments
+                                    if (post.get('num_comments') >= sendUserToPost.get('num_comments')) {
+                                        sendUserToPost = post
                                     }
-
                                 })
 
-                                self.strikeOutSRs(subreddits)
+                                Backbone.history.navigate(sendUserToPost.get('permalink'), {
+                                    trigger: true
+                                });
+
                             } else {
                                 self.ui.urlDetails.html('good job, this link has never been submit before').removeClass('loadingSubmit')
                             }
