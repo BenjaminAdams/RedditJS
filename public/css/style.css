@@ -97,6 +97,10 @@ text-align: center;
 margin-bottom: 10px;
 }
 
+.postRowContent {
+  margin-left:145px !important; 
+}
+
 .textGridTitle {
   display: table; 
   height: 30px; 

@@ -166,6 +166,10 @@ position: relative;
     padding:0 4px !important;
 }
 
+.postRowContent {
+  margin-left:0px !important;
+}
+
 .md {
 font-size: 15px;
 }
