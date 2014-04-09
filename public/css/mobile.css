@@ -310,6 +310,12 @@ margin-right: -4px;
 display:none;
 }
 
+
+.embedly-embed { 
+    width: 100%; 
+    max-width: 600px; 
+}
+
 /*
 #thepost .entry  {
     overflow: visible;
@@ -388,6 +394,16 @@ width: 63%;
 }
 .commentIcon {
 display:none;
+}
+
+ }
+
+
+
+/*To between 900px and 1150px, issue with youtube videos */
+ @media all and (min-width: 900px) and (max-width: 1150px) {
+.postRowContent .embedly-embed {
+    width:61%;
 }
 
  }
