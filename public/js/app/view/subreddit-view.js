@@ -118,7 +118,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 						sortOrder: this.sortOrder,
 						timeFrame: this.timeFrame
 					});
-					this.fetchMore();
+					if (this.collection.length < 100) {
+						this.fetchMore();
+					}
 
 				} else {
 					console.log('loading collection from memory')
