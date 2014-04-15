@@ -30,8 +30,8 @@ for your local env run
     export SESSION_SECERET='make up some random string'
 */
 var RedditStrategy = require('passport-reddit').Strategy;
-var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY;
-var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET;
+var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY || 'only use these';
+var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET || 'to use oauth';
 
 console.log('key=', process.env.REDDIT_KEY)
 
