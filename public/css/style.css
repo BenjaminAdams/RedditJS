@@ -115,6 +115,13 @@ margin-bottom: 10px;
   text-align: left;
 }
 
+.usertext-body{
+    overflow:hidden;
+    max-width: 795px;
+}
+
+
+
 
 .small-thumb-for-large-view  {
 margin-top:3px;

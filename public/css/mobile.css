@@ -409,17 +409,8 @@ display:none;
  }
 
 
-@media only screen and (max-width:1234px) {
-  .usertext-body {
-    max-width: 610px;
-  }
-}
 
-@media only screen and (min-width:1235px) {
-  .usertext-body {
-    max-width: 795px;
-  }
-}
+
 @media only screen and (min-width:915px) and (max-width:970px) {
     .embedly-embed { 
         margin-left: -30px; 
@@ -435,3 +426,6 @@ display:none;
     margin-left: 86px; 
   }
 }
+
+
+
