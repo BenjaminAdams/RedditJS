@@ -99,6 +99,9 @@ server.configure(function() {
 server.get('/api', ensureAuthenticated, function(req, res) {
     api.get(res, req)
 });
+server.post('/api', ensureAuthenticated, function(req, res) {
+    api.post(res, req)
+});
 
 server.get('/apiNonAuth', function(req, res) {
     api.getNonAuth(res, req)
@@ -109,10 +112,6 @@ server.post('/apiNonAuth', function(req, res) {
 server.get('/me', ensureAuthenticated, function(req, res) {
     res.json(200, req.user)
 
-});
-
-server.post('/api', ensureAuthenticated, function(req, res) {
-    api.post(res, req)
 });
 
 //requests the <title> tag of any given URL, used for the submit page

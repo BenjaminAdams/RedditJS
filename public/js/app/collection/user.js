@@ -22,11 +22,17 @@ define(['App', 'backbone', 'model/single', 'model/comment', "moment"], function(
 		},
 		getUrl: function() {
 			//http://api.reddit.com/user/armastevs.json
-			if (this.after.length < 3) {
+			var urlPrefix = '/apiNonAuth/?url=user/'
+			var username = App.user.name || false
 
-				return '/api/?url=user/' + this.username + ".json&sort=" + this.sortOrder
+			if (username !== false) {
+				urlPrefix = '/api/?url=user/'
+			}
+
+			if (this.after.length < 3) {
+				return urlPrefix + this.username + ".json&sort=" + this.sortOrder
 			} else {
-				return '/api/?url=user/' + this.username + ".json&after=" + this.after + "&sort=" + this.sortOrder
+				return urlPrefix + this.username + ".json&after=" + this.after + "&sort=" + this.sortOrder
 			}
 		},
 		parse: function(response) {

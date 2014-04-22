@@ -1,21 +1,28 @@
 define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/user-sidebar', 'view/basem-view', 'view/login-view', 'model/user-about', 'cookie'],
-	function(App, $, _, Backbone, UserSidebarTmpl, BaseView, LoginView, UserAboutModel, Cookie) {
+	function(App, $, _, Backbone, TMPL, BaseView, LoginView, UserAboutModel, Cookie) {
 		return BaseView.extend({
+			template: TMPL,
 			events: {
 				'click .remove-friend': 'removeFriend',
 				'click .add-friend': 'addFriend'
 			},
 			initialize: function(data) {
 				_.bindAll(this);
-				console.log('data=', data)
-				this.template = UserSidebarTmpl;
 				this.username = data.username
 				this.dynamicStylesheet('paristexas') //setting this to a subreddit that does not have a stylesheet
-				this.model = new UserAboutModel(this.username)
+				this.model = new UserAboutModel({}, this.username)
 
 				this.model.fetch({
 					success: this.loaded
 				});
+
+				var self = this
+
+				setTimeout(function() {
+
+					console.log(self.model)
+
+				}, 8222)
 
 			},
 			loaded: function(response, sidebar) {

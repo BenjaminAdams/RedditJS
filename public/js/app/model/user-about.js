@@ -1,13 +1,18 @@
 define(['App', 'underscore', 'backbone', 'jquery', 'localstorage'], function(App, _, Backbone, $, Localstorage) {
 	return Backbone.Model.extend({
-		initialize: function(data) {
+		initialize: function(models, username) {
 			//this.username = data
-			this.attributes = data
+			this.username = username
 		},
 		url: function() {
-			//console.log("/api/?url=user/" + this.username + "/about.json")
-			//return "/api/?url=user/" + this.username + "/about.json&cookie=" + $.cookie('reddit_session');
-			return "/api/?url=user/" + this.username + "/about.json"
+			var urlPrefix = '/apiNonAuth/?url=user/'
+			var username = App.user.name || false
+
+			if (username !== false) {
+				urlPrefix = '/api/?url=user/'
+			}
+
+			return urlPrefix + this.username + "/about.json"
 		},
 		//so we have the attributes in the root of the model
 		parse: function(response) {
