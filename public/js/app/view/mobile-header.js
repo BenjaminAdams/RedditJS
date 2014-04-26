@@ -6,11 +6,13 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				'click #mViewPickerBox li': 'changeGridOption',
 				'click .drop-down-header-toggle': 'toggleDropdown',
 				//'click #sr-display': 'toggleDropdown', //will close the menu after the user makes a selection
-				'click #userbar-logged-out': 'showLoginPopup',
+				//'click #signInUserbar': 'showLoginBox',
 				//'click .mdropdown': 'toggleDropDown',
 				'click #mSortPickerBox': 'toggleDropDown'
 
 			},
+
+
 			ui: {
 				'siteTable': '#siteTable',
 				'nextprev': '.nextprev',
@@ -44,7 +46,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				App.on("logout", this.updateSubreddits, this);
 				App.on("header:updateSortOrder", this.updateSortOrder, this);
 				App.on("header:refreshSubreddits", this.refreshSubreddits, this);
-				App.on('header:showLoginBox', this.showLoginPopup, this)
+
 				//load the subreddits on the top bar
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
 				this.listenTo(App.subreddits.mine, 'sync', this.displayMySubreddits)
@@ -82,7 +84,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				App.off("logout", this.updateSubreddits, false);
 				App.off("header:updateSortOrder", this.updateSortOrder, false);
 				App.off("header:refreshSubreddits", this.refreshSubreddits, false);
-				App.off('header:showLoginBox', this.showLoginPopup, false);
+	
 			},
 
 			toggleDropDown: function(e) {
@@ -112,16 +114,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 
 			},
 
-			showLoginPopup: function(e) {
-				var self = this
-				if (e) {
-					e.preventDefault()
-					e.stopPropagation();
-				}
-				require(['view/login-popup-view'], function(LoginPopupView) {
-					self.popupWindow.show(new LoginPopupView())
-				});
-			},
+
 
 			updateHeader: function(model) {
 				this.model = model

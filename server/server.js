@@ -82,6 +82,9 @@ server.configure(function() {
     server.use(express.cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
     server.use(express.session({
         store: new redisStore(),
+        cookie : {
+            maxAge: 36000000
+        },
         secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
     }));
 

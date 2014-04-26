@@ -4,8 +4,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 			template: UserbarTmpl,
 			events: {
 				'click .logout': 'logout',
-				'click #userbar-logged-out': 'showOathLogin'
-				//'click #signInUserbar': 'showOathLogin'
+				'click #userbar-logged-out': 'showOathLogin',
+				'click #signInUserbar': 'showOathLogin'
 			},
 			ui: {
 				'loggedIn': '#loggedIn',

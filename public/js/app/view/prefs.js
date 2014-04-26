@@ -67,8 +67,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/prefs', 'view/basem-view'
 				for (var item in o) {
 					//console.log('name =' + item, 'value=' + o[item])
 					$.cookie(item, o[item], {
-						path: '/'
+						path: '/',
+						expires: 365
 					});
+
+
+
 				}
 
 				//return o;
