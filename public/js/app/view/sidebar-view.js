@@ -23,6 +23,13 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 					this.model.set('display_name_for_download', this.model.get('display_name'))
 				}
 
+				if(this.subName==='leagueoflegends')
+				{
+					this.model.set('isLOL', true)
+				}else {
+					this.model.set('isLOL', false)
+				}
+
 				App.on("resized", this.resize, this);
 
 			},
@@ -34,6 +41,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 					this.model.set('isFront', true)
 					this.$('.titlebox').hide()
 				}
+
+
+
+
 				//this.loadLoginView()
 				App.trigger("header:update", this.model);
 				App.trigger('submit:type', this.model.get('submission_type'))
