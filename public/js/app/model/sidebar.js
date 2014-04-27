@@ -9,9 +9,9 @@ define(['App', 'underscore', 'backbone', 'jquery', 'moment'], function(App, _, B
 		},
 
 		url: function() {
-			var username = App.user.username || false
+			var username = App.user.name || false
 			if (username !== false) {
-				if (this.subName == "front") {
+				if (this.subName === "front") {
 
 					return 'http://api.reddit.com/.json?jsonp=?';
 				} else {
@@ -19,7 +19,7 @@ define(['App', 'underscore', 'backbone', 'jquery', 'moment'], function(App, _, B
 				}
 			} else {
 
-				if (this.subName == "front") {
+				if (this.subName === "front") {
 					return 'http://api.reddit.com/.json?jsonp=?';
 				} else {
 					return "http://api.reddit.com/r/" + this.subName + "/about.json?jsonp=?"
