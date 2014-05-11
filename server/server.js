@@ -9,13 +9,14 @@ var path = require('path')
 var request = require('request')
 var passport = require('passport')
 var crypto = require('crypto')
+var RedditStrategy = require('passport-reddit').Strategy;
 
 //middleware stuffs
-var bodyParser = require('body-parser')  
+var bodyParser = require('body-parser')
 var compress = require('compression')
 var csrf = require('csurf');
 var cookieParser = require('cookie-parser');
-var session      = require('express-session')
+var session = require('express-session')
 var errorHandler = require('errorhandler')
 var methodOverride = require('method-override')
 //var directory = require('serve-index')
@@ -27,26 +28,18 @@ var redisStore = require('connect-redis')(session);
 
 // var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
-var callbackURL =  process.env.REDDIT_CALLBACK || "http://redditjs.com/auth/reddit/callback"
-//var callbackURL = "http://localhost:8002/auth/reddit/callback"
-//var callbackURL =  "http://redditjs.com/auth/reddit/callback"
+var callbackURL = process.env.REDDIT_CALLBACK || "http://redditjs.com/auth/reddit/callback"
 var loginAgainMsg = 'login to reddit please'
 /*
-//reddit Oauth docs: https://github.com/reddit/reddit/wiki/OAuth2
-how to add heroku config variables for heroku
-    heroku config:add REDDIT_KEY='your key'
-    heroku config:add REDDIT_SECRET='your secret'
-    heroku config:add SESSION_SECERET='make up some random string'
 for your local env run
-    export REDDIT_KEY='your key'
-    export REDDIT_SECRET='your secret'
-    export SESSION_SECERET='make up some random string'
+    export REDDIT_KEY = 'your key'
+    export REDDIT_SECRET = 'your secret'
+    export REDDIT_CALLBACK = 'http://localhost:8002/auth/reddit/callback'
+    export SESSION_SECERET = 'make up some random string'
 */
-var RedditStrategy = require('passport-reddit').Strategy;
+
 var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY || 'only use these';
 var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET || 'to use oauth';
-
-console.log('key=', process.env.REDDIT_KEY)
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -76,43 +69,41 @@ passport.use(new RedditStrategy({
 
 // SERVER CONFIGURATION
 // ====================
-    var oneDay = 86400000;
+var oneDay = 86400000;
 
-    server.use(compress());
+server.use(compress());
 
-    server.use(serveStatic(__dirname + "/../public", {
-        maxAge: oneDay
+server.use(serveStatic(__dirname + "/../public", {
+    maxAge: oneDay
+}));
+server.use(favicon(__dirname + "/../public/img/favicon.ico"));
+
+if (process.env.NODE_ENV !== 'production') {
+
+    server.use(errorHandler({
+        dumpExceptions: true,
+        showStack: true
     }));
-    server.use(favicon(__dirname + "/../public/img/favicon.ico"));
+}
 
-    if (process.env.NODE_ENV !== 'production') {
+server.use(cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
+server.use(session({
+    store: new redisStore(),
+    cookie: {
+        maxAge: 36000000
+    },
+    secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
+}));
 
-        server.use(errorHandler({
-            dumpExceptions: true,
-            showStack: true
-        }));
-    }
-
-    server.use(cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
-    server.use(session({
-        store: new redisStore(),
-        cookie : {
-            maxAge: 36000000
-        },
-        secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
-    }));
-
-    //server.use(express.logger());
-    server.use(bodyParser());
-    server.use(csrf());
-    server.use(methodOverride());
-    server.use(passport.initialize());
-    server.use(passport.session());
-   // server.use(server.router);
-    server.set('views', path.join(__dirname, 'views'))
-    server.set('view engine', 'jade')
-
-
+//server.use(express.logger());
+server.use(bodyParser());
+server.use(csrf());
+server.use(methodOverride());
+server.use(passport.initialize());
+server.use(passport.session());
+// server.use(server.router);
+server.set('views', path.join(__dirname, 'views'))
+server.set('view engine', 'jade')
 
 server.get('/api', ensureAuthenticated, function(req, res) {
     api.get(res, req)
@@ -164,16 +155,9 @@ server.get('/logout', function(req, res, next) {
     res.send(200, "ok")
 });
 
-// GET /auth/reddit/callback
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
+//reddit Oauth docs: https://github.com/reddit/reddit/wiki/OAuth2
 server.get('/auth/reddit/callback', function(req, res, next) {
     // Check for origin via state token
-    console.log('got callback from reddit...req.query=', req.query)
-
-    console.log('session=', req.session.state, 'and req.query.state=', req.query.state);
 
     if (req.query.state == req.session.state) {
 

@@ -33,30 +33,18 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * Run the project and watch for live changes to the code type `nodemon` and you should be able to open it in http://localhost:8002/ 
  * To minify the code for production type `grunt` and in /public/js/loader.js change window.production = true and it will load the minified source.
 
-#### How to setup oauth locally
+#### How to setup oauth
 * Have a local redis instance (http://redis.io/ - sudo apt-get install redis-server)
 * Create an app with your reddit account - https://ssl.reddit.com/prefs/apps/
 * Set your apps redirect url to 'http://mypublicip:8002/auth/reddit/callback', where mypublicip is your ip
-* Copy and paste App Key & App Secret to put in server.js
+* Setup your environment to use these:
 
-Now in server/server.js:
+Via command line, and also put at bottom of ~/.profile to keep set on system restart
 ```
-var callbackURL = "http://<mypublicip>:8002/auth/reddit/callback"
-...
-var REDDIT_CONSUMER_KEY = '<yourappkey>'';
-var REDDIT_CONSUMER_SECRET = '<yourappsecret>';
-....
-server.use(express.cookieParser('asdasdasdasd32fg23f'));
-  server.use(express.session({
-    store: new redisStore(),
-      cookie : {
-        maxAge: 36000000
-      },
-      secret: 'asdasdasdasd32fg23f'
-}));
-...
-//uncomment the following in /login handler
-authorizationURL: 'https://ssl.reddit.com/api/v1/authorize.compact',
+    export REDDIT_KEY = 'your key'
+    export REDDIT_SECRET = 'your secret'
+    export REDDIT_CALLBACK = 'http://localhost:8002/auth/reddit/callback'
+    export SESSION_SECERET = 'make up some random string'
 ```
 
 #### Thanks

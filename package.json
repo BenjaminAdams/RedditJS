@@ -49,7 +49,7 @@
     "qs": "^0.6.6",
     "raw-body": "^1.1.4",
     "redis": "~0.10.1",
-    "request": "*",
+    "request": "^2.34.0",
     "serve-favicon": "^2.0.0",
     "serve-static": "^1.1.0",
     "uglify-js": "^2.4.13"
