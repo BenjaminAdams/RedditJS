@@ -205,6 +205,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				//App.subreddits = this.mySubreddits
 				var seperator = '';
 				var count = 0;
+				var subredditStr = ''
 				App.subreddits.mine.each(function(model) {
 
 					if (count !== 0) {
@@ -213,11 +214,13 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 
 					if (model.get('display_name') != "announcements" && model.get('display_name') != "blog") {
 
-						self.ui.srBar.append('<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>')
+						subredditStr += '<li>' + seperator + '<a href="/r/' + model.get('display_name') + '/">' + model.get('display_name') + '</a></li>'
 
 						count++;
 					}
 				})
+
+				self.ui.srBar.html(subredditStr)
 
 				//this.displayDropChoices()
 				App.trigger("submit:subreddits");

@@ -97,11 +97,14 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 				App.subreddits.mine.each(function(model) {
 					var headerImg = model.get('header_img')
 					var displayName = model.get('display_name')
+					var subredditSTR = '';
 					if (headerImg === null || self.displayType == 1) {
-						self.ui.innerSR.append("<span class='headerNavLogo' ><a class='text-header-nav'  href='/r/" + displayName + "' >" + displayName + "</span></a> ")
+
+						subredditSTR += "<span class='headerNavLogo' ><a class='text-header-nav'  href='/r/" + displayName + "' >" + displayName + "</span></a> "
 					} else {
-						self.ui.innerSR.append("<span class='headerNavLogo'><a href='/r/" + displayName + "' title='" + displayName + "' ><img src='" + headerImg + "' /></a></span>")
+						subredditSTR += "<span class='headerNavLogo'><a href='/r/" + displayName + "' title='" + displayName + "' ><img src='" + headerImg + "' /></a></span>"
 					}
+					self.ui.innerSR.html(subredditSTR)
 				})
 			}
 		});
