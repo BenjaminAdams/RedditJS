@@ -23,14 +23,14 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 					this.model.set('display_name_for_download', this.model.get('display_name'))
 				}
 
-				if(this.subName==='leagueoflegends')
-				{
+				if (this.subName === 'leagueoflegends') {
 					this.model.set('isLOL', true)
-				}else {
+				} else {
 					this.model.set('isLOL', false)
 				}
 
 				App.on("resized", this.resize, this);
+				App.on("subreddit:changeGridOption", this.changeGridOption, this);
 
 			},
 			onRender: function() {
@@ -42,9 +42,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 					this.$('.titlebox').hide()
 				}
 
-
-
-
 				//this.loadLoginView()
 				App.trigger("header:update", this.model);
 				App.trigger('submit:type', this.model.get('submission_type'))
@@ -52,6 +49,25 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 					$('.side').hide()
 				}
 				this.addOutboundLink()
+
+			},
+			OnBeforeClose: function() {
+				App.off("subreddit:changeGridOption", this.changeGridOption, this);
+			},
+			changeGridOption: function(data) {
+				if (this.gridOption == data.gridOption) {
+					return;
+					//do nothingif the user already clicked this once
+				}
+				this.gridOption = data.gridOption
+
+				if (this.gridOption === 'grid') {
+					$('.side').hide()
+				} else {
+					if (App.settings.get('showSidebar') === true) {
+						$('.side').show()
+					}
+				}
 
 			},
 			addOutboundLink: function() {

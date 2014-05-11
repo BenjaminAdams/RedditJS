@@ -28,6 +28,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				var self = this;
 				this.subredditCollectionView = null;
 				this.subName = options.subName
+				
 				if (this.subName == 'front') {
 					document.title = "redditjs beta"
 				} else {
@@ -54,7 +55,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
 				this.loading = false;
 
-				App.on("subreddit:changeGridOption", this.changeGridOption, this);
+			App.on("subreddit:changeGridOption", this.changeGridOption, this);
 				//App.on("subreddit:remove", this.remove, this);
 				//this.render();
 				//this.imagesAdded = 0; //keeps a total of how many images we are loading

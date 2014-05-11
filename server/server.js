@@ -18,7 +18,6 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session')
 var errorHandler = require('errorhandler')
 var methodOverride = require('method-override')
-//var directory = require('serve-index')
 var favicon = require('serve-favicon');
 
 var api = require('./api')

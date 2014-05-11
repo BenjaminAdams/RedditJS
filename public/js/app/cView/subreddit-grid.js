@@ -48,7 +48,9 @@ define(['App', 'marionette', 'view/post-row-grid-view'],
                 for (var i = 0; i < colCount; i++) {
                     this.$el.append('<div class="column"> </div>')
                 }
-                $('.side').hide()
+
+                $('.side').hide() //Also handling the display or hide of sidebar within sidebar view, need this here for when grid option is on pageload
+
                 this.$el.css('margin-right', '0') //some custom CSS was making this bad in grid mode
                 this.$el.css('text-align', 'center')
             }
