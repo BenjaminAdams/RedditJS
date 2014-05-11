@@ -1,7 +1,7 @@
 ##RedditJS
 The code that powers [redditJS.com](http://www.redditjs.com).
 
-I rewrote reddit from the ground up using the javascript framework [Backbone](https://github.com/jashkenas/backbone) and the [reddit API](http://www.reddit.com/dev/api/).  I feel that I've created a better user experience as well as additional features that makes for a more enjoyable experience.  Follow updates at [/r/redditjs_meow](http://www.reddit.com/r/redditjs_meow/).
+I rewrote reddit from the ground up using the javascript framework [Backbone](https://github.com/jashkenas/backbone) and the [reddit API](http://www.reddit.com/dev/api/).  I feel that I've created a better user experience as well as additional features that makes for a more enjoyable experience.  Follow updates at [/r/redditjs](http://www.reddit.com/r/redditjs).
 
 #Features
  * **Data Cache:**  Only have to load up the subreddit once.  Once the subreddit is loaded, it will pull the subreddit/single post from memory. (Benefit for both Reddit's server and you!  Only fetch once.)
@@ -23,15 +23,15 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * Handlebars <http://handlebarsjs.com/>
  * jQuery <http://jquery.com/>
  * Reddit API <http://www.reddit.com/dev/api/>
- * Hosted at [Heroku](https://www.heroku.com)
+ * Hosted at [Digital Ocean]( https://www.digitalocean.com/?refcode=572549c85ce0)
 
 #### How to run this locally
  * Clone repo `git clone git@github.com:BenjaminAdams/RedditJS.git`
  * In the console type `npm install`
- * In /public/js/loader.js you may have to change the window.production = false or else the changes you make to the source will not work.
  * `sudo npm -g install nodemon` This starts the node server and monitors for changes in the files and updates the code running on node.
  * Run the project and watch for live changes to the code type `nodemon` and you should be able to open it in http://localhost:8002/ 
- * To minify the code for production type `grunt` and in /public/js/loader.js change window.production = true and it will load the minified source.
+ * To minify the code for production type `grunt` which creates `styles.min.css` and `DesktopInit.min.js`
+ * If are not seeing changes you make live, you may need to change /server/views/jade to have `script(src='/js/app/init/DesktopInit.min.js')` to `script(src='/js/app/init/DesktopInit.js')` also change link`(rel='stylesheet', href='/css/styles.min.css')` to `link(rel='stylesheet', href='/css/styles.css')`
 
 #### How to setup oauth
 * Have a local redis instance (http://redis.io/ - sudo apt-get install redis-server)

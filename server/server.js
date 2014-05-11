@@ -19,7 +19,6 @@ var session = require('express-session')
 var errorHandler = require('errorhandler')
 var methodOverride = require('method-override')
 //var directory = require('serve-index')
-var static = require('serve-static');
 var favicon = require('serve-favicon');
 
 var api = require('./api')
@@ -72,11 +71,6 @@ var oneDay = 86400000;
 
 server.use(compress());
 
-//
-
-// server.use(static(__dirname + "/../public", {
-//     maxAge: oneDay
-// }));
 server.use(express.static(path.join(__dirname, '/../public'), {
     maxAge: oneDay
 }));
