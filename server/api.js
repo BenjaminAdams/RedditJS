@@ -40,18 +40,18 @@ module.exports = {
 		request.get(options, function(error, response, body) {
 			if (error) {
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
-					res.send(response.statusCode)
+					return res.send(404)
 				} else {
-					res.send(500)
+					return res.send(500)
 				}
 			}
 
 			//console.log('body=', body)
 
-			if (!error && response.statusCode == 200 || response.statusCode == 304) {
-				res.json(JSON.parse(body))
+			if (typeof response !== 'undefined' && (response.statusCode == 200 || response.statusCode == 304)) {
+				return res.json(JSON.parse(body))
 			} else {
-				res.send(response.statusCode)
+				return res.send(404)
 			}
 		});
 
@@ -173,17 +173,18 @@ module.exports = {
 		request.get(options, function(error, response, body) {
 			if (error) {
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
-					res.send(response.statusCode)
+					return res.send(404)
 				} else {
-					res.send(500)
+					return res.send(500)
 				}
-				return
 			}
 
-			if (!error && response.statusCode == 200 || response.statusCode == 304) {
-				res.json(JSON.parse(body))
+			//console.log('body=', body)
+
+			if (typeof response !== 'undefined' && (response.statusCode == 200 || response.statusCode == 304)) {
+				return res.json(JSON.parse(body))
 			} else {
-				res.send(response.statusCode)
+				return res.send(404)
 			}
 		});
 
@@ -209,24 +210,21 @@ module.exports = {
 			form: req.body,
 		};
 
-		request.post(options, function(error, response, body) {
-			//console.log('resp=', response)
+		request.get(options, function(error, response, body) {
 			if (error) {
-				console.log(error)
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
-					res.send(response.statusCode)
+					return res.send(404)
 				} else {
-					res.send(500)
+					return res.send(500)
 				}
-				return
 			}
 
-			if (!error && response.statusCode == 200 || response.statusCode == 304) {
+			//console.log('body=', body)
 
-				res.json(JSON.parse(body))
-
+			if (typeof response !== 'undefined' && (response.statusCode == 200 || response.statusCode == 304)) {
+				return res.json(JSON.parse(body))
 			} else {
-				res.send(response.statusCode)
+				return res.send(404)
 			}
 		});
 
