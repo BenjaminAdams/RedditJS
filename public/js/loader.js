@@ -4,7 +4,7 @@
         // App Environment
         // --------------- 
         //  Tip: Set to true to turn on "production" mode
-        window.production =  true
+        window.production = false
         var production = window.production //set this so the index file can use it normally
         var filesToLoad;
         //BoilerplateMVC Helper Methods
@@ -60,7 +60,9 @@
                         // If there are development Javascript files to load
                         if (obj["dev-js"]) {
                             // Loads Require.js and tells Require.js to find the correct intialization file
+
                             self.loadJS(obj["dev-js"], callback);
+
                         }
                     });
                 }
@@ -80,22 +82,22 @@
         // Desktop CSS and JavaScript files to load
         filesToLoad = {
             // CSS file that is loaded when in development mode
-            "dev-css": "css/styles.css",
+            "dev-css": "/css/styles.css",
             // CSS file that is loaded when in production mode
-            "prod-css": "css/styles.min.css",
+            "prod-css": "/css/styles.min.css",
             // Require.js configuration file that is also loaded when in development mode
-            "dev-js": {
-                "data-main": "js/app/config/config.js",
-                "src": "js/lib/require.js"
-            },
+            // "dev-js": {
+            //     "data-main": "/js/app/config/config.js",
+            //     "src": "/js/lib/require.js"
+            // },
             // JavaScript initialization file that is loaded when in development mode
-            "dev-init": "js/app/init/DesktopInit.js",
+            "dev-init": "/js/app/init/DesktopInit.js",
             // JavaScript file that is loaded when in production mode
-            "prod-init": "js/app/init/DesktopInit.min.js",
-            "prod-js": {
-                "data-main": "js/app/config/config.js",
-                "src": "js/lib/require.js"
-            }
+            "prod-init": "/js/app/init/DesktopInit.min.js",
+            // "prod-js": {
+            //     "data-main": "/js/app/config/config.js",
+            //     "src": "/js/lib/require.js"
+            // }
         };
 
         boilerplateMVC.loadFiles(production, filesToLoad, function() {

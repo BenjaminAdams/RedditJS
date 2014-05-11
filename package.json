@@ -3,25 +3,12 @@
   "title": "redditjs",
   "description": "A Marionette.js and Require.js Boilerplate that promotes decoupling your JavaScript into modules, separating business logic from application logic using Models and Views, organizing your application into Regions with default build-up/tear-down logic for you Views, reusing your JavaScript between Desktop and Mobile Web versions, including non-AMD Compatible Third Party Scripts in your project, and optimizing all of your JavaScript (minify, concatenate, etc).",
   "version": "1.1.0",
-  "homepage": "http://redditjs.com.com",
+  "homepage": "http://redditjs.com",
   "author": {
     "name": "Benjamin Adams",
-    "email": "armastevs@gmail.com",
+    "email": "ben@benadams.co",
     "url": "https://github.com/BenjaminAdams"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:BoilerplateMVC/Marionette-Require-Boilerplate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/BoilerplateMVC/Marionette-Require-Boilerplate/issues"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/BoilerplateMVC/Marionette-Require-Boilerplate/blob/master/LICENSE-MIT"
-    }
-  ],
   "engines": {
     "node": "0.10.26",
     "npm": "1.4.3"
@@ -35,13 +22,11 @@
     "cookie-parser": "^1.0.1",
     "cookie-session": "^1.0.2",
     "crypto": "0.0.3",
-    "csurf": "^1.1.0",
     "errorhandler": "^1.0.1",
     "express": "^4.1.2",
     "express-session": "^1.0.4",
     "jade": "*",
     "method-override": "^1.0.0",
-    "mongoose": "~3.8.8",
     "multiparty": "^3.2.4",
     "passport": "~0.2.0",
     "passport-reddit": "*",

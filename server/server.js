@@ -14,13 +14,12 @@ var RedditStrategy = require('passport-reddit').Strategy;
 //middleware stuffs
 var bodyParser = require('body-parser')
 var compress = require('compression')
-var csrf = require('csurf');
 var cookieParser = require('cookie-parser');
 var session = require('express-session')
 var errorHandler = require('errorhandler')
 var methodOverride = require('method-override')
 //var directory = require('serve-index')
-var serveStatic = require('serve-static');
+var static = require('serve-static');
 var favicon = require('serve-favicon');
 
 var api = require('./api')
@@ -73,9 +72,15 @@ var oneDay = 86400000;
 
 server.use(compress());
 
-server.use(serveStatic(__dirname + "/../public", {
+//
+
+// server.use(static(__dirname + "/../public", {
+//     maxAge: oneDay
+// }));
+server.use(express.static(path.join(__dirname, '/../public'), {
     maxAge: oneDay
 }));
+
 server.use(favicon(__dirname + "/../public/img/favicon.ico"));
 
 if (process.env.NODE_ENV !== 'production') {
@@ -95,9 +100,8 @@ server.use(session({
     secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
 }));
 
-//server.use(express.logger());
+//server.use(logger());
 server.use(bodyParser());
-server.use(csrf());
 server.use(methodOverride());
 server.use(passport.initialize());
 server.use(passport.session());
