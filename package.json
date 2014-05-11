@@ -16,35 +16,50 @@
   "bugs": {
     "url": "https://github.com/BoilerplateMVC/Marionette-Require-Boilerplate/issues"
   },
-  "licenses": [{
-    "type": "MIT",
-    "url": "https://github.com/BoilerplateMVC/Marionette-Require-Boilerplate/blob/master/LICENSE-MIT"
-  }],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/BoilerplateMVC/Marionette-Require-Boilerplate/blob/master/LICENSE-MIT"
+    }
+  ],
   "engines": {
     "node": "0.10.26",
     "npm": "1.4.3"
   },
   "dependencies": {
-    "express": "~3.5.0",
-    "request": "*",
     "async": "0.2.x",
-    "passport-reddit": "*",
-    "passport": "~0.2.0",
-    "jade": "*",
-    "path": "*",
-    "redis": "~0.10.1",
-    "connect-redis": "~1.4.7",
-    "mongoose": "~3.8.8",
+    "body-parser": "^1.1.1",
+    "bytes": "^1.0.0",
+    "compression": "^1.0.2",
+    "connect-redis": "^2.0.0",
+    "cookie-parser": "^1.0.1",
+    "cookie-session": "^1.0.2",
     "crypto": "0.0.3",
-    "underscore": "^1.6.0"
+    "csurf": "^1.1.0",
+    "errorhandler": "^1.0.1",
+    "express": "^4.1.2",
+    "express-session": "^1.0.4",
+    "jade": "*",
+    "method-override": "^1.0.0",
+    "mongoose": "~3.8.8",
+    "multiparty": "^3.2.4",
+    "passport": "~0.2.0",
+    "passport-reddit": "*",
+    "path": "^0.4.9",
+    "qs": "^0.6.6",
+    "raw-body": "^1.1.4",
+    "redis": "~0.10.1",
+    "request": "*",
+    "serve-favicon": "^2.0.0",
+    "serve-static": "^1.1.0",
+    "uglify-js": "^2.4.13"
   },
   "devDependencies": {
-    "express": "3.x",
-    "grunt": "~0.4.1",
-    "grunt-contrib-requirejs": "~0.4.0",
+    "grunt": "^0.4.4",
     "grunt-contrib-jshint": "~0.3.0",
-    "uglify-js": "~2.2.5",
-    "nodemon": "*"
+    "grunt-contrib-requirejs": "~0.4.0",
+    "nodemon": "*",
+    "uglify-js": "~2.2.5"
   },
   "main": "./server/server",
   "keywords": [

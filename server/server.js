@@ -10,8 +10,20 @@ var request = require('request')
 var passport = require('passport')
 var crypto = require('crypto')
 
+//middleware stuffs
+var bodyParser = require('body-parser')  
+var compress = require('compression')
+var csrf = require('csurf');
+var cookieParser = require('cookie-parser');
+var session      = require('express-session')
+var errorHandler = require('errorhandler')
+var methodOverride = require('method-override')
+//var directory = require('serve-index')
+var serveStatic = require('serve-static');
+var favicon = require('serve-favicon');
+
 var api = require('./api')
-var redisStore = require('connect-redis')(express);
+var redisStore = require('connect-redis')(session);
 
 // var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
@@ -64,24 +76,25 @@ passport.use(new RedditStrategy({
 
 // SERVER CONFIGURATION
 // ====================
-server.configure(function() {
     var oneDay = 86400000;
-    server.use(express.compress());
-    server.use(express.static(__dirname + "/../public", {
+
+    server.use(compress());
+
+    server.use(serveStatic(__dirname + "/../public", {
         maxAge: oneDay
     }));
-    server.use(express.favicon(__dirname + "/../public/img/favicon.ico"));
+    server.use(favicon(__dirname + "/../public/img/favicon.ico"));
 
     if (process.env.NODE_ENV !== 'production') {
 
-        server.use(express.errorHandler({
+        server.use(errorHandler({
             dumpExceptions: true,
             showStack: true
         }));
     }
 
-    server.use(express.cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
-    server.use(express.session({
+    server.use(cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
+    server.use(session({
         store: new redisStore(),
         cookie : {
             maxAge: 36000000
@@ -90,15 +103,16 @@ server.configure(function() {
     }));
 
     //server.use(express.logger());
-    server.use(express.bodyParser());
-    server.use(express.methodOverride());
+    server.use(bodyParser());
+    server.use(csrf());
+    server.use(methodOverride());
     server.use(passport.initialize());
     server.use(passport.session());
-    server.use(server.router);
+   // server.use(server.router);
     server.set('views', path.join(__dirname, 'views'))
     server.set('view engine', 'jade')
 
-});
+
 
 server.get('/api', ensureAuthenticated, function(req, res) {
     api.get(res, req)
