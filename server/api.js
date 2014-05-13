@@ -30,7 +30,7 @@ module.exports = {
 				//'Content-Type': 'application/x-www-form-urlencoded',
 				// 'User-Agent': 'RedditJS/1.0 by ' + req.session.name,
 				// 'Authorization': "bearer " + req.session.access_token,
-				'User-Agent': 'RedditJS/1.0 by ' + req.user.name,
+				'User-Agent': 'RedditJS/1.1 by ' + req.user.name,
 				'Authorization': "bearer " + req.user.access_token
 			},
 			form: url_parts.query
@@ -72,7 +72,7 @@ module.exports = {
 			url: urlStr,
 			headers: {
 				//'Content-Type': 'application/x-www-form-urlencoded',
-				'User-Agent': 'RedditJS/1.0 by ' + req.user.name,
+				'User-Agent': 'RedditJS/1.1 by ' + req.user.name,
 				'Authorization': "bearer " + req.user.access_token
 			},
 			form: req.body,
@@ -165,6 +165,7 @@ module.exports = {
 			url: urlStr,
 			headers: {
 				Cookie: 'reddit_session=' + cookie,
+				'User-Agent': 'RedditJS/1.1',
 
 			},
 			form: url_parts.query,
@@ -190,6 +191,7 @@ module.exports = {
 
 	},
 	postNonAuth: function(res, req) {
+
 		var url = require('url');
 		var url_parts = url.parse(req.url, true);
 		var urlStr = url_parts.query.url
@@ -206,11 +208,12 @@ module.exports = {
 			url: urlStr,
 			headers: {
 				Cookie: 'reddit_session=' + cookie,
+				'User-Agent': 'RedditJS/1.1'
 			},
 			form: req.body,
 		};
 
-		request.get(options, function(error, response, body) {
+		request.post(options, function(error, response, body) {
 			if (error) {
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
 					return res.send(404)
@@ -218,8 +221,6 @@ module.exports = {
 					return res.send(500)
 				}
 			}
-
-			//console.log('body=', body)
 
 			if (typeof response !== 'undefined' && (response.statusCode == 200 || response.statusCode == 304)) {
 				return res.json(JSON.parse(body))
