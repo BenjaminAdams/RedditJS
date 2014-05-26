@@ -93,11 +93,23 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 this.ui.embedStatus.html(submitBtn);
             },
             gotoSubmit: function() {
-                //  /submit/url=http://dudelol.com/now-that?asdasd=asd
+                //example url:  /submit/url=http://dudelol.com/now-that?asdasd=asd
+
+                //change parent size
+                this.newParentHeight(600)
+
                 var url = '/submit/url=' + this.q.url
                 Backbone.history.navigate(url, {
                     trigger: true
                 });
+            },
+            newParentHeight: function(height) {
+
+                var postData = {
+                    newHeight: height
+                }
+                parent.postMessage(postData, "*");
+
             }
 
         });
