@@ -209,7 +209,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 					var self = this
 
 					var id = this.model.get('name')
-					//var text = this.$('#text' + id).val()
+						//var text = this.$('#text' + id).val()
 					var text = this.ui.text.val()
 					text = this.sterilize(text) //clean the input
 
@@ -435,7 +435,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				e.preventDefault()
 				e.stopPropagation()
 				var self = this
-				//this.$('div[data-fullname=' + this.model.get('name') + ']').hide()
+					//this.$('div[data-fullname=' + this.model.get('name') + ']').hide()
 				$(this.el).hide()
 				var params = {
 					id: this.model.get('name'),
@@ -516,6 +516,14 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 					}
 				});
 
+			},
+			extractUrl: function(q) {
+				var opt = {}
+				q.split('&').forEach(function(name) {
+					var split = name.split('=')
+					opt[split[0]] = split[1]
+				});
+				return opt
 			},
 			oauthPopup: function(options) {
 				//get center of page

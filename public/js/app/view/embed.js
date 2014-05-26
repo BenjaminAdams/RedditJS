@@ -10,7 +10,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
         return BaseView.extend({
             template: Tmpl,
             events: {
-                //'change input': 'updateSettings'
+                'click .gotoSubmit': 'gotoSubmit'
             },
             ui: {
                 embedStatus: '#embedStatus'
@@ -38,14 +38,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 $('#theHeader').show()
             },
             //gets the options out of the url
-            extractUrl: function(q) {
-                var opt = {}
-                q.split('&').forEach(function(name) {
-                    var split = name.split('=')
-                    opt[split[0]] = split[1]
-                });
-                return opt
-            },
+
             urlStatus: function() {
                 var self = this
                 self.ui.embedStatus.addClass('loadingEmbed')
@@ -98,6 +91,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
 
                 var submitBtn = '<img class="gotoSubmit" src="http://www.reddit.com/static/spreddit11.gif" alt="submit to reddit" border="0" />'
                 this.ui.embedStatus.html(submitBtn);
+            },
+            gotoSubmit: function() {
+                var url = '/submit/url=' + this.q.url
+                Backbone.history.navigate(url, {
+                    trigger: true
+                });
             }
 
         });

@@ -29,6 +29,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'r/myrandom(/)': 'myrandom',
                 'r/:subName/submit(/)': 'submit',
                 'submit(/)': 'submit',
+                'submit/*q': 'submitWithUrl',
                 'embed/*q': 'embed', //ex http://redditjs.com/embed/url=http://dudelol.com/now-that-youre-big-dr-suess-style-sex-ed-book&as=4&fffff=123
                 'prefs(/)': 'prefs',
                 'test(/)': 'test',
@@ -225,11 +226,18 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     }))
                 })
             },
-            submit: function(subName) {
+            submit: function(subName, q) {
                 this.doSidebar(subName);
                 require(['view/submit-view'], function(SubmitView) {
                     App.mainRegion.show(new SubmitView({
                         subName: subName
+                    }))
+                });
+            },
+            submitWithUrl: function(q) {
+                require(['view/submit-view'], function(SubmitView) {
+                    App.mainRegion.show(new SubmitView({
+                        q: q
                     }))
                 });
             },
@@ -248,7 +256,6 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 });
             },
             embed: function(q) {
-                console.log('in embed view')
                 require(['view/embed'], function(EmbedView) {
                     App.mainRegion.show(new EmbedView({
                         q: q
@@ -262,7 +269,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                     if (typeof App.subreddits.mine !== 'undefined' && App.subreddits.mine.length > 14) {
                         var rand = App.subreddits.mine.at(Math.floor((Math.random() * App.subreddits.mine.length)))
-                        // this.subreddit(rand.get('display_name'))
+                            // this.subreddit(rand.get('display_name'))
                         Backbone.history.navigate('r/' + rand.get('display_name'), {
                             trigger: true
                         })

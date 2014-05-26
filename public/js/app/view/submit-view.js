@@ -36,6 +36,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				this.model = new Backbone.Model({
 					subName: this.subName
 				})
+				console.log('opts=', options)
+
+				if (typeof options.q !== 'undefined') { //if user arrived with a pre-set URL
+
+					this.url = this.getUrlFromUrl(options.q)
+					this.model.set('url', this.url) //load template with pre-defined URL
+				}
+
 				this.type = 'link'
 
 				this.searchCollection = null
@@ -56,6 +64,20 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			*/
 			onRender: function() {
 				this.loadSubreddits()
+			},
+			//if the user wants to set a pre-defined URL to submit, extract it from the URL
+			//http://localhost:8002/submit/url=http://dudelol.com/now-that?asdasd=asd
+			getUrlFromUrl: function() {
+				var curUrl = Backbone.history.location.href
+				if (curUrl.indexOf("url=") > -1) {
+					var split = curUrl.split('url=')
+					if (split[1] != null) {
+						return split[1]
+					}
+
+				}
+
+				return ""
 			},
 			keyDownTitle: function(e) {
 				var self = this
