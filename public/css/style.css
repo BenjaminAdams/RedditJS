@@ -27,6 +27,16 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
+.loadingEmbed {
+height: 20px;
+width:100px;
+background-image: url('../img/loading.gif');
+background-repeat: no-repeat;
+background-position: center center;
+margin:0 auto;
+}
+
+
 .loadingSingle {
   height: 15px;
 width:15px;

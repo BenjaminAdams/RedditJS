@@ -5,15 +5,15 @@ Embed reddit in external websites
 //ex http://localhost:8002/embed/url=http://imgur.com/XZvyRhU&as=4&fffff=123
 
 */
-define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'view/basem-view', 'collection/info'],
-    function(App, _, Backbone, Tmpl, BaseView, InfoCollection) {
+define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/blank', 'view/basem-view', 'collection/info'],
+    function(App, _, Backbone, Tmpl, BlankTmpl, BaseView, InfoCollection) {
         return BaseView.extend({
             template: Tmpl,
             events: {
-                'change input': 'updateSettings'
+                //'change input': 'updateSettings'
             },
             ui: {
-                load1000: '#load1000'
+                embedStatus: '#embedStatus'
             },
             initialize: function(options) {
                 _.bindAll(this);
@@ -29,7 +29,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'view/basem-view'
             },
             onRender: function() {
                 //hide the header with CSS because I am not sure if we still need it or not
-                $('#theHeader').hide()
+                // $('#theHeader').hide()
 
                 this.urlStatus() //find out if the link has already been submitted
 
@@ -48,6 +48,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'view/basem-view'
             },
             urlStatus: function() {
                 var self = this
+                self.ui.embedStatus.addClass('loadingEmbed')
 
                 if (this.validURL(this.q.url)) {
 
@@ -60,7 +61,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'view/basem-view'
                         success: function(data) {
                             console.log(data)
                             var postsLength = data.length
-                            console.log('length=', postsLength)
+
                             if (postsLength > 0) {
 
                                 var sendUserToPost = self.urlCollection.first()
@@ -76,18 +77,27 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'view/basem-view'
                                 });
 
                             } else {
-                                self.ui.urlDetails.html('good job, this link has never been submit before').removeClass('loadingSubmit')
+                                self.postNotFound();
                             }
                         },
                         error: function(data) {
                             console.log("ERROR inrequest details: ", data);
-                            self.ui.urlDetails.html('unable to fetch data from reddit api').removeClass('loadingSubmit')
+                            self.ui.embedStatus.html('unable to fetch data from reddit api').removeClass('loadingEmbed')
                         }
                     })
 
                 } else {
-                    self.ui.urlDetails.html('please enter a valid url').removeClass('loadingSubmit')
+                    self.ui.embedStatus.html('please enter a valid url').removeClass('loadingEmbed')
                 }
+            },
+            postNotFound: function() {
+                //this.ui.embedStatus.html('good job, this link has never been submit before').removeClass('loadingEmbed')
+                this.showSubmitThisToReddit();
+            },
+            showSubmitThisToReddit: function() {
+
+                var submitBtn = '<img class="gotoSubmit" src="http://www.reddit.com/static/spreddit11.gif" alt="submit to reddit" border="0" />'
+                this.ui.embedStatus.html(submitBtn);
             }
 
         });

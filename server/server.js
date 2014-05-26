@@ -27,7 +27,7 @@ var redisStore = require('connect-redis')(session);
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
 var callbackURL = process.env.REDDIT_CALLBACK || "http://redditjs.com/auth/reddit/callback"
 var loginAgainMsg = 'login to reddit please'
-/*
+    /*
 for your local env run
     export REDDIT_KEY = 'your key'
     export REDDIT_SECRET = 'your secret'
@@ -67,12 +67,17 @@ passport.use(new RedditStrategy({
 // SERVER CONFIGURATION
 // ====================
 var oneDay = 86400000;
+// server.use(function(req, res, next) {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+//     next();
+// });
 
 server.use(compress());
 
-server.use(express.static(path.join(__dirname, '/../public'), {
-    maxAge: oneDay
-}));
+server.use(express.static(__dirname + '../../public'));
 
 server.use(favicon(__dirname + "/../public/img/favicon.ico"));
 

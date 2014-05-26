@@ -7,7 +7,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 				_.bindAll(this);
 			},
 			onRender: function() {
-				
 				window.close()
 			}
 
