@@ -316,6 +316,43 @@ display:none;
     max-width: 600px; 
 }
 
+
+/*mobile Submit page*/
+.submit,.tabmenu .formtab,.formtabs-content,.roundfield, .roundfield .usertext-edit,.tabmenu  {
+    width:99% !important;
+}
+
+.submit .info-notice {
+    width:95% !important;
+    padding: 9px 0px 9px 9px !important;
+}
+
+.submit ul.tabmenu.formtab {
+    width:97% !important;
+}
+
+.submit .roundfield {
+    padding: 2px 5px 0px 5px;
+}
+
+.submit #url-field button {
+margin: 5px 3% 5px 5px;
+}
+
+.submit textarea, .submit input {
+    width:95% !important;
+}
+
+.submit .tabmenu.formtab a {
+font-size: 20px;
+}
+
+.submit .tabmenu li {
+font-size: 20px; 
+display: inline;
+margin:0 2px;
+}
+
 /*
 #thepost .entry  {
     overflow: visible;
