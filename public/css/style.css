@@ -38,7 +38,15 @@ top:15%;
 
 .gotoSubmit {
   cursor:pointer;
+  float:left;
+  margin:5px;
 }
+.gotoSubmit {
+text-decoration: none;
+color: #369;
+}
+  
+
 
 .panestack-title {
 margin: 10px 10px 0 10px;

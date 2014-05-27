@@ -13,7 +13,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 'click .gotoSubmit': 'gotoSubmit'
             },
             ui: {
-                embedStatus: '#embedStatus'
+                embedStatus: '#embedStatus',
+                submitBtn: '#submitBtn'
             },
             initialize: function(options) {
                 _.bindAll(this);
@@ -26,6 +27,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
 
                 this.inputTimer = 0 //keeps track of user input and when they stop input it performs a search
                 this.lastTitleInput = null //keeps track of the last input in keyboard on title field
+
+                this.submitPostImg = this.q.submitPostImg || 'http://www.reddit.com/static/spreddit11.gif'
 
             },
             onRender: function() {
@@ -107,13 +110,15 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             postNotFound: function() {
                 //this.ui.embedStatus.html('good job, this link has never been submit before').removeClass('loadingSingle')
                 this.showSubmitThisToReddit();
-                this.newParentHeight(60)
+                this.newParentHeight(80)
                 $('#theHeader').hide()
             },
             showSubmitThisToReddit: function() {
 
                 var submitBtn = '<img class="gotoSubmit" src="http://www.reddit.com/static/spreddit11.gif" alt="submit to reddit" border="0" />'
-                this.ui.embedStatus.html(submitBtn);
+                submitBtn += '<div class="md gotoSubmit"> No one has submit this before to reddit. <h3><strong><span class="mdBlue"> Be the first </span></strong></h3> </div>';
+
+                this.ui.submitBtn.html(submitBtn);
             },
             gotoSubmit: function() {
                 //example url:  /submit/url=http://dudelol.com/now-that?asdasd=asd
