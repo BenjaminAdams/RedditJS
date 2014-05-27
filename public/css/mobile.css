@@ -23,6 +23,9 @@ margin:8px -7px !important;
 font-size:20px !important;
 }
 
+#siteTable .link {
+    margin-bottom: 0px;
+}
 
 
 .comment .child, .comment .showreplies {
@@ -160,6 +163,7 @@ position: relative;
 
 #siteTableComments {
     font-size:20px;
+    padding-bottom:10px;
 }
 
 .comments {
@@ -293,7 +297,7 @@ border: none;
 }
 
 .link .title {
-font-size: 15px;
+font-size: 14px;
 }
 
 .link .flat-list {
@@ -370,7 +374,7 @@ margin:0 2px;
 /*To verticle align the text in the middle of the title div*/
 .entryParent {
     display:table;
-    min-height:70px;
+    min-height:65px;
 }
 
 .entryChild {

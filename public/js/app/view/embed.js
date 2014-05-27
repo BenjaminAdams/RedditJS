@@ -18,9 +18,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             initialize: function(options) {
                 _.bindAll(this);
                 this.q = this.getUrlParameters()
-                console.log(this.q)
-                this.q.url = decodeURIComponent(this.q.url)
-
+                if (typeof this.q.url !== 'undefined') {
+                    this.q.url = decodeURIComponent(this.q.url)
+                }
                 this.searchCollection = null
                 this.urlCollection = null
 
@@ -34,17 +34,16 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
 
                 this.urlStatus() //find out if the link has already been submitted
 
+                //option passed in
+                if (typeof this.q.backgroundColor !== 'undefined') {
+                    $('body').css('background-color', '#' + this.q.backgroundColor)
+                }
+
             },
             onBeforeClose: function() {
                 $('#theHeader').show()
             },
-            //gets the options out of the url
-            extractUrl: function() {
-                return location.search.substr(1).split("&").forEach(function(item) {
-                    queryDict[item.split("=")[0]] = item.split("=")[1]
-                })
-            },
-
+            //backbone cant parse the complex URL we are passing it, use vanillaJS
             getUrlParameters: function(b) {
                 var qsParm = []
                 var query = window.location.search.substring(1);
@@ -62,7 +61,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
 
             urlStatus: function() {
                 var self = this
-                self.ui.embedStatus.addClass('loadingEmbed')
+                self.ui.embedStatus.addClass('loadingSingle')
 
                 if (this.validURL(this.q.url)) {
 
@@ -96,17 +95,17 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                         },
                         error: function(data) {
                             console.log("ERROR inrequest details: ", data);
-                            self.ui.embedStatus.html('unable to fetch data from reddit api').removeClass('loadingEmbed')
+                            self.ui.embedStatus.html('unable to fetch data from reddit api').removeClass('loadingSingle')
                             self.newParentHeight(50)
                         }
                     })
 
                 } else {
-                    self.ui.embedStatus.html('please enter a valid url').removeClass('loadingEmbed')
+                    self.ui.embedStatus.html('please enter a valid url').removeClass('loadingSingle')
                 }
             },
             postNotFound: function() {
-                //this.ui.embedStatus.html('good job, this link has never been submit before').removeClass('loadingEmbed')
+                //this.ui.embedStatus.html('good job, this link has never been submit before').removeClass('loadingSingle')
                 this.showSubmitThisToReddit();
                 this.newParentHeight(60)
                 $('#theHeader').hide()
