@@ -517,14 +517,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				});
 
 			},
-			extractUrl: function(q) {
-				var opt = {}
-				q.split('&').forEach(function(name) {
-					var split = name.split('=')
-					opt[split[0]] = split[1]
-				});
-				return opt
-			},
+
 			oauthPopup: function(options) {
 				//get center of page
 				// Fixes dual-screen position                         Most browsers      Firefox

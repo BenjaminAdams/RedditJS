@@ -17,8 +17,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             },
             initialize: function(options) {
                 _.bindAll(this);
-                this.q = this.extractUrl(options.q)
+                this.q = this.getUrlParameters()
                 console.log(this.q)
+                this.q.url = decodeURIComponent(this.q.url)
 
                 this.searchCollection = null
                 this.urlCollection = null
@@ -38,6 +39,26 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 $('#theHeader').show()
             },
             //gets the options out of the url
+            extractUrl: function() {
+                return location.search.substr(1).split("&").forEach(function(item) {
+                    queryDict[item.split("=")[0]] = item.split("=")[1]
+                })
+            },
+
+            getUrlParameters: function(b) {
+                var qsParm = []
+                var query = window.location.search.substring(1);
+                var parms = query.split('&');
+                for (var i = 0; i < parms.length; i++) {
+                    var pos = parms[i].indexOf('=');
+                    if (pos > 0) {
+                        var key = parms[i].substring(0, pos);
+                        var val = parms[i].substring(pos + 1);
+                        qsParm[key] = val;
+                    }
+                }
+                return qsParm;
+            },
 
             urlStatus: function() {
                 var self = this
@@ -76,6 +97,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                         error: function(data) {
                             console.log("ERROR inrequest details: ", data);
                             self.ui.embedStatus.html('unable to fetch data from reddit api').removeClass('loadingEmbed')
+                            self.newParentHeight(50)
                         }
                     })
 
@@ -86,6 +108,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             postNotFound: function() {
                 //this.ui.embedStatus.html('good job, this link has never been submit before').removeClass('loadingEmbed')
                 this.showSubmitThisToReddit();
+                this.newParentHeight(60)
+                $('#theHeader').hide()
             },
             showSubmitThisToReddit: function() {
 

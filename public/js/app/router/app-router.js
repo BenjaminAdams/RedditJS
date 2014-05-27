@@ -26,11 +26,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
             },
             routes: {
+                //ex http://redditjs.com/embed/url=http://dudelol.com/now-that-youre-big-dr-suess-style-sex-ed-book&as=4&fffff=123
+                'embed?*q': 'embed',
                 'r/myrandom(/)': 'myrandom',
                 'r/:subName/submit(/)': 'submit',
                 'submit(/)': 'submit',
                 'submit/*q': 'submitWithUrl',
-                'embed/*q': 'embed', //ex http://redditjs.com/embed/url=http://dudelol.com/now-that-youre-big-dr-suess-style-sex-ed-book&as=4&fffff=123
                 'prefs(/)': 'prefs',
                 'test(/)': 'test',
                 'redirectBack(/)': 'redirectBack',

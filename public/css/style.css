@@ -46,6 +46,9 @@ top:15%;
 
 }
 
+.gotoSubmit {
+  cursor:pointer;
+}
 
 .panestack-title {
 margin: 10px 10px 0 10px;
