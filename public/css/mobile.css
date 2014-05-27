@@ -320,6 +320,11 @@ display:none;
     max-width: 600px; 
 }
 
+.comment .child, .comment .showreplies {
+    margin-left: 5px;
+    border-left: 2px dotted #8686AA;
+}
+
 
 /*mobile Submit page*/
 .submit,.tabmenu .formtab,.formtabs-content,.roundfield, .roundfield .usertext-edit,.tabmenu  {
