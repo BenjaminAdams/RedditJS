@@ -159,7 +159,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 			//delete things we wont use to save space in localstorage
 			delete data.secure_media_embed;
 			delete data.selftext;
-			delete data.created_utc;
+			//delete data.created_utc;
 			delete data.created;
 			delete data.approved_by;
 			delete data.over_18;

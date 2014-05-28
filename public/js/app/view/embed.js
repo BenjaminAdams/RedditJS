@@ -28,7 +28,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 this.inputTimer = 0 //keeps track of user input and when they stop input it performs a search
                 this.lastTitleInput = null //keeps track of the last input in keyboard on title field
 
-                this.submitPostImg = this.q.submitPostImg || 'http://www.reddit.com/static/spreddit11.gif'
+                this.setOptions()
 
             },
             onRender: function() {
@@ -46,6 +46,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             onBeforeClose: function() {
                 $('#theHeader').show()
             },
+
+            setOptions: function() {
+                this.submitPostImg = this.q.submitPostImg || 'http://www.reddit.com/static/spreddit11.gif'
+                this.postSortOrder = this.q.postSortOrder || 'mostUpvoted'
+
+            },
             //backbone cant parse the complex URL we are passing it, use vanillaJS
             getUrlParameters: function(b) {
                 var qsParm = []
@@ -62,6 +68,28 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 return qsParm;
             },
 
+            selectPostWithMostUpvoted: function(gotoPost) {
+                this.urlCollection.each(function(post) {
+                    //redirect the user to the post with the highest number of comments
+                    if (post.get('num_comments') >= gotoPost.get('num_comments')) {
+                        gotoPost = post
+                    }
+                })
+                return gotoPost;
+            },
+            selectNewestPost: function(gotoPost, cb) {
+                this.urlCollection.each(function(post) {
+
+                    var newestDate = moment.unix(gotoPost.get('created_utc'))
+                    var tmpDate = moment.unix(post.get('created_utc'))
+
+                    //redirect the user to the post with the highest number of comments
+                    if (tmpDate < newestDate) {
+                        gotoPost = post
+                    }
+                })
+                return gotoPost;
+            },
             urlStatus: function() {
                 var self = this
                 self.ui.embedStatus.addClass('loadingSingle')
@@ -75,22 +103,22 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
 
                     this.urlCollection.fetch({
                         success: function(data) {
-                            console.log(data)
+                            var gotoPost;
                             var postsLength = data.length
 
                             if (postsLength > 0) {
 
-                                var sendUserToPost = self.urlCollection.first()
-                                self.urlCollection.each(function(post) {
-                                    //redirect the user to the post with the highest number of comments
-                                    if (post.get('num_comments') >= sendUserToPost.get('num_comments')) {
-                                        sendUserToPost = post
-                                    }
-                                })
+                                gotoPost = self.urlCollection.first()
+
+                                if (self.postSortOrder === 'mostUpvoted') {
+                                    gotoPost = self.selectPostWithMostUpvoted(gotoPost)
+                                } else if (self.postSortOrder === 'newest') {
+                                    gotoPost = self.selectNewestPost(gotoPost)
+                                }
 
                                 self.newIframeSize(null, null)
 
-                                Backbone.history.navigate(sendUserToPost.get('permalink'), {
+                                Backbone.history.navigate(gotoPost.get('permalink'), {
                                     trigger: true
                                 });
 
@@ -100,8 +128,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                         },
                         error: function(data) {
                             console.log("ERROR inrequest details: ", data);
-                            self.ui.embedStatus.html('unable to fetch data from reddit api').removeClass('loadingSingle')
-                            self.newIframeSize(50, 100)
+                            //self.ui.embedStatus.html('unable to fetch data from reddit api').removeClass('loadingSingle')
+                            self.newIframeSize(0, 0)
                         }
                     })
 
@@ -117,7 +145,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             showSubmitThisToReddit: function() {
 
                 var submitBtn = '<img class="gotoSubmit" src="http://www.reddit.com/static/spreddit11.gif" alt="submit to reddit" border="0" />'
-                submitBtn += '<div class="md gotoSubmit"> No one has submit this before to reddit. <h3><strong><span class="mdBlue"> Be the first </span></strong></h3> </div>';
+                submitBtn += '<div class="md gotoSubmit"> Post not found on reddit. <h3><strong><span class="mdBlue"> Be the first to submit </span></strong></h3> </div>';
 
                 this.ui.submitBtn.html(submitBtn);
                 this.newIframeSize(null, null)
