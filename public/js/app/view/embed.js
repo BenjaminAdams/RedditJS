@@ -88,6 +88,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                                     }
                                 })
 
+                                self.newIframeSize(null, null)
+
                                 Backbone.history.navigate(sendUserToPost.get('permalink'), {
                                     trigger: true
                                 });
@@ -99,7 +101,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                         error: function(data) {
                             console.log("ERROR inrequest details: ", data);
                             self.ui.embedStatus.html('unable to fetch data from reddit api').removeClass('loadingSingle')
-                            self.newParentHeight(50)
+                            self.newIframeSize(50, 100)
                         }
                     })
 
@@ -108,10 +110,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 }
             },
             postNotFound: function() {
-                //this.ui.embedStatus.html('good job, this link has never been submit before').removeClass('loadingSingle')
                 this.showSubmitThisToReddit();
-                this.newParentHeight(80)
                 $('#theHeader').hide()
+                this.newIframeSize(80, null)
             },
             showSubmitThisToReddit: function() {
 
@@ -119,25 +120,39 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 submitBtn += '<div class="md gotoSubmit"> No one has submit this before to reddit. <h3><strong><span class="mdBlue"> Be the first </span></strong></h3> </div>';
 
                 this.ui.submitBtn.html(submitBtn);
+                this.newIframeSize(null, null)
             },
             gotoSubmit: function() {
                 //example url:  /submit/url=http://dudelol.com/now-that?asdasd=asd
 
                 //change parent size
-                this.newParentHeight(600)
+                this.newIframeSize(600, null)
 
                 var url = '/submit/url=' + this.q.url
                 Backbone.history.navigate(url, {
                     trigger: true
                 });
             },
-            newParentHeight: function(height) {
+            // tellParentWeLoaded: function() {
+            //     var postData = {
+            //         loadDesiredHeight: true
+            //     }
+            //     parent.postMessage(postData, "*");
+            // },
+            // newParentHeight: function(height) {
 
+            //     var postData = {
+            //         newHeight: height
+            //     }
+            //     parent.postMessage(postData, "*");
+
+            // },
+            newIframeSize: function(height, width) {
                 var postData = {
-                    newHeight: height
+                    newHeight: height,
+                    newWidth: width
                 }
                 parent.postMessage(postData, "*");
-
             }
 
         });

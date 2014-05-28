@@ -322,9 +322,8 @@ display:none;
 
 .comment .child, .comment .showreplies {
     margin-left: 5px;
-    border-left: 2px dotted #8686AA;
+    border-left: 2px dotted #C3C3C5;
 }
-
 
 /*mobile Submit page*/
 .submit,.tabmenu .formtab,.formtabs-content,.roundfield, .roundfield .usertext-edit,.tabmenu  {
