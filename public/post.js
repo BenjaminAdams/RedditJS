@@ -9,94 +9,89 @@
 // 	}
 // }
 
-var script = document.getElementById('rjs_post');
-//alert(script.getAttribute('data-id'));
+(function() {
+	"use strict"
 
-if (script) {
-	writeInlineCss()
-	var postUrl = script.getAttribute('data-url') || window.location.href
-	var width = script.getAttribute('data-width') || 500
-	var height = script.getAttribute('data-height') || 350
-	var postSortOrder = script.getAttribute('postSortOrder') || 'mostComments'
+	var postUrl;
+	var width;
+	var height;
+	var postSortOrder;
+	var script;
 
-	//<div class='redditjs_iframe_wrapper'><iframe id='redditjs_post' src='$embedURL' ></iframe></div>
+	initScript(script)
 
-	////$embedURL = "http://localhost:8002/embed?url=$currentURL&submitPostImg=$submitPostImg&postSortOrder=$postSortOrder";
+	function initScript(script) {
+		script = document.getElementById('rjs_post');
+		if (script) {
 
-	var embedUrl = "http://localhost:8002/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postSortOrder=' + postSortOrder
+			postUrl = script.getAttribute('data-url') || window.location.href
+			width = script.getAttribute('data-width') || 500
+			height = script.getAttribute('data-height') || 350
+			postSortOrder = script.getAttribute('postSortOrder') || 'mostComments'
 
-	var iframeWrapper = document.createElement("div");
-	iframeWrapper.setAttribute('id', 'redditjs_iframe_wrapper');
-	iframeWrapper.style.width = '100%'
+			var embedUrl = "http://localhost:8002/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postSortOrder=' + postSortOrder
 
-	var ifrm = document.createElement("IFRAME");
-	ifrm.setAttribute("src", embedUrl);
-	//start out invis and expand after loaded
-	ifrm.style.height = '0px'
-	ifrm.style.width = '0px'
-	ifrm.style.margin = '0 auto'
-	ifrm.style.display = 'block'
+			var iframeWrapper = document.createElement("div");
+			iframeWrapper.style.width = '100%'
 
-	iframeWrapper.appendChild(ifrm)
-	//script.appendChild(iframeWrapper)
-	script.parentNode.insertBefore(iframeWrapper, script.nextSibling);
+			var ifrm = document.createElement("IFRAME");
+			ifrm.setAttribute("src", embedUrl);
+			//start out invis and expand after loaded
+			ifrm.style.height = '0px'
+			ifrm.style.width = '0px'
+			ifrm.style.margin = '0 auto'
+			ifrm.style.display = 'block'
 
-	setupMessenger(ifrm)
+			iframeWrapper.appendChild(ifrm)
+			//script.appendChild(iframeWrapper)
+			script.parentNode.insertBefore(iframeWrapper, script.nextSibling);
 
-}
+			setupMessenger(ifrm)
 
-function setupMessenger(ifrm) {
-	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-	var eventer = window[eventMethod];
-	var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
-
-	//cache jquery objects
-	//var $redditjs_post = $('#redditjs_post')
-
-	// Listen to message from child window
-	eventer(messageEvent, function(e) {
-
-		if (typeof e === 'undefined' && typeof e.data === 'undefined') {
-			//error checking
-			return;
 		}
+	}
 
-		ifrm.style.border = '5px #f0f0f0 solid'
-		ifrm.style.resize = 'both';
-		ifrm.style.overflow = 'auto';
+	function setupMessenger(ifrm) {
+		var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+		var eventer = window[eventMethod];
+		var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
-		if (typeof e.data.newWidth !== 'undefined' || typeof e.data.newHeight !== 'undefined') {
-			//add class
-			if (ifrm.classList) {
-				ifrm.classList.add('iframePostLoaded');
-			} else {
-				ifrm.className += ' ' + 'iframePostLoaded';
+		// Listen to message from child window
+		eventer(messageEvent, function(e) {
+
+			if (typeof e === 'undefined' && typeof e.data === 'undefined') {
+				//error checking
+				return;
 			}
 
-			var newHeight = e.data.newHeight || height
-			var newWidth = e.data.newWidth || width
+			ifrm.style.border = '5px #f0f0f0 solid'
+			ifrm.style.resize = 'both';
+			ifrm.style.overflow = 'auto';
 
-			setHeight(ifrm, newHeight)
-			setWidth(ifrm, newWidth)
+			if (typeof e.data.newWidth != null) {
+				var newHeight = e.data.newHeight || height
+				setHeight(ifrm, newHeight)
+			}
 
-		}
+			if (typeof e.data.newHeight != null) {
+				var newWidth = e.data.newWidth || width
+				setWidth(ifrm, newWidth)
+			}
 
-	}, false);
-}
+		}, false);
+	}
 
-function setHeight(ifrm, newHeight) {
-	ifrm.height = newHeight
-	//ifrm.css('height', newHeight)
-	ifrm.style.height = newHeight + "px"
+	function setHeight(ifrm, newHeight) {
+		ifrm.height = newHeight
+		//ifrm.css('height', newHeight)
+		ifrm.style.height = newHeight + "px"
 
-}
+	}
 
-function setWidth(ifrm, newWidth) {
-	ifrm.width = newWidth
-	//ifrm.css('width', newWidth)
-	ifrm.style.width = newWidth + "px"
-}
+	function setWidth(ifrm, newWidth) {
+		ifrm.width = newWidth
+		//ifrm.css('width', newWidth)
+		ifrm.style.width = newWidth + "px"
+	}
 
-function writeInlineCss() {
-	document.write("<style> .redditjs_iframe_wrapper{width:100%}#redditjs_post{display:block;margin:0 auto;border:5px #f0f0f0 solid;width:0;height:0}.iframePostLoaded{resize:both;overflow:auto}</style>")
-}
+}());
