@@ -89,6 +89,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				App.off("single:remove", this.remove, this);
 				App.off("single:giveBtnBarID", this.triggerID, this);
 
+				this.ui.singleCommentText.off("click", this.showLoginBox)
+
 				//removes the ajax call if the user decided to leave the page while still waiting on reddit api
 				if (typeof this.fetchXhr !== 'undefined' && this.fetchXhr.readyState > 0 && this.fetchXhr.readyState < 4) {
 					this.fetchXhr.abort();
@@ -97,12 +99,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
 			},
 			disableComment: function() {
-				//disable textbox if user is not logged in
-				//because we have to refresh the page if they login via oauth
+				var self = this
+					//disable textbox if user is not logged in
+					//because we have to refresh the page if they login via oauth
 				if (this.checkIfLoggedIn() === false) {
 					console.log('user is not logged in')
-					this.ui.singleCommentText.attr('disabled', true);
+					this.ui.singleCommentText.attr('readonly', true);
 					this.ui.singleCommentText.val('login to comment')
+					this.ui.singleCommentText.on("click", this.showLoginBox)
 				}
 			},
 			toggleDropDownCmtSort: function() {
