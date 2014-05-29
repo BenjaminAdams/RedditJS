@@ -5,7 +5,7 @@
 	//var script = document.getElementById('rjs_post');
 
 	var scripts = document.getElementsByTagName('script');
-	var script = scripts[scripts.length - 1]; //the script that loaded this file
+	var theScriptThatCalledThis = scripts[scripts.length - 1]; //the script that loaded this file
 
 	(function redditJSInit(script) {
 
@@ -15,9 +15,7 @@
 		var postSortOrder;
 		var script;
 
-		initScript(script)
-
-		function initScript(script) {
+		(function init() {
 
 			if (script) {
 
@@ -46,7 +44,7 @@
 				setupMessenger(ifrm)
 
 			}
-		}
+		})()
 
 		function setupMessenger(ifrm) {
 			var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
@@ -91,6 +89,6 @@
 			ifrm.style.width = newWidth + "px"
 		}
 
-	})(script);
+	})(theScriptThatCalledThis);
 
 }());
