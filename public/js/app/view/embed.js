@@ -68,37 +68,58 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 return qsParm;
             },
 
-            selectPostWithMostUpvoted: function(gotoPost) {
-                this.urlCollection.each(function(post) {
-                    //redirect the user to the post with the highest number of comments
-                    if (post.get('num_comments') >= gotoPost.get('num_comments')) {
-                        gotoPost = post
-                    }
-                })
-                return gotoPost;
-            },
-            selectNewestPost: function(gotoPost, cb) {
+            selectPostWithMostUpvoted: function(gotoPost, cb) {
                 var self = this;
                 var count = 0;
-                this.urlCollection.each(function(tmpPost) {
+                this.urlCollection.each(function(post) {
                     count++;
-                    // for (var i = 0; i < this.urlCollection.length; i++) {
-                    // var tmpPost = this.urlCollection.models[i];
-                    var newestDate = moment.unix(gotoPost.get('created_utc'))
-                    var tmpDate = moment.unix(tmpPost.get('created_utc'))
-
                     //redirect the user to the post with the highest number of comments
-                    if (tmpDate > newestDate) {
-                        gotoPost = tmpPost
+                    if (post.get('score') >= gotoPost.get('score')) {
+                        gotoPost = post
                     }
-                    //}
 
                     if (count == self.urlCollection.length) {
                         cb(gotoPost)
                     }
 
                 })
-                //return gotoPost;
+
+            },
+            selectPostWithMostComments: function(gotoPost, cb) {
+                var self = this;
+                var count = 0;
+                this.urlCollection.each(function(post) {
+                    count++;
+                    //redirect the user to the post with the highest number of comments
+                    if (post.get('num_comments') >= gotoPost.get('num_comments')) {
+                        gotoPost = post
+                    }
+
+                    if (count == self.urlCollection.length) {
+                        cb(gotoPost)
+                    }
+
+                })
+
+            },
+            selectNewestPost: function(gotoPost, cb) {
+                var self = this;
+                var count = 0;
+                this.urlCollection.each(function(tmpPost) {
+                    count++;
+                    var newestDate = moment.unix(gotoPost.get('created_utc'))
+                    var tmpDate = moment.unix(tmpPost.get('created_utc'))
+
+                    //redirect the user to the newest post
+                    if (tmpDate > newestDate) {
+                        gotoPost = tmpPost
+                    }
+
+                    if (count == self.urlCollection.length) {
+                        cb(gotoPost)
+                    }
+
+                })
             },
             urlStatus: function() {
                 var self = this
@@ -124,6 +145,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                                     return self.selectPostWithMostUpvoted(gotoPost, self.successPostFound)
                                 } else if (self.postSortOrder === 'newest') {
                                     return self.selectNewestPost(gotoPost, self.successPostFound)
+                                } else if (self.postSortOrder === 'mostComments') {
+                                    return self.selectPostWithMostComments(gotoPost, self.successPostFound)
                                 }
 
                             } else {
