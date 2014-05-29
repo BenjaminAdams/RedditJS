@@ -28,7 +28,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 this.inputTimer = 0 //keeps track of user input and when they stop input it performs a search
                 this.lastTitleInput = null //keeps track of the last input in keyboard on title field
 
-                this.setOptions()
+                this.setupOptions()
 
             },
             onRender: function() {
@@ -47,7 +47,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 $('#theHeader').show()
             },
 
-            setOptions: function() {
+            setupOptions: function() {
                 this.submitPostImg = this.q.submitPostImg || 'http://www.reddit.com/static/spreddit11.gif'
                 this.postSortOrder = this.q.postSortOrder || 'mostUpvoted'
 
@@ -78,17 +78,27 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 return gotoPost;
             },
             selectNewestPost: function(gotoPost, cb) {
-                this.urlCollection.each(function(post) {
-
+                var self = this;
+                var count = 0;
+                this.urlCollection.each(function(tmpPost) {
+                    count++;
+                    // for (var i = 0; i < this.urlCollection.length; i++) {
+                    // var tmpPost = this.urlCollection.models[i];
                     var newestDate = moment.unix(gotoPost.get('created_utc'))
-                    var tmpDate = moment.unix(post.get('created_utc'))
+                    var tmpDate = moment.unix(tmpPost.get('created_utc'))
 
                     //redirect the user to the post with the highest number of comments
-                    if (tmpDate < newestDate) {
-                        gotoPost = post
+                    if (tmpDate > newestDate) {
+                        gotoPost = tmpPost
                     }
+                    //}
+
+                    if (count == self.urlCollection.length) {
+                        cb(gotoPost)
+                    }
+
                 })
-                return gotoPost;
+                //return gotoPost;
             },
             urlStatus: function() {
                 var self = this
@@ -111,16 +121,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                                 gotoPost = self.urlCollection.first()
 
                                 if (self.postSortOrder === 'mostUpvoted') {
-                                    gotoPost = self.selectPostWithMostUpvoted(gotoPost)
+                                    return self.selectPostWithMostUpvoted(gotoPost, self.successPostFound)
                                 } else if (self.postSortOrder === 'newest') {
-                                    gotoPost = self.selectNewestPost(gotoPost)
+                                    return self.selectNewestPost(gotoPost, self.successPostFound)
                                 }
-
-                                self.newIframeSize(null, null)
-
-                                Backbone.history.navigate(gotoPost.get('permalink'), {
-                                    trigger: true
-                                });
 
                             } else {
                                 self.postNotFound();
@@ -137,6 +141,15 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                     self.ui.embedStatus.html('please enter a valid url').removeClass('loadingSingle')
                 }
             },
+
+            successPostFound: function(gotoPost) {
+                this.newIframeSize(null, null)
+
+                Backbone.history.navigate(gotoPost.get('permalink'), {
+                    trigger: true
+                });
+            },
+
             postNotFound: function() {
                 this.showSubmitThisToReddit();
                 $('#theHeader').hide()
