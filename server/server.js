@@ -74,10 +74,10 @@ var oneDay = 86400000;
 
 //     next();
 // });
-
 server.use(compress());
-
-server.use(express.static(__dirname + '../../public'));
+server.use(express.static(__dirname + '../../public', {
+    maxAge: oneDay
+}));
 
 server.use(favicon(__dirname + "/../public/img/favicon.ico"));
 

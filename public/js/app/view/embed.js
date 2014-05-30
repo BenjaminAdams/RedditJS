@@ -49,7 +49,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
 
             setupOptions: function() {
                 this.submitPostImg = this.q.submitPostImg || 'http://www.reddit.com/static/spreddit11.gif'
-                this.postSortOrder = this.q.postSortOrder || 'mostUpvoted'
+                this.postFinder = this.q.postFinder || 'mostUpvoted'
 
             },
             //backbone cant parse the complex URL we are passing it, use vanillaJS
@@ -141,11 +141,11 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
 
                                 gotoPost = self.urlCollection.first()
 
-                                if (self.postSortOrder === 'mostUpvoted') {
+                                if (self.postFinder === 'mostUpvoted') {
                                     return self.selectPostWithMostUpvoted(gotoPost, self.successPostFound)
-                                } else if (self.postSortOrder === 'newest') {
+                                } else if (self.postFinder === 'newest') {
                                     return self.selectNewestPost(gotoPost, self.successPostFound)
-                                } else if (self.postSortOrder === 'mostComments') {
+                                } else if (self.postFinder === 'mostComments') {
                                     return self.selectPostWithMostComments(gotoPost, self.successPostFound)
                                 }
 

@@ -12,7 +12,7 @@
 		var postUrl;
 		var width;
 		var height;
-		var postSortOrder;
+		var postFinder;
 		var script;
 
 		(function init() {
@@ -22,9 +22,9 @@
 				postUrl = script.getAttribute('data-url') || window.location.href
 				width = script.getAttribute('data-width') || 500
 				height = script.getAttribute('data-height') || 350
-				postSortOrder = script.getAttribute('postSortOrder') || 'mostComments'
+				postFinder = script.getAttribute('data-postFinder') || 'mostComments'
 
-				var embedUrl = "http://localhost:8002/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postSortOrder=' + postSortOrder
+				var embedUrl = "http://localhost:8002/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postFinder=' + postFinder
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
