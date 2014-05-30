@@ -13,6 +13,7 @@ module.exports = function(grunt) {
                     //name: "../lib/almond",
                     preserveLicenseComments: false,
                     optimize: "uglify",
+                    wrapShim: true,
                     hbs: {
                         disableI18n: true,
                         disableHelpers: true,

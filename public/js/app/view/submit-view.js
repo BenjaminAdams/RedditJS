@@ -71,7 +71,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				var curUrl = Backbone.history.location.href
 				if (curUrl.indexOf("url=") > -1) {
 					var split = curUrl.split('url=')
-					if (split[1] != null) {
+					if (split[1] !== null) {
 						return split[1]
 					}
 

@@ -14,12 +14,16 @@ require.config({
         'cookie': '../lib/jquery.cookie',
         'localstorage': '../lib/jquery.total-storage',
         'moment': '../lib/moment',
+        'markdown': '../lib/markdown',
         'console': '../lib/console'
     },
     // Sets the configuration for your third party scripts that are not AMD compatible
     shim: {
         'underscore': {
             exports: '_'
+        },
+        "markdown": {
+            exports: "markdown"
         },
         // Backbone
         "backbone": {
@@ -28,6 +32,7 @@ require.config({
             // Exports the global window.Backbone object
             "exports": "Backbone"
         },
+
         //Marionette
         "marionette": {
             "deps": ["underscore", "backbone", "jquery"],

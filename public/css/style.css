@@ -36,6 +36,19 @@ top:15%;
 
 }
 
+.liveTextarea {
+padding: 4px;
+margin: 5px 0 30px 5px;
+border-top: 1px dotted silver;
+min-height:100px;
+}
+
+
+.blinkingFakeInput {
+  float:left;
+}
+
+
 .gotoSubmit {
   cursor:pointer;
   float:left;

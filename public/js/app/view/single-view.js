@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/loading', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'model/single', 'view/comment-view', 'cookie'],
-	function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, BaseView, SingleModel, CommentView, Cookie) {
+define(['App', 'underscore', 'backbone', 'markdown', 'hbs!template/single', 'hbs!template/loading', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'model/single', 'view/comment-view', 'cookie'],
+	function(App, _, Backbone, Markdown, singleTmpl, loadingTmpl, PostRowView, SidebarView, BaseView, SingleModel, CommentView, Cookie) {
 		return BaseView.extend({
 			template: singleTmpl,
 			events: {
@@ -29,17 +29,20 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				'mdHelpShow': '.mdHelpShow',
 				'mdHelpHide': '.mdHelpHide',
 				'status': '.status',
-				'singleCommentText': '#singleCommentText'
+				'singleCommentText': '#singleCommentText',
+				'liveTextarea': '.liveTextarea'
 			},
 
 			initialize: function(options) {
 				_.bindAll(this);
-
+				$(document).bind('keyup', this.keyPressComment);
 				var self = this;
+
 				this.subName = options.subName
 				this.id = options.id
 				this.commentLink = options.commentLink
 				this.hasRendered = false
+				this.blinking = '<img class="blinkingFakeInput" src="/img/text_cursor.gif" />'
 
 				if (typeof App.curModel === 'undefined') {
 
@@ -82,10 +85,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				this.disableComment()
 				this.addOutboundLink()
 
+				this.setupTextareaExpanding()
+
 			},
 			onBeforeClose: function() {
 
 				$(window).off('resize', this.debouncer);
+				$(document).unbind('keyup', this.keyPressComment);
 				App.off("single:remove", this.remove, this);
 				App.off("single:giveBtnBarID", this.triggerID, this);
 
@@ -98,6 +104,31 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				this.fetchXhr.abort()
 
 			},
+			keyPressComment: function(e) {
+				//console.log(e)
+
+				var inputTxt = this.ui.singleCommentText.val()
+				this.ui.liveTextarea.html(markdown.toHTML(inputTxt) + this.blinking)
+
+			},
+
+			setupTextareaExpanding: function() {
+				var self = this
+				this.ui.singleCommentText.focus(function() {
+
+					$(this).css('border', '1px solid #F2817F');
+
+					self.ui.liveTextarea.slideDown()
+
+					self.ui.liveTextarea.html(self.ui.liveTextarea.html() + self.blinking)
+
+				}).blur(function() {
+
+					self.ui.liveTextarea.slideUp()
+
+				});
+			},
+
 			disableComment: function() {
 				var self = this
 					//disable textbox if user is not logged in
@@ -107,6 +138,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 					this.ui.singleCommentText.attr('readonly', true);
 					this.ui.singleCommentText.val('login to comment')
 					this.ui.singleCommentText.on("click", this.showLoginBox)
+					this.ui.singleCommentText.css('background-color', '#E9E6E6')
 				}
 			},
 			toggleDropDownCmtSort: function() {

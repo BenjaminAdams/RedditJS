@@ -417,12 +417,25 @@ width: 63%;
 }
 
 
-      }
+.usertext-edit textarea {
+height: 60px;
+}
+
+.panestack-title {
+display:none;
+}
+
+.sortCommentsMenu {
+margin-left:10px;
+}
+
+
+ }
 
  
 
 /* really small stuff */
-@media (max-width: 500px) {
+@media (max-width: 505px) {
 
 
 
