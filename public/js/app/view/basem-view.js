@@ -413,6 +413,29 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				this.$('.usertext-body a').attr('target', '_blank');
 			},
 
+			//for live MD parsing
+			keyPressComment: function(e) {
+
+				var inputTxt = this.ui.userTxtInput.val()
+				this.ui.liveTextarea.html(markdown.toHTML(inputTxt) + this.blinking)
+
+			},
+			//for live MD parsing
+			setupTextareaExpanding: function() {
+				var self = this
+				this.ui.userTxtInput.focus(function() {
+
+					self.ui.liveTextarea.slideDown()
+
+					self.ui.liveTextarea.html(self.ui.liveTextarea.html() + self.blinking)
+
+				}).blur(function() {
+
+					self.ui.liveTextarea.hide()
+
+				});
+			},
+
 			//puts the model in a temporary space to pass it to the single page so it loads instantly
 			gotoSingle: function(e) {
 				var self = this

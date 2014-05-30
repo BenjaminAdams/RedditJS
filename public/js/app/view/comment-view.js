@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/basem-view', 'model/comment', 'cView/comments', 'collection/comments', 'cookie'],
-	function(App, _, Backbone, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, CViewComments, CommentCollection, Cookie) {
+define(['App', 'underscore', 'backbone', 'markdown', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/basem-view', 'model/comment', 'cView/comments', 'collection/comments', 'cookie'],
+	function(App, _, Backbone, Markdown, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, CViewComments, CommentCollection, Cookie) {
 		return BaseView.extend({
 			template: commentTmpl,
 			events: {
@@ -17,7 +17,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				'submit .commentreply': 'comment',
 				'click .replyToggle': 'toggleReply',
 				'click .mdHelpShow': 'showMdHelp',
-				'click .mdHelpHide': 'hideMdHelp'
+				'click .mdHelpHide': 'hideMdHelp',
+				'keyup .userTxtInput': 'keyPressComment'
 
 			},
 			regions: {
@@ -38,7 +39,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				'mdHelpShow': '.mdHelpShow',
 				'mdHelpHide': '.mdHelpHide',
 				'reportConfirm': '.reportConfirm',
-				'reportConfirmYes': '.reportConfirmYes'
+				'reportConfirmYes': '.reportConfirmYes',
+				'userTxtInput': '.userTxtInput',
+				'liveTextarea': '.liveTextarea'
 
 			},
 
@@ -50,6 +53,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				//this.collection = new CommentCollection()
 				this.collection = this.model.get('replies')
 				this.originalPoster = options.originalPoster
+				this.blinking = '<img class="blinkingFakeInput" src="/img/text_cursor.gif" />'
 
 				if (this.model.get('author') === this.originalPoster) {
 					//$('.author').css('color', 'green')
@@ -90,7 +94,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
 				this.addOutboundLink()
 				this.permalinkParent = this.model.get('permalinkParent')
-
+				this.setupTextareaExpanding()
 				//this.model.set('permalinkParent', options.permalinkParent)
 				//this.renderChildren(this.model.get('replies'))
 			},
@@ -109,7 +113,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				e.stopPropagation()
 				$(this.el).html("<div class='loadingS'></div>")
 				var self = this
-				//console.log('loading MOAR')
+					//console.log('loading MOAR')
 				var link_id = this.model.get('link_id')
 				var params = {
 					link_id: link_id,
@@ -167,7 +171,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
 					this.renderOtherReplyComments(newComments)
 					var replies = this.model.get('replies')
-					//this.renderChildren(replies)
+						//this.renderChildren(replies)
 					this.collection.add(replies)
 					this.addOutboundLink()
 				}
@@ -197,6 +201,11 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				e.preventDefault()
 				e.stopPropagation()
 				this.ui.commentreply.toggle().find('.text').focus()
+				if (!this.replyHasBeenToggledOnce) {
+					this.setupTextareaExpanding()
+					this.replyHasBeenToggledOnce = true
+				}
+
 			},
 			commentLinkHover: function(e) {
 				//console.log('hovering over a comment')
