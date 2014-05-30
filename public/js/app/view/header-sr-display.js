@@ -77,8 +77,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 			},
 			renderRegularSubreddit: function(subreddits) {
 				var self = this
-				//_.each(subreddits, function(model) {
-				//subreddits.each(function(model) {
+					//_.each(subreddits, function(model) {
+					//subreddits.each(function(model) {
 				for (var item in subreddits) {
 
 					var headerImg = subreddits[item].header_img
@@ -104,7 +104,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 					} else {
 						subredditSTR += "<span class='headerNavLogo'><a href='/r/" + displayName + "' title='" + displayName + "' ><img src='" + headerImg + "' /></a></span>"
 					}
-					self.ui.innerSR.html(subredditSTR)
+					self.ui.innerSR.append(subredditSTR)
 				})
 			}
 		});

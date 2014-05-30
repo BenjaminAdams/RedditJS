@@ -36,7 +36,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			initialize: function(data) {
 				_.bindAll(this, _.functions(this));
 				App.on("header:update", this.updateHeader, this);
-				App.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
+				//App.on("login", this.updateSubreddits, this); //so we update the users subreddits after they login
 				App.on("logout", this.updateSubreddits, this);
 				App.on("header:updateSortOrder", this.updateSortOrder, this);
 				App.on("header:refreshSubreddits", this.refreshSubreddits, this);
@@ -56,10 +56,15 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 
 				this.checkHashOpt()
 
+				//check if user has no subreddits
+				if (App.subreddits.mine.length < 2) {
+					App.subreddits.mine.fetch();
+				}
+
 			},
 			onBeforeClose: function() {
 				App.off("header:update", this.updateHeader, false);
-				App.off("login", this.updateSubreddits, false); //so we update the users subreddits after they login
+				//App.off("login", this.updateSubreddits, false); //so we update the users subreddits after they login
 				App.off("logout", this.updateSubreddits, false);
 				App.off("header:updateSortOrder", this.updateSortOrder, false);
 				App.off("header:refreshSubreddits", this.refreshSubreddits, false);
