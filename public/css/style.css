@@ -37,10 +37,10 @@ top:15%;
 }
 
 .liveTextarea {
-padding: 4px;
+padding: 4px 0 20px 0px;
 margin: 5px 0 30px 5px;
 border-top: 1px dotted silver;
-min-height:100px;
+min-height:50px;
 }
 
 
