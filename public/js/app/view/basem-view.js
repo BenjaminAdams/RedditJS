@@ -75,13 +75,14 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				}, 150);
 			},
 			dynamicStylesheet: function(name) {
-
-				if (App.settings.get('customCSS') === true && $(document).width() > App.mobileWidth) {
+				if (App.settings.get('customCSS') === true && App.settings.get('enableNightmode') === false && $(document).width() > App.mobileWidth) {
 					if (this.subName == 'front') {
 						$("#subredditStyle").attr("href", "");
 					} else {
 						$("#subredditStyle").attr("href", "http://www.reddit.com/r/" + name + "/stylesheet");
 					}
+				} else if(App.settings.get('enableNightmode') === true && $("#subredditStyle").attr('href') !== 'css/dark/styles.min.css'){
+					$("#subredditStyle").attr("href", "css/dark/styles.min.css");
 				}
 			},
 			//Can be used to vote on a post or a comment

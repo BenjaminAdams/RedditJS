@@ -370,13 +370,13 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             },
 
             loadSettingsFromCookies: function() {
-                var checkboxes = new Array("btmbar", "cmtLoad", "customCSS", "showSidebar", "infin", 'hideSelf');
+                var checkboxes = new Array("btmbar", "cmtLoad", "customCSS", "showSidebar", "enableNightmode", "infin", 'hideSelf');
                 var selectboxes = new Array('linkCount')
 
                 for (var i in checkboxes) {
-
-                    if (typeof $.cookie(checkboxes[i]) === 'undefined' || $.cookie(checkboxes[i]) == 'true') {
+                    if ((typeof $.cookie(checkboxes[i]) === 'undefined' && checkboxes[i] !== 'enableNightmode') || $.cookie(checkboxes[i]) == 'true' ) {
                         App.settings.set(checkboxes[i], true)
+
                     } else {
                         App.settings.set(checkboxes[i], false)
                     }
@@ -384,7 +384,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 for (var x in selectboxes) {
                     if (typeof $.cookie(selectboxes[x]) === 'undefined') {
-                        App.settings.set(selectboxes[x], 50)
+                        App.settings.set(selectboxes[x], 25)
                     } else {
                         App.settings.set(selectboxes[x], $.cookie(selectboxes[x]))
                     }
