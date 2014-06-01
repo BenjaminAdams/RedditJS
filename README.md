@@ -37,7 +37,7 @@ If it has been posted, it will load a widget displaying that reddit post giving
 
 ![Post found](http://i.imgur.com/GXj1FKO.png)
 
-[wp-redditjs](https://github.com/BenjaminAdams/wp-redditjs) will give you a chat box similar to facebook or disqus comment system.  This is excellent for websites that have their content submitted to reddit.  It will help increase reddit activity with more upvotes and comments and allow the user to freely navigate reddit.
+This will give you a chat box similar to facebook or disqus comment system.  This is excellent for websites that have their content submitted to reddit.  It will help increase reddit activity with more upvotes and comments and allow the user to freely navigate reddit.
 
 ## Instructions
 
