@@ -8,7 +8,4 @@ target/
 node_modules/
 *.versionsBackup
 ssl/*
-redditjs.csr
-server/ssl/redditjs.csr
-redditjs.key
-server/ssl/redditjs.key
+server/ssl/*

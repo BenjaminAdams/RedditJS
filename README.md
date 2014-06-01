@@ -25,7 +25,7 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * Reddit API <http://www.reddit.com/dev/api/>
  * Hosted at [Digital Ocean]( https://www.digitalocean.com/?refcode=572549c85ce0)
 
-####Redditjs as a way to embed posts
+#### You can also use Redditjs as a way to embed posts
 You can add this script tag to any website.  The post widget will embed itself onto your Wordpress post and detect if it has been posted to reddit.
 
 ```<script src='//redditjs.com/post.js' </script>```
@@ -37,7 +37,7 @@ If it has been posted, it will load a widget displaying that reddit post giving
 
 ![Post found](http://i.imgur.com/GXj1FKO.png)
 
-This will give you a chat box similar to facebook or disqus comment system.  This is excellent for websites that have their content submitted to reddit.  It will help increase reddit activity with more upvotes and comments and allow the user to freely navigate reddit.
+This is excellent for websites that have their content submitted to reddit.  It will help increase reddit activity with more upvotes and comments and allow the user to freely navigate reddit.
 
 ## Instructions
 
