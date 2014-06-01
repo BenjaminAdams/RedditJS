@@ -1,0 +1,61 @@
+.embed img, .embedImg {
+background-color: #363636;
+border: 1px solid #40474E;
+}
+
+.blueborder {
+background-color: #303030;
+border: 1px solid #394755;
+margin-left: -14px;
+}
+
+.hoverImgView {
+background-color:transparent;
+border: 2px solid #454B52;
+}
+
+.hoverImgView  .imgTitle {
+background-color: #2B2B2B;
+color:#5F99CF;
+}
+
+.exploreLink {
+  color: #FFE000 !important;
+  text-shadow: 0 0 37px #000000;
+}
+
+.large-thumb .thing {
+background-color: #181818;
+border: 1px solid #464646;
+}
+
+#plzHelp {
+  color: black;
+}
+
+#dspTypeRadio {
+color:black;
+}
+
+.hoverImgView .close {
+background-image: url(sprite-reddit.png);
+}
+
+.hoverImgView .close:hover {
+background-image: url(sprite-reddit.png);
+}
+
+.block {
+background-color: #14171A;
+color: #222;
+-webkit-box-shadow: none;
+-moz-box-shadow: none;
+box-shadow: none; 
+}
+
+.block:hover {
+background-color: #151F29;
+-webkit-box-shadow: none; 
+-moz-box-shadow: none;
+box-shadow: none;
+}

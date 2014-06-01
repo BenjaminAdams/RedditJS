@@ -34,6 +34,13 @@ module.exports = function(grunt) {
                     cssIn: "./public/css/styles.css",
                     out: "./public/css/styles.min.css"
                 }
+            },
+            darkCSS: {
+                options: {
+                    optimizeCss: "standard",
+                    cssIn: "./public/css/dark/styles.css",
+                    out: "./public/css/dark/styles.min.css"
+                }
             }
         },
         jshint: {
@@ -54,6 +61,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.registerTask('test', ['jshint']);
-    grunt.registerTask('build', ['requirejs:desktopJS', 'requirejs:desktopCSS']);
+    grunt.registerTask('build', ['requirejs:desktopJS', 'requirejs:desktopCSS', 'requirejs:darkCSS']);
     grunt.registerTask('default', ['test', 'build']);
 };

@@ -10,7 +10,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/prefs', 'view/basem-view'
 			events: {
 				//'submit #newlink': "submitForm",
 				'change input': 'updateSettings',
-				"change select": "updateSettings"
+				"change select": "updateSettings",
+				'click .apply-preferences': "applyPreferences"
 			},
 
 			initialize: function(options) {
@@ -76,6 +77,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/prefs', 'view/basem-view'
 				}
 
 				//return o;
+			},
+			applyPreferences: function(){
+				location.reload();
 			},
 			stringToBoolean: function(string) {
 
