@@ -1,4 +1,4 @@
-//post widget
+//subreddit widget
 (function() {
 	"use strict";
 
@@ -7,26 +7,22 @@
 
 	(function redditJSInit(script) {
 
-		var postUrl;
 		var width;
 		var height;
-		var postFinder;
 		var script;
 		var cssTheme;
-		var showSubmit;
 
 		(function init() {
 
 			if (script) {
 
-				postUrl = script.getAttribute('data-url') || window.location.href
-				width = script.getAttribute('data-width') || 500
-				height = script.getAttribute('data-height') || 500
-				postFinder = script.getAttribute('data-post-finder') || 'mostComments'
+				subreddit = script.getAttribute('data-subreddit') || 'front'
+				width = script.getAttribute('data-width') || 250
+				height = script.getAttribute('data-height') || 250
 				cssTheme = script.getAttribute('data-theme') || 'light'
-				showSubmit = script.getAttribute('data-show-submit') || 'true'
+				cssTheme = script.getAttribute('data-theme') || 'light'
 
-				var embedUrl = "http://redditjs.com/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit
+				var embedUrl = "http://redditjs.com/"
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
