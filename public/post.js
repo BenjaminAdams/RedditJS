@@ -14,6 +14,8 @@
 		var height;
 		var postFinder;
 		var script;
+		var cssTheme;
+		var showSubmit;
 
 		(function init() {
 
@@ -21,10 +23,12 @@
 
 				postUrl = script.getAttribute('data-url') || window.location.href
 				width = script.getAttribute('data-width') || 500
-				height = script.getAttribute('data-height') || 350
-				postFinder = script.getAttribute('data-postFinder') || 'mostComments'
+				height = script.getAttribute('data-height') || 500
+				postFinder = script.getAttribute('data-post-finder') || 'mostComments'
+				cssTheme = script.getAttribute('data-theme') || 'light'
+				showSubmit = script.getAttribute('data-show-submit') || 'true'
 
-				var embedUrl = "http://localhost:8002/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postFinder=' + postFinder
+				var embedUrl = "http://localhost:8002/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
@@ -59,9 +63,12 @@
 					return;
 				}
 
-				ifrm.style.border = '5px #f0f0f0 solid'
-				ifrm.style.resize = 'both';
-				ifrm.style.overflow = 'auto';
+				if (e.data.newWidth === 0 && e.data.newHeight === 0) {
+					hideIframe(ifrm)
+					return
+				}
+
+				addIframeCss(ifrm)
 
 				if (typeof e.data.newWidth != null) {
 					var newHeight = e.data.newHeight || height
@@ -74,6 +81,27 @@
 				}
 
 			}, false);
+		}
+
+		function hideIframe(ifrm) {
+			setHeight(ifrm, newHeight)
+			setWidth(ifrm, newWidth)
+			ifrm.style.border = '0px #f0f0f0 solid'
+			ifrm.style.resize = 'none';
+			ifrm.style.overflow = 'inherit';
+		}
+
+		function addIframeCss(ifrm) {
+
+			var borderColor = '';
+			if (cssTheme === 'dark') {
+				borderColor = '#460000'
+			} else {
+				borderColor = '#5f99cf'
+			}
+			ifrm.style.border = '2px ' + borderColor + ' solid'
+			ifrm.style.resize = 'both';
+			ifrm.style.overflow = 'auto';
 		}
 
 		function setHeight(ifrm, newHeight) {

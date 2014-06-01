@@ -101,3 +101,19 @@ background-color: #3C3C3C;
 {
 color: #FF4500 !important;	
 }
+
+
+#sr-header-area {
+	background-color:#333 !important;
+}
+
+@media (max-width: 900px) {
+	.mdropdown li {
+		color: #84BEEC !important;
+		background-color: #3C3C3C;
+	}
+	.mdropdown {
+		border: 2px solid #460000;
+	}
+
+}

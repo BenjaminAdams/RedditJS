@@ -394,6 +394,15 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
             },
             checkIfNightmode: function() {
+
+                //check if &theme=dark in the url so we can pass into from iframe
+                if (window.location.href.indexOf('cssTheme=dark') > 0) {
+                    $("#subredditStyle").attr("href", "css/dark/styles.min.css");
+                    App.settings.set('enableNightmode', true)
+                } else {
+                    App.settings.set('enableNightmode', false)
+                }
+
                 if (App.settings.get('enableNightmode') === true && $("#subredditStyle").attr('href') !== 'css/dark/styles.min.css') {
                     $("#subredditStyle").attr("href", "css/dark/styles.min.css");
                 }

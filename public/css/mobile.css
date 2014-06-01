@@ -1,12 +1,12 @@
 @media (max-width: 900px) {
 
 body {
-    min-width: 400px;
+    min-width: 300px;
 }
 
 #header-nav-logo-area {
 top: 22px;
-min-width:400px;
+min-width:300px;
 padding:0px;
 }
 
@@ -44,7 +44,7 @@ max-width: 85%;
 }
 
 .thing.link {
-    min-width:400px;
+    min-width:300px;
 }
 
 .smallThumb {
@@ -434,12 +434,49 @@ margin-left:10px;
 
  
 
-/* really small stuff */
-@media (max-width: 505px) {
+/* really really small stuff */
+@media (max-width: 405px) {
+.thumbnail {
+display: none;
+}
+
+.expando-button {
+    display:none;
+}
+
+
+.thing.link {
+min-width: 200px;
+}
+
+.link .tagline, .flat-list.buttons {
+min-width: 195px;
+}
+
+.tagline {
+    display:none;
+}
+
+.entryChild {
+padding-left: 5px;
+}
+
+.entryParent {
+min-height: 60px;
+}
+
+
+
+.midcol .score {
+font-size: 14px;
+}
 
 
 
 }
+
+
+
 
 
 

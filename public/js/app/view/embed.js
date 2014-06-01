@@ -48,8 +48,19 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             },
 
             setupOptions: function() {
-                this.submitPostImg = this.q.submitPostImg || 'http://www.reddit.com/static/spreddit11.gif'
-                this.postFinder = this.q.postFinder || 'mostUpvoted'
+                if (this.q.cssTheme === 'light') {
+                    this.submitPostImg = this.q.submitPostImg || 'http://www.reddit.com/static/spreddit11.gif'
+                } else {
+                    this.submitPostImg = this.q.submitPostImg || 'http://www.reddit.com/static/spreddit13.gif'
+                }
+
+                this.q.postFinder = this.q.postFinder || 'mostUpvoted'
+
+                if (this.q.showSubmit == 'true') { //we are passing in a string representation of true in iframe
+                    this.q.showSubmit = true
+                } else {
+                    this.q.showSubmit = false
+                }
 
             },
             //backbone cant parse the complex URL we are passing it, use vanillaJS
@@ -141,11 +152,11 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
 
                                 gotoPost = self.urlCollection.first()
 
-                                if (self.postFinder === 'mostUpvoted') {
+                                if (self.q.postFinder === 'mostUpvoted') {
                                     return self.selectPostWithMostUpvoted(gotoPost, self.successPostFound)
-                                } else if (self.postFinder === 'newest') {
+                                } else if (self.q.postFinder === 'newest') {
                                     return self.selectNewestPost(gotoPost, self.successPostFound)
-                                } else if (self.postFinder === 'mostComments') {
+                                } else if (self.q.postFinder === 'mostComments') {
                                     return self.selectPostWithMostComments(gotoPost, self.successPostFound)
                                 }
 
@@ -166,7 +177,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             },
 
             successPostFound: function(gotoPost) {
-                this.newIframeSize(null, null)
+                this.newIframeSize(this.q.width, this.q.height)
 
                 Backbone.history.navigate(gotoPost.get('permalink'), {
                     trigger: true
@@ -174,23 +185,29 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             },
 
             postNotFound: function() {
-                this.showSubmitThisToReddit();
-                $('#theHeader').hide()
-                this.newIframeSize(80, null)
+
+                if (this.q.showSubmit === true) {
+                    this.showSubmitThisToReddit();
+                    $('#theHeader').hide()
+                    this.newIframeSize(this.q.width, 65)
+                } else {
+                    this.newIframeSize(0, 0) //hide iframe from user on parent page
+                }
+
             },
             showSubmitThisToReddit: function() {
 
-                var submitBtn = '<img class="gotoSubmit" src="http://www.reddit.com/static/spreddit11.gif" alt="submit to reddit" border="0" />'
+                var submitBtn = '<img class="gotoSubmit" src="' + this.submitPostImg + '" alt="submit to reddit" border="0" />'
                 submitBtn += '<div class="md gotoSubmit"> Post not found on reddit. <h3><strong><span class="mdBlue"> Be the first to submit </span></strong></h3> </div>';
 
                 this.ui.submitBtn.html(submitBtn);
-                this.newIframeSize(null, null)
+                //this.newIframeSize(null, null)
             },
             gotoSubmit: function() {
                 //example url:  /submit/url=http://dudelol.com/now-that?asdasd=asd
 
                 //change parent size
-                this.newIframeSize(600, null)
+                this.newIframeSize(null, 600)
 
                 var url = '/submit/url=' + this.q.url
                 Backbone.history.navigate(url, {
@@ -211,7 +228,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             //     parent.postMessage(postData, "*");
 
             // },
-            newIframeSize: function(height, width) {
+            newIframeSize: function(width, height) {
                 var postData = {
                     newHeight: height,
                     newWidth: width
