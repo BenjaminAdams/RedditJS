@@ -35,7 +35,7 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         });
 
         App.addInitializer(function() {
-            var pushState = !! (window.history && window.history.pushState),
+            var pushState = !!(window.history && window.history.pushState),
                 settings = {
                     pushState: pushState
                 };

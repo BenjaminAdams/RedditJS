@@ -127,10 +127,13 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 			},
 			resize: function() {
 
-				if (App.mobileWidth > $(document).width()) {
-					$('.side').hide()
-				} else if (App.settings.get('showSidebar') === true) {
+				var gridOpt = $.cookie('gridOption');
+
+				if ($(document).width() > App.mobileWidth && App.settings.get('showSidebar') === true && gridOpt != 'grid') {
 					$('.side').show()
+				} else {
+
+					$('.side').hide()
 				}
 
 			}
