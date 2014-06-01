@@ -31,9 +31,11 @@ You can add this script tag to any website.  The post widget will embed itself o
 ```<script src='//redditjs.com/post.js' </script>```
 
 If it has NOT been posted to reddit it will show a link to encourage the user to submit.
-![RedditJS](http://i.imgur.com/OLJjzkx.png)
+![no reddit post found](http://i.imgur.com/OLJjzkx.png)
 
 If it has been posted, it will load a widget displaying that reddit post giving the user where they can upvote/comment that post.
+
+![Post found](http://i.imgur.com/GXj1FKO.png)
 
 [wp-redditjs](https://github.com/BenjaminAdams/wp-redditjs) will give you a chat box similar to facebook or disqus comment system.  This is excellent for websites that have their content submitted to reddit.  It will help increase reddit activity with more upvotes and comments and allow the user to freely navigate reddit.
 
