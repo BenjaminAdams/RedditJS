@@ -26,10 +26,12 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * Hosted at [Digital Ocean]( https://www.digitalocean.com/?refcode=572549c85ce0)
 
 ####Redditjs as a way to embed posts
+You can add this script tag to any website.  The post widget will embed itself onto your Wordpress post and detect if it has been posted to reddit.
 
-The post widget will embed itself onto your Wordpress post and detect if it has been posted to reddit.
+```<script src='//redditjs.com/post.js' </script>```
 
-If it has NOT been posted to reddit it will <a href="http://i.imgur.com/OLJjzkx.png" title="example" target='_blank'>show a link</a> to encourage the user to submit.
+If it has NOT been posted to reddit it will show a link to encourage the user to submit.
+![RedditJS](http://i.imgur.com/OLJjzkx.png)
 
 If it has been posted, it will load a widget displaying that reddit post giving the user where they can upvote/comment that post.
 
@@ -37,10 +39,10 @@ If it has been posted, it will load a widget displaying that reddit post giving
 
 ## Instructions
 
-If you are not using the Wordpress plugin, you can add this script tag on any website.
+You can add the script tag to any website, or you can use the [Wordpress Plugin](https://github.com/BenjaminAdams/wp-redditjs) to create widgets to embed on your website.
 
-```<script src='//redditjs.com/post.js' </script>```
-### Options
+
+##### Options
 
 <table style='width:800px'>
 <tr><th style='width:125px;'>Name</th><th>Description</th> <th>values</th> <th>Default</th></tr>
@@ -52,7 +54,7 @@ If you are not using the Wordpress plugin, you can add this script tag on any we
 <tr><td>data-show-submit</td><td>If we don't find a post on reddit, should we display a "submit to reddit" widget.</td> <td>true,false</td> <td>true</td> </tr>
 </table>
 
-### example with all options
+##### example with all options
 
 ```
 <script src='//redditjs.com/post.js' data-url='http://www.techodrom.com/etc/star-trek-edges-closer-reality-tractor-beam-moves-object-using-nothing-power-ultrasound/' data-height='500' data-width='500' data-post-finder='newest' data-theme='dark' data-show-submit='true'  </script>
