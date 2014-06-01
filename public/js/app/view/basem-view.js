@@ -81,8 +81,6 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 					} else {
 						$("#subredditStyle").attr("href", "http://www.reddit.com/r/" + name + "/stylesheet");
 					}
-				} else if(App.settings.get('enableNightmode') === true && $("#subredditStyle").attr('href') !== 'css/dark/styles.min.css'){
-					$("#subredditStyle").attr("href", "css/dark/styles.min.css");
 				}
 			},
 			//Can be used to vote on a post or a comment

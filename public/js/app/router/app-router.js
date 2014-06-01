@@ -5,6 +5,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 //load settings
                 App.settings = new Backbone.Model()
                 this.loadSettingsFromCookies()
+                this.checkIfNightmode();
+
                 App.subreddits = {}
                 App.subreddits.mine = new MySubredditsCollection()
                 //caching subreddit json in a global because it takes about 3 seconds to query from reddit api
@@ -374,7 +376,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 var selectboxes = new Array('linkCount')
 
                 for (var i in checkboxes) {
-                    if ((typeof $.cookie(checkboxes[i]) === 'undefined' && checkboxes[i] !== 'enableNightmode') || $.cookie(checkboxes[i]) == 'true' ) {
+                    if ((typeof $.cookie(checkboxes[i]) === 'undefined' && checkboxes[i] !== 'enableNightmode') || $.cookie(checkboxes[i]) == 'true') {
                         App.settings.set(checkboxes[i], true)
 
                     } else {
@@ -390,6 +392,11 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     }
                 }
 
+            },
+            checkIfNightmode: function() {
+                if (App.settings.get('enableNightmode') === true && $("#subredditStyle").attr('href') !== 'css/dark/styles.min.css') {
+                    $("#subredditStyle").attr("href", "css/dark/styles.min.css");
+                }
             }
 
         });
