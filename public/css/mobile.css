@@ -1,12 +1,12 @@
 @media (max-width: 900px) {
 
 body {
-    min-width: 300px;
+    min-width: 200px;
 }
 
 #header-nav-logo-area {
 top: 22px;
-min-width:300px;
+min-width:200px;
 padding:0px;
 }
 
@@ -44,7 +44,7 @@ max-width: 85%;
 }
 
 .thing.link {
-    min-width:300px;
+    min-width:200px;
 }
 
 .smallThumb {
@@ -446,11 +446,11 @@ display: none;
 
 
 .thing.link {
-min-width: 200px;
+min-width: 150px;
 }
 
 .link .tagline, .flat-list.buttons {
-min-width: 195px;
+min-width: 150px;
 }
 
 .tagline {
@@ -476,8 +476,53 @@ font-size: 14px;
 }
 
 
+/* really really really really small stuff */
+@media (max-width: 255px) {
+
+.entry {
+font-size: 11px;
+}
+
+.midcol {
+margin: 0px -7px !important;
+}
+
+}
 
 
+/* fixes for mobile header */
+@media (max-width: 350px) {
+
+#sr-header-area .dropdown.srdrop {
+padding-left: 0px; 
+}
+
+#mobileFrontLink {
+position: relative;
+right: 12px;
+}
+
+#mobileCenter {
+width: 45px;
+}
+
+#mobileOptions {
+margin-right: -3px;
+}
+
+#mail {
+margin-right: -1px;
+margin-left: -1px;
+}
+
+.comment .child, .comment .showreplies {
+margin-left: -5px;
+border-left: 1px dotted #C3C3C5;
+}
+
+
+
+}
 
 
 
