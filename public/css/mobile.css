@@ -429,6 +429,11 @@ display:none;
 margin-left:10px;
 }
 
+#sr-header-area .width-clip {
+width: 97%;
+}
+
+
 
  }
 
@@ -520,7 +525,17 @@ margin-left: -5px;
 border-left: 1px dotted #C3C3C5;
 }
 
+.block {
+width: 100%;
+}
 
+.block img {
+max-width: 97%;
+}
+
+.column {
+width: 95%;
+}
 
 }
 
