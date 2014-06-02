@@ -399,7 +399,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 if (window.location.href.indexOf('cssTheme=dark') > 0) {
                     $("#subredditStyle").attr("href", "css/dark/styles.min.css");
                     App.settings.set('enableNightmode', true)
-                } else {
+                } else if (window.location.href.indexOf('cssTheme=light') > 0) {
                     App.settings.set('enableNightmode', false)
                 }
 
