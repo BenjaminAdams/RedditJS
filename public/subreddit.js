@@ -37,7 +37,7 @@
 					base = "r/" + subreddit
 				}
 
-				var embedUrl = 'http://localhost:8002/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '#grid=' + grid
+				var embedUrl = 'http://redditjs.com/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '#grid=' + grid
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
