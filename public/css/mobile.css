@@ -501,8 +501,27 @@ margin: 0px -7px !important;
 
 }
 
-
 /* fixes for mobile header */
+@media (max-width: 505px) {
+#sr-header-area {
+height: 42px;
+}
+
+#sr-header-area:after {
+content: '';
+border-top: 1px solid #5f99cf;
+position: absolute;
+top: 21px;
+width: 100%;
+}
+
+#mobileCenter {
+top: 24px;
+}
+
+
+}
+
 @media (max-width: 350px) {
 
 #sr-header-area .dropdown.srdrop {
