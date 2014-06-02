@@ -49,9 +49,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
 
             setupOptions: function() {
                 if (this.q.cssTheme === 'light') {
-                    this.submitPostImg = this.q.submitPostImg || 'http://www.reddit.com/static/spreddit11.gif'
+                    this.submitPostImg = this.q.submitPostImg || '/img/spreddit11.gif'
                 } else {
-                    this.submitPostImg = this.q.submitPostImg || 'http://www.reddit.com/static/spreddit13.gif'
+                    this.submitPostImg = this.q.submitPostImg || '/img/spreddit13.gif'
                 }
 
                 this.q.postFinder = this.q.postFinder || 'mostUpvoted'

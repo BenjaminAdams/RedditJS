@@ -13,7 +13,7 @@ define(['App', 'underscore', 'backbone', 'jquery', 'moment'], function(App, _, B
 			if (username !== false) {
 				if (this.subName === "front") {
 
-					return 'http://api.reddit.com/.json?jsonp=?';
+					return 'https://pay.reddit.com/.json?jsonp=?';
 				} else {
 					return "/api/?url=r/" + this.subName + "/about.json"
 				}
@@ -22,7 +22,7 @@ define(['App', 'underscore', 'backbone', 'jquery', 'moment'], function(App, _, B
 				if (this.subName === "front") {
 					return 'http://api.reddit.com/.json?jsonp=?';
 				} else {
-					return "http://api.reddit.com/r/" + this.subName + "/about.json?jsonp=?"
+					return "https://pay.reddit.com/r/" + this.subName + "/about.json?jsonp=?"
 				}
 			}
 		},

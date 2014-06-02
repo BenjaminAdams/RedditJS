@@ -17,7 +17,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 				return "/api/?url=comments/" + this.id + ".json" + sortOrderStr
 			} else {
 				//use jsonp if user is not logged in
-				return "http://api.reddit.com/comments/" + this.id + ".json?jsonp=?" + sortOrderStr
+				return "https://pay.reddit.com/comments/" + this.id + ".json?jsonp=?" + sortOrderStr
 			}
 		},
 		// Default attributes 

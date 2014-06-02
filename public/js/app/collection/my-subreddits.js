@@ -16,13 +16,13 @@ define(['App', 'backbone', 'model/single', 'localstorage'], function(App, Backbo
 				return "/api/?url=reddits/mine.json&limit=100"
 			} else {
 				//return "/api/?url=subreddits.json"
-				return 'http://api.reddit.com/subreddits.json?jsonp=?'
+				return 'https://pay.reddit.com/subreddits.json?jsonp=?'
 			}
 		},
 		//so we have the attributes in the root of the model
 		parse: function(response) {
 			var subreddits = []
-			//var subredditsStr = ""
+				//var subredditsStr = ""
 
 			if (typeof response === 'undefined' || response.data === 'undefined') {
 				this.loadDefaultSubreddits()

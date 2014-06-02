@@ -13,11 +13,11 @@ define(['App', 'backbone', "moment"], function(App, Backbone) {
 		},
 		getUrl: function() {
 			if (typeof this.searchQ === 'undefined' || this.searchQ === '') {
-				return 'http://www.reddit.com/subreddits.json?after=' + this.after + "&jsonp=?"
+				return 'https://pay.reddit.com/subreddits.json?after=' + this.after + "&jsonp=?"
 			} else {
 				//http://www.reddit.com/subreddits/search.json?q=test
 
-				return 'http://www.reddit.com/subreddits/search.json?q=' + this.searchQ + '&after=' + this.after + "&jsonp=?"
+				return 'https://pay.reddit.com/subreddits/search.json?q=' + this.searchQ + '&after=' + this.after + "&jsonp=?"
 			}
 		},
 		parse: function(response) {
