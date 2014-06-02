@@ -12,7 +12,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 
 			},
 
-
 			ui: {
 				'siteTable': '#siteTable',
 				'nextprev': '.nextprev',
@@ -32,7 +31,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				'hotornew': '#hotornew',
 				'mobileChangeView': '#mobileChangeView',
 				'mSortPickerBox': '#mSortPickerBox',
-				'mViewPickerBox': '#mViewPickerBox'
+				'mViewPickerBox': '#mViewPickerBox',
+				'srNameDisplay': '#srNameDisplay'
 			},
 			regions: {
 				'popupWindow': '#popupWindow',
@@ -84,7 +84,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				App.off("logout", this.updateSubreddits, false);
 				App.off("header:updateSortOrder", this.updateSortOrder, false);
 				App.off("header:refreshSubreddits", this.refreshSubreddits, false);
-	
+
 			},
 
 			toggleDropDown: function(e) {
@@ -114,8 +114,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 
 			},
 
-
-
 			updateHeader: function(model) {
 				this.model = model
 				//this.userbar.render()
@@ -143,6 +141,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 
 				if (domain === null) {
 					//http://localhost/r/funny/new
+					this.ui.srNameDisplay.attr("href", "/r/" + subName + '/')
+					this.ui.srNameDisplay.text("/r/" + subName)
 					this.ui.hot.attr("href", "/r/" + subName + '/');
 					this.ui.New.attr("href", "/r/" + subName + '/new');
 					this.ui.rising.attr("href", "/r/" + subName + '/rising');
@@ -150,6 +150,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 					this.ui.top.attr("href", "/r/" + subName + '/top');
 				} else {
 					//http://localhost/domain/i.imgur.com/new
+					this.ui.srNameDisplay.prop(("href", "/domain/" + domain + '/'))
 					this.ui.hot.attr("href", "/domain/" + domain + '/');
 					this.ui.New.attr("href", "/domain/" + domain + '/new');
 					this.ui.rising.attr("href", "/domain/" + domain + '/rising');

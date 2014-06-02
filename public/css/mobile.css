@@ -435,17 +435,9 @@ width: 97%;
 
 
 #srNameDisplay {
-height: 21px;
-line-height: 22px;
-background-color: #f0f0f0;
-white-space: nowrap;
-text-align: center;
-border-bottom: 1px solid #5f99cf;
 font-size: 15px !important;
-height: 18px;
-line-height: 18px;
-display:block !important;
-margin-top: -10px;
+position:absolute;
+right: 11px;
 }
 
 

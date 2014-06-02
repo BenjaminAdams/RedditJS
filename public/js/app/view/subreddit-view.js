@@ -40,17 +40,11 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				this.domain = options.domain || null
 				this.timeFrame = options.timeFrame
 
-				this.hideSrDisplay = false
-
-				if (this.subName === "" || this.subName === 'front') {
-					this.hideSrDisplay = true
-				}
-
 				//putting stuff in model so we can pass to handlebars template
 				this.model = new Backbone.Model({
 					sortOrder: this.sortOrder,
-					subName: this.subName,
-					hideSrDisplay: this.hideSrDisplay,
+					//	subName: this.subName,
+					//hideSrDisplay: this.hideSrDisplay,
 					timeFrame: this.timeFrame
 				})
 

@@ -29,7 +29,7 @@
 				grid = script.getAttribute('data-subreddit-mode') || 'normal'
 
 				//  /r/funny/top/day
-				var embedUrl = "http://localhost:8002/r/" + subreddit + '/' + sort + '/' + timeFrame + '/?cssTheme=' + cssTheme + '#grid=' + grid
+				var embedUrl = "http://localhost:8002/r/" + subreddit + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '#grid=' + grid
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
