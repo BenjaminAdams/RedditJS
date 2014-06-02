@@ -21,8 +21,8 @@
 
 			if (script) {
 				var base;
-				width = script.getAttribute('data-width') || 250
-				height = script.getAttribute('data-height') || 250
+				width = script.getAttribute('data-width') || 300
+				height = script.getAttribute('data-height') || 300
 				cssTheme = script.getAttribute('data-theme') || 'light'
 				sort = script.getAttribute('data-sort') || 'hot'
 				subreddit = script.getAttribute('data-subreddit') || 'front'
