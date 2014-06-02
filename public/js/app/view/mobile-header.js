@@ -120,6 +120,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				//this.ui.pagenameA.prop("href", model.get('rname'))
 				//this.ui.pagenameA.text(model.get('display_name'))
 
+				this.ui.srNameDisplay.attr("href", model.get('rname') + '/')
+				this.ui.srNameDisplay.text(model.get('rname'))
+
 				this.ui.hot.prop("href", model.get('rname'))
 				this.ui.New.prop("href", model.get('rname') + "/new")
 				this.ui.rising.prop("href", model.get('rname') + "/rising")

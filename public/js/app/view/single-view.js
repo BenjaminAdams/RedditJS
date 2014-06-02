@@ -46,6 +46,11 @@ define(['App', 'underscore', 'backbone', 'markdown', 'hbs!template/single', 'hbs
 				this.hasRendered = false
 				this.blinking = '<img class="blinkingFakeInput" src="/img/text_cursor.gif" />'
 
+				// App.trigger("header:updateSortOrder", {
+				// 	//sortOrder: this.sortOrder,
+				// 	subName: this.subName
+				// });
+
 				if (typeof App.curModel === 'undefined') {
 
 					this.fetchComments(this.loaded)

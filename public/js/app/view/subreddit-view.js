@@ -43,8 +43,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				//putting stuff in model so we can pass to handlebars template
 				this.model = new Backbone.Model({
 					sortOrder: this.sortOrder,
-					//	subName: this.subName,
-					//hideSrDisplay: this.hideSrDisplay,
 					timeFrame: this.timeFrame
 				})
 
