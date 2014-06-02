@@ -16,11 +16,11 @@
 
 			if (script) {
 
-				subreddit = script.getAttribute('data-subreddit') || 'front'
 				width = script.getAttribute('data-width') || 250
 				height = script.getAttribute('data-height') || 250
 				cssTheme = script.getAttribute('data-theme') || 'light'
-				cssTheme = script.getAttribute('data-theme') || 'light'
+				cssTheme = script.getAttribute('sort') || 'how'
+				subreddit = script.getAttribute('data-subreddit') || 'front'
 
 				var embedUrl = "http://redditjs.com/"
 
