@@ -45,8 +45,8 @@
 				var ifrm = document.createElement("IFRAME");
 				ifrm.setAttribute("src", embedUrl);
 				//start out invis and expand after loaded
-				ifrm.style.height = '250px'
-				ifrm.style.width = '250px'
+				ifrm.style.height = height + 'px'
+				ifrm.style.width = width + 'px'
 				ifrm.style.margin = '0 auto'
 				ifrm.style.display = 'block'
 
