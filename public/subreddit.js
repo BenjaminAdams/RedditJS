@@ -15,11 +15,12 @@
 		var sort;
 		var subreddit;
 		var grid;
+		var domain;
 
 		(function init() {
 
 			if (script) {
-
+				var base;
 				width = script.getAttribute('data-width') || 250
 				height = script.getAttribute('data-height') || 250
 				cssTheme = script.getAttribute('data-theme') || 'light'
@@ -27,9 +28,16 @@
 				subreddit = script.getAttribute('data-subreddit') || 'front'
 				timeFrame = script.getAttribute('data-timeframe') || 'month'
 				grid = script.getAttribute('data-subreddit-mode') || 'normal'
+				domain = script.getAttribute('data-domain') || null
 
 				//  /r/funny/top/day
-				var embedUrl = "http://localhost:8002/r/" + subreddit + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '#grid=' + grid
+				if (domain !== null) {
+					base = "domain/" + domain
+				} else {
+					base = "r/" + subreddit
+				}
+
+				var embedUrl = 'http://localhost:8002/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '#grid=' + grid
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'

@@ -49,6 +49,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 'domain/:domain(/)': 'subredditDomain',
                 'domain/:domain/:sortOrder(/)': 'subredditDomain',
+                'domain/:domain/:sortOrder/:timeFrame(/)': 'subredditDomain',
+                'domain/:domain/:sortOrder/:timeFrame?opts:opts': 'subredditDomain',
 
                 'r/:subName/comments/:id(/)': 'single',
                 'r/:subName/comments/:id/:slug(/)': 'single',
@@ -128,7 +130,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
             },
 
-            subredditDomain: function(domain, sortOrder) {
+            subredditDomain: function(domain, sortOrder, opts) {
                 this.doSidebar('front');
                 require(['view/subreddit-view'], function(SubredditView) {
                     App.mainRegion.show(new SubredditView({
