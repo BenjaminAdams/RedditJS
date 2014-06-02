@@ -28,7 +28,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				var self = this;
 				this.subredditCollectionView = null;
 				this.subName = options.subName
-				
+
 				if (this.subName == 'front') {
 					document.title = "redditjs beta"
 				} else {
@@ -40,10 +40,17 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				this.domain = options.domain || null
 				this.timeFrame = options.timeFrame
 
+				this.hideSrDisplay = false
+
+				if (this.subName === "" || this.subName === 'front') {
+					this.hideSrDisplay = true
+				}
+
 				//putting stuff in model so we can pass to handlebars template
 				this.model = new Backbone.Model({
 					sortOrder: this.sortOrder,
 					subName: this.subName,
+					hideSrDisplay: this.hideSrDisplay,
 					timeFrame: this.timeFrame
 				})
 
@@ -55,7 +62,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
 				this.loading = false;
 
-			App.on("subreddit:changeGridOption", this.changeGridOption, this);
+				App.on("subreddit:changeGridOption", this.changeGridOption, this);
 				//App.on("subreddit:remove", this.remove, this);
 				//this.render();
 				//this.imagesAdded = 0; //keeps a total of how many images we are loading
@@ -180,7 +187,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 			/**************Grid functions ****************/
 			initGridOption: function() {
 				var self = this
-				/*grid option:
+					/*grid option:
 					normal - the default Reddit styling
 					small - small thumbnails in the page
 					large - full sized images in the page

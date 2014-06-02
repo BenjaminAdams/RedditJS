@@ -5,12 +5,16 @@
 	var scripts = document.getElementsByTagName('script');
 	var theScriptThatCalledThis = scripts[scripts.length - 1]; //the script that loaded this file
 
-	(function redditJSInit(script) {
+	(function redditJSsubredditInit(script) {
 
 		var width;
 		var height;
 		var script;
 		var cssTheme;
+		var timeFrame;
+		var sort;
+		var subreddit;
+		var grid;
 
 		(function init() {
 
@@ -19,10 +23,13 @@
 				width = script.getAttribute('data-width') || 250
 				height = script.getAttribute('data-height') || 250
 				cssTheme = script.getAttribute('data-theme') || 'light'
-				cssTheme = script.getAttribute('sort') || 'how'
+				sort = script.getAttribute('data-sort') || 'hot'
 				subreddit = script.getAttribute('data-subreddit') || 'front'
+				timeFrame = script.getAttribute('data-timeframe') || 'month'
+				grid = script.getAttribute('data-subreddit-mode') || 'normal'
 
-				var embedUrl = "http://redditjs.com/"
+				//  /r/funny/top/day
+				var embedUrl = "http://localhost:8002/r/" + subreddit + '/' + sort + '/' + timeFrame + '/?cssTheme=' + cssTheme + '#grid=' + grid
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
@@ -30,52 +37,51 @@
 				var ifrm = document.createElement("IFRAME");
 				ifrm.setAttribute("src", embedUrl);
 				//start out invis and expand after loaded
-				ifrm.style.height = '0px'
-				ifrm.style.width = '0px'
+				ifrm.style.height = '250px'
+				ifrm.style.width = '250px'
 				ifrm.style.margin = '0 auto'
 				ifrm.style.display = 'block'
 
 				iframeWrapper.appendChild(ifrm)
-				//script.appendChild(iframeWrapper)
 				script.parentNode.insertBefore(iframeWrapper, script.nextSibling);
 
-				setupMessenger(ifrm)
+				//setupMessenger(ifrm)
 
 			}
 		})()
 
-		function setupMessenger(ifrm) {
-			var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-			var eventer = window[eventMethod];
-			var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+		// function setupMessenger(ifrm) {
+		// 	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+		// 	var eventer = window[eventMethod];
+		// 	var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
-			// Listen to message from child window
-			eventer(messageEvent, function(e) {
+		// 	// Listen to message from child window
+		// 	eventer(messageEvent, function(e) {
 
-				if (typeof e === 'undefined' && typeof e.data === 'undefined') {
-					//error checking
-					return;
-				}
+		// 		if (typeof e === 'undefined' && typeof e.data === 'undefined') {
+		// 			//error checking
+		// 			return;
+		// 		}
 
-				if (e.data.newWidth === 0 && e.data.newHeight === 0) {
-					hideIframe(ifrm)
-					return
-				}
+		// 		if (e.data.newWidth === 0 && e.data.newHeight === 0) {
+		// 			hideIframe(ifrm)
+		// 			return
+		// 		}
 
-				addIframeCss(ifrm)
+		// 		addIframeCss(ifrm)
 
-				if (typeof e.data.newWidth != null) {
-					var newHeight = e.data.newHeight || height
-					setHeight(ifrm, newHeight)
-				}
+		// 		if (typeof e.data.newWidth != null) {
+		// 			var newHeight = e.data.newHeight || height
+		// 			setHeight(ifrm, newHeight)
+		// 		}
 
-				if (typeof e.data.newHeight != null) {
-					var newWidth = e.data.newWidth || width
-					setWidth(ifrm, newWidth)
-				}
+		// 		if (typeof e.data.newHeight != null) {
+		// 			var newWidth = e.data.newWidth || width
+		// 			setWidth(ifrm, newWidth)
+		// 		}
 
-			}, false);
-		}
+		// 	}, false);
+		// }
 
 		function hideIframe(ifrm) {
 			setHeight(ifrm, newHeight)

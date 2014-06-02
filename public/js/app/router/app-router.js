@@ -45,6 +45,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'r/:subName?mode=:mode': 'subreddit',
                 'r/:subName/:sortOrder(/)': 'subreddit',
                 'r/:subName/:sortOrder/:timeFrame': 'subreddit',
+                'r/:subName/:sortOrder/:timeFrame?mode=:mode': 'subreddit',
 
                 'domain/:domain(/)': 'subredditDomain',
                 'domain/:domain/:sortOrder(/)': 'subredditDomain',
