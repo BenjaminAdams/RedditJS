@@ -391,3 +391,14 @@ background-color: rgb(29, 29, 29);
     padding:2px;
     margin-bottom:3px;
 }
+.message.recipient>.entry .noncollapsed {
+    color: rgb(219,219,219);
+}
+
+.message.message-reply.recipient>.entry .head, .message.message-parent.recipient>.entry .head {
+    color: #979797;
+}
+
+.message.message-reply .entry, .message.message-parent .entry {
+    border-left: 2px dashed #444444;
+}
