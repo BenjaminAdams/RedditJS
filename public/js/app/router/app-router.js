@@ -16,6 +16,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 if (window.location.hash) {
                     var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
                     if (hash === 'grid' || hash === 'small' || hash === 'large' || hash === 'normal') {
+                        App.settings.set('gridOption', hash)
                         $.cookie('gridOption', hash, {
                             path: '/'
                         });
@@ -394,6 +395,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                         App.settings.set(selectboxes[x], $.cookie(selectboxes[x]))
                     }
                 }
+
+                //load grid opt from cookies
+                App.settings.set('gridOption', $.cookie('gridOption'))
 
             },
             checkIfNightmode: function() {

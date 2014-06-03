@@ -164,6 +164,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				App.trigger("subreddit:changeGridOption", {
 					gridOption: id
 				});
+				App.settings.set('gridOption', id)
 				this.changeActiveGrid(id) //so we are highlighting the correct grid option on page load
 				$.cookie('gridOption', id, {
 					path: '/'
