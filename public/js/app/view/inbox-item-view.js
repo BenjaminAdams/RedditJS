@@ -20,8 +20,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox-item', 'view/basem-
 				'click .yesBlock': "blockYes", //user clicks yes to report 
 				'click .noBlock': "blockShow", //user decides not to report this link/comment
 				'click .new': 'markRead',
-				'click .unread-button': 'markUnread'
+				'click .unread-button': 'markUnread',
+				'click .replyBtn': 'clickReply'
 			},
+
 			initialize: function(options) {
 				_.bindAll(this);
 				this.model = options.model
@@ -35,6 +37,19 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox-item', 'view/basem-
 				}
 				this.selector.addClass(this.model.get('evenOrOdd')) //add even or odd classes
 			},
+
+			clickReply: function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+
+				App.mailReplyTarget = this.model
+
+				Backbone.history.navigate('/message/compose/' + this.model.get('author'), {
+					trigger: true
+				});
+
+			},
+
 			hideThread: function(e) {
 				e.preventDefault()
 				e.stopPropagation()

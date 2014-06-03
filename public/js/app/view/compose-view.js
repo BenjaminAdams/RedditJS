@@ -19,9 +19,17 @@ define(['App', 'underscore', 'backbone', 'hbs!template/compose', 'view/basem-vie
 			},
 			initialize: function(options) {
 				_.bindAll(this);
-				this.model = new Backbone.Model({
-					username: options.username
-				})
+
+				//if the user clicks reply we populate the subject and author to help out the user
+				if (typeof App.mailReplyTarget !== 'undefined') {
+					this.model = App.mailReplyTarget
+					delete App.mailReplyTarget;
+				} else {
+					this.model = new Backbone.Model({
+						author: options.username
+					})
+				}
+
 			},
 			sendMsg: function(e) {
 				e.preventDefault()
