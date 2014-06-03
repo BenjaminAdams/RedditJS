@@ -1,5 +1,5 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view/basem-view', 'model/user-about', 'hbs!template/userbar-mobile', 'cookie', 'localstorage'],
-	function(App, $, _, Backbone, UserbarTmpl, BaseView, UserModel, MobileUserbarTmpl, Cookie, Localstorage) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view/basem-view', 'model/user-about', 'model/me', 'hbs!template/userbar-mobile', 'cookie', 'localstorage'],
+	function(App, $, _, Backbone, UserbarTmpl, BaseView, UserModel, MeModel, MobileUserbarTmpl, Cookie, Localstorage) {
 		return BaseView.extend({
 			template: UserbarTmpl,
 			events: {
@@ -24,15 +24,32 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 
 				if (this.checkIfLoggedIn() === true) {
 					this.model = new UserModel(App.user);
+
 					console.log('model=', this.model)
 				}
 				App.on('oauth:showPopup', this.showLoginBox)
 
 			},
 			onRender: function() {
+				var self = this
 				if (this.checkIfLoggedIn() === true) {
 					this.ui.loggedOut.hide()
 					this.ui.loggedIn.show()
+
+					//wait 1.5 seconds to check mail
+					setTimeout(function() {
+						self.meModel = new MeModel();
+
+						self.meModel.fetch({
+							success: function(model) {
+								if (model.get('has_mail') === true) {
+									self.ui.mail.addClass('havemail').removeClass('nohavemail')
+								}
+
+							}
+						})
+					}, 1500)
+
 				} else {
 					this.showLoggedOut()
 				}

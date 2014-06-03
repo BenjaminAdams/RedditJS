@@ -35,7 +35,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 					document.title = this.subName + " - redditjs beta"
 				}
 
-				this.gridOption = App.settings.set('gridOption', hash) || 'normal';
+				this.gridOption = App.settings.get('gridOption') || 'normal';
 				this.sortOrder = options.sortOrder
 				this.domain = options.domain || null
 				this.timeFrame = options.timeFrame
