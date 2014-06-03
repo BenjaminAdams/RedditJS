@@ -456,6 +456,10 @@ display: none;
     display:none;
 }
 
+a.togglebutton.report {
+display: none;
+}
+
 
 .thing.link {
 min-width: 150px;
