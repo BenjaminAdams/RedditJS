@@ -14,6 +14,7 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * **Keyboard Navigation:** Use the left and right arrow keys to navigate between posts
  * **Subreddit Explorer:** I've turned the top left subreddit dropdown menu into a list of subreddits based on category.  There are currently about 1,000 subreddits listed here.  It helps you discover new subreddits and waist even more time on reddit!
  * **Download Images:** Download all images and compress them into a zip.  Done all on the client side. [example](http://www.redditjs.com/download/aww)
+ * **Embed widgets:** embed code for reddit post or subreddits [details and examples](http://embed.redditjs.com)
 
 ####RedditJS is built with :
  * Node.js <http://nodejs.org/>
@@ -64,7 +65,7 @@ You can add the script tag to any website, or you can use the [Wordpress Plugin]
 
 
 
-#### How to run this locally
+#### How to run redditjs locally
  * Clone repo `git clone git@github.com:BenjaminAdams/RedditJS.git`
  * In the console type `npm install`
  * `sudo npm -g install nodemon` This starts the node server and monitors for changes in the files and updates the code running on node.
@@ -72,7 +73,7 @@ You can add the script tag to any website, or you can use the [Wordpress Plugin]
  * To minify the code for production type `grunt` which creates `styles.min.css` and `DesktopInit.min.js`
  * If are not seeing changes you make live, you may need to change /server/views/jade to have `script(src='/js/app/init/DesktopInit.min.js')` to `script(src='/js/app/init/DesktopInit.js')` also change link`(rel='stylesheet', href='/css/styles.min.css')` to `link(rel='stylesheet', href='/css/styles.css')`
 
-#### How to setup oauth
+#### How to setup oauth to run locally or on your own server
 * Have a local redis instance (http://redis.io/ - sudo apt-get install redis-server)
 * Create an app with your reddit account - https://ssl.reddit.com/prefs/apps/
 * Set your apps redirect url to 'http://mypublicip:8002/auth/reddit/callback', where mypublicip is your ip
