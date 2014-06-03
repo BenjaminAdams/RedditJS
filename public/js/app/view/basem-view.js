@@ -79,7 +79,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 					if (this.subName == 'front') {
 						$("#subredditStyle").attr("href", "");
 					} else {
-						$("#subredditStyle").attr("href", "http://www.reddit.com/r/" + name + "/stylesheet");
+						$("#subredditStyle").attr("href", "https://pay.reddit.com/r/" + name + "/stylesheet");
 					}
 				}
 			},
