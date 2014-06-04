@@ -50,6 +50,8 @@
 				ifrm.style.margin = '0 auto'
 				ifrm.style.display = 'block'
 
+				addIframeCss(ifrm)
+
 				iframeWrapper.appendChild(ifrm)
 				script.parentNode.insertBefore(iframeWrapper, script.nextSibling);
 
