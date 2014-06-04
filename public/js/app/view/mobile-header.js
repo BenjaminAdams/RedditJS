@@ -54,7 +54,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 			},
 			onRender: function() {
 				var self = this
-				this.changeActiveGrid($.cookie('gridOption')) //so we are highlighting the correct grid option on page load
+				this.changeActiveGrid(App.settings.get('gridOption')) //so we are highlighting the correct grid option on page load
 
 				this.mobileUserBar.show(new UserbarView({
 					mobile: true

@@ -48,7 +48,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			},
 			onRender: function() {
 
-				this.changeActiveGrid($.cookie('gridOption')) //so we are highlighting the correct grid option on page load
+				this.changeActiveGrid(App.settings.get('gridOption')) //so we are highlighting the correct grid option on page load
 
 				this.btmRightHeader.show(new UserbarView())
 				this.srDisplay.show(new SRDisplay())

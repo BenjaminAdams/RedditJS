@@ -13,8 +13,8 @@ head
   meta(property='og:type', content='website')
 
   //***************change to /css/styles.min.css for production
-  //link(rel='stylesheet', href='/css/styles.css')     
-  link(rel='stylesheet', href='/css/styles.min.css')   
+  link(rel='stylesheet', href='/css/styles.css')     
+  //link(rel='stylesheet', href='/css/styles.min.css')   
 
   script.
     window.redditUser=  !{JSON.stringify(user)};
@@ -28,15 +28,15 @@ body.listing-page.hot-page
   .side
   #content.content
   #bottom-bar-container
-    
+
   //script(src='/js/lib/require.js') using CDN instead
   script(src='//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.11/require.min.js')
   script(src='/js/app/config/config.js')
 
 
   //***************change to /js/app/init/DesktopInit.min.js for production
-  //script(src='/js/app/init/DesktopInit.js')
-  script(src='/js/app/init/DesktopInit.min.js')
+  script(src='/js/app/init/DesktopInit.js')
+  //script(src='/js/app/init/DesktopInit.min.js')
 
 
   noscript

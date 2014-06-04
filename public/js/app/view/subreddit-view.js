@@ -108,7 +108,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 			onRender: function() {
 				var self = this
 				this.initGridOption();
-				$(this.el).prepend("<style id='dynamicWidth'> </style>")
+				//$(this.el).prepend("<style id='dynamicWidth'> </style>")
 				//console.log("window.subs=", window.subs)
 
 				if (typeof App.subs[this.subID] === 'undefined') {
@@ -185,7 +185,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 					small - small thumbnails in the page
 					large - full sized images in the page
 				*/
-				this.gridOption = $.cookie('gridOption');
+				this.gridOption = App.settings.get('gridOption')
 				if (typeof this.gridOption === 'undefined' || this.gridOption === null || this.gridOption === "") {
 					this.gridOption = 'normal'
 				}
@@ -216,7 +216,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 			changeGridOption: function(data) {
 				var self = this
 				if (typeof data.gridOption === 'undefined') {
-					this.gridOption = $.cookie('gridOption');
+					this.gridOption = pp.settings.get('gridOption');
 				}
 				if (this.gridOption == data.gridOption) {
 					return;
@@ -224,9 +224,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				}
 
 				this.gridOption = data.gridOption
-				$.cookie('gridOption', this.gridOption, {
-					path: '/'
-				});
+
+				App.settings.set('gridOption', this.gridOption);
 
 				//this.subredditCollectionView.close()  //we don't need to close view before showing new one
 				this.setupCollectionView()
