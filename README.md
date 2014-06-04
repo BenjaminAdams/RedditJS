@@ -76,7 +76,7 @@ Add this script tag where you want the subreddit widget to appear.
 All of these options are optional.
 
 <table style='width:800px'>
-<tr><th style='width:125px;'>Name</th><th>Description</th> <th>values</th> <th>Default</th></tr>
+<tr><th style='width:125px;'>Name</th><th>Description</th> <th>values</th> <th style='width:70px;'>Default</th></tr>
 <tr><td>data-subreddit</td><td>The subreddit you want to embed</td> <td>any subreddit</td>  <td>front</td> </tr>
 <tr><td>data-domain</td><td>If you want to embed all posts coming from a domain.  Do not include if you want to embed a regular subreddit</td> <td>any valid domain</td>  <td>null</td> </tr>
 <tr><td>data-width</td><td>Width of the post widget.</td> <td>number</td> <td>300</td> </tr>
