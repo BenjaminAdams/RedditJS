@@ -17,9 +17,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
                     if (hash === 'grid' || hash === 'small' || hash === 'large' || hash === 'normal') {
                         App.settings.set('gridOption', hash)
-                        $.cookie('gridOption', hash, {
-                            path: '/'
-                        });
+                        //$.cookie('gridOption', hash, {
+                        // path: '/'
+                        //});
                     }
                 }
 

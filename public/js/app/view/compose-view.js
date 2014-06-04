@@ -42,7 +42,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/compose', 'view/basem-vie
 					subject: this.ui.subject.val(),
 					uh: $.cookie('modhash')
 				};
-				console.log(params)
 
 				this.api("/api/compose", 'POST', params, function(data) {
 					console.log("msg  done", data)
