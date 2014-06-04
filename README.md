@@ -78,10 +78,10 @@ All of these options are optional.
 <table style='width:800px'>
 <tr><th style='width:125px;'>Name</th><th>Description</th> <th>values</th> </tr>
 <tr><td>data-subreddit</td><td>The subreddit you want to embed</td> <td>any subreddit</td>   </tr>
-<tr><td>data-domain</td><td>If you want to embed all posts coming from a domain. <br />Do not include if you want to embed a regular subreddit</td> <td>any valid domain</td>   </tr>
+<tr><td>data-domain</td><td>If you want to embed all posts coming from a domain. Do not include if you want to embed a regular subreddit</td> <td>any valid domain</td>   </tr>
 <tr><td>data-width</td><td>Width of the post widget.</td> <td>number</td>  </tr>
 <tr><td>data-height</td><td>Height of the post widget.</td> <td>number</td>  </tr>
-<tr><td>data-sort</td><td>Sort order of subreddit</td> <td>hot, new, controversial, rising, top, gilded</td> <td>hot</td> </tr>
+<tr><td>data-sort</td><td>Sort order of subreddit</td> <td>hot, new, controversial, rising, top, gilded</td>  </tr>
 <tr><td>data-theme</td><td>Change the theme</td> <td>light, dark  </tr>
 <tr><td>data-timeframe</td><td>If top or controversial is select you can show posts from a specific time period.</td> <td>hour,day,week,month,year,all </tr>
 <tr><td>data-subreddit-mode</td><td>How you want to display a subreddit</td> <td>normal,small,grid,large</td>  </tr>
