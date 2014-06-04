@@ -26,8 +26,8 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * Reddit API <http://www.reddit.com/dev/api/>
  * Hosted at [Digital Ocean]( https://www.digitalocean.com/?refcode=572549c85ce0)
 
-#### You can also use Redditjs as a way to embed posts
-You can add this script tag to any website.  The post widget will embed itself onto your Wordpress post and detect if it has been posted to reddit.
+#### Post embed widget
+You can add this script tag to any website.  The post widget will embed itself onto your Wordpress post and detect if it has been posted to reddit.   [details and examples](http://embed.redditjs.com)
 
 ```<script src='//redditjs.com/post.js' </script>```
 
@@ -57,12 +57,38 @@ You can add the script tag to any website, or you can use the [Wordpress Plugin]
 <tr><td>data-show-submit</td><td>If we don't find a post on reddit, should we display a "submit to reddit" widget.</td> <td>true,false</td> <td>true</td> </tr>
 </table>
 
-##### example with all options
+##### example with options
 
 ```
 <script src='//redditjs.com/post.js' data-url='http://www.techodrom.com/etc/star-trek-edges-closer-reality-tractor-beam-moves-object-using-nothing-power-ultrasound/' data-height='500' data-width='500' data-post-finder='newest' data-theme='dark' data-show-submit='true'  </script>
 ```
 
+
+####Subreddit embed widget
+
+#####Instructions
+Add this script tag where you want the subreddit widget to appear.
+
+
+```<script src='//redditjs.com/subreddit.js'></script>```
+
+<h3>Options</h3>
+All of these options are optional.
+
+<table style='width:800px'>
+<tr><th style='width:125px;'>Name</th><th>Description</th> <th>values</th> <th>Default</th></tr>
+<tr><td>data-subreddit</td><td>The subreddit you want to embed</td> <td>any subreddit</td>  <td>front</td> </tr>
+<tr><td>data-domain</td><td>If you want to embed all posts coming from a domain.  Do not include if you want to embed a regular subreddit</td> <td>any valid domain</td>  <td>null</td> </tr>
+<tr><td>data-width</td><td>Width of the post widget.</td> <td>number</td> <td>300</td> </tr>
+<tr><td>data-height</td><td>Height of the post widget.</td> <td>number</td> <td>300</td> </tr>
+<tr><td>data-sort</td><td>Sort order of subreddit</td> <td>hot, new, controversial, rising, top, gilded</td> <td>hot</td> </tr>
+<tr><td>data-theme</td><td>Change the theme</td> <td>light, dark <td>light</td> </tr>
+<tr><td>data-timeframe</td><td>If top or controversial is select you can show posts from a specific time period.</td> <td>hour,day,week,month,year,all<td>light</td> </tr>
+<tr><td>data-subreddit-mode</td><td>How you want to display a subreddit</td> <td>normal,small,grid,large</td> <td>normal</td> </tr>
+</table>
+
+##### example with options
+<script src='//redditjs.com/subreddit.js' data-subreddit='BeavisAndButthead' data-height='500' data-width='500' data-sort='top' data-theme='light' data-timeframe='month' data-subreddit-mode='grid'></script>
 
 
 #### How to run redditjs locally
