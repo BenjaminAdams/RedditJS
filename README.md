@@ -48,13 +48,13 @@ You can add the script tag to any website, or you can use the [Wordpress Plugin]
 ##### Options
 
 <table style='width:800px'>
-<tr><th style='width:125px;'>Name</th><th>Description</th> <th>values</th> <th>Default</th></tr>
-<tr><td>data-url</td><td>The URL you want to search in reddit to embed on your site.</td> <td>any url</td>  <td>current URL</td> </tr>
-<tr><td>data-width</td><td>Width of the post widget.</td> <td>number</td> <td>500</td> </tr>
-<tr><td>data-height</td><td>Height of the post widget.</td> <td>number</td> <td>500</td> </tr>
-<tr><td>data-post-finder</td><td>If the URL has been submitted multiple times to reddit, it will display the most relevant post based on your setting.</td> <td>newest, mostUpvoted, mostComments</td> <td>mostComments</td> </tr>
-<tr><td>data-theme</td><td>Change the theme</td> <td>light, dark <td>light</td> </tr>
-<tr><td>data-show-submit</td><td>If we don't find a post on reddit, should we display a "submit to reddit" widget.</td> <td>true,false</td> <td>true</td> </tr>
+<tr><th style='width:125px;'>Name</th><th>Description</th> <th>values</th> </tr>
+<tr><td>data-url</td><td>The URL you want to search in reddit to embed on your site. *defaults to current URL</td> <td>any url</td>  </tr>
+<tr><td>data-width</td><td>Width of the post widget.</td> <td>number</td>  </tr>
+<tr><td>data-height</td><td>Height of the post widget.</td> <td>number</td>  </tr>
+<tr><td>data-post-finder</td><td>If the URL has been submitted multiple times to reddit, it will display the most relevant post based on your setting.</td> <td>newest, mostUpvoted, mostComments</td>  </tr>
+<tr><td>data-theme</td><td>Change the theme</td> <td>light, dark </td></tr>
+<tr><td>data-show-submit</td><td>If we don't find a post on reddit, should we display a "submit to reddit" widget.</td> <td>true,false</td>  </tr>
 </table>
 
 ##### example with options
@@ -76,15 +76,15 @@ Add this script tag where you want the subreddit widget to appear.
 All of these options are optional.
 
 <table style='width:800px'>
-<tr><th style='width:125px;'>Name</th><th>Description</th> <th>values</th> <th style='width:70px;'>Default</th></tr>
-<tr><td>data-subreddit</td><td>The subreddit you want to embed</td> <td>any subreddit</td>  <td>front</td> </tr>
-<tr><td>data-domain</td><td>If you want to embed all posts coming from a domain.  Do not include if you want to embed a regular subreddit</td> <td>any valid domain</td>  <td>null</td> </tr>
-<tr><td>data-width</td><td>Width of the post widget.</td> <td>number</td> <td>300</td> </tr>
-<tr><td>data-height</td><td>Height of the post widget.</td> <td>number</td> <td>300</td> </tr>
+<tr><th style='width:125px;'>Name</th><th>Description</th> <th>values</th> </tr>
+<tr><td>data-subreddit</td><td>The subreddit you want to embed</td> <td>any subreddit</td>   </tr>
+<tr><td>data-domain</td><td>If you want to embed all posts coming from a domain. <br />Do not include if you want to embed a regular subreddit</td> <td>any valid domain</td>   </tr>
+<tr><td>data-width</td><td>Width of the post widget.</td> <td>number</td>  </tr>
+<tr><td>data-height</td><td>Height of the post widget.</td> <td>number</td>  </tr>
 <tr><td>data-sort</td><td>Sort order of subreddit</td> <td>hot, new, controversial, rising, top, gilded</td> <td>hot</td> </tr>
-<tr><td>data-theme</td><td>Change the theme</td> <td>light, dark <td>light</td> </tr>
-<tr><td>data-timeframe</td><td>If top or controversial is select you can show posts from a specific time period.</td> <td>hour,day,week,month,year,all<td>light</td> </tr>
-<tr><td>data-subreddit-mode</td><td>How you want to display a subreddit</td> <td>normal,small,grid,large</td> <td>normal</td> </tr>
+<tr><td>data-theme</td><td>Change the theme</td> <td>light, dark  </tr>
+<tr><td>data-timeframe</td><td>If top or controversial is select you can show posts from a specific time period.</td> <td>hour,day,week,month,year,all </tr>
+<tr><td>data-subreddit-mode</td><td>How you want to display a subreddit</td> <td>normal,small,grid,large</td>  </tr>
 </table>
 
 ##### example with options
