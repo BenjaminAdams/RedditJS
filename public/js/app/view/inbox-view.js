@@ -18,6 +18,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox', 'view/inbox-item-
 			regions: {
 				'siteTable': '#siteTable'
 			},
+			ui: {
+				'mailLoading': '#mailLoading'
+			},
 			initialize: function(options) {
 				_.bindAll(this);
 				this.type = options.type
@@ -35,6 +38,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox', 'view/inbox-item-
 			onRender: function() {
 				this.siteTable.show(this.inboxCollectionView)
 				this.selectActive()
+
+				this.showLoading()
+			},
+			showLoading: function() {
+				this.ui.mailLoading.html("<div class='loading'> </div> ");
+			},
+			removeLoading: function() {
+				this.ui.mailLoading.empty();
 			},
 			selectActive: function() {
 				this.$('.selected').removeClass('selected')
@@ -60,6 +71,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox', 'view/inbox-item-
 				if (collection.length === 0) {
 					this.$('#siteTable').html("<div class='error'>there doesn't seem to be anything here</div>")
 				}
+				this.removeLoading()
 
 			}
 
