@@ -36,7 +36,6 @@ for your local env run
 
     *put these in ~/.profile so you have them on reboot
 */
-console.log(process.env.REDDIT_CALLBACK)
 
 var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY || 'only use these';
 var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET || 'to use oauth';
@@ -70,10 +69,11 @@ passport.use(new RedditStrategy({
 // SERVER CONFIGURATION
 // ====================
 var oneDay = 86400000;
-// server.use(function(req, res, next) {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//     res.header('Access-Control-Allow-Headers', 'Content-Type');
+var sessionExpireTime = 99999999999
+    // server.use(function(req, res, next) {
+    //     res.header('Access-Control-Allow-Origin', '*');
+    //     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    //     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
 //     next();
 // });
@@ -82,7 +82,7 @@ server.use(express.static(__dirname + '../../public', {
     maxAge: oneDay
 }));
 
-server.use(favicon(__dirname + "/../public/img/favicon.ico"));
+server.use(favicon(__dirname + '../../public/img/favicon.ico'));
 
 if (process.env.NODE_ENV !== 'production') {
 
@@ -93,13 +93,33 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 server.use(cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
-server.use(session({
-    store: new redisStore(),
-    cookie: {
-        maxAge: 36000000
-    },
-    secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
-}));
+
+var secureCookies = {}
+if (process.env.NODE_ENV === 'production') {
+
+    secureCookies = {
+        store: new redisStore(),
+        proxy: true,
+        cookie: {
+            maxAge: sessionExpireTime,
+            secure: true
+        },
+        secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
+    }
+
+} else {
+    //development
+    secureCookies = {
+        store: new redisStore(),
+        cookie: {
+            maxAge: sessionExpireTime
+        },
+        secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
+    }
+
+}
+
+server.use(session(secureCookies));
 
 //server.use(logger());
 server.use(bodyParser());
@@ -195,6 +215,7 @@ server.all('/*', function(req, res, next) {
 
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
+
     res.render('index', {
         user: req.user || false //bootstrap user to client if they are logged in
     })
