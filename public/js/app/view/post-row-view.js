@@ -1,7 +1,7 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!template/post-row', 'hbs!template/post-row-small', 'hbs!template/post-row-large'],
-    function(App, $, _, Backbone, BaseView, PostRowTmpl, PostRowSmallTmpl, PostRowLargeTmpl) {
+define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!template/post-row', 'hbs!template/post-row-small', 'hbs!template/post-row-large', 'view/hover-img-view'],
+    function(App, $, _, Backbone, BaseView, PostRowTmpl, PostRowSmallTmpl, PostRowLargeTmpl, HoverImgView) {
         return BaseView.extend({
-
+ 
             events: {
                 'click a': "gotoSingle",
                 'click .upArrow': 'upvote',
@@ -14,7 +14,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 'click .reportConfirmNo': 'reportShow',
                 'click .expando-button': 'toggleExpando',
                 'click .share-button': 'toggleShare',
-                'drag .dragImg': 'dragImg'
+                'drag .dragImg': 'dragImg',
+                'mouseover .outBoundLink': 'postLinkHover'
+            },
+            regions: {
+                hoverImgParent: '.md:first'
             },
             ui: {
                 'expandoButton': '.expando-button',
@@ -109,7 +113,55 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 }, 1000);
 
             },
+            postLinkHover: function(e) {
+                //console.log('hovering over a comment')
+                e.preventDefault()
+                e.stopPropagation()
+                if (App.settings.get('cmtLoad') === true) {
+                    if (App.Delay !== true) {
+                        var target = $(e.currentTarget)
 
+                        var url = $(target).attr("href")
+
+                        var youtubeID = this.youtubeChecker(url);
+                        //check if the url is an image we can embed
+                        if (youtubeID === false) {
+                            url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
+                        }
+                        if (this.checkIsImg(url) === false) {
+                            //URL is NOT an image
+                            //try and fix an imgur link?
+                            url = this.fixImgur(url)
+
+                        }
+
+                        if (url !== false || youtubeID !== false) {
+
+                            var ahrefDescription = $(target).text()
+                            if (!ahrefDescription) {
+                                ahrefDescription = url
+                            }
+
+                            //$(target).css('float', 'left')
+                            var originalText = $('.outBoundLink:first').parent().parent().text().trim()
+                            var originalHtml = this.$('.outBoundLink:first').parent().parent().html()
+                            if (youtubeID) {
+                                url = $(target).attr("href") //in case it was a youtube video we should reset the url link to pass into the view
+                            }
+
+                            this.hoverImgParent.show(new HoverImgView({
+                                url: url,
+                                ahrefDescription: ahrefDescription,
+                                originalText: originalText,
+                                originalHtml: originalHtml,
+                                youtubeID: youtubeID
+
+                            }))
+
+                        }
+                    }
+                }
+            },
             toggleExpando: function() {
                 //if (this.model.get('embededImg') === false && this.expand === false) {
                 // this.ui.expandoButton.hide()
