@@ -21,9 +21,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/compose', 'view/basem-vie
 				_.bindAll(this);
 
 				//if the user clicks reply we populate the subject and author to help out the user
-				if (typeof App.mailReplyTarget !== 'undefined') {
+				if (typeof App.mailReplyTarget !== 'undefined' && App.mailReplyTarget !== null) {
 					this.model = App.mailReplyTarget
-					delete App.mailReplyTarget;
+					App.mailReplyTarget = null;
 
 					//this.model.set('dest', options.username)
 
