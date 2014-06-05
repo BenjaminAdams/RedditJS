@@ -149,8 +149,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                                 url = $(target).attr("href") //in case it was a youtube video we should reset the url link to pass into the view
                             }
 
-                            console.log('hello there this is a :' + this);
-
                             this.hoverImgParent.show(new HoverImgView({
                                 url: url,
                                 ahrefDescription: ahrefDescription,
