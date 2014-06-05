@@ -42,9 +42,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox-item', 'view/basem-
 				e.preventDefault()
 				e.stopPropagation()
 
+				if (App.user.name === this.model.get('dest')) {
+					this.model.set('dest', this.model.get('author'))
+				}
+
 				App.mailReplyTarget = this.model
 
-				Backbone.history.navigate('/message/compose/' + this.model.get('author'), {
+				Backbone.history.navigate('/message/compose/' + this.model.get('dest'), {
 					trigger: true
 				});
 

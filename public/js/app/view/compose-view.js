@@ -24,9 +24,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/compose', 'view/basem-vie
 				if (typeof App.mailReplyTarget !== 'undefined') {
 					this.model = App.mailReplyTarget
 					delete App.mailReplyTarget;
+
+					//this.model.set('dest', options.username)
+
 				} else {
 					this.model = new Backbone.Model({
-						author: options.username
+						dest: options.username
 					})
 				}
 

@@ -33,7 +33,10 @@ for your local env run
     export REDDIT_SECRET = 'your secret'
     export REDDIT_CALLBACK = 'http://localhost:8002/auth/reddit/callback'
     export SESSION_SECERET = 'make up some random string'
+
+    *put these in ~/.profile so you have them on reboot
 */
+console.log(process.env.REDDIT_CALLBACK)
 
 var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY || 'only use these';
 var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET || 'to use oauth';
