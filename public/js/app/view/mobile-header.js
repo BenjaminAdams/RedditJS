@@ -154,6 +154,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				} else {
 					//http://localhost/domain/i.imgur.com/new
 					this.ui.srNameDisplay.prop(("href", "/domain/" + domain + '/'))
+					this.ui.srNameDisplay.text(("/domain/" + domain))
 					this.ui.hot.attr("href", "/domain/" + domain + '/');
 					this.ui.New.attr("href", "/domain/" + domain + '/new');
 					this.ui.rising.attr("href", "/domain/" + domain + '/rising');

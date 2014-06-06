@@ -21,6 +21,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				'keyup #title': 'keyDownTitle'
 			},
 			ui: {
+				submitTitle: "#title",
+				theSubmitBtn: '#theSubmitBtn',
 				urlDetails: '#urlDetails',
 				suggestedReddits: '#suggested-reddits',
 				alreadySubmitted: '#alreadySubmitted',
@@ -64,6 +66,17 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			*/
 			onRender: function() {
 				this.loadSubreddits()
+
+				if (this.checkIfLoggedIn() === false) {
+					console.log('user is not logged in')
+					this.ui.submitTitle.attr('readonly', true);
+					this.ui.submitTitle.val('click here to login')
+					this.ui.submitTitle.on("click", this.showLoginBox)
+					this.ui.submitTitle.css('background-color', '#E9E6E6')
+					this.ui.theSubmitBtn.attr('disabled', 'disabled')
+
+				}
+
 			},
 			//if the user wants to set a pre-defined URL to submit, extract it from the URL
 			//http://localhost:8002/submit/url=http://dudelol.com/now-that?asdasd=asd
@@ -324,6 +337,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				e.stopPropagation()
 				this.$('.status').html('') //clear status
 				var self = this
+
+				if (this.checkIfLoggedIn() === false) {
+					this.showLoginBox()
+				}
 
 				var text = this.$('#submitTxt').val()
 				var url = this.$('#url').val()

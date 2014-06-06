@@ -76,7 +76,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 			},
 			dynamicStylesheet: function(name) {
 				if (App.settings.get('customCSS') === true && App.settings.get('enableNightmode') === false && $(document).width() > App.mobileWidth) {
-					if (this.subName == 'front') {
+					if (this.subName == 'front' || this.subName === null) {
 						$("#subredditStyle").attr("href", "");
 					} else {
 						$("#subredditStyle").attr("href", "https://pay.reddit.com/r/" + name + "/stylesheet");

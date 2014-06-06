@@ -55,6 +55,9 @@ define(['App', 'underscore', 'backbone', 'jquery', 'moment'], function(App, _, B
 		},
 
 		numberWithCommas: function(x) {
+			if (typeof x === 'undefined') {
+				return '1'
+			}
 			return x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
 		},
 
