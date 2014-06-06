@@ -56,6 +56,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 			displayCategory: function(name) {
 
 				if (name == 'mine') {
+
 					this.renderMySubreddits()
 				} else {
 					this.renderRegularSubreddit(App.subreddits[name])
@@ -79,6 +80,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 				var self = this
 					//_.each(subreddits, function(model) {
 					//subreddits.each(function(model) {
+
+				subreddits = _.sortBy(subreddits, function(obj) {
+					return +obj.display_name
+				});
+
 				for (var item in subreddits) {
 
 					var headerImg = subreddits[item].header_img
@@ -94,6 +100,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 			},
 			renderMySubreddits: function() {
 				var self = this
+					//App.subreddits.mine.sort()
+					//App.subreddits.mine.comparator = 'display_name'
 				App.subreddits.mine.each(function(model) {
 					var headerImg = model.get('header_img')
 					var displayName = model.get('display_name')

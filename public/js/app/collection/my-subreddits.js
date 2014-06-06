@@ -9,7 +9,7 @@ define(['App', 'backbone', 'model/single', 'localstorage'], function(App, Backbo
 				this.fetch()
 			}
 		},
-		model: SingleModel,
+		//model: SingleModel,
 		url: function() {
 			var username = App.user.name || false
 			if (username !== false) {
@@ -19,6 +19,7 @@ define(['App', 'backbone', 'model/single', 'localstorage'], function(App, Backbo
 				return 'https://pay.reddit.com/subreddits.json?jsonp=?'
 			}
 		},
+		comparator: 'display_name',
 		//so we have the attributes in the root of the model
 		parse: function(response) {
 			var subreddits = []
@@ -29,12 +30,11 @@ define(['App', 'backbone', 'model/single', 'localstorage'], function(App, Backbo
 			} else {
 
 				_.each(response.data.children, function(item) {
-					var sub = new SingleModel({
+
+					subreddits.push({
 						header_img: item.data.header_img,
 						display_name: item.data.display_name
-
-					})
-					subreddits.push(sub)
+					});
 
 				})
 

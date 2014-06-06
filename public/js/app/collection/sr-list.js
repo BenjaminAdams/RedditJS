@@ -7,6 +7,7 @@ define(['App', 'backbone', 'model/single'], function(App, Backbone, SingleModel)
 		//url: '/data/subredditList.json',
 		//url: '/getSrList',
 		url: '/data/TMPsubredditList.json',
+		comparator: 'display_name',
 		parse: function(response) {
 			//TODO: Make this less of a hack....
 			for (var key in response) {

@@ -51,13 +51,19 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox', 'view/inbox-item-
 				this.$('.selected').removeClass('selected')
 				this.$('#' + this.type).addClass('selected')
 			},
-			fetchError: function() {
-				this.$('#siteTable').html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
+			fetchError: function(first, second) {
+				this.removeLoading()
+
+				if (this.type === 'unread') {
+					this.$('#siteTable').html('no new mail')
+				} else {
+					this.$('#siteTable').html("<div id='retry' >  <img src='img/sad-icon.png' /><br /> click here to try again </div> ")
+				}
+
 			},
 			tryAgain: function() {
 				this.$('#siteTable').html("<div class='loading'></div> ")
 				this.$('#retry').remove()
-
 				this.fetchMore();
 			},
 			fetchMore: function() {
