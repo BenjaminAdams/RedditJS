@@ -438,6 +438,7 @@ width: 97%;
 font-size: 15px !important;
 position:absolute;
 right: 15px;
+white-space: nowrap;
 }
 
 
