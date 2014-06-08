@@ -208,7 +208,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 //example url:  /submit/url=http://dudelol.com/now-that?asdasd=asd
 
                 //change parent size
-                this.newIframeSize(null, 600)
+                this.newIframeSize(null, 800)
 
                 var url = '/submit/url=' + this.q.url
                 Backbone.history.navigate(url, {
