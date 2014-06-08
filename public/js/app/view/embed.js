@@ -180,7 +180,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 this.newIframeSize(this.q.width, this.q.height)
 
                 Backbone.history.navigate(gotoPost.get('permalink'), {
-                    trigger: true
+                    trigger: true,
+                    replace: true
                 });
             },
 
@@ -211,7 +212,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
 
                 var url = '/submit/url=' + this.q.url
                 Backbone.history.navigate(url, {
-                    trigger: true
+                    trigger: true,
+                    replace: true
                 });
             },
             // tellParentWeLoaded: function() {
