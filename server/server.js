@@ -183,6 +183,7 @@ server.get('/logout', function(req, res, next) {
 //reddit Oauth docs: https://github.com/reddit/reddit/wiki/OAuth2
 server.get('/auth/reddit/callback', function(req, res, next) {
     // Check for origin via state token
+    console.log('got a callback from oauth')
 
     if (req.query.state == req.session.state) {
 
