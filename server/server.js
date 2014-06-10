@@ -69,14 +69,15 @@ passport.use(new RedditStrategy({
 // SERVER CONFIGURATION
 // ====================
 var oneDay = 86400000;
-var sessionExpireTime = 99999999999
-    // server.use(function(req, res, next) {
-    //     res.header('Access-Control-Allow-Origin', '*');
-    //     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    //     res.header('Access-Control-Allow-Headers', 'Content-Type');
+var sessionExpireTime = 29999999999
+     server.use(function(req, res, next) {
+         res.header('Access-Control-Allow-Origin', '*');
+         res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+         res.header('Access-Control-Allow-Headers', 'Content-Type');
 
-//     next();
-// });
+     next();
+ });
+server.enable('trust proxy');
 server.use(compress());
 server.use(express.static(__dirname + '../../public', {
     maxAge: oneDay
@@ -269,7 +270,7 @@ function refreshToken(req, res, next) {
         //console.log('token is NOT expired')
         return next(true)
     } else {
-        console.log('token is expired, lets refresh!')
+        console.log('token is expired, lets refresh!', req.user.name)
 
         var authorization = "Basic " + Buffer("" + REDDIT_CONSUMER_KEY + ":" + REDDIT_CONSUMER_SECRET).toString('base64');
 
@@ -296,6 +297,7 @@ function refreshToken(req, res, next) {
 
         request.post(options, function(error, response, body) {
             if (error) {
+console.log('error getting oauth re-authenticate', error)
                 res.send(419, loginAgainMsg)
                 return
             } else if (!error && response.statusCode == 200 || response.statusCode == 304) {
@@ -309,6 +311,7 @@ function refreshToken(req, res, next) {
                 //req.session.access_token = values.access_token
                 req.user.tokenExpires = values.tokenExpires
                 req.user.access_token = values.access_token
+console.log('oauth worked, token=', values.access_token);
 
                 process.nextTick(function() { //wait for the access token to be in the DB
                     return next(true)

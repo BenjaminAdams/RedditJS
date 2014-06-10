@@ -26,6 +26,7 @@ module.exports = {
 
 		var options = {
 			url: urlStr,
+			timeout: 30000,
 			headers: {
 				//'Content-Type': 'application/x-www-form-urlencoded',
 				// 'User-Agent': 'RedditJS/1.0 by ' + req.session.name,
@@ -38,7 +39,17 @@ module.exports = {
 		//console.log(options)
 
 		request.get(options, function(error, response, body) {
+
+if(typeof response === 'undefined'){
+console.log('there was no response!!',error, body);
+}
+
+console.log('response from oauth GET',urlStr ,  error);
+
+
 			if (error) {
+
+
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
 					return res.send(404)
 				} else {
