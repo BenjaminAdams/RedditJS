@@ -269,7 +269,7 @@ function refreshToken(req, res, next) {
         //console.log('token is NOT expired')
         return next(true)
     } else {
-        console.log('token is expired, lets refresh!')
+        console.log('token is expired, lets refresh!', req.user.name)
 
         var authorization = "Basic " + Buffer("" + REDDIT_CONSUMER_KEY + ":" + REDDIT_CONSUMER_SECRET).toString('base64');
 
@@ -296,11 +296,12 @@ function refreshToken(req, res, next) {
 
         request.post(options, function(error, response, body) {
             if (error) {
+
                 res.send(419, loginAgainMsg)
                 return
             } else if (!error && response.statusCode == 200 || response.statusCode == 304) {
                 //set a new access token
-                console.log(JSON.parse(body))
+                // console.log(JSON.parse(body))
                 var values = JSON.parse(body)
 
                 values.tokenExpires = (now + values.expires_in) - 60 //give it 60 seconds grace time
