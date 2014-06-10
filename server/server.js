@@ -69,14 +69,15 @@ passport.use(new RedditStrategy({
 // SERVER CONFIGURATION
 // ====================
 var oneDay = 86400000;
-var sessionExpireTime = 99999999999
-    // server.use(function(req, res, next) {
-    //     res.header('Access-Control-Allow-Origin', '*');
-    //     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    //     res.header('Access-Control-Allow-Headers', 'Content-Type');
+var sessionExpireTime = 29999999999
+server.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
 
-//     next();
-// });
+    next();
+});
+server.enable('trust proxy');
 server.use(compress());
 server.use(express.static(__dirname + '../../public', {
     maxAge: oneDay
@@ -296,24 +297,27 @@ function refreshToken(req, res, next) {
 
         request.post(options, function(error, response, body) {
             if (error) {
+                console.log('error getting oauth re-authenticate', error)
 
                 res.send(419, loginAgainMsg)
                 return
             } else if (!error && response.statusCode == 200 || response.statusCode == 304) {
-                //set a new access token
-                // console.log(JSON.parse(body))
+                //set a new access token after getting a new one
                 var values = JSON.parse(body)
 
                 values.tokenExpires = (now + values.expires_in) - 60 //give it 60 seconds grace time
 
-                //req.session.tokenExpires = values.tokenExpires
-                //req.session.access_token = values.access_token
-                req.user.tokenExpires = values.tokenExpires
-                req.user.access_token = values.access_token
+                if (values !== 'undefined' && values.access_token.length > 3) { //return value cant be trusted
+                    req.user.tokenExpires = values.tokenExpires
+                    req.user.access_token = values.access_token
+                    console.log('oauth worked, token=', values.access_token);
 
-                process.nextTick(function() { //wait for the access token to be in the DB
-                    return next(true)
-                });
+                    process.nextTick(function() { //wait for the access token to be in the DB
+                        return next(true)
+                    });
+                } else {
+                    res.send(419, loginAgainMsg)
+                }
 
             } else {
                 res.send(419, loginAgainMsg)
