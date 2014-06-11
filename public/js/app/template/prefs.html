@@ -9,8 +9,6 @@
 <input name="showSidebar" id="showSidebar" type="checkbox">
 <label class="" for="showSidebar">Show <b>sidebar.</b></label>
 
-<br><input name="enableNightmode" id="enableNightmode" type="checkbox">
-<label class="" for="enableNightmode">Enable <b>nightmode.</b></label>
 
 
 </td></tr>
@@ -19,8 +17,7 @@
 <td class="prefright">
 <input name="infin" id="infin" type="checkbox" >
 <label class="" for="infin"><b>Subreddit infinite scroll</b></label>
-<br><input name="customCSS" id="customCSS" type="checkbox" >
-<label class="" for="customCSS"><b>Custom CSS</b> from the active subreddit.</label>
+
 
 <br><input name="hideSelf" id="hideSelf" type="checkbox" >
 <label class="" for="hideSelf"><b>Hide Self Posts and links </b> in subreddit grid mode.</label>
@@ -42,13 +39,34 @@
 
 display<select name="linkCount" id='linkCount' style="margin: 0 .5em 0 .5em">
 	<option>10</option><option>25</option><option>50</option><option >100</option></select>links at once
-	<br>
-	<div class="apply-preferences">Apply Preferences</div>
+	
+	
 </td>
 
 </tr>
 
+<tr><th>Theme Options</th>
+<td class="prefright">
 
+<br><input name="cssType" id="noCSS" type="radio" >
+<label for="noCSS"><b>Use plain reddit css everywhere</label>
+
+<br><input name="cssType" id="useSrStyles" value='useSrStyles' type="radio" >
+<label for="useSrStyles"><b>Custom CSS</b> from the active subreddit.</label>
+
+<br><input name="cssType" id="nightmode" value='nightmode' type="radio">
+<label for="nightmode">Enable <b>nightmode.</b></label>
+
+<br><input name="cssType" id="useSrEverywhere" value='useSrEverywhere' type="radio">
+<label for="useSrEverywhere">Use a subreddits CSS all throughout the site</label>
+<input type='text' name='useSrEverywhereTxt' id='useSrEverywhereTxt' value='{{useSrEverywhereTxt}}' placeholder='subreddit name' />
+
+
+
+<br/>
+<div class="apply-preferences">Apply Preferences</div>
+</td>
+</tr>
 
 
 
