@@ -821,6 +821,10 @@ display: inline;
 padding-right: 5px;
 }
 
+.highlightedComment {
+  background-color:#F5F5A7;
+}
+
 #searchResults {
 
 }

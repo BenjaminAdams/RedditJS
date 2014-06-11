@@ -99,7 +99,9 @@ background-color: inherit;
 border: 1px dashed #84BEEC;
 }
 
-
+.highlightedComment {
+	background-color:rgb(71, 38, 38);
+}
 
 
 .message .subject .correspondent {

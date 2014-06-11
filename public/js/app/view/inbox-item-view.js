@@ -25,7 +25,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox-item', 'view/basem-
 			},
 
 			ui: {
-				messageParent: '.message-parent'
+				messageParent: '.message-parent',
+				replyBtn: '.replyBtn'
 			},
 
 			initialize: function(options) {
@@ -38,6 +39,15 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox-item', 'view/basem-
 					this.ui.messageParent.addClass('new')
 				}
 				this.ui.messageParent.addClass(this.model.get('evenOrOdd')) //add even or odd classes
+
+				if (this.model.get('was_comment') === true) {
+					//this.template = CommentTmpl //template specific to comment replies
+					this.ui.replyBtn.attr('href', this.model.get('context'))
+					this.ui.replyBtn.text('permalink')
+					this.ui.replyBtn.removeClass('replyBtn')
+
+				}
+
 			},
 
 			clickReply: function(e) {

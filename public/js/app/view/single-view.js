@@ -276,7 +276,8 @@ define(['App', 'underscore', 'backbone', 'markdown', 'hbs!template/single', 'hbs
 					//add this model to the start of the reply collection
 					this.model.attributes.replies.unshift(this.linkedCommentModel)
 					setTimeout(function() {
-						self.$('#siteTableComments .usertext-body').first().css('background-color', '#F5F5A7')
+						//self.$('#siteTableComments .usertext-body').first().css('background-color', '#F5F5A7')
+						self.$('#siteTableComments .usertext-body').first().addClass('highlightedComment')
 					}, 300)
 					//this.$('.usertext-body').first().css('background-color', '#F5F5A7')
 
