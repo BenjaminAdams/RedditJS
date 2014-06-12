@@ -29,11 +29,12 @@ define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbon
 		getUrl: function() {
 			//http://api.reddit.com/user/armastevs.json
 			if (this.after.length < 3) {
-				return '/api/?url=message/' + this.type + ".json&after=" + this.after
+				//return '/api/?url=message/' + this.type + ".json&after=" + this.after
+				return '/api/?url=message/' + this.type + "&after=" + this.after
 
 			} else {
 
-				return '/api/?url=message/' + this.type + ".json"
+				return '/api/?url=message/' + this.type
 			}
 		},
 

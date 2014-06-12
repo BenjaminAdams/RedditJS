@@ -44,6 +44,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
 							success: function(model) {
 								if (model.get('has_mail') === true) {
 									self.ui.mail.addClass('havemail').removeClass('nohavemail')
+									self.ui.mail.attr('title', 'You\'ve got mail!')
+									self.ui.mail.attr('alt', 'You\'ve got mail!')
+									self.ui.mail.attr('href', '/message/unread/')
 								}
 
 							}
