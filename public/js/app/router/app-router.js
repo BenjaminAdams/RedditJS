@@ -390,7 +390,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 for (var x in selectboxes) {
                     if (typeof $.cookie(selectboxes[x]) === 'undefined') {
-                        App.settings.set(selectboxes[x], 25)
+                        App.settings.set(selectboxes[x], 50)
                     } else {
                         App.settings.set(selectboxes[x], $.cookie(selectboxes[x]))
                     }
