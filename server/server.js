@@ -176,6 +176,7 @@ server.get('/login', function(req, res, next) {
 });
 
 server.get('/logout', function(req, res, next) {
+    console.log('logout route')
     req.session.destroy();
     req.logout()
     res.send(200, "ok")
