@@ -135,7 +135,7 @@ define(['App', 'underscore', 'backbone', 'markdown', 'hbs!template/single', 'hbs
 			},
 
 			updatePageTitle: function(title) {
-				document.title = title + "- RedditJS Beta"
+				document.title = title + " | redditJS.com"
 			},
 
 			fetchComments: function(callback, sortOrder) {

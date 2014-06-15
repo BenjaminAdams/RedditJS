@@ -32,7 +32,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				if (this.subName == 'front') {
 					document.title = "redditjs beta"
 				} else {
-					document.title = this.subName + " - redditjs beta"
+					document.title = this.subName + " | redditJS.com"
 				}
 
 				this.gridOption = App.settings.get('gridOption') || 'normal';
