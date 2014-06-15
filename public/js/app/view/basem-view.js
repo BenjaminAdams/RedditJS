@@ -75,7 +75,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				}, 150);
 			},
 			dynamicStylesheet: function(name) {
-				if (App.settings.get('customCSS') === true && App.settings.get('enableNightmode') === false && $(document).width() > App.mobileWidth) {
+				if (App.settings.get('cssType') === 'useSrStyles' && $(document).width() > App.mobileWidth) {
 					if (this.subName == 'front' || this.subName === null) {
 						$("#subredditStyle").attr("href", "");
 					} else {

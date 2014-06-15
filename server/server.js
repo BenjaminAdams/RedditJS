@@ -10,6 +10,7 @@ var request = require('request')
 var passport = require('passport')
 var crypto = require('crypto')
 var RedditStrategy = require('passport-reddit').Strategy;
+var device = require('express-device')
 
 //middleware stuffs
 var bodyParser = require('body-parser')
@@ -21,6 +22,7 @@ var methodOverride = require('method-override')
 var favicon = require('serve-favicon');
 
 var api = require('./api')
+var bots = require('./bots')
 var redisStore = require('connect-redis')(session);
 
 // var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
@@ -127,6 +129,7 @@ server.use(bodyParser());
 server.use(methodOverride());
 server.use(passport.initialize());
 server.use(passport.session());
+server.use(device.capture());
 // server.use(server.router);
 server.set('views', path.join(__dirname, 'views'))
 server.set('view engine', 'jade')
@@ -219,9 +222,14 @@ server.all('/*', function(req, res, next) {
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
 
-    res.render('index', {
-        user: req.user || false //bootstrap user to client if they are logged in
-    })
+    if (req.device.type === 'bot') {
+        bots.fetchForBot(res, req)
+    } else {
+        res.render('index', {
+            user: req.user || false //bootstrap user to client if they are logged in
+        })
+    }
+
 });
 
 // SERVER

@@ -90,6 +90,26 @@ border: 1px solid #460000;
 }
 
 
+.message.new>.entry {
+background-color: inherit;
+}
+
+.message.new>.entry {
+background-color: inherit;
+border: 1px dashed #84BEEC;
+}
+
+.highlightedComment {
+	background-color:rgb(71, 38, 38);
+}
+
+
+.message .subject .correspondent {
+background-color: #4D4D4D;
+color: white;
+}
+
+
 
 .infoBox {
 border: 2px solid #460000;

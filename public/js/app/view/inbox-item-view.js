@@ -24,18 +24,30 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox-item', 'view/basem-
 				'click .replyBtn': 'clickReply'
 			},
 
+			ui: {
+				messageParent: '.message-parent',
+				replyBtn: '.replyBtn'
+			},
+
 			initialize: function(options) {
 				_.bindAll(this);
 				this.model = options.model
-				this.selector = $('#' + this.model.get('name'))
-				//this.$el = $('#' + this.model.get('name'))
 
 			},
 			onRender: function() {
 				if (this.model.get('new') === true) {
-					this.selector.addClass('new')
+					this.ui.messageParent.addClass('new')
 				}
-				this.selector.addClass(this.model.get('evenOrOdd')) //add even or odd classes
+				this.ui.messageParent.addClass(this.model.get('evenOrOdd')) //add even or odd classes
+
+				if (this.model.get('was_comment') === true) {
+					//this.template = CommentTmpl //template specific to comment replies
+					this.ui.replyBtn.attr('href', this.model.get('context'))
+					this.ui.replyBtn.text('permalink')
+					this.ui.replyBtn.removeClass('replyBtn')
+
+				}
+
 			},
 
 			clickReply: function(e) {
@@ -115,7 +127,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox-item', 'view/basem-
 			},
 			markRead: function() {
 				console.log('marking read')
-				this.selector.removeClass('new')
+				this.ui.messageParent.removeClass('new')
 				var params = {
 					id: this.model.get('name'),
 					uh: $.cookie('modhash')
@@ -131,7 +143,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox-item', 'view/basem-
 			markUnread: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				this.selector.addClass('new')
+				this.ui.messageParent.addClass('new')
 				var params = {
 					id: this.model.get('name'),
 					uh: $.cookie('modhash')

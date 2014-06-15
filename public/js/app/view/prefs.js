@@ -35,8 +35,17 @@ define(['App', 'underscore', 'backbone', 'hbs!template/prefs', 'view/basem-view'
 						input.val(App.settings.attributes[item]);
 						//$('#' + item + ' option[value=' + App.settings.attributes[item] + ']').attr('selected', 'selected');
 
+					} else if (type == 'text') {
+						input.val(App.settings.attributes[item]);
 					}
 				}
+
+				//set radios manually
+				setTimeout(function() {
+					//not sure why this needs a settimeout, but it does :(
+					$('input:radio[name="cssType"][value="' + App.settings.attributes.cssType + '"]').attr('checked', true);
+				}, 111)
+
 			},
 			updateSettings: function() {
 				var $inputs = this.$el.find('input, select,textarea,radio');
@@ -69,16 +78,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/prefs', 'view/basem-view'
 					//console.log('name =' + item, 'value=' + o[item])
 					$.cookie(item, o[item], {
 						path: '/',
-						expires: 365
+						expires: 364
 					});
-
-
 
 				}
 
 				//return o;
 			},
-			applyPreferences: function(){
+			applyPreferences: function() {
 				location.reload();
 			},
 			stringToBoolean: function(string) {

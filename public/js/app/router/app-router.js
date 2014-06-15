@@ -376,11 +376,11 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             },
 
             loadSettingsFromCookies: function() {
-                var checkboxes = new Array("btmbar", "cmtLoad", "customCSS", "showSidebar", "enableNightmode", "infin", 'hideSelf');
+                var checkboxes = new Array("btmbar", "cmtLoad", "showSidebar", "infin", 'hideSelf');
                 var selectboxes = new Array('linkCount')
 
                 for (var i in checkboxes) {
-                    if ((typeof $.cookie(checkboxes[i]) === 'undefined' && checkboxes[i] !== 'enableNightmode') || $.cookie(checkboxes[i]) == 'true') {
+                    if ((typeof $.cookie(checkboxes[i]) === 'undefined') || $.cookie(checkboxes[i]) == 'true') {
                         App.settings.set(checkboxes[i], true)
 
                     } else {
@@ -390,14 +390,19 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 for (var x in selectboxes) {
                     if (typeof $.cookie(selectboxes[x]) === 'undefined') {
-                        App.settings.set(selectboxes[x], 25)
+                        App.settings.set(selectboxes[x], 50)
                     } else {
                         App.settings.set(selectboxes[x], $.cookie(selectboxes[x]))
                     }
                 }
 
+                //update cssType 
+                App.settings.set('cssType', $.cookie('cssType') || 'useSrStyles')
+                //update useSrEverywhereTxt
+                App.settings.set('useSrEverywhereTxt', $.cookie('useSrEverywhereTxt') || '')
+
                 //load grid opt from cookies
-                App.settings.set('gridOption', $.cookie('gridOption'))
+                App.settings.set('gridOption', $.cookie('gridOption') || '')
 
             },
             checkIfNightmode: function() {
@@ -410,8 +415,10 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     App.settings.set('enableNightmode', false)
                 }
 
-                if (App.settings.get('enableNightmode') === true && $("#subredditStyle").attr('href') !== 'css/dark/styles.min.css') {
+                if (App.settings.get('cssType') === 'nightmode' && $("#subredditStyle").attr('href') !== 'css/dark/styles.min.css') {
                     $("#subredditStyle").attr("href", "css/dark/styles.min.css");
+                } else if (App.settings.get('cssType') === 'useSrEverywhere') {
+                    $("#subredditStyle").attr("href", "https://pay.reddit.com/r/" + App.settings.get('useSrEverywhereTxt') + "/stylesheet");
                 }
             }
 

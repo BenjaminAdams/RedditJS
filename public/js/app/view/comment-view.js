@@ -22,13 +22,13 @@ define(['App', 'underscore', 'backbone', 'markdown', 'hbs!template/comment', 'hb
 
 			},
 			regions: {
-				replies: '.replies',
-				hoverImgParent: '.hoverImgParent:first'
+				'replies': '.replies',
+				'hoverImgParent': '.hoverImgParent:first'
 			},
 			ui: {
-				upArrow: '.upArrow',
-				downArrow: '.downArrow',
-				midcol: '.midcol',
+				'upArrow': '.upArrow',
+				'downArrow': '.downArrow',
+				'midcol': '.midcol',
 				'noncollapsed': '.noncollapsed',
 				'collapsed': '.collapsed',
 				'child': '.child',
@@ -63,7 +63,7 @@ define(['App', 'underscore', 'backbone', 'markdown', 'hbs!template/comment', 'hb
 
 				} else {
 
-					this.model.set('showOriginalPoster', 'asdasdasd')
+					//this.model.set('showOriginalPoster', 'asdasdasd')
 				}
 
 				if (typeof this.collection === 'undefined' || this.collection === null || this.collection.length === 0) {

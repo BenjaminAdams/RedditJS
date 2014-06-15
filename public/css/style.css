@@ -701,6 +701,14 @@ width:200px;
   margin:5px;
 }
 
+.preftable td.prefright {
+padding: 20px 0;
+}
+
+#useSrEverywhereTxt {
+  margin-left:50px;
+}
+
 #idenContainer {
   display:none;
   position:relative;
@@ -819,6 +827,10 @@ margin-top: .5em;
 #alreadySubmitted li {
 display: inline;
 padding-right: 5px;
+}
+
+.highlightedComment {
+  background-color:#F5F5A7;
 }
 
 #searchResults {

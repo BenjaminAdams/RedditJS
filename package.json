@@ -38,7 +38,8 @@
     "request": "^2.36.0",
     "serve-favicon": "^2.0.0",
     "serve-static": "^1.1.0",
-    "uglify-js": "^2.4.13"
+    "uglify-js": "^2.4.13",
+    "express-device": "^0.3.10"
   },
   "devDependencies": {
     "grunt": "^0.4.4",

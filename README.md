@@ -15,6 +15,7 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * **Subreddit Explorer:** I've turned the top left subreddit dropdown menu into a list of subreddits based on category.  There are currently about 1,000 subreddits listed here.  It helps you discover new subreddits and waist even more time on reddit!
  * **Download Images:** Download all images and compress them into a zip.  Done all on the client side. [example](http://www.redditjs.com/download/aww)
  * **Embed widgets:** embed code for reddit post or subreddits [details and examples](http://embed.redditjs.com)
+ * **Same Styles everywhere:** Option to use the same CSS styles from one subreddit all over reddit. I did this so I could use [murica](http://redditjs.com/r/murica) everywhere.
 
 ####RedditJS is built with :
  * Node.js <http://nodejs.org/>
