@@ -43,7 +43,7 @@ This is excellent for websites that have their content submitted to reddit.  It
 
 ## Instructions
 
-You can add the script tag to any website, or you can use the [Wordpress Plugin](https://github.com/BenjaminAdams/wp-redditjs) to create widgets to embed on your website.
+You can add the script tag to any website, or you can use the [Reddit Embed Wordpress Plugin](https://github.com/BenjaminAdams/wp-redditjs) to create widgets to embed on your website.
 
 
 ##### Options
