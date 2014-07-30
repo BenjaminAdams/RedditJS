@@ -777,6 +777,10 @@ text-align: center;
 
 }
 
+.scoreComments {
+font-weight: bold;
+color: #333;
+}
 
 .entry .buttons li {
 float: none !important;
