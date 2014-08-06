@@ -4,8 +4,8 @@ module.exports = {
 
 	fetchForBot: function(res, req) {
 
-		var fetchBots = ['http://redditjs-source.herokuapp.com/', 'http://redditjs-source2.herokuapp.com/']
-		var bot = fetchBots[Math.floor((Math.random() * 2))]
+		var fetchBots = ['http://robot85.herokuapp.com/', 'http://robot86.herokuapp.com/', 'http://robot87.herokuapp.com/']
+		var bot = fetchBots[Math.floor((Math.random() * fetchBots.length))]
 
 		var options = {
 			url: bot + req.path,
