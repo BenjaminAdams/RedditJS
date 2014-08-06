@@ -4,7 +4,7 @@ module.exports = {
 
 	fetchForBot: function(res, req) {
 
-		var fetchBots = ['http://robot85.herokuapp.com/', 'http://robot86.herokuapp.com/', 'http://robot87.herokuapp.com/']
+		var fetchBots = ['https://robot85.herokuapp.com/', 'https://robot86.herokuapp.com/', 'https://robot87.herokuapp.com/']
 		var bot = fetchBots[Math.floor((Math.random() * fetchBots.length))]
 
 		var options = {
