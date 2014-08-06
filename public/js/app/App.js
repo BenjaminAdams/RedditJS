@@ -12,7 +12,7 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
             if (hash === "reqAsBot") {
                 var fetchBots = ['http://robot85.herokuapp.com/', 'http://robot86.herokuapp.com/', 'http://robot87.herokuapp.com/']
                 var bot = fetchBots[Math.floor((Math.random() * fetchBots.length))]
-                App.baseURL = bot + '/api/'
+                App.baseURL = bot + 'api/'
 
                 //App.settings.set('btmbar', false)
             }
