@@ -12,7 +12,7 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
             if (hash === "reqAsBot") {
                 App.baseURL = '/api/'
 
-                App.settings.set('btmbar', false)
+                //App.settings.set('btmbar', false)
             }
 
         }
