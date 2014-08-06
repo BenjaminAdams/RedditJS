@@ -61,7 +61,14 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 				return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + this.timeFrame
 			} else {
 				console.log('getting subreddit via JSONP')
-				return App.baseURL + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
+
+				if (App.itsaBot === true) {
+					return App.baseURL + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount
+				} else {
+					return App.baseURL + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
+				}
+
+				//return App.baseURL + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
 			}
 		},
 		parse: function(response) {

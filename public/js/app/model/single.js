@@ -17,7 +17,12 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 				return "/api/?url=comments/" + this.id + ".json" + sortOrderStr
 			} else {
 				//use jsonp if user is not logged in
-				return App.baseURL + "comments/" + this.id + ".json?jsonp=?" + sortOrderStr
+				if (App.itsaBot === true) {
+					return App.baseURL + "comments/" + this.id + ".json?" + sortOrderStr
+				} else {
+					return App.baseURL + "comments/" + this.id + ".json?jsonp=?" + sortOrderStr
+				}
+
 			}
 		},
 		// Default attributes 
