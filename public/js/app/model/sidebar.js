@@ -22,7 +22,8 @@ define(['App', 'underscore', 'backbone', 'jquery', 'moment'], function(App, _, B
 				if (this.subName === "front") {
 					return 'http://api.reddit.com/.json?jsonp=?';
 				} else {
-					return "https://pay.reddit.com/r/" + this.subName + "/about.json?jsonp=?"
+					//return "https://pay.reddit.com/r/" + this.subName + "/about.json?jsonp=?"
+					return 'https://reddit.com/r/' + this.subName + "/about.json?jsonp=?"
 				}
 			}
 		},
