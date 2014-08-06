@@ -10,7 +10,9 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         if (window.location.hash) {
             var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
             if (hash === "reqAsBot") {
-                App.baseURL = '/api/'
+                var fetchBots = ['http://robot85.herokuapp.com/', 'http://robot86.herokuapp.com/', 'http://robot87.herokuapp.com/']
+                var bot = fetchBots[Math.floor((Math.random() * fetchBots.length))]
+                App.baseURL = bot + '/api/'
 
                 //App.settings.set('btmbar', false)
             }
