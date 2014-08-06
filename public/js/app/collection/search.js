@@ -1,4 +1,4 @@
-define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
+define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, SingleModel) {
 	return Backbone.Collection.extend({
 		initialize: function(x, data) {
 			_.bindAll(this);
@@ -37,7 +37,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 		getUrl: function() {
 			//this works http://www.reddit.com/search.json?q=test&after=t3_18irx&sort=hot&t=week
-			return 'https://pay.reddit.com/' + this.subNameStr + 'search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&restrict_sr=" + this.restrict_sr + "&limit=100&jsonp=?"
+			return App.baseURL + this.subNameStr + 'search.json?q=' + this.searchQ + '&after=' + this.after + "&sort=" + this.sortOrder + '&t=' + this.timeFrame + "&restrict_sr=" + this.restrict_sr + "&limit=100&jsonp=?"
 
 			//jsonp search? 
 			//http://www.reddit.com/search.json?q=test&after=t3_18irx&sort=hot&t=week&jsonp=?

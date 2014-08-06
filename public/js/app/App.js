@@ -6,6 +6,8 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         //bootstrap the user variable
         App.user = window.redditUser || false
 
+        App.baseURL = 'https://reddit.com/'
+
         //the width to strart showing mobile
         App.mobileWidth = 900;
         App.isMobile = function() {

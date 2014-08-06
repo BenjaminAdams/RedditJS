@@ -16,7 +16,7 @@ define(['App', 'backbone', 'model/single', 'localstorage'], function(App, Backbo
 				return "/api/?url=reddits/mine.json&limit=100"
 			} else {
 				//return "/api/?url=subreddits.json"
-				return 'https://pay.reddit.com/subreddits.json?jsonp=?'
+				return App.baseURL + 'subreddits.json?jsonp=?'
 			}
 		},
 		comparator: 'display_name',

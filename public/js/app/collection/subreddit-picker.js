@@ -17,7 +17,7 @@ define(['App', 'backbone', "moment"], function(App, Backbone) {
 			} else {
 				//http://www.reddit.com/subreddits/search.json?q=test
 
-				return 'https://pay.reddit.com/subreddits/search.json?q=' + this.searchQ + '&after=' + this.after + "&jsonp=?"
+				return App.baseURL + '/subreddits/search.json?q=' + this.searchQ + '&after=' + this.after + "&jsonp=?"
 			}
 		},
 		parse: function(response) {

@@ -1,4 +1,4 @@
-define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
+define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, SingleModel) {
 
 	return Backbone.Collection.extend({
 		initialize: function(x, data) {
@@ -15,7 +15,7 @@ define(['backbone', 'model/single', "moment"], function(Backbone, SingleModel) {
 		},
 		getUrl: function() {
 			//https://pay.reddit.com/api/info.json?url=' + linkUrl + '&r=funny
-			return 'https://pay.reddit.com/api/info.json?url=' + this.linkUrl + "&limit=100&jsonp=?"
+			return App.baseURL + 'api/info.json?url=' + this.linkUrl + "&limit=100&jsonp=?"
 
 		},
 		parse: function(response) {
