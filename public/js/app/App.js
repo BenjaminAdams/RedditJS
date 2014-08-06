@@ -6,6 +6,7 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         //bootstrap the user variable
         App.user = window.redditUser || false
         App.baseURL = 'https://reddit.com/'
+        App.isBot = false
         //#reqAsBot
         if (window.location.hash) {
             var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
@@ -14,6 +15,7 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
                 var fetchBots = ['https://robot85.herokuapp.com/', 'https://robot86.herokuapp.com/', 'https://robot87.herokuapp.com/']
                 var bot = fetchBots[Math.floor((Math.random() * fetchBots.length))]
                 App.baseURL = bot + 'api/'
+                App.isBot = true
 
                 //App.settings.set('btmbar', false)
             }

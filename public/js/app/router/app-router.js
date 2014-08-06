@@ -299,7 +299,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
              */
             //displays the sidebar for that subreddit if its not already created
             doSidebar: function(subName) {
-                if (typeof App.sidebarRegion.currentView === 'undefined' || App.sidebarRegion.currentView.subName != subName) { //only update sidebar if the subreddit changes
+                if ((typeof App.sidebarRegion.currentView === 'undefined' || App.sidebarRegion.currentView.subName != subName) && App.isBot !== true) { //only update sidebar if the subreddit changes
 
                     var sidebarModel = new SidebarModel(subName)
                     if (subName == 'front') {
@@ -413,6 +413,14 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                         })
 
                     }
+
+                }
+
+                //bot settings
+                if (App.isBot === true) {
+                    App.settings.set('btmbar', false)
+                    App.settings.set('showSidebar', false)
+                    App.settings.set('cssType', 'noCSS')
 
                 }
 
