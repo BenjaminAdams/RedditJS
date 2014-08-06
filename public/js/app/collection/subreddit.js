@@ -65,7 +65,7 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 				if (App.itsaBot === true) {
 					return App.baseURL + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount
 				} else {
-					return App.baseURL + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
+					return 'https://reddit.com/' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
 				}
 
 				//return App.baseURL + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
