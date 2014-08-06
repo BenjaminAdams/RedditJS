@@ -5,8 +5,15 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
 
         //bootstrap the user variable
         App.user = window.redditUser || false
-
         App.baseURL = 'https://reddit.com/'
+        //#reqAsBot
+        if (window.location.hash) {
+            var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+            if (hash === "reqAsBot") {
+                App.baseURL = '/api/'
+            }
+
+        }
 
         //the width to strart showing mobile
         App.mobileWidth = 900;

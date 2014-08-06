@@ -9,7 +9,6 @@ module.exports = {
 
 		var options = {
 			url: bot + req.path,
-			//url: 'http://redditjs-source.herokuapp.com/' + req.path,
 			timeout: 10000
 		}
 		request.get(options, function(error, response, body) {

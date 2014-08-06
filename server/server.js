@@ -29,7 +29,8 @@ var redisStore = require('connect-redis')(session);
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
 var callbackURL = process.env.REDDIT_CALLBACK || "http://redditjs.com/auth/reddit/callback"
 var loginAgainMsg = 'login to reddit please'
-    /*
+
+/*
 for your local env run
     export REDDIT_KEY = 'your key'
     export REDDIT_SECRET = 'your secret'

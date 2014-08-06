@@ -25,30 +25,28 @@ module.exports = {
 		console.log(urlStr)
 
 		var options = {
-			url: urlStr,
-			timeout: 30000,
-			headers: {
-				//'Content-Type': 'application/x-www-form-urlencoded',
-				// 'User-Agent': 'RedditJS/1.0 by ' + req.session.name,
-				// 'Authorization': "bearer " + req.session.access_token,
-				'User-Agent': 'RedditJS/1.1 by ' + req.user.name,
-				'Authorization': "bearer " + req.user.access_token
-			},
-			form: url_parts.query
-		}
-		//console.log(options)
+				url: urlStr,
+				timeout: 30000,
+				headers: {
+					//'Content-Type': 'application/x-www-form-urlencoded',
+					// 'User-Agent': 'RedditJS/1.0 by ' + req.session.name,
+					// 'Authorization': "bearer " + req.session.access_token,
+					'User-Agent': 'RedditJS/1.1 by ' + req.user.name,
+					'Authorization': "bearer " + req.user.access_token
+				},
+				form: url_parts.query
+			}
+			//console.log(options)
 
 		request.get(options, function(error, response, body) {
 
-if(typeof response === 'undefined'){
-console.log('there was no response!!',error, body);
-}
+			if (typeof response === 'undefined') {
+				console.log('there was no response!!', error, body);
+			}
 
-console.log('response from oauth GET',urlStr ,  error);
-
+			console.log('response from oauth GET', urlStr, error);
 
 			if (error) {
-
 
 				if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
 					return res.send(404)
