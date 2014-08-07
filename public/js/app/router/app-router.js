@@ -4,6 +4,17 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             initialize: function(options) {
                 //load settings
                 App.settings = new Backbone.Model()
+
+                App.isBot = false
+                var params = this.getUrlParameters()
+                if (params.reqAsBot === "1") {
+                    App.itsaBot = true
+                    var fetchBots = ['https://robot85.herokuapp.com/', 'https://robot86.herokuapp.com/', 'https://robot87.herokuapp.com/']
+                    var bot = fetchBots[Math.floor((Math.random() * fetchBots.length))]
+                    App.baseURL = bot + 'api/'
+                    App.isBot = true
+                }
+
                 this.loadSettingsFromCookies()
                 this.checkIfNightmode();
 
@@ -373,6 +384,21 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 this.currentHeader = 1
                 //App.headerRegion.close()
                 App.headerRegion.show(new MobileHeaderView());
+            },
+            //backbone cant parse the complex URL we are passing it, use vanillaJS
+            getUrlParameters: function(b) {
+                var qsParm = []
+                var query = window.location.search.substring(1);
+                var parms = query.split('&');
+                for (var i = 0; i < parms.length; i++) {
+                    var pos = parms[i].indexOf('=');
+                    if (pos > 0) {
+                        var key = parms[i].substring(0, pos);
+                        var val = parms[i].substring(pos + 1);
+                        qsParm[key] = val;
+                    }
+                }
+                return qsParm;
             },
 
             loadSettingsFromCookies: function() {
