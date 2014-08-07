@@ -8,7 +8,6 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 App.isBot = false
                 var params = this.getUrlParameters()
                 if (params.reqAsBot === "1") {
-                    App.itsaBot = true
                     var fetchBots = ['https://robot85.herokuapp.com/', 'https://robot86.herokuapp.com/', 'https://robot87.herokuapp.com/']
                     var bot = fetchBots[Math.floor((Math.random() * fetchBots.length))]
                     App.baseURL = bot + 'api/'
@@ -310,7 +309,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
              */
             //displays the sidebar for that subreddit if its not already created
             doSidebar: function(subName) {
-                if ((typeof App.sidebarRegion.currentView === 'undefined' || App.sidebarRegion.currentView.subName != subName) && App.isBot !== true) { //only update sidebar if the subreddit changes
+                if ((typeof App.sidebarRegion.currentView === 'undefined' || App.sidebarRegion.currentView.subName != subName) && App.isBot === false) { //only update sidebar if the subreddit changes
 
                     var sidebarModel = new SidebarModel(subName)
                     if (subName == 'front') {

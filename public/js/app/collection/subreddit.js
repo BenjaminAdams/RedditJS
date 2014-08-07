@@ -62,7 +62,8 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 			} else {
 				console.log('getting subreddit via JSONP')
 
-				if (App.itsaBot === true) {
+				if (App.isBot === true) {
+
 					return App.baseURL + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount
 				} else {
 					return 'https://reddit.com/' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"

@@ -12,6 +12,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 			},
 			initialize: function(data) {
 				_.bindAll(this);
+
+				if (App.isBot === true) {
+					return this.close()
+				}
+
 				this.template = SidebarTmpl;
 				this.subName = data.subName
 				this.dynamicStylesheet(this.subName)
