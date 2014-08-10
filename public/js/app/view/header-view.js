@@ -14,7 +14,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				'siteTable': '#siteTable',
 				'nextprev': '.nextprev',
 				'headerImg': '#header-img',
-				'pagenameA': '#pagename-a',
+				'pagenameA': '.pagename-a',
 				'hot': '.hot',
 				'New': '.new',
 				'rising': '.rising',
