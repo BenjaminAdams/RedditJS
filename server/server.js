@@ -317,7 +317,7 @@ function refreshToken(req, res, next) {
 
                 values.tokenExpires = (now + values.expires_in) - 60 //give it 60 seconds grace time
 
-                if (values !== 'undefined' && values.access_token.length > 3) { //return value cant be trusted
+                if (values !== 'undefined' && typeof values.access_token !== 'undefined' && values.access_token.length > 3) { //return value cant be trusted
                     req.user.tokenExpires = values.tokenExpires
                     req.user.access_token = values.access_token
                     console.log('oauth worked, token=', values.access_token);
