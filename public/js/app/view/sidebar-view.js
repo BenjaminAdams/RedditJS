@@ -6,6 +6,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 				'click .add': 'subscribe',
 				'click .remove': 'unsubscribe'
 			},
+			ui: {
+				adSlot: '#adSlot'
+			},
 
 			regions: {
 				'theLogin': '#theLogin'
@@ -55,9 +58,33 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 				}
 				this.addOutboundLink()
 
+				this.showAd()
+
 			},
 			OnBeforeClose: function() {
 				App.off("subreddit:changeGridOption", this.changeGridOption, this);
+			},
+
+			showAd: function() {
+				var self = this
+					//this.ui.adSlot.html('<script type="text/javascript" src="http://ap.lijit.com/www/delivery/fp?z=143232&u=Armastevs"></script>')
+					// var s = document.createElement("script");
+					// s.type = "text/javascript";
+					// s.src = "http://ap.lijit.com/www/delivery/fp?z=143232&u=Armastevs";
+					// // Use any selector
+					// this.ui.adSlot.html(s);
+
+				//this.ui.adSlot.html('');
+
+				// var iframe = document.createElement('iframe');
+				// this.ui.adSlot.html(iframe);
+				// var doc = iframe.contentWindow.document;
+
+				// // do this whenever you want (f.ex after ajax is made):
+				// doc.open();
+				// doc.write('<script type="text/javascript" src="http://ap.lijit.com/www/delivery/fp?z=143232&u=Armastevs"></script>');
+				// doc.close();
+
 			},
 
 			changeGridOption: function(data) {
