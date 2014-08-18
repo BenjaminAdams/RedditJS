@@ -59,6 +59,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 			OnBeforeClose: function() {
 				App.off("subreddit:changeGridOption", this.changeGridOption, this);
 			},
+
 			changeGridOption: function(data) {
 				if (this.gridOption == data.gridOption) {
 					return;
