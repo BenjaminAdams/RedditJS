@@ -92,7 +92,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-v
 					//var border = $('.tabmenu li a').css('border')
 					var color = $('.tabmenu li a').css('color')
 					var linkColor = $('.tabmenu li.selected a').css('color')
-					//this.$('.hoverImgView').css('color', color)
+						//this.$('.hoverImgView').css('color', color)
 
 					this.ui.imgTitle.css('background-image', bgImg, 'important')
 					this.ui.imgTitle.find('a').css('color', linkColor, 'important')
