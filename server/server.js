@@ -72,7 +72,7 @@ passport.use(new RedditStrategy({
 // SERVER CONFIGURATION
 // ====================
 var oneDay = 86400000;
-var sessionExpireTime = 29999999999
+var sessionExpireTime = 999999999
 server.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
