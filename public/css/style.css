@@ -450,13 +450,13 @@ bottom: 22px;
 float: right;
 }
 
-.blueborder {
+/*.blueborder {
   padding: 0 5px;
   background-color: #fafafa;
   border: 1px solid #369;
   border-radius: 7px;
 }
-
+*/
 .hoverImgView {
   margin-left:30px;
   max-width:90%;

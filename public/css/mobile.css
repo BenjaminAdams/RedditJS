@@ -609,9 +609,9 @@ display:none;
 }
 
 @media only screen and (min-width:1360px) {
-  .expando {
+/*  .expando {
     margin-left: 85px !important;
-  }
+  }*/
 
   .embedly-embed { 
     margin-left: 86px; 

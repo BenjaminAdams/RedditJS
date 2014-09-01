@@ -1,7 +1,7 @@
 define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!template/post-row', 'hbs!template/post-row-small', 'hbs!template/post-row-large', 'view/hover-img-view'],
     function(App, $, _, Backbone, BaseView, PostRowTmpl, PostRowSmallTmpl, PostRowLargeTmpl, HoverImgView) {
         return BaseView.extend({
- 
+
             events: {
                 'click a': "gotoSingle",
                 'click .upArrow': 'upvote',
@@ -179,7 +179,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     this.ui.expandoButton.addClass('expanded')
 
                     if (this.model.get('is_self') === true) {
-                        str = '<div class="expando"><div class="usertext-body blueborder">' + this.model.get('selftext_html') + '</div></div>'
+                        str = '<div class="expando"><div class="usertext-body usertext blueborder">' + this.model.get('selftext_html') + '</div></div>'
                     } else {
                         str = this.model.get('media_embed')
                     }
