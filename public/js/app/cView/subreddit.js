@@ -12,7 +12,7 @@ define(['App', 'marionette', 'hbs!template/post-row', 'hbs!template/post-row-sma
                 //  this.start = new Date() //timer for testing
 
                 if (options.removeSiteTableCSS === true) {
-                    this.removeSiteTableCSS = true
+                    this.removeSiteTableCSS = true //sometimes the btmbar would have custom CSS in it making it look weird
                 }
 
             },
@@ -30,7 +30,7 @@ define(['App', 'marionette', 'hbs!template/post-row', 'hbs!template/post-row-sma
                 }, 1000)
 
                 if (this.removeSiteTableCSS === true) {
-
+                    //sometimes the btmbar would have custom CSS in it making it look weird
                     this.$el.removeClass('siteTable')
                     this.$el.attr('id', 'siteTableBtmBar');
 
