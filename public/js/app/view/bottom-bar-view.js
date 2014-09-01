@@ -52,7 +52,8 @@
                      this.collection = new SubredditCollection([], {
                          domain: this.domain,
                          subName: this.subName,
-                         sortOrder: this.sortOrder
+                         sortOrder: this.sortOrder,
+                         removeSiteTableCSS: true
                      });
 
                      this.fetchMore();
@@ -61,7 +62,7 @@
              },
              onRender: function() {
                  var self = this
-                 //$('#bottom-bar').show()
+                     //$('#bottom-bar').show()
                  App.trigger("single:giveBtnBarID"); //ask the single view to give you the btm bar ID to make active
 
                  if (typeof App.subs[this.subID] !== 'undefined') {
@@ -74,7 +75,8 @@
                  this.subredditCollectionView = new SrCView({
                      collection: this.collection,
                      itemView: PostRowView,
-                     gridOption: 'small'
+                     gridOption: 'small',
+                     removeSiteTableCSS: true
                  })
                  this.posts.show(this.subredditCollectionView)
                  this.guessedWidth = -(this.collection.length * this.pixelsOfOneImg)
