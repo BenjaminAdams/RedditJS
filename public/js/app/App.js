@@ -50,6 +50,12 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
 
         //prevent page reload
         $(window.document).on('click', 'a[href]:not([data-bypass])', function(e) {
+
+            if (typeof e.target.src !== 'undefined' && e.target.src.indexOf("projectwonderful") > -1) {
+                //do not capture clicks in ad
+                return true;
+            }
+
             if (!e.metaKey && !e.ctrlKey && !e.shiftKey) {
                 var protocol = this.protocol + '//';
                 var href = this.href;
