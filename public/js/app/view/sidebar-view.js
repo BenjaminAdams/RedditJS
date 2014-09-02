@@ -68,9 +68,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 			showAd: function() {
 				var self = this
 
-				// setTimeout(function() {
-				// 	self.ui.adSlot.html('<script type="text/javascript"><!--amazon_ad_tag = "armasarcad-20"; amazon_ad_width = "300"; amazon_ad_height = "250"; amazon_ad_link_target = "new";//--></script><script type="text/javascript" src="http://ir-na.amazon-adsystem.com/s/ads.js"></script>')
-				// }, 500)
+				//setTimeout(function() {
+				//self.ui.adSlot.html('<script type="text/javascript"><!--amazon_ad_tag = "armasarcad-20"; amazon_ad_width = "300"; amazon_ad_height = "250"; amazon_ad_link_target = "new";//--></script><script type="text/javascript" src="http://ir-na.amazon-adsystem.com/s/ads.js"></script>')
+				//}, 500)
 
 				//this.ui.adSlot.html('<script type="text/javascript" src="http://ap.lijit.com/www/delivery/fp?z=143232&u=Armastevs"></script>')
 				// var s = document.createElement("script");
