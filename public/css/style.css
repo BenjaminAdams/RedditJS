@@ -1050,3 +1050,9 @@ margin: 5px 0 0 30px;
   color:black;
   cursor:pointer;
 }
+
+
+#adSlot{
+position: relative;
+right: 5px;
+}
