@@ -290,7 +290,17 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				} else {
 					//this.$('.status' + this.model.get('name')).html('error ' + data)
 					//this.ui.status.html('<div class="error">' + data.json.errors[0][1] + '</div>')
-					this.ui.status.html('<div class="error">' + data.responseText + '</div>')
+
+					//var msg = data.json.errors[0][1]
+					var msgAry = ((data || {}).json || {}).errors;
+					var msg = 'An error has happened while posting your comment'
+					if (typeof msgAry[0] !== 'undefined' && typeof msgAry[0][1] !== 'undefined') {
+						msg = msgAry[0][1]
+					}
+
+					this.ui.status.html('<div class="error">' + msg + '</div>')
+
+					//this.ui.status.html('<div class="error">' + data.responseText + '</div>')
 
 				}
 			}, //hides the comment reply textbox
