@@ -974,6 +974,10 @@ background:white;
   margin: 2px 0 0 71px;
 }
 
+.doneScrolling {
+  cursor:default;
+}
+
 .infoBox {
   display: inline-block;
   position:relative;

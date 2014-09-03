@@ -262,7 +262,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				this.hideMoarBtn()
 
 				if (this.collection.after == "stop") {
-					this.ui.nextprev.html('Done')
+					this.showDone()
 				} else {
 
 					this.collection.fetch({
@@ -282,9 +282,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				if (this.collection.after == "stop") {
 					console.log("AFTER = stop")
 					$(window).off("scroll", this.watchScroll);
-					this.ui.nextprev.html('Done')
+					this.showDone()
 				}
 
+			},
+			showDone: function() {
+				this.ui.nextprev.html('Done').addClass('doneScrolling')
 			},
 
 			/**************Infinite Scroll functions ****************/
