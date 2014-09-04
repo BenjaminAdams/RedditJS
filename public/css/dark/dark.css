@@ -3,10 +3,6 @@ background-color: #363636;
 border: 1px solid #40474E;
 }
 
-.blueborder {
-background-color: #303030;
-border: 1px solid #394755;
-}
 
 .hoverImgView {
 background-color:transparent;
@@ -109,7 +105,9 @@ background-color: #4D4D4D;
 color: white;
 }
 
-
+.md {
+background-color: #363636 !important;
+}
 
 .infoBox {
 border: 2px solid #460000;
