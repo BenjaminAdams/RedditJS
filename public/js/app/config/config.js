@@ -14,7 +14,8 @@ require.config({
         'cookie': '../lib/jquery.cookie',
         'localstorage': '../lib/jquery.total-storage',
         'moment': '../lib/moment',
-        'markdown': '../lib/markdown',
+        //'markdown': '../lib/markdown',
+        'snuownd': '../lib/snuownd',
         'console': '../lib/console'
     },
     // Sets the configuration for your third party scripts that are not AMD compatible
@@ -22,9 +23,9 @@ require.config({
         'underscore': {
             exports: '_'
         },
-        "markdown": {
-            exports: "markdown"
-        },
+        // "markdown": {
+        //     exports: "markdown"
+        // },
         // Backbone
         "backbone": {
             // Depends on underscore/lodash and jQuery

@@ -424,9 +424,15 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 
 			//for live MD parsing
 			keyPressComment: function(e) {
-
+				var self = this
 				var inputTxt = this.ui.userTxtInput.val()
-				this.ui.liveTextarea.html(markdown.toHTML(inputTxt) + this.blinking)
+					//this.ui.liveTextarea.html(markdown.toHTML(inputTxt) + this.blinking)
+
+				require(['snuownd'], function(Snuownd) {
+
+					var parsedMd = SnuOwnd.getParser().render(inputTxt);
+					self.ui.liveTextarea.html(parsedMd + self.blinking)
+				})
 
 			},
 			//for live MD parsing

@@ -956,6 +956,43 @@ z-index: 114;
 
 }
 
+
+.liveTextarea em {
+    font-style: italic;
+}
+
+.liveTextarea strong {
+    font-style: normal;
+    font-weight: bold;
+}
+
+.liveTextarea ol, .liveTextarea ul {
+display: block;
+list-style-type: disc;
+list-style: disc;
+
+}
+
+.liveTextarea li {
+display: list-item;
+
+}
+
+.liveTextarea blockquote {
+display: block;
+-webkit-margin-before: 1em;
+-webkit-margin-after: 1em;
+-webkit-margin-start: 40px;
+-webkit-margin-end: 40px;
+}
+
+.liveTextarea pre {
+margin:10px;
+font-size:15px;
+
+}
+
+
 .blueBtn {
 text-align: center;
 width: 78px;

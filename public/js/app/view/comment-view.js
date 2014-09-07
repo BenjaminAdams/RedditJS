@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'markdown', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/basem-view', 'model/comment', 'cView/comments', 'collection/comments', 'cookie'],
-	function(App, _, Backbone, Markdown, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, CViewComments, CommentCollection, Cookie) {
+define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/basem-view', 'model/comment', 'cView/comments', 'collection/comments', 'cookie'],
+	function(App, _, Backbone, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, CViewComments, CommentCollection, Cookie) {
 		return BaseView.extend({
 			template: commentTmpl,
 			events: {
