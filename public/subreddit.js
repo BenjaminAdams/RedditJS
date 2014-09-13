@@ -38,7 +38,7 @@
 					base = "r/" + subreddit
 				}
 
-				var embedUrl = 'https://redditjs.com/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '#' + grid + '&embedId=' + embedId
+				var embedUrl = 'https://redditjs.com/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '&embedId=' + embedId + '#' + grid
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
@@ -51,7 +51,7 @@
 				ifrm.style.margin = '0 auto'
 				ifrm.style.display = 'block'
 				ifrm.style.top = 0
-				ifrm.style.left = 0
+				ifrm.style.left = '8%'
 
 				addIframeCss(ifrm)
 
