@@ -38,7 +38,7 @@
 					base = "r/" + subreddit
 				}
 
-				var embedUrl = 'http://localhost:8002/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '&embedId=' + embedId + '#' + grid
+				var embedUrl = 'https://redditjs.com/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '&embedId=' + embedId + '#' + grid
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
@@ -71,7 +71,7 @@
 			// Listen to message from child window
 			eventer(messageEvent, function(e) {
 
-				if (typeof e === 'undefined' && typeof e.data === 'undefined') {
+				if ((typeof e === 'undefined' && typeof e.data === 'undefined') || (e.origin != 'https://redditjs.com' && e.origin != 'http://localhost:8002')) {
 					//error checking
 					return;
 				}
