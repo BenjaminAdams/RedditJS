@@ -23,9 +23,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                     this.q.url = decodeURIComponent(this.q.url)
                 }
 
-                if (typeof this.q.embedId !== 'undefined') {
-                    App.embedId = this.q.embedId
-                }
                 this.searchCollection = null
                 this.urlCollection = null
 

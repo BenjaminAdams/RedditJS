@@ -14,6 +14,10 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     App.isBot = true
                 }
 
+                if (typeof params.embedId !== 'undefined') {
+                    App.embedId = params.embedId
+                }
+
                 this.loadSettingsFromCookies()
                 this.checkIfNightmode();
                 this.checkIfEmbeded()

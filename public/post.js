@@ -47,7 +47,7 @@
 				ifrm.style.margin = '0 auto'
 				ifrm.style.display = 'block'
 				ifrm.style.top = 0
-				ifrm.style.left = '8%'
+				ifrm.style.left = 0
 
 				iframeWrapper.appendChild(ifrm)
 				//script.appendChild(iframeWrapper)
@@ -102,9 +102,10 @@
 		function maximizeWidget(ifrm) {
 			ifrm.style.width = "84%"
 			ifrm.style.height = "90%"
-			ifrm.style.margin = "2% 8% 0%"
 			ifrm.style.zIndex = '9999999999'
 			ifrm.style.position = 'fixed'
+			ifrm.style.left = '8%'
+			ifrm.style.top = '2%'
 
 			//add a close button, give it a click event to minimize
 			var overlay = document.createElement("div");
@@ -128,6 +129,9 @@
 			ifrm.style.height = height + 'px'
 			ifrm.style.margin = "0 auto"
 			ifrm.style.position = 'relative'
+			ifrm.style.zIndex = '1'
+			ifrm.style.left = 0
+			ifrm.style.top = 0
 		}
 
 		function hideIframe(ifrm) {
