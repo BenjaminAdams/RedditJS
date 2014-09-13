@@ -75,6 +75,11 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 				}, 150);
 			},
 			dynamicStylesheet: function(name) {
+
+				if (name === null) {
+					$("#subredditStyle").attr("href", "");
+				}
+
 				if (App.settings.get('cssType') === 'useSrStyles' && $(document).width() > App.mobileWidth) {
 					if (this.subName == 'front' || this.subName === null) {
 						$("#subredditStyle").attr("href", "");

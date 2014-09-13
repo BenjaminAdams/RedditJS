@@ -16,6 +16,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 this.loadSettingsFromCookies()
                 this.checkIfNightmode();
+                this.checkIfEmbeded()
 
                 App.subreddits = {}
                 App.subreddits.mine = new MySubredditsCollection()
@@ -465,6 +466,14 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 } else if (App.settings.get('cssType') === 'useSrEverywhere') {
                     $("#subredditStyle").attr("href", "https://pay.reddit.com/r/" + App.settings.get('useSrEverywhereTxt') + "/stylesheet");
                 }
+            },
+            checkIfEmbeded: function() {
+
+                //check if &theme=dark in the url so we can pass into from iframe
+                if (window.location.href.indexOf('embed?') > 0) {
+                    App.isEmbeded = true
+                }
+
             }
 
         });

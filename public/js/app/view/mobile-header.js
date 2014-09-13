@@ -8,7 +8,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				//'click #sr-display': 'toggleDropdown', //will close the menu after the user makes a selection
 				//'click #signInUserbar': 'showLoginBox',
 				//'click .mdropdown': 'toggleDropDown',
-				'click #mSortPickerBox': 'toggleDropDown'
+				'click #mSortPickerBox': 'toggleDropDown',
+				'click #expandEmbed': 'expandEmbed'
 
 			},
 
@@ -51,6 +52,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
 				this.listenTo(App.subreddits.mine, 'sync', this.displayMySubreddits)
 
+				this.dynamicStylesheet(null) //remove custom CSS in mobile
+
 			},
 			onRender: function() {
 				var self = this
@@ -85,6 +88,13 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				App.off("header:updateSortOrder", this.updateSortOrder, false);
 				App.off("header:refreshSubreddits", this.refreshSubreddits, false);
 
+			},
+
+			expandEmbed: function() {
+				var postData = {
+					maximize: true
+				}
+				parent.postMessage(postData, "*");
 			},
 
 			toggleDropDown: function(e) {

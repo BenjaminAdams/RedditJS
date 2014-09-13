@@ -129,6 +129,21 @@ margin:5px;
     position:relative;
 }
 
+#expandEmbed {
+cursor: pointer;
+position: fixed;
+right: 0px;
+bottom: -2px;
+color: #9998AD;
+
+}
+
+#expandEmbed .fa {
+font-size: 12px;
+margin: 0px;
+}
+
+
 .tabmenu {
 display:none;
 max-height: 310px;

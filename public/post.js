@@ -33,7 +33,7 @@
 					borderColor = '#5f99cf'
 				}
 
-				var embedUrl = "http://redditjs.com/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit
+				var embedUrl = "https://redditjs.com/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
@@ -52,27 +52,8 @@
 
 				setupMessenger(ifrm)
 
-				setupMaximizeBtn(ifrm)
-
 			}
 		})()
-
-		function setupMaximizeBtn(ifrm) {
-			//add button to top right of widget
-			var btn = document.createElement("div");
-			btn.style.height = '3%'
-			btn.style.width = '3%'
-			btn.style.margin = '0 auto'
-			btn.style.position = 'fixed'
-			btn.style.right = '19%'
-			btn.style.top = '0%'
-			btn.style.cursor = 'pointer'
-			btn.style.color = borderColor
-			//btn.className = 'fa fa-angellist'
-			btn.innerHTML = "&#11028;"
-			ifrm.parentNode.insertBefore(btn)
-
-		}
 
 		function setupMessenger(ifrm) {
 			var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
@@ -82,7 +63,7 @@
 			// Listen to message from child window
 			eventer(messageEvent, function(e) {
 
-				if ((typeof e === 'undefined' && typeof e.data === 'undefined') || e.origin != 'https://redditjs.com') {
+				if ((typeof e === 'undefined' && typeof e.data === 'undefined') || (e.origin != 'https://redditjs.com' && e.origin != 'http://localhost:8002')) {
 					//error checking
 					return;
 				}
@@ -90,6 +71,10 @@
 				if (e.data.newWidth === 0 && e.data.newHeight === 0) {
 					hideIframe(ifrm)
 					return
+				}
+
+				if (e.data.maximize === true) {
+					return maximizeWidget(ifrm)
 				}
 
 				addIframeCss(ifrm)
@@ -107,32 +92,65 @@
 			}, false);
 		}
 
+		function maximizeWidget(ifrm) {
+			ifrm.style.width = "84%"
+			ifrm.style.height = "90%"
+			ifrm.style.margin = "2% 8% 0%"
+			ifrm.style.zIndex = '3'
+			ifrm.style.position = 'fixed'
+
+			//add a close button, give it a click event to minimize
+			var overlay = document.createElement("div");
+			overlay.style.width = '100%'
+			overlay.style.height = '100%'
+			overlay.style.background = 'rgba(0,0,0,0.7)'
+			overlay.style.position = 'fixed'
+			overlay.style.top = '0px'
+			overlay.style.left = '0px'
+			overlay.style.zIndex = '0'
+			overlay.onclick = function() {
+				this.parentNode.removeChild(this);
+				minimizeWidget(ifrm)
+			};
+			ifrm.parentNode.insertBefore(overlay, ifrm.nextSibling)
+			//add dark gray overlay, z-index under the popup
+		}
+
+		function minimizeWidget(ifrm) {
+			ifrm.style.width = width + 'px'
+			ifrm.style.height = height + 'px'
+			ifrm.style.margin = "0 auto"
+			ifrm.style.position = 'relative'
+		}
+
 		function hideIframe(ifrm) {
 			setHeight(ifrm, newHeight)
 			setWidth(ifrm, newWidth)
 			ifrm.style.border = '0px #f0f0f0 solid'
-			ifrm.style.resize = 'none';
+			//ifrm.style.resize = 'none';
 			ifrm.style.overflow = 'inherit';
 		}
 
 		function addIframeCss(ifrm) {
 
 			ifrm.style.border = '2px ' + borderColor + ' solid'
-			ifrm.style.resize = 'both';
+			//ifrm.style.resize = 'both';
 			ifrm.style.overflow = 'auto';
 		}
 
 		function setHeight(ifrm, newHeight) {
-			ifrm.height = newHeight
+			//ifrm.height = newHeight
 			//ifrm.css('height', newHeight)
 			ifrm.style.height = newHeight + "px"
 
 		}
 
 		function setWidth(ifrm, newWidth) {
-			ifrm.width = newWidth
+			//ifrm.width = newWidth
 			//ifrm.css('width', newWidth)
 			ifrm.style.width = newWidth + "px"
+			//ifrm.width = 0
+
 		}
 
 	})(theScriptThatCalledThis);

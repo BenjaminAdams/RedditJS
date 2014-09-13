@@ -37,7 +37,7 @@
 					base = "r/" + subreddit
 				}
 
-				var embedUrl = 'http://redditjs.com/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '#' + grid
+				var embedUrl = 'https://redditjs.com/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '#' + grid
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
@@ -55,43 +55,60 @@
 				iframeWrapper.appendChild(ifrm)
 				script.parentNode.insertBefore(iframeWrapper, script.nextSibling);
 
-				//setupMessenger(ifrm)
+				setupMessenger(ifrm)
 
 			}
 		})()
 
-		// function setupMessenger(ifrm) {
-		// 	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-		// 	var eventer = window[eventMethod];
-		// 	var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+		function setupMessenger(ifrm) {
+			var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+			var eventer = window[eventMethod];
+			var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
-		// 	// Listen to message from child window
-		// 	eventer(messageEvent, function(e) {
+			// Listen to message from child window
+			eventer(messageEvent, function(e) {
 
-		// 		if (typeof e === 'undefined' && typeof e.data === 'undefined') {
-		// 			//error checking
-		// 			return;
-		// 		}
+				if (typeof e === 'undefined' && typeof e.data === 'undefined') {
+					//error checking
+					return;
+				}
+				if (e.data.maximize === true) {
+					return maximizeWidget(ifrm)
+				}
 
-		// 		if (e.data.newWidth === 0 && e.data.newHeight === 0) {
-		// 			hideIframe(ifrm)
-		// 			return
-		// 		}
+			}, false);
+		}
 
-		// 		addIframeCss(ifrm)
+		function maximizeWidget(ifrm) {
+			ifrm.style.width = "84%"
+			ifrm.style.height = "90%"
+			ifrm.style.margin = "2% 8% 0%"
+			ifrm.style.zIndex = '3'
+			ifrm.style.position = 'fixed'
 
-		// 		if (typeof e.data.newWidth != null) {
-		// 			var newHeight = e.data.newHeight || height
-		// 			setHeight(ifrm, newHeight)
-		// 		}
+			//add a close button, give it a click event to minimize
+			var overlay = document.createElement("div");
+			overlay.style.width = '100%'
+			overlay.style.height = '100%'
+			overlay.style.background = 'rgba(0,0,0,0.7)'
+			overlay.style.position = 'fixed'
+			overlay.style.top = '0px'
+			overlay.style.left = '0px'
+			overlay.style.zIndex = '0'
+			overlay.onclick = function() {
+				this.parentNode.removeChild(this);
+				minimizeWidget(ifrm)
+			};
+			ifrm.parentNode.insertBefore(overlay, ifrm.nextSibling)
+			//add dark gray overlay, z-index under the popup
+		}
 
-		// 		if (typeof e.data.newHeight != null) {
-		// 			var newWidth = e.data.newWidth || width
-		// 			setWidth(ifrm, newWidth)
-		// 		}
-
-		// 	}, false);
-		// }
+		function minimizeWidget(ifrm) {
+			ifrm.style.width = width + 'px'
+			ifrm.style.height = height + 'px'
+			ifrm.style.margin = "0 auto"
+			ifrm.style.position = 'relative'
+		}
 
 		function hideIframe(ifrm) {
 			setHeight(ifrm, newHeight)
@@ -110,19 +127,18 @@
 				borderColor = '#5f99cf'
 			}
 			ifrm.style.border = '2px ' + borderColor + ' solid'
-			ifrm.style.resize = 'both';
 			ifrm.style.overflow = 'auto';
 		}
 
 		function setHeight(ifrm, newHeight) {
-			ifrm.height = newHeight
+			//ifrm.height = newHeight
 			//ifrm.css('height', newHeight)
 			ifrm.style.height = newHeight + "px"
 
 		}
 
 		function setWidth(ifrm, newWidth) {
-			ifrm.width = newWidth
+			//ifrm.width = newWidth
 			//ifrm.css('width', newWidth)
 			ifrm.style.width = newWidth + "px"
 		}
