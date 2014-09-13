@@ -98,7 +98,7 @@
 			ifrm.style.width = "84%"
 			ifrm.style.height = "90%"
 			ifrm.style.margin = "2% 8% 0%"
-			ifrm.style.zIndex = '3'
+			ifrm.style.zIndex = '9999999999'
 			ifrm.style.position = 'fixed'
 
 			//add a close button, give it a click event to minimize
@@ -109,7 +109,7 @@
 			overlay.style.position = 'fixed'
 			overlay.style.top = '0px'
 			overlay.style.left = '0px'
-			overlay.style.zIndex = '0'
+			overlay.style.zIndex = '9999999998'
 			overlay.onclick = function() {
 				this.parentNode.removeChild(this);
 				minimizeWidget(ifrm)
