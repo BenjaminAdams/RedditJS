@@ -22,7 +22,7 @@
 			if (script) {
 
 				postUrl = script.getAttribute('data-url') || window.location.href
-				postUrl = encodeURIComponent(postUrl) //sometiems has # in the URL and messes things up
+				//postUrl = encodeURIComponent(postUrl) //sometiems has # in the URL and messes things up
 				width = script.getAttribute('data-width') || 500
 				height = script.getAttribute('data-height') || 500
 				postFinder = script.getAttribute('data-post-finder') || 'mostComments'
@@ -35,7 +35,7 @@
 					borderColor = '#5f99cf'
 				}
 
-				var embedUrl = "https://redditjs.com/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit + '&embedId=' + embedId
+				var embedUrl = 'https://redditjs.com/embed?width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit + '&embedId=' + embedId + '&url=' + postUrl
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
