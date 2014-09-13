@@ -45,6 +45,8 @@
 				ifrm.style.width = '0px'
 				ifrm.style.margin = '0 auto'
 				ifrm.style.display = 'block'
+				ifrm.style.top = 0
+				ifrm.style.left = 0
 
 				iframeWrapper.appendChild(ifrm)
 				//script.appendChild(iframeWrapper)
