@@ -109,7 +109,7 @@
 			overlay.style.position = 'fixed'
 			overlay.style.top = '0px'
 			overlay.style.left = '0px'
-			overlay.style.zIndex = '9999999998'
+			overlay.style.zIndex = '9999999'
 			overlay.onclick = function() {
 				this.parentNode.removeChild(this);
 				minimizeWidget(ifrm)
