@@ -92,7 +92,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 
 			expandEmbed: function() {
 				var postData = {
-					maximize: true
+					maximize: true,
+					embedId: App.embedId
 				}
 				parent.postMessage(postData, "*");
 			},

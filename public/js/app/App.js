@@ -6,6 +6,8 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         //bootstrap the user variable
         App.user = window.redditUser || false
         App.baseURL = 'https://reddit.com/'
+        App.embedId = 0 //use this ID to pass messages back and forth between widget and main frame
+        App.isEmbeded = false
 
         //#reqAsBot
         if (window.location.hash) {

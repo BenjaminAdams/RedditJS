@@ -22,6 +22,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 if (typeof this.q.url !== 'undefined') {
                     this.q.url = decodeURIComponent(this.q.url)
                 }
+
+                if (typeof this.q.embedId !== 'undefined') {
+                    App.embedId = this.q.embedId
+                }
                 this.searchCollection = null
                 this.urlCollection = null
 
@@ -233,7 +237,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             newIframeSize: function(width, height) {
                 var postData = {
                     newHeight: height,
-                    newWidth: width
+                    newWidth: width,
+                    embedId: App.embedId
                 }
                 parent.postMessage(postData, "*");
             }

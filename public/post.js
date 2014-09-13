@@ -15,6 +15,7 @@
 		var cssTheme;
 		var showSubmit;
 		var borderColor;
+		var embedId = Math.floor((Math.random() * 999999) + 1);
 
 		(function init() {
 
@@ -33,7 +34,7 @@
 					borderColor = '#5f99cf'
 				}
 
-				var embedUrl = "https://redditjs.com/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit
+				var embedUrl = "https://redditjs.com/embed?url=" + postUrl + '&width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit + '&embedId=' + embedId
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
@@ -68,6 +69,10 @@
 				if ((typeof e === 'undefined' && typeof e.data === 'undefined') || (e.origin != 'https://redditjs.com' && e.origin != 'http://localhost:8002')) {
 					//error checking
 					return;
+				}
+
+				if (e.data.embedId != embedId) { //it comes back as a string, cant use strict comparison
+					return
 				}
 
 				if (e.data.newWidth === 0 && e.data.newHeight === 0) {

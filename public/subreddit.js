@@ -16,6 +16,7 @@
 		var subreddit;
 		var grid;
 		var domain;
+		var embedId = Math.floor((Math.random() * 999999) + 1);
 
 		(function init() {
 
@@ -37,7 +38,7 @@
 					base = "r/" + subreddit
 				}
 
-				var embedUrl = 'https://redditjs.com/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '#' + grid
+				var embedUrl = 'https://redditjs.com/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '#' + grid + '&embedId=' + embedId
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
@@ -74,6 +75,11 @@
 					//error checking
 					return;
 				}
+
+				if (e.data.embedId != embedId) { //it comes back as a string, cant use strict comparison
+					return
+				}
+
 				if (e.data.maximize === true) {
 					return maximizeWidget(ifrm)
 				}
