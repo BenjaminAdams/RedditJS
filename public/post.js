@@ -22,6 +22,7 @@
 			if (script) {
 
 				postUrl = script.getAttribute('data-url') || window.location.href
+				postUrl = encodeURIComponent(postUrl) //sometiems has # in the URL and messes things up
 				width = script.getAttribute('data-width') || 500
 				height = script.getAttribute('data-height') || 500
 				postFinder = script.getAttribute('data-post-finder') || 'mostComments'
