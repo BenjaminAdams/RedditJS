@@ -123,8 +123,8 @@
 		}
 
 		function hideIframe(ifrm) {
-			setHeight(ifrm, newHeight)
-			setWidth(ifrm, newWidth)
+			ifrm.style.height = 0
+			ifrm.style.width = 0
 			ifrm.style.border = '0px #f0f0f0 solid'
 			ifrm.style.resize = 'none';
 			ifrm.style.overflow = 'inherit';
