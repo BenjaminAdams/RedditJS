@@ -45,6 +45,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				//we want to always display the default subreddits at first because they take a long time to get back from the api
 				this.listenTo(App.subreddits.mine, 'sync', this.displayMySubreddits)
 
+				if (typeof data !== 'undefined' && typeof data.subName !== 'undefined') {
+					this.dynamicStylesheet(data.subName)
+				}
+
 			},
 			onRender: function() {
 

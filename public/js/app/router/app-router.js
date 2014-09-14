@@ -133,8 +133,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     App.stop()
                 }
 
-                console.log('mode=', mode)
                 this.doSidebar(subName);
+                this.subName = subName
+
                 require(['view/subreddit-view'], function(SubredditView) {
                     App.mainRegion.show(new SubredditView({
                         subName: subName,
@@ -164,6 +165,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     App.stop()
                 }
                 this.doSidebar(subName);
+
+                this.subName = subName
 
                 require(['view/single-view', 'view/bottom-bar-view'], function(SingleView, BottomBarView) {
 
@@ -387,7 +390,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 console.log('set mobile header')
                 this.currentHeader = 1
                 //App.headerRegion.close()
-                App.headerRegion.show(new MobileHeaderView());
+                App.headerRegion.show(new MobileHeaderView({
+                    subName: this.subName
+                }));
             },
             //backbone cant parse the complex URL we are passing it, use vanillaJS
             getUrlParameters: function(b) {

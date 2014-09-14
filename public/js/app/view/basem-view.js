@@ -76,7 +76,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 			},
 			dynamicStylesheet: function(name) {
 
-				if (name === null && App.settings.get('enableNightmode') !== true) {
+				if (name === null && App.settings.get('cssType') !== 'nightmode') {
 					$("#subredditStyle").attr("href", "");
 				}
 
