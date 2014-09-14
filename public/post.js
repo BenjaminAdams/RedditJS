@@ -35,7 +35,7 @@
 					borderColor = '#5f99cf'
 				}
 
-				var embedUrl = 'https://redditjs.com/embed?width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit + '&embedId=' + embedId + '&url=' + postUrl
+				var embedUrl = 'http://localhost:8002/embed?width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit + '&embedId=' + embedId + '&url=' + postUrl
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'

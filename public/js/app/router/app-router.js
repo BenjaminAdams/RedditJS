@@ -384,15 +384,15 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 console.log('set regular header')
                 this.currentHeader = 0
                 //App.headerRegion.close()
-                App.headerRegion.show(new HeaderView());
+                App.headerRegion.show(new HeaderView({
+                    subName: this.subName
+                }));
             },
             setMobileHeader: function() {
                 console.log('set mobile header')
                 this.currentHeader = 1
                 //App.headerRegion.close()
-                App.headerRegion.show(new MobileHeaderView({
-                    subName: this.subName
-                }));
+                App.headerRegion.show(new MobileHeaderView());
             },
             //backbone cant parse the complex URL we are passing it, use vanillaJS
             getUrlParameters: function(b) {
