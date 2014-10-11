@@ -96,6 +96,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				//$(document).unbind('keyup', this.keyPressComment);
 				App.off("single:remove", this.remove, this);
 				App.off("single:giveBtnBarID", this.triggerID, this);
+				App.off("comment:addOneChild" + this.model.get('name'), this.addOneChild)
 
 				this.ui.singleCommentText.off("click", this.showLoginBox)
 

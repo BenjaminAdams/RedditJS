@@ -98,6 +98,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				//this.model.set('permalinkParent', options.permalinkParent)
 				//this.renderChildren(this.model.get('replies'))
 			},
+			onBeforeClose: function() {
+				//console.log('asd')
+
+				this.ui.userTxtInput.off('blur focus');
+
+				App.off('comment:addOneChild' + this.model.get('name'), this.addOneChild)
+			},
 			addOneChild: function(model) {
 				this.collection.add(model)
 				//this.commentCollectionView.collection.add(model)
