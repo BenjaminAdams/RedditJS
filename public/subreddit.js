@@ -157,7 +157,7 @@
 		}
 
 		function getHost(script) {
-			return script.src.replace('/post.js', '')
+			return script.src.replace('/subreddit.js', '')
 		}
 
 	})(theScriptThatCalledThis);
