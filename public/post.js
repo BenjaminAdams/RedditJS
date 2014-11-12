@@ -16,6 +16,7 @@
 		var showSubmit;
 		var borderColor;
 		var embedId = Math.floor((Math.random() * 999999) + 1);
+		var host = getHost(script);
 
 		(function init() {
 
@@ -35,7 +36,7 @@
 					borderColor = '#5f99cf'
 				}
 
-				var embedUrl = 'https://redditjs.com/embed?width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit + '&embedId=' + embedId + '&url=' + postUrl
+				var embedUrl = host + '/embed?width=' + width + '&height=' + height + '&postFinder=' + postFinder + '&cssTheme=' + cssTheme + '&showSubmit=' + showSubmit + '&embedId=' + embedId + '&url=' + postUrl
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
@@ -163,6 +164,10 @@
 			ifrm.style.width = newWidth + "px"
 			//ifrm.width = 0
 
+		}
+
+		function getHost(script) {
+			return script.src.replace('/post.js', '')
 		}
 
 	})(theScriptThatCalledThis);

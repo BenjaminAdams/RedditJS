@@ -47,7 +47,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
             onBeforeClose: function() {
                 $('#theHeader').show()
             },
-
             setupOptions: function() {
                 if (this.q.cssTheme === 'light') {
                     this.submitPostImg = this.q.submitPostImg || '/img/spreddit11.gif'
@@ -141,7 +140,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
 
                     this.urlCollection = new InfoCollection([], {
                         linkUrl: this.q.url
-
                     });
 
                     this.urlCollection.fetch({
@@ -172,9 +170,16 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                         }
                     })
 
+                } else if (typeof this.q.url !== 'undefined' && this.q.url !== null) {
+                    //if they did not input a url, it then could be a reddit post id the user wants to embed
+                    var gotoPost = new Backbone.Model()
+                    gotoPost.set('permalink', '/comments/' + this.q.url)
+                    this.successPostFound(gotoPost)
+
                 } else {
                     self.ui.embedStatus.html('please enter a valid url').removeClass('loadingSingle')
                 }
+
             },
 
             successPostFound: function(gotoPost) {

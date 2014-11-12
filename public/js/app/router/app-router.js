@@ -71,6 +71,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'r/:subName/comments/:id(/)': 'single',
                 'r/:subName/comments/:id/:slug(/)': 'single',
                 'r/:subName/comments/:id/:slug/:commentLink(/)': 'single',
+                'comments/:id(/)': 'singleById',
 
                 'u/:username(/)': 'user',
                 'user/:username(/)': 'user',
@@ -186,6 +187,17 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 })
 
+            },
+            //for loading the widget by post ID
+            singleById: function(id) {
+                require(['view/single-view'], function(SingleView) {
+
+                    App.mainRegion.show(new SingleView({
+                        subName: '',
+                        id: id,
+                        commentLink: null
+                    }));
+                })
             },
 
             user: function(username, sortOrder) {

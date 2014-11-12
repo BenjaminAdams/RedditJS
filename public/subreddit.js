@@ -17,6 +17,7 @@
 		var grid;
 		var domain;
 		var embedId = Math.floor((Math.random() * 999999) + 1);
+		var host = getHost(script);
 
 		(function init() {
 
@@ -38,7 +39,7 @@
 					base = "r/" + subreddit
 				}
 
-				var embedUrl = 'https://redditjs.com/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '&embedId=' + embedId + '#' + grid
+				var embedUrl = host + '/' + base + '/' + sort + '/' + timeFrame + '?cssTheme=' + cssTheme + '&embedId=' + embedId + '#' + grid
 
 				var iframeWrapper = document.createElement("div");
 				iframeWrapper.style.width = '100%'
@@ -153,6 +154,10 @@
 			//ifrm.width = newWidth
 			//ifrm.css('width', newWidth)
 			ifrm.style.width = newWidth + "px"
+		}
+
+		function getHost(script) {
+			return script.src.replace('/post.js', '')
 		}
 
 	})(theScriptThatCalledThis);
