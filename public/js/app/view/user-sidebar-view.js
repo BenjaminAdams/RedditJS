@@ -1,5 +1,5 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/user-sidebar', 'view/basem-view',  'model/user-about', 'cookie'],
-	function(App, $, _, Backbone, TMPL, BaseView,  UserAboutModel, Cookie) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/user-sidebar', 'view/basem-view', 'model/user-about', 'cookie'],
+	function(App, $, _, Backbone, TMPL, BaseView, UserAboutModel, Cookie) {
 		return BaseView.extend({
 			template: TMPL,
 			events: {
@@ -27,7 +27,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/user-sidebar', 
 			},
 			loaded: function(response, sidebar) {
 				this.render()
-				//console.log('usersidebar model=', this.model.attributes)
+				if (this.model.get('hide_from_robots') === true) {
+					$('head').append('<meta name="robots" content="noindex, nofollow">');
+				}
 			},
 			addFriend: function(e) {
 				e.preventDefault()
