@@ -51,7 +51,7 @@ You can add the script tag to any website, or you can use the [Reddit Embed Word
 
 <table style='width:800px'>
 <tr><th style='width:125px;'>Name</th><th>Description</th> <th>values</th> </tr>
-<tr><td>data-url</td><td>The URL you want to search in reddit to embed on your site, or you can put a reddit post id. If the url is http://www.reddit.com/r/technology/comments/2m2yl7/its_now_official_humanity_has_landed_a_probe_on_a/ the post id would be 2m2yl7 *defaults to current URL of your website.</td> <td>any url or reddit post id</td>  </tr>
+<tr><td>data-url</td><td>The URL you want to search in reddit to embed on your site, or you can put a reddit post id. For example [this post](http://www.reddit.com/r/technology/comments/2m2yl7/its_now_official_humanity_has_landed_a_probe_on_a/) the post id would be 2m2yl7 *defaults to current URL of your website.</td> <td>any url or reddit post id</td>  </tr>
 <tr><td>data-width</td><td>Width of the post widget.</td> <td>number</td>  </tr>
 <tr><td>data-height</td><td>Height of the post widget.</td> <td>number</td>  </tr>
 <tr><td>data-post-finder</td><td>If the URL has been submitted multiple times to reddit, it will display the most relevant post based on your setting.</td> <td>newest, mostUpvoted, mostComments</td>  </tr>
