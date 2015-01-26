@@ -1,8 +1,8 @@
 {
   "name": "redditjs",
   "title": "redditjs",
-  "description": "A Marionette.js and Require.js Boilerplate that promotes decoupling your JavaScript into modules, separating business logic from application logic using Models and Views, organizing your application into Regions with default build-up/tear-down logic for you Views, reusing your JavaScript between Desktop and Mobile Web versions, including non-AMD Compatible Third Party Scripts in your project, and optimizing all of your JavaScript (minify, concatenate, etc).",
-  "version": "1.1.0",
+  "description": "I rewrote reddit from the ground up using the javascript framework Backbone and the reddit API. I feel that I've created a better user experience as well as additional features that makes for a more enjoyable experience. Follow updates at /r/redditjs.",
+  "version": "1.1.1",
   "homepage": "http://redditjs.com",
   "author": {
     "name": "Benjamin Adams",
@@ -10,8 +10,8 @@
     "url": "https://github.com/BenjaminAdams"
   },
   "engines": {
-    "node": "0.10.26",
-    "npm": "1.4.3"
+    "node": "0.11.14",
+    "npm": "2.0.0"
   },
   "dependencies": {
     "async": "0.2.x",
@@ -31,7 +31,6 @@
     "passport": "^0.2.0",
     "passport-reddit": "^0.2.4",
     "path": "^0.4.9",
-    "pm2": "^0.8.15",
     "qs": "^0.6.6",
     "raw-body": "^1.1.4",
     "redis": "^0.10.3",
@@ -42,18 +41,18 @@
     "express-device": "^0.3.10"
   },
   "devDependencies": {
-    "grunt": "^0.4.4",
-    "grunt-contrib-jshint": "~0.3.0",
-    "grunt-contrib-requirejs": "~0.4.0",
-    "jshint": "^2.5.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "jshint": "^2.6.0",
     "nodemon": "*",
-    "uglify-js": "~2.2.5"
+    "uglify-js": "^2.4.16"
   },
   "main": "./server/server",
   "keywords": [
     "Marionette.js",
     "Backbone.js",
     "Require.js",
-    "Marionette and Require Boilerplate"
+    "Reddit"
   ]
 }

@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         requirejs: {
 
-            desktopJS: {
+            mainJS: {
                 options: {
                     baseUrl: "public/js/app",
                     "findNestedDependencies": true,
@@ -36,11 +36,11 @@ module.exports = function(grunt) {
                         compileOptions: {} // options object which is passed to Handlebars compiler
                     },
                     mainConfigFile: "public/js/app/config/config.js",
-                    include: ["init/DesktopInit"],
-                    out: "public/js/app/init/DesktopInit.min.js"
+                    include: ["init/main"],
+                    out: "public/js/app/init/maindesktop.min.js"
                 }
             },
-            desktopCSS: {
+            mainCSS: {
                 options: {
                     optimizeCss: "standard",
                     cssIn: "./public/css/styles.css",
@@ -73,6 +73,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.registerTask('test', ['jshint']);
-    grunt.registerTask('build', ['requirejs:desktopJS', 'requirejs:desktopCSS', 'requirejs:darkCSS']);
+    grunt.registerTask('build', ['requirejs:mainJS', 'requirejs:mainCSS', 'requirejs:darkCSS']);
     grunt.registerTask('default', ['test', 'build']);
 };
