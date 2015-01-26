@@ -20,6 +20,7 @@ var session = require('express-session')
 var errorHandler = require('errorhandler')
 var methodOverride = require('method-override')
 var favicon = require('serve-favicon');
+var timestamp = require('../timestamp')
 
 var api = require('./api')
 var bots = require('./bots')
@@ -55,7 +56,7 @@ passport.use(new RedditStrategy({
         clientID: REDDIT_CONSUMER_KEY,
         clientSecret: REDDIT_CONSUMER_SECRET,
         callbackURL: callbackURL
-        //callbackURL: "http://redditjs.com/auth/reddit/callback"
+            //callbackURL: "http://redditjs.com/auth/reddit/callback"
     },
     function(accessToken, refreshToken, profile, done) {
         //console.log('profile=', profile)
@@ -124,8 +125,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 server.use(session(secureCookies));
-
-//server.use(logger());
+server.use(setupLocals)
+    //server.use(logger());
 server.use(bodyParser());
 server.use(methodOverride());
 server.use(passport.initialize());
@@ -175,7 +176,7 @@ server.get('/login', function(req, res, next) {
         //authorizationURL: 'https://ssl.reddit.com/api/v1/authorize.compact',
         scope: scope,
         duration: 'permanent' //permanent or temporary
-        //duration: 'temporary' //permanent or temporary
+            //duration: 'temporary' //permanent or temporary
     })(req, res, next);
 });
 
@@ -194,7 +195,7 @@ server.get('/auth/reddit/callback', function(req, res, next) {
     if (req.query.state == req.session.state) {
 
         req.session.code = req.query.code
-        //request users info at: https://oauth.reddit.com/api/v1/me.json
+            //request users info at: https://oauth.reddit.com/api/v1/me.json
         passport.authenticate('reddit', {
             successRedirect: '/redirectBack',
             failureRedirect: '/login'
@@ -233,25 +234,13 @@ server.get("*", function(req, res) {
 
 });
 
-// SERVER
-// ======
-
 // Start Node.js Server
 http.createServer(server).listen(port);
 
 console.log('\nWelcome to redditjs.com!\nPlease go to http://localhost:' + port + ' to start using RedditJS');
 
-// if (process.env.NODE_ENV === 'production') {
-//     var nullfun = function() {};
-//     console.log = nullfun;
-//     console.info = nullfun;
-//     console.error = nullfun;
-//     console.warn = nullfun;
-// }
-
 function ensureAuthenticated(req, res, next) {
-    // res.send(419, loginAgainMsg)
-    //if (true) {
+
     if (req.isAuthenticated()) {
 
         refreshToken(req, res, function(isExpired) {
@@ -265,22 +254,24 @@ function ensureAuthenticated(req, res, next) {
     } else {
         console.log(req.session)
         res.send(419, loginAgainMsg)
-        //res.redirect('/login'); 
+
     }
 
+}
+
+function setupLocals(req, res, next) {
+    res.locals.timestamp = timestamp.timestamp //saves the last time we ran grunt
+    next()
 }
 
 function refreshToken(req, res, next) {
     var now = Math.round(+new Date() / 1000)
 
-    //  res.send(419, loginAgainMsg)
-
     if (now < req.user.tokenExpires) {
-        //if (false) {
         //console.log('token is NOT expired')
         return next(true)
     } else {
-        console.log('token is expired, lets refresh!', req.user.name)
+        //console.log('token is expired, lets refresh!', req.user.name)
 
         var authorization = "Basic " + Buffer("" + REDDIT_CONSUMER_KEY + ":" + REDDIT_CONSUMER_SECRET).toString('base64');
 

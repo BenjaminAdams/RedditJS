@@ -1,4 +1,16 @@
+var fs = require('fs')
+
 module.exports = function(grunt) {
+
+    fs.writeFile('timestamp.json', JSON.stringify({
+        timestamp: Date.now()
+    }), function(err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("timestamp saved");
+        }
+    });
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),

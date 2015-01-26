@@ -4,7 +4,7 @@ require.config({
         // Core Libraries
         "jquery": "../lib/jquery",
         //'underscore': '../lib/underscore',
-        'underscore': '../lib/lodash2.4.1',
+        'underscore': '../lib/lodash3.0.0',
         "backbone": "../lib/backbone",
         "marionette": "../lib/marionette",
         "hbs": "../lib/hbs",
