@@ -18,13 +18,12 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * **Same Styles everywhere:** Option to use the same CSS styles from one subreddit all over reddit. I did this so I could use [murica](http://redditjs.com/r/murica) everywhere.
 
 ####RedditJS is built with :
- * Node.js <http://nodejs.org/>
- * Backbone.js <https://github.com/jashkenas/backbone>
- * Marionette.js <http://marionettejs.com>
- * Underscore.js <https://github.com/jashkenas/underscore>
- * Require.js <http://requirejs.org/>
+ * Node <http://nodejs.org/>
+ * Backbone <https://github.com/jashkenas/backbone>
+ * Marionette <http://marionettejs.com>
+ * lodash <https://lodash.com/>
+ * RequireJs <http://requirejs.org/>
  * Handlebars <http://handlebarsjs.com/>
- * jQuery <http://jquery.com/>
  * Reddit API <http://www.reddit.com/dev/api/>
  * Hosted at [Digital Ocean]( https://www.digitalocean.com/?refcode=572549c85ce0)
 
