@@ -139,7 +139,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				//if (this.gridOption != 'grid') {
 				//this.subredditCollectionView = new SrCView({
 				//collection: this.collection,
-				//itemView: PostRowView,
+				//childView: PostRowView,
 				//gridOption: this.gridOption
 				//})
 
@@ -298,7 +298,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					path: '/'
 				});
 
-				//this.siteTable.close()
+				//this.siteTable.destroy()
 				this.ui.siteTable.empty();
 
 				if (this.gridOption == "grid") {
@@ -314,7 +314,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					this.appendPosts(this.collection)
 					//this.subredditCollectionView = new SrCView({
 					//collection: this.collection,
-					//itemView: PostRowView,
+					//childView: PostRowView,
 					//gridOption: this.gridOption
 					// })
 					// this.siteTable.show(this.subredditCollectionView)
@@ -554,12 +554,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			},
 
 			showMoarBtn: function() {
-				if (this.isClosed === false) {
+				if (this.isDestroyed === false) {
 					this.ui.nextprev.html('MOAR ›').show()
 				}
 			},
 			hideMoarBtn: function() {
-				if (this.isClosed === false) {
+				if (this.isDestroyed === false) {
 					this.ui.nextprev.html('<img class="loadingMOAR" src="img/loading.gif" />').show()
 				}
 			}

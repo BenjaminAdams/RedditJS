@@ -1,6 +1,6 @@
  define(['App', 'underscore', 'backbone', 'hbs!template/btmbar', 'hbs!template/post-row-small', 'collection/subreddit', 'cView/subreddit', 'view/post-row-view'],
      function(App, _, Backbone, btmbarTmpl, PostViewSmallTpl, SubredditCollection, SrCView, PostRowView) {
-         return Backbone.Marionette.Layout.extend({
+         return Backbone.Marionette.LayoutView.extend({
 
              //   el: $("#bottom-bar"),
              template: btmbarTmpl,
@@ -74,7 +74,7 @@
 
                  this.subredditCollectionView = new SrCView({
                      collection: this.collection,
-                     itemView: PostRowView,
+                     childView: PostRowView,
                      gridOption: 'small',
                      removeSiteTableCSS: true
                  })
@@ -251,7 +251,7 @@
                  this.setScrollInt('stop')
 
                  this.userLeftTimeout = setTimeout(function() {
-                     if (self.isClosed === false && !self.ui.bottomBar.hasClass("transparent")) {
+                     if (self.isDestroyed === false && !self.ui.bottomBar.hasClass("transparent")) {
                          self.ui.bottomBar.addClass('transparent')
                      }
 

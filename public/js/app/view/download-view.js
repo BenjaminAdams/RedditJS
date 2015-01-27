@@ -47,7 +47,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
 
                 //feature detection
                 try {
-                    var isFileSaverSupported = !! new Blob();
+                    var isFileSaverSupported = !!new Blob();
                 } catch (e) {
                     this.ui.statusBox.html("Your browser might not be supported, trying anyway....")
                 }
@@ -190,6 +190,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
 
                 var self = this
                 var imgUrl = model.get('imgUrl')
+                imgUrl = imgUrl.replace('http://', 'https://')
 
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', imgUrl, true);
@@ -272,6 +273,8 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                         } else {
                             xhr.onerror() //force error
                         }
+                    } else {
+                        xhr.onerror() //force error
                     }
 
                 }
@@ -377,7 +380,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
 
             fetchMore: function() {
                 var self = this
-                //$(this.el).append("<div class='loading'> </div>")
+                    //$(this.el).append("<div class='loading'> </div>")
                 this.loading = true
                 clearTimeout(this.jsonpTimer);
 

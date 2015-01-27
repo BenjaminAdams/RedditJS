@@ -38,7 +38,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/user', 'view/comment-view
 			onRender: function() {
 				this.subredditCollectionView = new CView({
 					collection: this.collection,
-					itemView: CommentView,
+					childView: CommentView,
 					gridOption: 'normal'
 				})
 				this.siteTableContainer.show(this.subredditCollectionView)

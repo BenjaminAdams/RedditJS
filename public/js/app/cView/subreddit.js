@@ -1,13 +1,13 @@
 define(['App', 'marionette', 'hbs!template/post-row', 'hbs!template/post-row-small', 'hbs!template/post-row-large', 'hbs!template/post-row-grid'],
     function(App, Marionette, PostRowTmpl, PostRowSmallTmpl, PostRowLargeTmpl, PostRowGridTmpl) {
         return Backbone.Marionette.CollectionView.extend({
-            //itemView: PostRowTmpl,
+            //childView: PostRowTmpl,
             id: 'siteTable',
             className: 'sitetable linklisting',
             initialize: function(options) {
                 this.gridOption = options.gridOption;
                 this.setTemplate(this.gridOption)
-                //this.itemViewtemplate = PostRowTmpl;
+                //this.childViewtemplate = PostRowTmpl;
                 // this.gridOption = 'normal';
                 //  this.start = new Date() //timer for testing
 
@@ -16,11 +16,11 @@ define(['App', 'marionette', 'hbs!template/post-row', 'hbs!template/post-row-sma
                 }
 
             },
-            itemViewOptions: function(model, index) {
+            childViewOptions: function(model, index) {
                 // do some calculations based on the model
                 return {
                     gridOption: this.gridOption,
-                    template: this.itemViewtemplate
+                    template: this.childViewtemplate
                 }
             },
             onRender: function() {
@@ -44,13 +44,13 @@ define(['App', 'marionette', 'hbs!template/post-row', 'hbs!template/post-row-sma
             },
             setTemplate: function(option) {
                 if (option == 'normal') {
-                    this.itemViewtemplate = PostRowTmpl;
+                    this.childViewtemplate = PostRowTmpl;
                 } else if (option == 'small') {
-                    this.itemViewtemplate = PostRowSmallTmpl
+                    this.childViewtemplate = PostRowSmallTmpl
                 } else if (option == 'large') {
-                    this.itemViewtemplate = PostRowLargeTmpl
+                    this.childViewtemplate = PostRowLargeTmpl
                 } //else if (option == 'grid') {
-                //this.itemViewtemplate = PostRowGridTmpl
+                //this.childViewtemplate = PostRowGridTmpl
                 //}
             }
         });

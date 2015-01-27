@@ -17,7 +17,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 				_.bindAll(this);
 
 				if (App.isBot === true) {
-					return this.close()
+					return this.destroy()
 				}
 
 				this.template = SidebarTmpl;
@@ -88,7 +88,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 				// // do this whenever you want (f.ex after ajax is made):
 				// doc.open();
 				// doc.write('<script type="text/javascript" src="http://ap.lijit.com/www/delivery/fp?z=143232&u=Armastevs"></script>');
-				// doc.close();
+				// doc.destroy();
 
 			},
 

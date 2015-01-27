@@ -33,7 +33,7 @@ define(['App', 'view/basem-view', 'collection/subreddit-picker', 'hbs!template/s
 
                 this.CollectionView = new Marionette.CollectionView({
                     collection: this.collection,
-                    itemView: SRPItemView
+                    childView: SRPItemView
                 })
 
             },

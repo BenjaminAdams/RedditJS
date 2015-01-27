@@ -24,7 +24,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 App.subreddits = {}
                 App.subreddits.mine = new MySubredditsCollection()
-                //caching subreddit json in a global because it takes about 3 seconds to query from reddit api
+                    //caching subreddit json in a global because it takes about 3 seconds to query from reddit api
                 App.subs = []
 
                 //so you can link users to a subreddit with a particular view.  Ex:  http://redditjs.com/r/aww#grid
@@ -32,9 +32,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
                     if (hash === 'grid' || hash === 'small' || hash === 'large' || hash === 'normal') {
                         App.settings.set('gridOption', hash)
-                        //$.cookie('gridOption', hash, {
-                        // path: '/'
-                        //});
+                            //$.cookie('gridOption', hash, {
+                            // path: '/'
+                            //});
                     }
                 }
 
@@ -96,8 +96,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 var f = function() {
 
                     //middleware functions, functions that get called between every route
-                    if (name != 'single') { //hide the bottom bar if not in single view
-                        App.bottombarRegion.close()
+                    if (name != 'single' && App.bottombarRegion.currentView) { //hide the bottom bar if not in single view
+                        App.bottombarRegion.destroy()
                     }
 
                     if (typeof ga === 'function') {
@@ -332,9 +332,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 if ((typeof App.sidebarRegion.currentView === 'undefined' || App.sidebarRegion.currentView.subName != subName) && App.isBot === false) { //only update sidebar if the subreddit changes
 
                     var sidebarModel = new SidebarModel(subName)
-                    if (subName == 'front') {
+                    if (subName === 'front' || subName === 'all') {
                         App.sidebarRegion.show(new SidebarView({
-                            subName: subName,
+                            subName: 'front',
                             model: sidebarModel
                         }))
                     } else {
@@ -395,7 +395,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             setRegularHeader: function() {
                 console.log('set regular header')
                 this.currentHeader = 0
-                //App.headerRegion.close()
+                    //App.headerRegion.destroy()
                 App.headerRegion.show(new HeaderView({
                     subName: this.subName
                 }));
@@ -403,7 +403,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             setMobileHeader: function() {
                 console.log('set mobile header')
                 this.currentHeader = 1
-                //App.headerRegion.close()
+                    //App.headerRegion.destroy()
                 App.headerRegion.show(new MobileHeaderView());
             },
             //backbone cant parse the complex URL we are passing it, use vanillaJS
@@ -445,7 +445,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 //update cssType 
                 App.settings.set('cssType', $.cookie('cssType') || 'useSrStyles')
-                //update useSrEverywhereTxt
+                    //update useSrEverywhereTxt
                 App.settings.set('useSrEverywhereTxt', $.cookie('useSrEverywhereTxt') || '')
 
                 //load grid opt from cookies

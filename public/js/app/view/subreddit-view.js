@@ -86,7 +86,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
 			onBeforeClose: function() {
 				console.log('closing subreddit-view')
-				//window.stop() //prevents new images from being downloaded
+					//window.stop() //prevents new images from being downloaded
 
 				//$(window).off('resize');
 				$(window).off("scroll");
@@ -127,7 +127,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 					console.log('loading collection from memory')
 					this.collection = App.subs[this.subID]
 					this.showMoarBtn()
-					//this.fetchMore();
+						//this.fetchMore();
 				}
 
 				this.setupCollectionView()
@@ -147,7 +147,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				}
 
 				this.hideMoarBtn()
-				//this.resize()
+					//this.resize()
 				this.helpFillUpScreen();
 			},
 			toggleTimeFrame: function() {
@@ -158,13 +158,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				if (this.gridOption == 'grid') {
 					this.subredditCollectionView = new SrCGridView({
 						collection: this.collection
-						//itemView: PostRowGridView
+							//childView: PostRowGridView
 					})
 
 				} else {
 					this.subredditCollectionView = new SrCView({
 						collection: this.collection,
-						itemView: PostRowView,
+						childView: PostRowView,
 						gridOption: this.gridOption
 					})
 				}
@@ -227,9 +227,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
 				App.settings.set('gridOption', this.gridOption);
 
-				//this.subredditCollectionView.close()  //we don't need to close view before showing new one
+				//this.subredditCollectionView.destroy()  //we don't need to destroy view before showing new one
 				this.setupCollectionView()
-				//this.resize()
+					//this.resize()
 				this.helpFillUpScreen()
 
 			},
@@ -339,12 +339,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 			},
 
 			showMoarBtn: function() {
-				if (this.isClosed === false) {
+				if (this.isDestroyed === false) {
 					this.ui.nextprev.html('MOAR ›').show()
 				}
 			},
 			hideMoarBtn: function() {
-				if (this.isClosed === false) {
+				if (this.isDestroyed === false && typeof this.ui.nextprev === 'object') {
 					this.ui.nextprev.html('<img class="loadingMOAR" src="img/loading.gif" />').show()
 				}
 			}

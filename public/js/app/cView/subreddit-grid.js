@@ -1,7 +1,7 @@
 define(['App', 'marionette', 'view/post-row-grid-view'],
     function(App, Marionette, PostRowGridView) {
         return Backbone.Marionette.CollectionView.extend({
-            itemView: PostRowGridView,
+            childView: PostRowGridView,
             id: 'colContainer',
             initialize: function(options) {
                 var self = this

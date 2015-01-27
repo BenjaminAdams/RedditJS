@@ -5,7 +5,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 			events: {
 				'click #mViewPickerBox li': 'changeGridOption',
 				'click .drop-down-header-toggle': 'toggleDropdown',
-				//'click #sr-display': 'toggleDropdown', //will close the menu after the user makes a selection
+				//'click #sr-display': 'toggleDropdown', //will destroy the menu after the user makes a selection
 				//'click #signInUserbar': 'showLoginBox',
 				//'click .mdropdown': 'toggleDropDown',
 				'click #mSortPickerBox': 'toggleDropDown',
@@ -117,9 +117,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 				}
 			},
 
-			closeMobileOptions: function() {
+			destroyMobileOptions: function() {
 				if ($(document).width() < App.mobileWidth) {
-					//only close the mobile options menu if we are in mobile mode
+					//only destroy the mobile options menu if we are in mobile mode
 					this.ui.tabmenu.slideUp()
 				}
 

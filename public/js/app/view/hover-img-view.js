@@ -5,7 +5,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-v
 			//tagName: 'span',
 			//className: 'hoverImgView',
 			events: {
-				'click .close': "closeImg", //closes the image out of the comment area
+				'click .destroy': "destroyImg", //destroys the image out of the comment area
 				'mouseover .openedOutBoundLink': 'newImgSelected'
 			},
 			ui: {
@@ -106,7 +106,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-v
 				}
 
 			},
-			closeImg: function(e) {
+			destroyImg: function(e) {
 				//this.remove()
 				e.preventDefault()
 				e.stopPropagation()

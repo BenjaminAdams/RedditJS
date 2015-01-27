@@ -50,7 +50,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				var self = this;
 
 				this.model = options.model
-				//this.collection = new CommentCollection()
+					//this.collection = new CommentCollection()
 				this.collection = this.model.get('replies')
 				this.originalPoster = options.originalPoster
 				this.blinking = '<img class="blinkingFakeInput" src="/img/text_cursor.gif" />'
@@ -84,19 +84,30 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				var self = this
 				var CommentView = require('view/comment-view')
 
-				self.commentCollectionView = new CViewComments({
-					collection: self.collection,
-					itemView: CommentView,
-					originalPoster: self.originalPoster
-				})
+				if (self.collection.length > 0)
 
-				self.replies.show(self.commentCollectionView)
+				{
+					self.commentCollectionView = new CViewComments({
+						collection: self.collection,
+						childView: CommentView,
+						originalPoster: self.originalPoster
+					})
+
+					try {
+						self.replies.show(self.commentCollectionView)
+					} catch (e) {
+						console.log('collection=', self.collection)
+						console.log('region=', self.replies)
+
+					}
+
+				}
 
 				this.addOutboundLink()
 				this.permalinkParent = this.model.get('permalinkParent')
 				this.setupTextareaExpanding()
-				//this.model.set('permalinkParent', options.permalinkParent)
-				//this.renderChildren(this.model.get('replies'))
+					//this.model.set('permalinkParent', options.permalinkParent)
+					//this.renderChildren(this.model.get('replies'))
 			},
 			onBeforeClose: function() {
 				//console.log('asd')
@@ -107,7 +118,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 			},
 			addOneChild: function(model) {
 				this.collection.add(model)
-				//this.commentCollectionView.collection.add(model)
+					//this.commentCollectionView.collection.add(model)
 			},
 			//add data-external and a special class to any link in a comment
 			//once the links have the class outBoundLink on them, they will no longer trigger the hover view

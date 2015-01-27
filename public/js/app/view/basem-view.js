@@ -1,6 +1,6 @@
 define(['App', 'underscore', 'backbone', 'cookie'],
   function(App, _, Backbone, Cookie) {
-    return Backbone.Marionette.Layout.extend({
+    return Backbone.Marionette.LayoutView.extend({
 
       destroy: function() {
         console.log("destroying a view")
@@ -471,7 +471,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
           //I've made the choice here to pass the current model as a global so we do not have to have a long load time
           //the single post page takes 2-3 seconds to load the get request
           setTimeout(function() {
-            App.curModel = self.model //the small view closes too fast and is unable to pass the model to the single
+            App.curModel = self.model //the small view destroys too fast and is unable to pass the model to the single
           }, 5)
           App.curModel = this.model
         }
@@ -583,7 +583,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
         console.log(options.path);
         that._oauthWindow = window.open(options.path, options.windowName, options.windowOptions);
         that._oauthInterval = window.setInterval(function() {
-          if (that._oauthWindow.closed) {
+          if (that._oauthWindow.destroy) {
             window.clearInterval(that._oauthInterval);
             options.callback();
           }

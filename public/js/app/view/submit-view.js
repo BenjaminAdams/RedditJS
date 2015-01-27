@@ -97,7 +97,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 				var target = $(e.currentTarget)
 				var searchQ = target.val().trim()
 				console.log(searchQ.length)
-				//make sure the last input actually has new values before performing new search
+					//make sure the last input actually has new values before performing new search
 				if (this.lastTitleInput != searchQ && searchQ.length > 1) {
 					this.lastTitleInput = searchQ
 					clearTimeout(this.inputTimer);
@@ -187,7 +187,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 
 					this.urlCollection = new InfoCollection([], {
 						linkUrl: linkUrl
-						//subName: this.selectedSubreddit  //don't filter by subreddit
+							//subName: this.selectedSubreddit  //don't filter by subreddit
 
 					});
 					this.urlCollection.fetch({
@@ -202,7 +202,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 
 								}
 								self.ui.urlDetails.html('this url has been submitted <span class="sameURL" >' + postsLength + addPlus + '</span> time(s) before').removeClass('loadingSubmit')
-								//get array of subreddits that link has been submitted too
+									//get array of subreddits that link has been submitted too
 								var subreddits = []
 								console.log('data=', data)
 								_.forEach(data.models, function(post) {
@@ -335,7 +335,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 			submitForm: function(e) {
 				e.preventDefault()
 				e.stopPropagation()
-				this.$('.status').html('') //clear status
+				this.$('.status').html('<img src="/img/loading.gif" />') //clear status
 				var self = this
 
 				if (this.checkIfLoggedIn() === false) {
@@ -395,7 +395,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 
 				this.api("api/submit", 'POST', params, function(data) {
 					console.log("submit done", data)
-					//detect if the link we submitted was good and went through
+						//detect if the link we submitted was good and went through
 					if (typeof data !== 'undefined' && typeof data.json !== 'undefined') {
 
 						if (data.json.errors.length > 0) {
@@ -413,8 +413,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 						} else if (typeof data.json.data.url !== 'undefined') { //means we have a good link!
 							//post was good
 
-							var newUrl = data.json.data.url.replace('https://oauth.reddit.com', '')
-							newUrl = newUrl.replace('https://oauth.reddit.com', '') //for good measure in case reddit.com does not have a www
+							var newUrl = data.json.data.url.replace('www.reddit.com', 'redditjs.com')
+
 							Backbone.history.navigate(newUrl, {
 								trigger: true
 							})

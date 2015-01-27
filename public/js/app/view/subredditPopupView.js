@@ -3,7 +3,7 @@ define(['App', 'view/basem-view', 'hbs!template/subredditPopup', 'view/post-row-
         return BaseView.extend({
             template: subredditPopup,
             events: {
-                'click .closepopupSiteTable': 'close',
+                'click .destroypopupSiteTable': 'destroy',
                 'click .blackOverlay': 'clickBackground'
             },
             ui: {
@@ -20,7 +20,7 @@ define(['App', 'view/basem-view', 'hbs!template/subredditPopup', 'view/post-row-
 
                 this.CollectionView = new Marionette.CollectionView({
                     collection: this.collection,
-                    itemView: PostRowView
+                    childView: PostRowView
                 })
 
             },
@@ -34,7 +34,7 @@ define(['App', 'view/basem-view', 'hbs!template/subredditPopup', 'view/post-row-
                 this.ui.blackOverlay.hide()
             },
             clickBackground: function(e) {
-                this.close()
+                this.destroy()
             }
 
         });

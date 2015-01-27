@@ -31,7 +31,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/inbox', 'view/inbox-item-
 				this.fetchMore()
 				this.inboxCollectionView = new Marionette.CollectionView({
 					collection: this.collection,
-					itemView: InboxItemView
+					childView: InboxItemView
 				})
 
 			},

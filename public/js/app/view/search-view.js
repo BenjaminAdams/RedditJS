@@ -63,7 +63,7 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
 
 				this.subredditCollectionView = new SrCView({
 					collection: this.collection,
-					itemView: PostRowView,
+					childView: PostRowView,
 					gridOption: this.gridOption
 				})
 

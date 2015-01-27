@@ -5,10 +5,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			events: {
 				'click .tabmenu-right li': 'changeGridOption',
 				'click .drop-down-header-toggle': 'toggleDropdown',
-				//'click #sr-display': 'toggleDropdown', //will close the menu after the user makes a selection
+				//'click #sr-display': 'toggleDropdown', //will destroy the menu after the user makes a selection
 				'click #userbar-logged-out': 'showLoginPopup',
 				'click #mobileOptions': 'showMobileOptions',
-				'click .tabmenu li': 'closeMobileOptions'
+				'click .tabmenu li': 'destroyMobileOptions'
 			},
 			ui: {
 				'siteTable': '#siteTable',
@@ -91,9 +91,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			showMobileOptions: function() {
 				this.ui.tabmenu.slideToggle()
 			},
-			closeMobileOptions: function() {
+			destroyMobileOptions: function() {
 				if ($(document).width() < App.mobileWidth) {
-					//only close the mobile options menu if we are in mobile mode
+					//only destroy the mobile options menu if we are in mobile mode
 					this.ui.tabmenu.slideUp()
 				}
 

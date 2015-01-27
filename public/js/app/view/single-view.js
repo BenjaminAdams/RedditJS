@@ -321,7 +321,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				require(['cView/comments', 'view/comment-view'], function(CViewComments, CommentView) {
 					self.commentCollectionView = new CViewComments({
 						collection: collection,
-						itemView: CommentView,
+						childView: CommentView,
 						originalPoster: self.model.get('author')
 					})
 					self.siteTableComments.show(self.commentCollectionView)

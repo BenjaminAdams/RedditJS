@@ -11,7 +11,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 				_.invoke(App.subreddits.mine.toArray(), 'destroy');
 				$.totalStorage('subreddits', null);
 
-				window.close()
+				window.destroy()
 			}
 
 		});

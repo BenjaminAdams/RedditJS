@@ -33,7 +33,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 this.model = data.model;
                 this.biggerImg = this.model.get('imgUrl')
                 this.smallerImg = this.model.get('smallImg')
-                this.viewClosed = false //need a way to prevent the image to preload if the view is closed
+                this.viewClosed = false //need a way to prevent the image to preload if the view is destroy
                 this.attempts = 0 //how many times we attempt to render the view
                 this.allowedToRender = false
                 this.nonImg = false
@@ -134,7 +134,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 var self = this
 
                 if (this.viewClosed === true) {
-                    console.log('trying to preload a grid block that has been closed')
+                    console.log('trying to preload a grid block that has been destroy')
                     return
                 }
 
