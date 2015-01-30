@@ -412,15 +412,17 @@ define(['App', 'underscore', 'backbone', 'hbs!template/submit', 'view/basem-view
 
 						} else if (typeof data.json.data.url !== 'undefined') { //means we have a good link!
 							//post was good
+							var gotoUrl = self.getPath(data.json.data.url)
 
-							var newUrl = data.json.data.url.replace('www.reddit.com', 'redditjs.com')
-
-							Backbone.history.navigate(newUrl, {
+							Backbone.history.navigate(gotoUrl, {
 								trigger: true
 							})
 						}
 					}
 				});
+			},
+			getPath: function(url) {
+				return $('<a/>').attr('href', url)[0].pathname.replace(/^[^\/]/, '/');
 			}
 
 		});
