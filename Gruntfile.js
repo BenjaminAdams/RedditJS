@@ -37,7 +37,7 @@ module.exports = function(grunt) {
                     },
                     mainConfigFile: "public/js/app/config/config.js",
                     include: ["init/main"],
-                    out: "public/js/app/init/maindesktop.min.js"
+                    out: "public/js/app/init/main.min.js"
                 }
             },
             mainCSS: {
