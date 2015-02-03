@@ -6,11 +6,13 @@ define(['App', 'backbone', 'jquery', 'view/comment-view'],
 			initialize: function(options) {
 				// _.bindAll(this);
 				this.originalPoster = options.originalPoster
+				this.commentsDisabled = options.commentsDisabled
 			},
 			childViewOptions: function(model, index) {
 				var self = this
 				return {
-					originalPoster: this.originalPoster
+					originalPoster: this.originalPoster,
+					commentsDisabled: this.commentsDisabled
 				}
 			}
 

@@ -30,7 +30,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 		defaults: {
 			done: false,
 			startedDL: false
-			//  slug: "slug"
+				//  slug: "slug"
 		},
 		parse: function(response) {
 			if (this.parseNow === true) {
@@ -48,19 +48,23 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 
 				//set the value for the single reddit post
 				data = response[0].data.children[0].data
-				//set the values for the comments of this post
+					//set the values for the comments of this post
 				data.replies = this.parseComments(response[1].data, data.name)
 			}
 
 			var timeAgo = moment.unix(data.created_utc).fromNow(true) //"true" removes the "ago"
 			timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
 			data.timeAgo = timeAgo
-
 			data.timeUgly = moment.unix(data.created).format()
-			//format Sun Aug 18 12:51:06 2013 UTC
+				//format Sun Aug 18 12:51:06 2013 UTC
 			data.timePretty = moment.unix(data.created).format("ddd MMM DD HH:mm:ss YYYY") + " UTC"
+
+			//disabled comments if post is over one year old
+			data.commentsDisabled = false
+			var secondsAgo = ((new Date()).getTime() / 1000) - data.created
+			if (secondsAgo > 31536000) data.commentsDisabled = true
+
 			data.rname = "/r/" + data.subreddit
-			//data.selftextMD = markdown.toHTML(this.decodeHTMLEntities(data.selftext))
 
 			//so we can have external URLS add data-bypass to the a tag
 			data.selftext_html = (typeof data.selftext_html === 'undefined') ? '' : $('<div/>').html(data.selftext_html).text();
@@ -130,7 +134,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 			if (typeof data.media_embed.content === 'undefined' && data.is_self === false && data.imgUrl !== false) {
 				//this is a single image we can embed
 				data.embededImg = true
-				//data.media_embed = new Array()
+					//data.media_embed = new Array()
 				data.media_embed = "<img class='embedImg dragImg' src='" + data.imgUrl + "' />"
 				data.expandHTML = "<li><div class='expando-button " + expandedOrCollapsed + " video'></div></li>"
 
@@ -189,7 +193,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 					return false
 				} else {
 					url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
-					//first remove query parameters from the url
+						//first remove query parameters from the url
 
 					return url + ".jpg"
 				}
@@ -206,7 +210,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 					return false
 				} else {
 					url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
-					//url = url.substr(0, url.lastIndexOf('.'));
+						//url = url.substr(0, url.lastIndexOf('.'));
 					url = url.replace('.jpg', '')
 					url = url.replace('.png', '')
 					url = url.replace('.jpeg', '')

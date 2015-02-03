@@ -42,9 +42,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				'reportConfirmYes': '.reportConfirmYes',
 				'userTxtInput': '.userTxtInput',
 				'liveTextarea': '.liveTextarea'
-
 			},
-
 			initialize: function(options) {
 				_.bindAll(this);
 				var self = this;
@@ -55,14 +53,16 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 				this.originalPoster = options.originalPoster
 				this.blinking = '<img class="blinkingFakeInput" src="/img/text_cursor.gif" />'
 
+				this.commentsDisabled = options.commentsDisabled
+
+				this.model.set('commentsDisabled', this.commentsDisabled)
+
 				if (this.model.get('author') === this.originalPoster) {
 					//$('.author').css('color', 'green')
 					//this.ui.authorNoncollapsed.css('color', 'green')
 					//this.ui.authorNoncollapsed.addClass('submitter')
 					this.model.set('showOriginalPoster', 'submitter')
-
 				} else {
-
 					//this.model.set('showOriginalPoster', 'asdasdasd')
 				}
 
@@ -90,7 +90,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 					self.commentCollectionView = new CViewComments({
 						collection: self.collection,
 						childView: CommentView,
-						originalPoster: self.originalPoster
+						originalPoster: self.originalPoster,
+						commentsDisabled: self.commentsDisabled
 					})
 
 					try {

@@ -33,7 +33,7 @@
 
     </div>
 
-    <form id='mainComment'  class="usertext comment">
+    <form id='mainComment'  class="usertext comment"  {{#if commentsDisabled}}style="display:none;"{{/if}}>
         <div class="usertext-edit" >
             <div>
                 <textarea id="singleCommentText" rows="1" cols="1" name="text" class='text userTxtInput'></textarea>

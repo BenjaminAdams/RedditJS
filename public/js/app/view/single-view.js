@@ -3,7 +3,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 		return BaseView.extend({
 			template: singleTmpl,
 			events: {
-
 				'click #retry': 'tryAgain',
 				//'click .expando-button': 'toggleExpando',
 				'click .leftArrow': 'gotoPrev',
@@ -14,13 +13,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				'click .mdHelpHide': 'hideMdHelp',
 				'submit #mainComment': 'comment',
 				'keyup .userTxtInput': 'keyPressComment'
-
 			},
-
 			regions: {
 				'thepost': '#thepost',
 				'siteTableComments': '#siteTableComments'
-
 			},
 			ui: {
 				loadingC: '#loadingC',
@@ -34,7 +30,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				'userTxtInput': '.userTxtInput',
 				'liveTextarea': '.liveTextarea'
 			},
-
 			initialize: function(options) {
 				_.bindAll(this);
 				//$(document).bind('keyup', this.keyPressComment);
@@ -53,7 +48,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
 				} else {
 					console.log('loading a model from memory')
-					//this is what we do when we pass in a model with out the comments
+						//this is what we do when we pass in a model with out the comments
 					this.model = App.curModel;
 					this.updatePageTitle(this.model.get('title'));
 					delete App.curModel; //memory management
@@ -131,7 +126,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				var sortOrder = target.text()
 				this.$('.selectedCmntSort').html(sortOrder)
 				this.$('#siteTableComments').empty()
-				//this.comments.reset()
+					//this.comments.reset()
 				this.fetchComments(this.loadComments, sortOrder)
 			},
 
@@ -169,7 +164,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 					link_id: link_id,
 					id: this.commentLink,
 					api_type: 'json',
-
 					//children: this.model.get('children').join(","),
 					children: this.commentLink,
 					byPassAuth: true
@@ -274,13 +268,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 				if (typeof this.linkedCommentModel !== 'undefined') {
 					var self = this
 					console.log('loading linked comment view')
-					//add this model to the start of the reply collection
+						//add this model to the start of the reply collection
 					this.model.attributes.replies.unshift(this.linkedCommentModel)
 					setTimeout(function() {
-						//self.$('#siteTableComments .usertext-body').first().css('background-color', '#F5F5A7')
-						self.$('#siteTableComments .usertext-body').first().addClass('highlightedComment')
-					}, 300)
-					//this.$('.usertext-body').first().css('background-color', '#F5F5A7')
+							//self.$('#siteTableComments .usertext-body').first().css('background-color', '#F5F5A7')
+							self.$('#siteTableComments .usertext-body').first().addClass('highlightedComment')
+						}, 300)
+						//this.$('.usertext-body').first().css('background-color', '#F5F5A7')
 
 				}
 			},
@@ -322,7 +316,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 					self.commentCollectionView = new CViewComments({
 						collection: collection,
 						childView: CommentView,
-						originalPoster: self.model.get('author')
+						originalPoster: self.model.get('author'),
+						commentsDisabled: self.model.get('commentsDisabled')
 					})
 					self.siteTableComments.show(self.commentCollectionView)
 
