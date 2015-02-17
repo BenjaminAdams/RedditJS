@@ -94,10 +94,12 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 var router = this;
                 if (!callback) callback = this[name];
                 var f = function() {
+                  console.log(route,name)
 
                     //middleware functions, functions that get called between every route
-                    if (name != 'single' && App.bottombarRegion.currentView) { //hide the bottom bar if not in single view
-                        App.bottombarRegion.destroy()
+                    if ( name != 'single' && App.bottombarRegion.currentView) { //hide the bottom bar if not in single view
+                        //App.bottombarRegion.destroy()
+                        App.bottombarRegion.empty();
                     }
 
                     if (typeof ga === 'function') {
