@@ -53,7 +53,7 @@ define(['App', 'underscore', 'backbone', 'jszip', 'fileSaver', 'hbs!template/dow
                 }
 
             },
-            onBeforeClose: function() {
+            OnBeforeDestroy: function() {
                 $('.side').show()
             },
             onRender: function() {

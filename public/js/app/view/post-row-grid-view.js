@@ -70,14 +70,14 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 
                 if (this.biggerImg.split('.').pop() == 'gif') {
                     this.$el.find('.gridLoading').show()
-                    //newPost.find('.gridLoading').show() //only show loading icon if its a gif
+                        //newPost.find('.gridLoading').show() //only show loading icon if its a gif
                 }
 
                 if (this.smallerImg !== false && this.nonImg === false) { //only need to hover over img when we have bigger img available
                     this.$el.one("mouseenter", function() {
                         if (self.biggerImg.split('.').pop() == 'gif') {
                             self.ui.gridLoading.attr('src', '/img/loading.gif')
-                            //newPost.find('.gridLoading').show() //only show loading icon if its a gif
+                                //newPost.find('.gridLoading').show() //only show loading icon if its a gif
                         }
 
                         //self.$el.find('img').attr('src', self.biggerImg);
@@ -88,7 +88,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                         }).error(function() {
                             console.log("ERROR loading img")
                             self.ui.gridLoading.hide() //hide loading gif
-                            //TODO show a failed to load img
+                                //TODO show a failed to load img
                         });
 
                     });
@@ -119,11 +119,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
             },
             triggerNonImgShow: function() {
                 this.$el.show()
-                //this.$el.css('visibility', 'visible')
+                    //this.$el.css('visibility', 'visible')
             },
             //onRender: function() {  //functions like onRender() wont work when we override the render() function like here
             //},
-            onBeforeClose: function() {
+            OnBeforeDestroy: function() {
                 App.off("gridView:imageLoaded", this.preloadImg)
                 this.viewClosed = true
 
@@ -164,7 +164,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 console.log("Loading bigger IMG");
                 if (biggerImg.split('.').pop() == 'gif') {
                     self.ui.gridLoading.attr('src', '/img/loading.gif')
-                    //newPost.find('.gridLoading').show() //only show loading icon if its a gif
+                        //newPost.find('.gridLoading').show() //only show loading icon if its a gif
                 }
 
                 $('<img src="' + biggerImg + '" />').load(function() {
@@ -174,7 +174,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 }).error(function() {
                     console.log("ERROR loading img")
                     self.find('.gridLoading').hide() //hide loading gif
-                    //TODO show a failed to load img
+                        //TODO show a failed to load img
                 });
 
             },

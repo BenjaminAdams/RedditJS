@@ -41,8 +41,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				App.on("header:updateSortOrder", this.updateSortOrder, this);
 				App.on("header:refreshSubreddits", this.refreshSubreddits, this);
 				App.on('header:showLoginBox', this.showLoginPopup, this)
-				//load the subreddits on the top bar
-				//we want to always display the default subreddits at first because they take a long time to get back from the api
+					//load the subreddits on the top bar
+					//we want to always display the default subreddits at first because they take a long time to get back from the api
 				this.listenTo(App.subreddits.mine, 'sync', this.displayMySubreddits)
 
 				if (typeof data !== 'undefined' && typeof data.subName !== 'undefined') {
@@ -66,7 +66,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				}
 
 			},
-			onBeforeClose: function() {
+			OnBeforeDestroy: function() {
 				App.off("header:update", this.updateHeader, false);
 				//App.off("login", this.updateSubreddits, false); //so we update the users subreddits after they login
 				App.off("logout", this.updateSubreddits, false);
@@ -116,7 +116,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 
 			updateHeader: function(model) {
 				this.model = model
-				//this.userbar.render()
+					//this.userbar.render()
 				this.ui.pagenameA.prop("href", model.get('rname'))
 				this.ui.pagenameA.text(model.get('display_name'))
 				var header_img = model.get('header_img')
@@ -193,7 +193,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 			},
 			updateSubreddits: function() {
 				App.subreddits.mine.reset()
-				//query the api for /me.json
+					//query the api for /me.json
 
 				App.subreddits.mine.fetch();
 			},

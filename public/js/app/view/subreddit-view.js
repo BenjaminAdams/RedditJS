@@ -84,7 +84,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
 			},
 
-			onBeforeClose: function() {
+			onBeforeDestroy: function() {
 				console.log('closing subreddit-view')
 					//window.stop() //prevents new images from being downloaded
 

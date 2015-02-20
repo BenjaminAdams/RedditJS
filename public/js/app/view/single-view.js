@@ -89,7 +89,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         this.setupTextareaExpanding()
 
       },
-      onBeforeClose: function() {
+      onBeforeDestroy: function() {
 
         $(window).off('resize', this.debouncer);
         //$(document).unbind('keyup', this.keyPressComment);

@@ -81,7 +81,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 
 			},
 
-			onBeforeClose: function() {
+			OnBeforeDestroy: function() {
 				App.off("header:update", this.updateHeader, false);
 				App.off("login", this.updateSubreddits, false); //so we update the users subreddits after they login
 				App.off("logout", this.updateSubreddits, false);
@@ -127,9 +127,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 
 			updateHeader: function(model) {
 				this.model = model
-				//this.userbar.render()
-				//this.ui.pagenameA.prop("href", model.get('rname'))
-				//this.ui.pagenameA.text(model.get('display_name'))
+					//this.userbar.render()
+					//this.ui.pagenameA.prop("href", model.get('rname'))
+					//this.ui.pagenameA.text(model.get('display_name'))
 
 				this.ui.srNameDisplay.attr("href", model.get('rname') + '/')
 				this.ui.srNameDisplay.text(model.get('rname'))
@@ -210,7 +210,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 			},
 			updateSubreddits: function() {
 				App.subreddits.mine.reset()
-				//query the api for /me.json
+					//query the api for /me.json
 				App.subreddits.mine.fetch();
 			},
 			toggleDropdown: function() {

@@ -88,7 +88,7 @@
          //}, 5000)
 
        },
-       onBeforeClose: function() {
+       OnBeforeDestroy: function() {
          $('#bottom-bar-container').hide()
 
          $(window).unbind('keydown', this.keyPress);

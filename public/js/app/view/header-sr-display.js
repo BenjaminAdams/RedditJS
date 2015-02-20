@@ -24,7 +24,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 			onRender: function() {
 
 			},
-			onBeforeClose: function() {
+			OnBeforeDestroy: function() {
 				App.off('header-sr-display:toggle', this.toggleDropdown)
 			},
 			toggleDropdown: function() {
@@ -40,7 +40,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/srDisplay', 'vi
 					this.$el.slideUp("slow")
 				} else {
 					this.ui.innerSR.empty()
-					//this.renderMySubreddits()
+						//this.renderMySubreddits()
 					this.displayCategory(this.selectedCategory)
 					this.$el.slideDown("slow")
 				}

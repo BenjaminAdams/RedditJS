@@ -2,11 +2,11 @@ define(['App', 'underscore', 'backbone', 'cookie'],
   function(App, _, Backbone, Cookie) {
     return Backbone.Marionette.LayoutView.extend({
 
-      destroy: function() {
-        console.log("destroying a view")
-        this.remove();
-        this.unbind();
-      },
+      // destroy: function() {
+      //   console.log("destroying a view")
+      //   this.remove();
+      //   this.unbind();
+      // },
       api: function(url, type, params, callback) {
         if (this.checkIfLoggedIn() === true || params.byPassAuth === true) {
 

@@ -73,7 +73,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 }
 
             },
-            onBeforeClose: function() {
+            OnBeforeDestroy: function() {
                 if (this.tmpLink) {
                     this.model.set('url', this.tmpLink)
                     this.model.set('external', '')
@@ -90,7 +90,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 if ($.isEmptyObject(this.lastDragPos)) {
                     this.lastDragPos.x = e.originalEvent.pageX
                     this.lastDragPos.y = e.originalEvent.pageY
-                    //create img where person clicked mouse to indicate draging direction
+                        //create img where person clicked mouse to indicate draging direction
 
                     var posIndicator = $('<div class="dragIndicatorImg"> </div>').css({
                         top: e.originalEvent.clientY,

@@ -39,11 +39,11 @@ define(['App', 'view/basem-view', 'collection/subreddit-picker', 'hbs!template/s
             },
             onRender: function() {
                 $(this.el).append("<div class='loading'> </div>")
-                //in small thumbnail mode, its sometimes impossible for the infinite scroll event to fire because there is no scrollbar yet
+                    //in small thumbnail mode, its sometimes impossible for the infinite scroll event to fire because there is no scrollbar yet
                 this.helpFillUpScreen();
                 this.siteTable.show(this.CollectionView)
             },
-            onBeforeClose: function() {
+            OnBeforeDestroy: function() {
                 $(window).off("scroll", this.watchScroll);
                 App.off("subreddit:remove", this.remove, this);
             },
@@ -65,7 +65,7 @@ define(['App', 'view/basem-view', 'collection/subreddit-picker', 'hbs!template/s
                 }
                 this.loading = false; //turn the flag on to go ahead and fetch more!
                 this.helpFillUpScreen()
-                //window.subs[this.subID] = this.collection
+                    //window.subs[this.subID] = this.collection
 
             },
             // appendPosts: function(collection) {

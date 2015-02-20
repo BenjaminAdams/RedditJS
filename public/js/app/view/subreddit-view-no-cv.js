@@ -89,9 +89,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 			},
 
-			onBeforeClose: function() {
+			OnBeforeDestroy: function() {
 				console.log('closing subreddit-view')
-				//window.stop() //prevents new images from being downloaded
+					//window.stop() //prevents new images from being downloaded
 				this.removePendingGrid()
 
 				//$(window).off('resize', this.debouncer);
@@ -113,7 +113,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				var self = this
 				this.initGridOption();
 				$(this.el).prepend("<style id='dynamicWidth'> </style>")
-				//console.log("window.subs=", window.subs)
+					//console.log("window.subs=", window.subs)
 
 				if (typeof App.subs[this.subID] === 'undefined') {
 
@@ -133,7 +133,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					this.appendPosts(this.collection) //WE DONT NEED THIS WITH MARIONETTE COLLECTION VIEWS
 
 					this.showMoarBtn()
-					//this.fetchMore();
+						//this.fetchMore();
 				}
 
 				//if (this.gridOption != 'grid') {
@@ -172,7 +172,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			removePendingGrid: function() {
 
 				var self = this
-				//console.log('deleting', self.imgAry)
+					//console.log('deleting', self.imgAry)
 				for (var id in this.imgAry) {
 					clearTimeout(self.imgAry[id]);
 				}
@@ -190,11 +190,11 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 			/**************Grid functions ****************/
 			initGridOption: function() {
 				var self = this
-				/*grid option:
-					normal - the default Reddit styling
-					small - small thumbnails in the page
-					large - full sized images in the page
-				*/
+					/*grid option:
+						normal - the default Reddit styling
+						small - small thumbnails in the page
+						large - full sized images in the page
+					*/
 				this.gridOption = $.cookie('gridOption');
 				if (typeof this.gridOption === 'undefined' || this.gridOption === null || this.gridOption === "") {
 					this.gridOption = 'normal'
@@ -213,7 +213,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					$('.side').hide()
 					this.ui.siteTable.css('margin-right', '0') //some custom CSS was making this bad in grid mode
 					this.ui.siteTable.css('text-align', 'center')
-					//calculate how many columns we will have
+						//calculate how many columns we will have
 
 					var colCount = Math.floor($(document).width() / 305)
 					if (App.isMobile() === true) {
@@ -312,12 +312,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					//this.ui.siteTable.empty();
 					this.ui.siteTable.css('text-align', 'left')
 					this.appendPosts(this.collection)
-					//this.subredditCollectionView = new SrCView({
-					//collection: this.collection,
-					//childView: PostRowView,
-					//gridOption: this.gridOption
-					// })
-					// this.siteTable.show(this.subredditCollectionView)
+						//this.subredditCollectionView = new SrCView({
+						//collection: this.collection,
+						//childView: PostRowView,
+						//gridOption: this.gridOption
+						// })
+						// this.siteTable.show(this.subredditCollectionView)
 
 					//this.subredditCollectionView.changeGridView(this.gridOption)
 
@@ -382,21 +382,22 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 					count++;
 					self.imagesAdded++
 
-					if (self.gridOption != 'grid') {
+						if (self.gridOption != 'grid') {
 
-						var newPost2 = PostRowTmpl(model.attributes)
-						fragment += newPost2
+							var newPost2 = PostRowTmpl(model.attributes)
+							fragment += newPost2
 
-						//self.ui.siteTable.append(newPost)
-						//var newPost2 = new PostRowView({
-						//model: model,
-						//gridOption: self.gridOption
-						// })
-						// self.ui.siteTable.append(newPost2.el)
+							//self.ui.siteTable.append(newPost)
+							//var newPost2 = new PostRowView({
+							//model: model,
+							//gridOption: self.gridOption
+							// })
+							// self.ui.siteTable.append(newPost2.el)
 
-						//$('#siteTable').append(newPost)
+							//$('#siteTable').append(newPost)
 
-					} else if (model.get('imgUrl')) {
+						} else
+					if (model.get('imgUrl')) {
 
 						var newPost = $(PostRowGrid({
 							model: model.attributes
@@ -408,14 +409,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 							//this is so the user can hover over the post and load the full size img/full gif
 							if (biggerImg.split('.').pop() == 'gif') {
 								newPost.find('.gridLoading').show()
-								//newPost.find('.gridLoading').show() //only show loading icon if its a gif
+									//newPost.find('.gridLoading').show() //only show loading icon if its a gif
 							}
 
 							newPost.one("mouseenter", function() {
 								console.log("Loading bigger IMG");
 								if (biggerImg.split('.').pop() == 'gif') {
 									newPost.find('.gridLoading').attr('src', '/img/loading.gif')
-									//newPost.find('.gridLoading').show() //only show loading icon if its a gif
+										//newPost.find('.gridLoading').show() //only show loading icon if its a gif
 								}
 
 								$('<img src="' + biggerImg + '" />').load(function() {
@@ -425,7 +426,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 								}).error(function() {
 									console.log("ERROR loading img")
 									newPost.find('.gridLoading').hide() //hide loading gif
-									//TODO show a failed to load img
+										//TODO show a failed to load img
 								});
 
 							});
@@ -482,7 +483,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 				//if (this.gridOption == 'grid') {
 				this.currentFetch = null //so we can abort the current fetch if its active
-				//displaying posts with collection view for everything besides gridview
+					//displaying posts with collection view for everything besides gridview
 				if (typeof res.data.children.length === 'undefined') {
 					return; //we might have an undefined length?
 				}
@@ -490,13 +491,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 				var newModels = new Backbone.Collection(models.slice((models.length - newCount), models.length))
 
 				this.appendPosts(newModels)
-				//}
+					//}
 
 				this.loading = false; //turn the flag on to go ahead and fetch more!
 				App.subs[this.subID] = this.collection
 				this.showMoarBtn()
 				this.helpFillUpScreen()
-				//fetch more  posts with the After
+					//fetch more  posts with the After
 				if (this.collection.after == "stop") {
 					console.log("AFTER = stop")
 					$(window).off("scroll", this.watchScroll);

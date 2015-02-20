@@ -43,7 +43,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 			},
 			onRender: function() {
 				console.log('sidebar rendered')
-				//this.loadLoginView()
+					//this.loadLoginView()
 				if (this.subName == "front") {
 					//this.model.set('header_img', 'img/logo.png')
 					//this.model.set('isFront', true)
@@ -61,7 +61,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 				this.showAd()
 
 			},
-			OnBeforeClose: function() {
+			OnBeforeDestroy: function() {
 				App.off("subreddit:changeGridOption", this.changeGridOption, this);
 			},
 
