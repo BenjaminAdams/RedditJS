@@ -580,10 +580,9 @@ define(['App', 'underscore', 'backbone', 'cookie'],
         options.windowName = options.windowName || 'Login with Reddit'; // should not include space for IE
         options.windowOptions = 'location=0,status=0,width=' + w + ',height=' + h + ',left=' + left + ',top=' + top
         var that = this;
-        console.log(options.path);
         that._oauthWindow = window.open(options.path, options.windowName, options.windowOptions);
         that._oauthInterval = window.setInterval(function() {
-          if (that._oauthWindow.destroy) {
+          if (that._oauthWindow.closed) {
             window.clearInterval(that._oauthInterval);
             options.callback();
           }
