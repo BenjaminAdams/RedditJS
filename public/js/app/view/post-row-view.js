@@ -38,7 +38,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 
                 this.lastDragPos = {} //keeps track of what direction the user is dragging the image
                 this.dragTimeout = null;
-                this.dragImgMinWidth = 100
+                this.dragImgMinWidth = 100;
 
                 // this.isSingle = data.isSingle || false
                 if (data.isSingle && this.model.get('is_self') === false) {
@@ -53,7 +53,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 }
 
                 if (typeof data.expand !== 'undefined' && (this.model.get('embededImg') === true || this.model.get('selftext_html'))) {
-                    console.log('expandhtml=', this.model.get('expandHTML'))
                     this.expand = true;
                 }
 
@@ -65,13 +64,15 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 //     this.template = PostRowLargeTmpl
                 // }
 
+                if (App.slideShowActive) {
+                    this.model.set('permalink', '/comments/' + this.model.get('subreddit') + "/" + this.model.get('id') + '/slideshow');
+                }
+
             },
             onRender: function() {
-
                 if (this.expand === true) {
                     this.toggleExpando()
                 }
-
             },
             OnBeforeDestroy: function() {
                 if (this.tmpLink) {

@@ -14,6 +14,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         'click .mdHelpHide': 'hideMdHelp',
         'submit #mainComment': 'comment',
         'keyup .userTxtInput': 'keyPressComment',
+        'click .startSlideshow': 'startSlideshow'
 
       },
       regions: {
@@ -81,6 +82,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         this.triggerID()
         this.scrollTop()
         $(window).resize(this.debouncer(function(e) {
+          if (self.destroyed) return
           self.resize()
         }));
         this.disableComment()
@@ -90,6 +92,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
       },
       onBeforeDestroy: function() {
+
+        this.destroyed = true
 
         $(window).off('resize', this.debouncer);
         //$(document).unbind('keyup', this.keyPressComment);
@@ -104,6 +108,18 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
           this.fetchXhr.abort();
         }
         this.fetchXhr.abort()
+
+      },
+      startSlideshow: function() {
+        App.curModel = this.model;
+        this.fullScreen(this.el);
+        App.trigger("bottombar:selected", "t3_" + this.id);
+
+        //'comments/:subName/:id/slideshow': 'slideshow',
+
+        Backbone.history.navigate('/comments/' + this.subName + "/" + App.curModel.get('id') + '/slideshow', {
+          trigger: true
+        });
 
       },
 
@@ -308,7 +324,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
         App.on("comment:addOneChild" + this.model.get('name'), this.addOneChild);
 
-        console.log('single view passing in op', self.model.get('author'))
+        //console.log('single view passing in op', self.model.get('author'))
 
         require(['cView/comments', 'view/comment-view'], function(CViewComments, CommentView) {
           self.commentCollectionView = new CViewComments({

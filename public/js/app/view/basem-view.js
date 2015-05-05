@@ -1,12 +1,6 @@
 define(['App', 'underscore', 'backbone', 'cookie'],
   function(App, _, Backbone, Cookie) {
     return Backbone.Marionette.LayoutView.extend({
-
-      // destroy: function() {
-      //   console.log("destroying a view")
-      //   this.remove();
-      //   this.unbind();
-      // },
       api: function(url, type, params, callback) {
         if (this.checkIfLoggedIn() === true || params.byPassAuth === true) {
 
@@ -73,6 +67,15 @@ define(['App', 'underscore', 'backbone', 'cookie'],
         $('html, body').animate({
           scrollTop: 0
         }, 150);
+      },
+      fullScreen: function(e) {
+        if (e.requestFullscreen) {
+          e.requestFullscreen();
+        } else if (e.webkitRequestFullscreen) {
+          e.webkitRequestFullscreen();
+        } else if (e.mozRequestFullScreen) {
+          e.mozRequestFullScreen();
+        }
       },
       dynamicStylesheet: function(name) {
 

@@ -34,7 +34,6 @@
          }
 
          this.subID = this.subName + this.domain + this.sortOrder + this.timeFrame
-         console.log('subid in btm bar', this.subID)
          this.selectedID = false;
          this.pixelsOfOneImg = 97.5
 
@@ -62,14 +61,11 @@
        },
        onRender: function() {
          var self = this
-           //$('#bottom-bar').show()
          App.trigger("single:giveBtnBarID"); //ask the single view to give you the btm bar ID to make active
 
          if (typeof App.subs[this.subID] !== 'undefined') {
-           console.log('loading collection from memory')
+           //console.log('loading collection from memory')
            this.collection = App.subs[this.subID]
-             //   this.appendPosts(this.collection)
-             // this.selected(this.selectedID)
          }
 
          this.subredditCollectionView = new SrCView({
@@ -83,10 +79,6 @@
 
          $('#bottom-bar-container').show()
 
-         //setTimeout(function() {
-         //self.selected()
-         //}, 5000)
-
        },
        OnBeforeDestroy: function() {
          $('#bottom-bar-container').hide()
@@ -98,25 +90,17 @@
          App.off("btmbar:gotoNext", this.gotoNext, this);
          this.deleted = true
 
-         //Backbone.View.prototype.remove.call(this);
-         console.log('********removed the btm bar **')
+         App.fullscreenSlideShow.reset();
 
-         //call the superclass remove method
-         //Backbone.View.prototype.remove.apply(this, arguments);
        },
        keyPress: function(e) {
-         //console.log('keydown', e.which)
          if (this.collection.length > 2) {
            if (e.target.tagName.toLowerCase() !== 'input' && e.target.tagName.toLowerCase() !== 'textarea') {
-
-             //find the selected model
-
              if (e.which == 39) //right key
              {
                this.gotoNext()
              } else if (e.which == 37) { //left key
                this.gotoPrev()
-
              }
            }
          }
@@ -131,9 +115,7 @@
          if (typeof prevModel !== 'undefined') {
            App.curModel = prevModel
            var prevId = prevModel.get('id')
-           Backbone.history.navigate('/r/' + this.subName + "/comments/" + prevId + '/x', {
-             trigger: true
-           })
+           this.gotoANewPage(this.subName, prevId)
          }
        },
        gotoNext: function() {
@@ -146,10 +128,19 @@
          if (typeof nextModel !== 'undefined') {
            App.curModel = nextModel
            var nextId = nextModel.get('id')
-           Backbone.history.navigate('/r/' + this.subName + "/comments/" + nextId + '/x', {
-             trigger: true
-           })
+           this.gotoANewPage(this.subName, nextId)
          }
+       },
+       gotoANewPage: function(subName, id) {
+         var url = '/r/' + subName + "/comments/" + id + '/x';
+
+         if (App.slideShowActive) {
+           url = '/comments/' + this.subName + "/" + App.curModel.get('id') + '/slideshow';
+         }
+
+         Backbone.history.navigate(url, {
+           trigger: true
+         });
        },
        shouldWeFetchMore: function(index) {
          var amountLeft = this.collection.length - index
@@ -264,7 +255,6 @@
          if (this.loading === false) {
            this.showLoading()
 
-           console.log('fetching MOAR')
            this.loading = true
 
            setTimeout(function() {
@@ -283,9 +273,12 @@
          this.$el.show()
        },
        gotNewPosts: function(models, res) {
-
          if (typeof res.data.children.length === 'undefined') {
            return; //we might have an undefined length?
+         }
+
+         if (App.slideShowActive) {
+           this.collection.removeNonImgs()
          }
 
          //fetch more  posts with the After
@@ -300,12 +293,11 @@
          this.markSelected()
        },
        gotoSingle: function(e) {
-         //   var name = this.$(e.currentTarget).data('id')
          var name = this.$(e.currentTarget).attr('id')
          App.curModel = this.collection.findWhere({
            name: name
          })
-         console.log('curmodel=', App.curModel)
+
          this.selected(name) //using the router to goto the selected link, pre selecting this post before we travel there
        },
        showLoading: function() {

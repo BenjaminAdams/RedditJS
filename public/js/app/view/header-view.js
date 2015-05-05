@@ -40,9 +40,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				App.on("logout", this.updateSubreddits, this);
 				App.on("header:updateSortOrder", this.updateSortOrder, this);
 				App.on("header:refreshSubreddits", this.refreshSubreddits, this);
-				App.on('header:showLoginBox', this.showLoginPopup, this)
-					//load the subreddits on the top bar
-					//we want to always display the default subreddits at first because they take a long time to get back from the api
+				App.on('header:showLoginBox', this.showLoginPopup, this);
+				//load the subreddits on the top bar
+				//we want to always display the default subreddits at first because they take a long time to get back from the api
 				this.listenTo(App.subreddits.mine, 'sync', this.displayMySubreddits)
 
 				if (typeof data !== 'undefined' && typeof data.subName !== 'undefined') {
@@ -66,13 +66,13 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header', 'view/
 				}
 
 			},
-			OnBeforeDestroy: function() {
-				App.off("header:update", this.updateHeader, false);
+			onBeforeDestroy: function() {
+				App.off("header:update", this.updateHeader);
 				//App.off("login", this.updateSubreddits, false); //so we update the users subreddits after they login
-				App.off("logout", this.updateSubreddits, false);
-				App.off("header:updateSortOrder", this.updateSortOrder, false);
-				App.off("header:refreshSubreddits", this.refreshSubreddits, false);
-				App.off('header:showLoginBox', this.showLoginPopup, false);
+				App.off("logout", this.updateSubreddits);
+				App.off("header:updateSortOrder", this.updateSortOrder);
+				App.off("header:refreshSubreddits", this.refreshSubreddits);
+				App.off('header:showLoginBox', this.showLoginPopup);
 			},
 
 			checkHashOpt: function() {

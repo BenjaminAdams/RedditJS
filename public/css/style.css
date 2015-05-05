@@ -421,6 +421,7 @@ left:1px;
 height:70px;
 width: 99999px;
 overflow: hidden;
+z-index:2;
 }
 
 #bottom-bar {
@@ -621,25 +622,35 @@ max-width: 69%;
   cursor: pointer;
   position:relative;
   top:5px;
-  width:85px;
+  width:100px;
   z-index:3;
 }
 
 #arrowNavHelp {
 display:none;
 margin-right:30px;
-
 height: 34px;
 width: 50px;
 float: right;
-
 }
-
-
 
 .arrowNav span{
   cursor: pointer;
 margin:0 50px;
+}
+
+.startSlideshow {
+font-size: 10px;
+margin: 0px !important;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .drop-choices-single {

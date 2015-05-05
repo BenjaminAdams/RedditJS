@@ -39,7 +39,8 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
             mainRegion: "#content",
             popupRegion: "#popupWindow",
             sidebarRegion: '.side',
-            bottombarRegion: '#bottom-bar-container '
+            bottombarRegion: '#bottom-bar-container',
+            fullscreenSlideShow: '#fullscreenSlideShow'
         });
 
         App.addInitializer(function() {

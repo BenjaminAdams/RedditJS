@@ -38,7 +38,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     }
                 }
 
-                this.currentHeader = null
+                this.currentHeader = null;
+                App.slideShowActive = false;
 
                 this.initHeader()
 
@@ -72,6 +73,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'r/:subName/comments/:id/:slug(/)': 'single',
                 'r/:subName/comments/:id/:slug/:commentLink(/)': 'single',
                 'comments/:id(/)': 'singleById',
+                'comments/:subName/:id/slideshow': 'slideshow',
 
                 'u/:username(/)': 'user',
                 'user/:username(/)': 'user',
@@ -86,7 +88,6 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'search/:q(/)': 'search',
                 'search/:q/:timeFrame(/)': 'search',
                 'search/:q/:timeFrame/:sortOrder(/)': 'search'
-
             },
             //we override the route function 
             //middleware, this will be fired before every route
@@ -94,12 +95,22 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 var router = this;
                 if (!callback) callback = this[name];
                 var f = function() {
-                  console.log(route,name)
 
                     //middleware functions, functions that get called between every route
-                    if ( name != 'single' && App.bottombarRegion.currentView) { //hide the bottom bar if not in single view
+                    if ((name !== 'single' && name !== 'slideshow') && App.bottombarRegion.currentView) { //hide the bottom bar if not in single view
                         //App.bottombarRegion.destroy()
                         App.bottombarRegion.empty();
+                    }
+
+                    if (name === 'slideshow' && !App.slideShowActive) { //hide sidebar and header if doing slideshow
+                        //App.bottombarRegion.destroy()
+                        App.sidebarRegion.reset();
+                        App.headerRegion.reset();
+                        App.slideShowActive = true;
+                    } else if (name !== 'slideshow' && App.slideShowActive) {
+                        //if user closes slideshow enable header
+                        router.initHeader();
+                        App.slideShowActive = false;
                     }
 
                     if (typeof ga === 'function') {
@@ -158,12 +169,22 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                         sortOrder: sortOrder || 'hot',
                         domain: domain
                     }));
-
                 })
             },
+            slideshow: function(subName, id) {
 
+                require(['view/slideshow-view'], function(View) {
+                    App.mainRegion.show(new View({
+                        subName: subName,
+                        id: id
+                    }));
+                })
+
+                this.doBtmBar(subName, id)
+            },
             //'r/:subName/comments/:id/:slug(/):commentLink(/)': 'single',
             single: function(subName, id, slug, commentLink) {
+                var self = this
                 if (App.subs.length > 1) {
                     App.stop()
                 }
@@ -171,7 +192,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 this.subName = subName
 
-                require(['view/single-view', 'view/bottom-bar-view'], function(SingleView, BottomBarView) {
+                require(['view/single-view'], function(SingleView) {
 
                     App.mainRegion.show(new SingleView({
                         subName: subName,
@@ -179,13 +200,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                         commentLink: commentLink || null
                     }));
 
-                    //only update btm bar if the subreddit changes
-                    if ((typeof App.bottombarRegion.currentView === 'undefined' || App.bottombarRegion.currentView.subName != subName) && App.settings.get('btmbar') === true && $(document).width() > App.mobileWidth) {
-                        App.bottombarRegion.show(new BottomBarView({
-                            subName: subName,
-                            id: id
-                        }))
-                    }
+                    self.doBtmBar(subName, id)
 
                 })
 
@@ -350,9 +365,19 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                         })
                     }
 
-                    // this.sidebar = new SidebarView({
-                    //     subName: subName
-                    // })
+                }
+            },
+            doBtmBar: function(subName, id) {
+                //only update btm bar if the subreddit changes
+                if ((typeof App.bottombarRegion.currentView === 'undefined' || App.bottombarRegion.currentView.subName != subName) && App.settings.get('btmbar') === true && $(document).width() > App.mobileWidth) {
+
+                    require(['view/bottom-bar-view'], function(BottomBarView) {
+                        App.bottombarRegion.show(new BottomBarView({
+                            subName: subName,
+                            id: id
+                        }))
+                    })
+
                 }
             },
 
@@ -366,7 +391,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
 
                 var resizeFunction = _.debounce(function(e) {
 
-                    console.log('resizing')
+                    if (App.slideShowActive) return
 
                     App.trigger('resized') //tells other views the page has been resized
 

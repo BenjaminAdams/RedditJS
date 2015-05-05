@@ -124,6 +124,12 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 			this.instanceUrl = this.getUrl()
 			return models;
 		},
+		removeNonImgs: function() {
+			//the slideshow needs to only have images in it
+			var tmp = this.remove(this.where({
+				imgUrl: false
+			}));
+		},
 		//checks the subreddit to make sure it has no image posts.
 		//returns true if it contains at least one image
 		hasNoImages: function() {
