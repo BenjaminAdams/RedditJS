@@ -1,25 +1,19 @@
  define(['App', 'underscore', 'backbone', 'hbs!template/btmbar', 'hbs!template/post-row-small', 'collection/subreddit', 'cView/subreddit', 'view/post-row-view'],
    function(App, _, Backbone, btmbarTmpl, PostViewSmallTpl, SubredditCollection, SrCView, PostRowView) {
      return Backbone.Marionette.LayoutView.extend({
-
-       //   el: $("#bottom-bar"),
        template: btmbarTmpl,
        regions: {
          'posts': '#bottom-bar'
        },
        ui: {
-         bottomBar: "#bottom-bar"
+         bottomBar: "#bottom-bar",
+         preloadNextImg: '#preloadNextImg'
        },
        events: {
          'mousemove': 'scrollBottomBar',
          'mouseleave': 'stopScrolling',
          'click .thumbnailSmall': 'gotoSingle'
-           //'click .tabmenu-right li': 'changeGridOption',
-           //'click #retry': 'tryAgain',
-           //'click .thumbnailSmall': 'gotoSingle'
-
        },
-
        initialize: function(options) {
          //_.bindAll(this);
          _.bindAll(this, 'gotNewPosts', 'keyPress')
@@ -105,12 +99,17 @@
            }
          }
        },
-       gotoPrev: function() {
+       getCurrentCollectionIndex: function() {
          var selectedModel = this.collection.findWhere({
            name: this.selectedID
          })
          var index = this.collection.indexOf(selectedModel);
          this.shouldWeFetchMore(index)
+         return index
+       },
+       gotoPrev: function() {
+         var index = this.getCurrentCollectionIndex()
+
          var prevModel = this.collection.at(index - 1);
          if (typeof prevModel !== 'undefined') {
            App.curModel = prevModel
@@ -119,17 +118,27 @@
          }
        },
        gotoNext: function() {
-         var selectedModel = this.collection.findWhere({
-           name: this.selectedID
-         })
-         var index = this.collection.indexOf(selectedModel);
-         this.shouldWeFetchMore(index)
+         var index = this.getCurrentCollectionIndex()
+
          var nextModel = this.collection.at(index + 1);
          if (typeof nextModel !== 'undefined') {
            App.curModel = nextModel
            var nextId = nextModel.get('id')
            this.gotoANewPage(this.subName, nextId)
          }
+       },
+       preloadNextImg: function() {
+         var index = this.getCurrentCollectionIndex()
+
+         var nextModel = this.collection.at(index + 1);
+         //if no model found or if the dom is not loaded return
+         if (!nextModel || !this.ui || this.ui.preloadNextImg) return
+
+         var nextImg = nextModel.get('imgUrl')
+         if (nextImg) {
+           this.ui.preloadNextImg.attr('src', nextImg)
+         }
+
        },
        gotoANewPage: function(subName, id) {
          var url = '/r/' + subName + "/comments/" + id + '/x';
@@ -160,8 +169,10 @@
          var self = this
          if (typeof name === 'string') {
            this.selectedID = name
-
          }
+
+         this.preloadNextImg()
+
          var selectedThumb = this.markSelected()
          var fakeE = {}
          fakeE.clientX = selectedThumb.offset()

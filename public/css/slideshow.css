@@ -10,8 +10,9 @@
   position:fixed;
   width:100%;
   height:100%;
-  top:0;
-  right:0;
+  top: 0;
+  right: 0;
+  left: 0;
   margin: 0px;
 }
 
@@ -19,21 +20,124 @@ figure#slideshow {
   width: 100%; 
   margin: 0 auto; 
   position: absolute; 
-  border: 1px solid #fff;
   height:100%;
+  cursor: pointer;
 }
 figure#slideshow img { 
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: auto; 
-  height:97%;
+  display: block;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  max-width:100%;
+  /*height:97%;*/
   margin: 0 auto;
 }
 
-#content.slideShow:fullscreen { display: flex; justify-content: center; align-items: center;}
+/*#content.slideShow:fullscreen { display: flex; justify-content: center; align-items: center;}
 #content.slideShow:fullscreen figure { width: 80%; margin: 0 auto; }
 :-webkit-fullscreen { width: 100%; height: 100%; }
-*:-moz-fullscreen { background: black; }
+*:-moz-fullscreen { background: black; }*/
 
+.slideshowSingleContainer #thepost {
+  margin:5px auto;
+  max-width:650px;
+  min-height: 40px;
+  background-color: rgba(255, 252, 252, 0.92);
+  border-top: 1px solid rgba(255, 252, 252, 0.92);
+  border-bottom: 1px solid rgba(255, 252, 252, 0.92);
+  z-index:3;
+}
+
+.slideshowSingleContainer #thepost .thumbnail {
+  display: none;
+}
+
+
+
+.slideshowSingleContainer #topBarContainer {
+  position:fixed;
+  top:0;
+  width:100%;
+  height:250px;
+  z-index:3;
+  opacity: 0;
+  -webkit-transition: opacity 0.8s;
+  -moz-transition: opacity 0.8s;
+  -o-transition: opacity 0.8s;
+  transition: opacity 0.8s;
+}
+
+.slideshowSingleContainer #topBarContainer:hover {
+  opacity: 1;
+}
+
+.slideshowSingleContainer #topBarContainer .link {
+  margin-bottom: 0;
+}
+
+
+.slideshowSingleContainer #controls {
+  font-size: 30px;
+}
+
+.slideshowSingleContainer #controls .fa {
+  cursor: pointer;
+}
+
+.slideshowSingleContainer #controls .fa-pause {
+  color:red;
+}
+
+.slideshowSingleContainer #controls .fa-play {
+  color:green;
+}
+
+.slideshowSingleContainer #fullscreen {
+  position: fixed;
+  right: 0px;
+  z-index: 3;
+  top: 2px;
+  color:white;
+  cursor: pointer;
+  padding:7px;
+}
+
+.slideshowSingleContainer #togglePlayPause {
+  position: fixed;
+  top: 9px;
+  right: 42px;
+}
+
+
+.slideshowSingleContainer #chosen {
+border-radius:10px;
+width:5px;
+padding-top:5px; 
+padding-bottom:5px;
+background-image: -webkit-linear-gradient(top, #cccccc, #330000);
+background-image: -o-linear-gradient(top, #cccccc, #330000);
+background-image: -moz-linear-gradient(top, #cccccc, #330000);
+text-align:center;
+color:#ffffff;
+font-weight:bold;
+font-size:large;
+margin-left:10px;
+}
+
+.slideshowSingleContainer #slider {
+  position: fixed;
+  right: 80px;
+  top: 7px;
+}
+
+/*this is only for webkit, not opera*/
+.slideshowSingleContainer input[type='range'] {  
+-webkit-appearance: none;
+width:50px;
+padding-left:2px; 
+padding-right:2px;
+-webkit-border-radius: 10px;  
+background-image: -webkit-linear-gradient(top, #000000, #333333, #000000);
+}  

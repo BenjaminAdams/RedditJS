@@ -164,6 +164,8 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
 				data.external = 'data-bypass'
 			}
 
+			data.actualPermalink = data.permalink //we have this because we override the permalink in the slideshow, but we need a link to get to the comment page
+
 			//console.log(data.media_embed.content)
 
 			//delete things we wont use to save space in localstorage

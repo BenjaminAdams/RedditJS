@@ -40,6 +40,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 this.dragTimeout = null;
                 this.dragImgMinWidth = 100;
 
+                this.expand = data.expand
+
                 // this.isSingle = data.isSingle || false
                 if (data.isSingle && this.model.get('is_self') === false) {
                     //changes the main post link to be external instead of linking back to itself
@@ -52,7 +54,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     //  this.model.set('external', '')
                 }
 
-                if (typeof data.expand !== 'undefined' && (this.model.get('embededImg') === true || this.model.get('selftext_html'))) {
+                if (typeof this.expand !== 'undefined' && this.expand !== false && (this.model.get('embededImg') === true || this.model.get('selftext_html'))) {
                     this.expand = true;
                 }
 
@@ -67,6 +69,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 if (App.slideShowActive) {
                     this.model.set('permalink', '/comments/' + this.model.get('subreddit') + "/" + this.model.get('id') + '/slideshow');
                 }
+
+                this.model.set('expand', this.expand)
 
             },
             onRender: function() {

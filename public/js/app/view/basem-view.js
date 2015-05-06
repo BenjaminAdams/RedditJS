@@ -69,12 +69,28 @@ define(['App', 'underscore', 'backbone', 'cookie'],
         }, 150);
       },
       fullScreen: function(e) {
-        if (e.requestFullscreen) {
-          e.requestFullscreen();
-        } else if (e.webkitRequestFullscreen) {
-          e.webkitRequestFullscreen();
-        } else if (e.mozRequestFullScreen) {
-          e.mozRequestFullScreen();
+        if (!window.screenTop && !window.screenY) {
+          //if already in fullscreen mode toggle it off
+          this.exitFullScreen(e)
+        } else {
+          //go fullscreen mode
+          if (e.requestFullscreen) {
+            e.requestFullscreen();
+          } else if (e.webkitRequestFullscreen) {
+            e.webkitRequestFullscreen();
+          } else if (e.mozRequestFullScreen) {
+            e.mozRequestFullScreen();
+          }
+        }
+
+      },
+      exitFullScreen: function(e) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
         }
       },
       dynamicStylesheet: function(name) {

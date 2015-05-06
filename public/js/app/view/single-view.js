@@ -112,7 +112,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       },
       startSlideshow: function() {
         App.curModel = this.model;
-        this.fullScreen(this.el);
+        this.fullScreen(this.el.parentNode);
         App.trigger("bottombar:selected", "t3_" + this.id);
 
         //'comments/:subName/:id/slideshow': 'slideshow',

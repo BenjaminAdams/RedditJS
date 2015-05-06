@@ -369,7 +369,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             },
             doBtmBar: function(subName, id) {
                 //only update btm bar if the subreddit changes
-                if ((typeof App.bottombarRegion.currentView === 'undefined' || App.bottombarRegion.currentView.subName != subName) && App.settings.get('btmbar') === true && $(document).width() > App.mobileWidth) {
+                if ((typeof App.bottombarRegion.currentView === 'undefined' || App.bottombarRegion.currentView.subName != subName) && App.settings.get('btmbar') === true && ($(document).width() > App.mobileWidth || App.slideShowActive)) {
 
                     require(['view/bottom-bar-view'], function(BottomBarView) {
                         App.bottombarRegion.show(new BottomBarView({

@@ -1,6 +1,6 @@
 //code from https://github.com/BoilerplateMVC/Marionette-Require-Boilerplate
-define(['jquery', 'backbone', 'marionette', 'underscore'],
-    function($, Backbone, Marionette, _) {
+define(['jquery', 'backbone', 'marionette', 'underscore', 'cookie'],
+    function($, Backbone, Marionette, _, cookie) {
         var App = new Backbone.Marionette.Application();
 
         //bootstrap the user variable
@@ -8,6 +8,9 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
         App.baseURL = 'https://reddit.com/'
         App.embedId = 0 //use this ID to pass messages back and forth between widget and main frame
         App.isEmbeded = false
+        App.slideShowSpeed = $.cookie('slideShowSpeed') || 8000
+        App.slideShowPaused = $.cookie('slideShowPaused') || false
+        App.slideShowPaused = parseBool(App.slideShowPaused) //storing a bool in a cookie will convert it to a string
 
         //#reqAsBot
         if (window.location.hash) {
@@ -71,6 +74,18 @@ define(['jquery', 'backbone', 'marionette', 'underscore'],
                 }
             }
         });
+
+        function parseBool(value) {
+            if (typeof value === "boolean") return value;
+
+            if (typeof value === "number") {
+                return value === 1 ? true : value === 0 ? false : undefined;
+            }
+
+            if (typeof value != "string") return undefined;
+
+            return value.toLowerCase() === 'true' ? true : false;
+        }
 
         return App;
     });
