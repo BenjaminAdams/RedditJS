@@ -69,7 +69,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
         }, 150);
       },
       fullScreen: function(e) {
-        if (!window.screenTop && !window.screenY) {
+        if (this.isDocumentInFullScreenMode()) {
           //if already in fullscreen mode toggle it off
           this.exitFullScreen(e)
         } else {
@@ -93,6 +93,14 @@ define(['App', 'underscore', 'backbone', 'cookie'],
           document.webkitExitFullscreen();
         }
       },
+
+      isDocumentInFullScreenMode: function() {
+        // Note that the browser fullscreen (triggered by short keys) might
+        // be considered different from content fullscreen when expecting a boolean
+        return ((document.fullscreenElement && document.fullscreenElement !== null) || // alternative standard methods
+          document.mozFullScreen || document.webkitIsFullScreen); // current working methods
+      },
+
       dynamicStylesheet: function(name) {
 
         if (App.settings.get('cssType') === 'nightmode' || App.settings.get('enableNightmode') === true) {
