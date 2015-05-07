@@ -104,6 +104,16 @@ figure#slideshow img {
   padding:7px;
 }
 
+.slideshowSingleContainer #exitBtn {
+  position: fixed;
+  left: 0px;
+  z-index: 4;
+  top: 0px;
+  color: white;
+  font-size: 18px;
+  padding: 2px;
+}
+
 .slideshowSingleContainer #togglePlayPause {
   position: fixed;
   top: 9px;

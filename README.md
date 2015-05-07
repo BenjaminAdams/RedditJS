@@ -16,7 +16,7 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * **Download Images:** Download all images and compress them into a zip.  Done all on the client side. [example](http://www.redditjs.com/download/aww)
  * **[Widget embed codes](http://embed.redditjs.com):**  for reddit posts or subreddits details and examples below.
  * **Same Styles everywhere:** Option to use the same CSS styles from one subreddit all over reddit. I did this so I could use [murica](http://redditjs.com/r/murica) everywhere.
-
+ * **Subreddit Slideshow:** Create a never ending slideshow from the images in a subreddit.  [Reddit Slideshow example](http://redditjs.com/comments/aww/355ay7/slideshow)  
 ####RedditJS is built with :
  * Node <http://nodejs.org/>
  * Backbone <https://github.com/jashkenas/backbone>

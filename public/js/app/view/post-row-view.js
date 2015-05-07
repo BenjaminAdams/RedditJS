@@ -23,9 +23,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
             ui: {
                 'expandoButton': '.expando-button',
                 'postRowContent': '.postRowContent',
-                upArrow: '.upArrow',
-                downArrow: '.downArrow',
-                midcol: '.midcol',
+                'upArrow': '.upArrow',
+                'downArrow': '.downArrow',
+                'midcol': '.midcol',
                 'reportConfirm': '.reportConfirm',
                 'reportConfirmYes': '.reportConfirmYes',
                 'save': '.save',
@@ -41,6 +41,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 this.dragImgMinWidth = 100;
 
                 this.expand = data.expand
+
+                App.on('postView:updateThumbNailPermalinks', this.updateThumbNailPermalinks, this)
 
                 // this.isSingle = data.isSingle || false
                 if (data.isSingle && this.model.get('is_self') === false) {
@@ -79,6 +81,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 }
             },
             OnBeforeDestroy: function() {
+                App.off('postView:updateThumbNailPermalinks')
                 if (this.tmpLink) {
                     this.model.set('url', this.tmpLink)
                     this.model.set('external', '')

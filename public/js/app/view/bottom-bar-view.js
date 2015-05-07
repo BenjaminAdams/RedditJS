@@ -35,6 +35,8 @@
          App.on("btmbar:remove", this.remove, this); //clears everthing in this view
          App.on("btmbar:gotoPrev", this.gotoPrev, this);
          App.on("btmbar:gotoNext", this.gotoNext, this);
+         App.on('btmbar:restAndrefetch', this.restAndrefetch, this);
+         App.on('btmbar:rerender', this.rerender, this)
          $(window).bind('keydown', this.keyPress); //remove this later!
 
          this.loading = false; //keeps track if we are loading more posts or not
@@ -74,7 +76,7 @@
          $('#bottom-bar-container').show()
 
        },
-       OnBeforeDestroy: function() {
+       onBeforeDestroy: function() {
          $('#bottom-bar-container').hide()
 
          $(window).unbind('keydown', this.keyPress);
@@ -82,6 +84,8 @@
          App.off("bottombar:selected", this.selected, this)
          App.off("btmbar:gotoPrev", this.gotoPrev, this);
          App.off("btmbar:gotoNext", this.gotoNext, this);
+         App.off('btmbar:restAndrefetch', this.restAndrefetch, this);
+         App.off('btmbar:rerender', this.rerender, this)
          this.deleted = true
 
          App.fullscreenSlideShow.reset();
@@ -99,7 +103,19 @@
            }
          }
        },
+       restAndrefetch: function() {
+         this.collection.reset()
+         this.loading = false
+         this.fetchMore()
+       },
+       rerender: function(){
+         this.render()
+       },
        getCurrentCollectionIndex: function() {
+         if (!this.collection || this.collection.length < 1) {
+           return 0
+         }
+
          var selectedModel = this.collection.findWhere({
            name: this.selectedID
          })
@@ -118,15 +134,28 @@
          }
        },
        gotoNext: function() {
+         var nextId, nextModel
          var index = this.getCurrentCollectionIndex()
+         if(!this.collection || this.collection.length < 1) {
+          return
+         }
+          
 
-         var nextModel = this.collection.at(index + 1);
+         nextModel = this.collection.at(index + 1);
          if (typeof nextModel !== 'undefined') {
            App.curModel = nextModel
-           var nextId = nextModel.get('id')
+           nextId = nextModel.get('id')
+           this.gotoANewPage(this.subName, nextId)
+         } else {
+           //if we are at the end of the slideshow goto the first post
+           nextModel = this.collection.at(0);
+           if (!nextModel) return
+           App.curModel = nextModel
+           nextId = nextModel.get('id')
            this.gotoANewPage(this.subName, nextId)
          }
        },
+
        preloadNextImg: function() {
          var index = this.getCurrentCollectionIndex()
 

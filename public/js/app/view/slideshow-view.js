@@ -6,6 +6,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/slideshow', 'view/basem-v
       events: {
         'click #retry': 'tryAgain',
         'click #fullscreen': 'goFullScreen',
+        'click #exitBtn': 'exitSlideshow',
         'click #slideshow': 'gotoNextOrPrev',
         'click #togglePlayPause': 'togglePlayPause',
         'keyup .userTxtInput': 'keyPressComment',
@@ -31,9 +32,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/slideshow', 'view/basem-v
         if (typeof App.curModel === 'undefined') {
           this.fetchModel(null)
         } else {
-          console.log('loading a model from memory')
+          //console.log('loading a model from memory')
           this.model = App.curModel;
-          this.updatePageTitle(this.model.get('title'));
+          this.updatePageTitle(this.model.get('title') + ' | slideshow');
           delete App.curModel; //memory management
           this.renderModel(this.model);
         }
@@ -92,17 +93,18 @@ define(['App', 'underscore', 'backbone', 'hbs!template/slideshow', 'view/basem-v
       },
       togglePlayPause: function() {
         if (App.slideShowPaused === true) {
-          this.ui.togglePlayPause.removeClass('fa-pause').addClass('fa-play')
+          this.ui.togglePlayPause.removeClass('fa-play').addClass('fa-pause')
           App.slideShowPaused = false;
           $.cookie('slideShowPaused', 'false')
         } else {
           App.slideShowPaused = true;
           $.cookie('slideShowPaused', 'true')
-          this.ui.togglePlayPause.removeClass('fa-play').addClass('fa-pause')
+          this.ui.togglePlayPause.removeClass('fa-pause').addClass('fa-play')
+
         }
       },
       goFullScreen: function() {
-        this.fullScreen(this.el.parentNode);
+        this.fullScreen(document.body);
       },
       imgLoaded: function(x, y, z) {
         console.log(x, y, z)
@@ -128,7 +130,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/slideshow', 'view/basem-v
           parseNow: true
         });
 
-        //this.render();
         this.fetchXhr = this.model.fetch({
           success: this.renderModel,
           error: this.fetchError
@@ -167,6 +168,18 @@ define(['App', 'underscore', 'backbone', 'hbs!template/slideshow', 'view/basem-v
         //tells the btm bar which ID we are on
         App.trigger("bottombar:selected", "t3_" + this.id);
         //App.trigger("bottombar:selected", this.model);
+      },
+      exitSlideshow: function() {
+
+        var gotoUrl = '/r/' + this.subName
+        if (this.model && this.model.get('actualPermalink')) {
+          //goto the current slide the user was on or send them to subreddit page
+          gotoUrl = this.model.get('actualPermalink')
+        }
+
+        Backbone.history.navigate(gotoUrl, {
+          trigger: true
+        });
       },
       gotoNextOrPrev: function(e) {
         console.log('slideshow clicked', e)

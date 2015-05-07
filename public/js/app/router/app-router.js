@@ -73,6 +73,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'r/:subName/comments/:id/:slug(/)': 'single',
                 'r/:subName/comments/:id/:slug/:commentLink(/)': 'single',
                 'comments/:id(/)': 'singleById',
+
                 'comments/:subName/:id/slideshow': 'slideshow',
 
                 'u/:username(/)': 'user',
@@ -107,10 +108,17 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                         App.sidebarRegion.reset();
                         App.headerRegion.reset();
                         App.slideShowActive = true;
+                        App.trigger('btmbar:rerender')
                     } else if (name !== 'slideshow' && App.slideShowActive) {
                         //if user closes slideshow enable header
                         router.initHeader();
                         App.slideShowActive = false;
+                        App.trigger('btmbar:restAndrefetch') //we remove models that are not images when we go into slideshow, we need to get those back 
+                            //exit fullscreen if the user was in fullscreen mode
+                        if (!window.screenTop && !window.screenY) {
+                            //if already in fullscreen mode toggle it off
+                            this.exitFullScreen()
+                        }
                     }
 
                     if (typeof ga === 'function') {
@@ -447,6 +455,15 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     }
                 }
                 return qsParm;
+            },
+            exitFullScreen: function(e) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
             },
 
             loadSettingsFromCookies: function() {
