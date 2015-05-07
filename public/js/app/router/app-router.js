@@ -117,7 +117,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                             //exit fullscreen if the user was in fullscreen mode
                         if (!window.screenTop && !window.screenY) {
                             //if already in fullscreen mode toggle it off
-                            this.exitFullScreen()
+                            router.exitFullScreen()
                         }
                     }
 
