@@ -89,7 +89,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'hbs!template
 
 			},
 
-			OnBeforeDestroy: function() {
+			onBeforeDestroy: function() {
 				console.log('closing subreddit-view')
 					//window.stop() //prevents new images from being downloaded
 				this.removePendingGrid()

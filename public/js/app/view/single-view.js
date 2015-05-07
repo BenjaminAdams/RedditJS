@@ -52,8 +52,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
           this.template = loadingTmpl
 
         } else {
-         // console.log('loading a model from memory')
-            //this is what we do when we pass in a model with out the comments
+          // console.log('loading a model from memory')
+          //this is what we do when we pass in a model with out the comments
           this.model = App.curModel;
           this.updatePageTitle(this.model.get('title'));
           delete App.curModel; //memory management
@@ -112,7 +112,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       },
       startSlideshow: function() {
         App.curModel = this.model;
-        this.fullScreen(document);
+        this.fullScreen(document.body);
         App.trigger("bottombar:selected", "t3_" + this.id);
 
         //'comments/:subName/:id/slideshow': 'slideshow',

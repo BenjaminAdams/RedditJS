@@ -108,7 +108,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                         App.sidebarRegion.reset();
                         App.headerRegion.reset();
                         App.slideShowActive = true;
-                        App.trigger('btmbar:rerender')
+                        App.trigger('btmbar:purgeNonImgAndRerender')
                     } else if (name !== 'slideshow' && App.slideShowActive) {
                         //if user closes slideshow enable header
                         router.initHeader();

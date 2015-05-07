@@ -61,7 +61,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/sidebar', 'view
 				this.showAd()
 
 			},
-			OnBeforeDestroy: function() {
+			onBeforeDestroy: function() {
 				App.off("subreddit:changeGridOption", this.changeGridOption, this);
 			},
 

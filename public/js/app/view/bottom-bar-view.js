@@ -36,7 +36,7 @@
          App.on("btmbar:gotoPrev", this.gotoPrev, this);
          App.on("btmbar:gotoNext", this.gotoNext, this);
          App.on('btmbar:restAndrefetch', this.restAndrefetch, this);
-         App.on('btmbar:rerender', this.rerender, this)
+         App.on('btmbar:purgeNonImgAndRerender', this.purgeNonImgAndRerender, this)
          $(window).bind('keydown', this.keyPress); //remove this later!
 
          this.loading = false; //keeps track if we are loading more posts or not
@@ -85,7 +85,7 @@
          App.off("btmbar:gotoPrev", this.gotoPrev, this);
          App.off("btmbar:gotoNext", this.gotoNext, this);
          App.off('btmbar:restAndrefetch', this.restAndrefetch, this);
-         App.off('btmbar:rerender', this.rerender, this)
+         App.off('btmbar:purgeNonImgAndRerender', this.purgeNonImgAndRerender, this)
          this.deleted = true
 
          App.fullscreenSlideShow.reset();
@@ -108,7 +108,8 @@
          this.loading = false
          this.fetchMore()
        },
-       rerender: function(){
+       purgeNonImgAndRerender: function() {
+         this.collection.removeNonImgs()
          this.render()
        },
        getCurrentCollectionIndex: function() {
@@ -124,6 +125,9 @@
          return index
        },
        gotoPrev: function() {
+         if (!this.collection || this.collection.length < 1) {
+           return
+         }
          var index = this.getCurrentCollectionIndex()
 
          var prevModel = this.collection.at(index - 1);
@@ -135,11 +139,10 @@
        },
        gotoNext: function() {
          var nextId, nextModel
-         var index = this.getCurrentCollectionIndex()
-         if(!this.collection || this.collection.length < 1) {
-          return
+         if (!this.collection || this.collection.length < 1) {
+           return
          }
-          
+         var index = this.getCurrentCollectionIndex()
 
          nextModel = this.collection.at(index + 1);
          if (typeof nextModel !== 'undefined') {
@@ -157,6 +160,9 @@
        },
 
        preloadNextImg: function() {
+         if (!this.collection || this.collection.length < 1) {
+           return
+         }
          var index = this.getCurrentCollectionIndex()
 
          var nextModel = this.collection.at(index + 1);

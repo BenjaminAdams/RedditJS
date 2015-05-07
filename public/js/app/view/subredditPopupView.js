@@ -29,7 +29,7 @@ define(['App', 'view/basem-view', 'hbs!template/subredditPopup', 'view/post-row-
                 this.ui.blackOverlay.show()
                 this.popupSiteTable.show(this.CollectionView)
             },
-            OnBeforeDestroy: function() {
+            onBeforeDestroy: function() {
                 this.ui.popupSiteTable.slideUp()
                 this.ui.blackOverlay.hide()
             },

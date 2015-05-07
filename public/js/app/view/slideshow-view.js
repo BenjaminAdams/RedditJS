@@ -49,14 +49,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/slideshow', 'view/basem-v
 
         $('#content').addClass('slideShow')
 
-        if (this.model.get('ups')) {
+        if (typeof this.model.get('ups') !== 'undefined') {
           this.triggerID()
 
           this.ui.currentImg.on('error', this.imgFailed)
 
         }
 
-        if (typeof this.model !== 'undefined' && this.model.get('ups')) {
+        if (typeof this.model !== 'undefined' && typeof this.model.get('ups') !== 'undefined') {
           //make sure the model is loaded before we display the top post
 
           this.thepost.show(new PostRowView({

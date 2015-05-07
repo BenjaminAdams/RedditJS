@@ -81,7 +81,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/mobile-header',
 
 			},
 
-			OnBeforeDestroy: function() {
+			onBeforeDestroy: function() {
 				App.off("header:update", this.updateHeader, false);
 				App.off("login", this.updateSubreddits, false); //so we update the users subreddits after they login
 				App.off("logout", this.updateSubreddits, false);

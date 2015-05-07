@@ -123,7 +123,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
             },
             //onRender: function() {  //functions like onRender() wont work when we override the render() function like here
             //},
-            OnBeforeDestroy: function() {
+            onBeforeDestroy: function() {
                 App.off("gridView:imageLoaded", this.preloadImg)
                 this.viewClosed = true
 

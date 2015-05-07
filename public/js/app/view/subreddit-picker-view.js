@@ -43,7 +43,7 @@ define(['App', 'view/basem-view', 'collection/subreddit-picker', 'hbs!template/s
                 this.helpFillUpScreen();
                 this.siteTable.show(this.CollectionView)
             },
-            OnBeforeDestroy: function() {
+            onBeforeDestroy: function() {
                 $(window).off("scroll", this.watchScroll);
                 App.off("subreddit:remove", this.remove, this);
             },

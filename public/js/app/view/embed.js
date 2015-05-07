@@ -44,7 +44,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/embed', 'hbs!template/bla
                 }
 
             },
-            OnBeforeDestroy: function() {
+            onBeforeDestroy: function() {
                 $('#theHeader').show()
             },
             setupOptions: function() {

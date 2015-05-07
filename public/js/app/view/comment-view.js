@@ -110,7 +110,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 					//this.model.set('permalinkParent', options.permalinkParent)
 					//this.renderChildren(this.model.get('replies'))
 			},
-			OnBeforeDestroy: function() {
+			onBeforeDestroy: function() {
 				//console.log('asd')
 
 				this.ui.userTxtInput.off('blur focus');

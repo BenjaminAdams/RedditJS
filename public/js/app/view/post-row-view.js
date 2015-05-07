@@ -80,7 +80,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     this.toggleExpando()
                 }
             },
-            OnBeforeDestroy: function() {
+            onBeforeDestroy: function() {
                 App.off('postView:updateThumbNailPermalinks')
                 if (this.tmpLink) {
                     this.model.set('url', this.tmpLink)
