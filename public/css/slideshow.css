@@ -117,7 +117,7 @@ figure#slideshow img {
 .slideshowSingleContainer #togglePlayPause {
   position: fixed;
   top: 9px;
-  right: 42px;
+  right: 44px;
 }
 
 
@@ -149,5 +149,35 @@ width:50px;
 padding-left:2px; 
 padding-right:2px;
 -webkit-border-radius: 10px;  
-background-image: -webkit-linear-gradient(top, #000000, #333333, #000000);
+background-image: -webkit-linear-gradient(top,#FFFFFF,#FFFFFF,#C5C5C5);
 }  
+
+#preloadNextImg {
+  display: none;
+}
+
+
+
+
+
+
+
+@media (max-width: 900px) { 
+.slideshowSingleContainer #slider {
+  top:77px;
+}
+
+.slideshowSingleContainer #togglePlayPause,.slideshowSingleContainer #exitBtn {
+  top:79px;
+}
+
+.slideshowSingleContainer #fullscreen {
+  top: 72px;
+}
+
+.slideshowSingleContainer #thepost {
+  margin:0px auto;
+}
+
+
+}
