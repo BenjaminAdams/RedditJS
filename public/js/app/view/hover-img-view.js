@@ -6,6 +6,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-v
 			//className: 'hoverImgView',
 			events: {
 				'click .destroy': "destroyImg", //destroys the image out of the comment area
+				'click .close': "destroyImg",
 				'mouseover .openedOutBoundLink': 'newImgSelected'
 			},
 			ui: {
@@ -37,15 +38,15 @@ define(['App', 'underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-v
 				}
 
 				this.model = new Backbone.Model({
-					url: this.url,
-					ahrefDescription: this.ahrefDescription,
-					displayHtml: this.displayHtml.replace(/outBoundLink/g, 'openedOutBoundLink'),
-					youtubeEmbed: this.youtubeEmbed,
-					youtubeID: this.youtubeID
-					//originalHtml: this.originalHtml.replace('outBoundLink', 'openedOutBoundLink')
+						url: this.url,
+						ahrefDescription: this.ahrefDescription,
+						displayHtml: this.displayHtml.replace(/outBoundLink/g, 'openedOutBoundLink'),
+						youtubeEmbed: this.youtubeEmbed,
+						youtubeID: this.youtubeID
+							//originalHtml: this.originalHtml.replace('outBoundLink', 'openedOutBoundLink')
 
-				})
-				//this.render()
+					})
+					//this.render()
 
 			},
 
@@ -96,7 +97,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-v
 
 					this.ui.imgTitle.css('background-image', bgImg, 'important')
 					this.ui.imgTitle.find('a').css('color', linkColor, 'important')
-					//this.$('h3').css('border', border, 'important')
+						//this.$('h3').css('border', border, 'important')
 				}
 
 				var headerImg = $('#header-img').attr('src')
@@ -154,7 +155,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/hover-img', 'view/basem-v
 						this.ui.imgPreview.show()
 						this.ui.youtubeEmbed.html('')
 						this.ui.imgPreview.attr('href', this.url)
-						//this.$('.imgPreview img').attr('src', this.url)
+							//this.$('.imgPreview img').attr('src', this.url)
 						this.loadImg()
 					}
 					this.ui.ahrefDescription.attr('href', this.url)
