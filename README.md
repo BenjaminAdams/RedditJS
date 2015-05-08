@@ -31,7 +31,7 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
 #### Post embed widget
 You can add this script tag to any website.  The post widget will embed itself onto your Wordpress post and detect if it has been posted to reddit.   [details and examples](http://embed.redditjs.com)
 
-```<script src='//redditjs.com/post.js' </script>```
+```<script src='//redditjs.com/post.js'></script>```
 
 If it has NOT been posted to reddit it will show a link to encourage the user to submit.
 ![no reddit post found](http://i.imgur.com/OLJjzkx.png)
