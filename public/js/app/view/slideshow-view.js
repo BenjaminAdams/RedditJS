@@ -62,7 +62,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/slideshow', 'view/basem-v
           this.thepost.show(new PostRowView({
             model: self.model,
             gridOption: 'normal',
-            expand: false,
+            disableExpand: true,
             isSingle: true
           }));
 

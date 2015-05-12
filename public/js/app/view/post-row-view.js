@@ -40,11 +40,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 this.dragTimeout = null;
                 this.dragImgMinWidth = 100;
 
-                this.expand = data.expand
+                this.model.set('disableExpand', data.disableExpand || false)
 
                 App.on('postView:updateThumbNailPermalinks', this.updateThumbNailPermalinks, this)
 
-                // this.isSingle = data.isSingle || false
                 if (data.isSingle && this.model.get('is_self') === false) {
                     //changes the main post link to be external instead of linking back to itself
                     this.tmpLink = this.model.get('url')
@@ -56,7 +55,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                     //  this.model.set('external', '')
                 }
 
-                if (typeof this.expand !== 'undefined' && this.expand !== false && (this.model.get('embededImg') === true || this.model.get('selftext_html'))) {
+                if (typeof data.expand !== 'undefined' && (this.model.get('embededImg') === true || this.model.get('selftext_html'))) {
+                    console.log('expandhtml=', this.model.get('expandHTML'))
                     this.expand = true;
                 }
 
@@ -71,8 +71,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
                 if (App.slideShowActive) {
                     this.model.set('permalink', '/comments/' + this.model.get('subreddit') + "/" + this.model.get('id') + '/slideshow');
                 }
-
-                this.model.set('expand', this.expand)
 
             },
             onRender: function() {

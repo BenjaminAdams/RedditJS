@@ -29,10 +29,10 @@
                     <span class="domain">(<a href="/domain/{{domain}}/">{{domain}}</a>)</span>
             </div>
             <div class="tagline">
-            {{#if expand}}
+            {{#unless disableExpand}}
                 {{#if embededImg}} <li><div class='expando-button collapsed video'></div></li> {{/if}}
                 {{#if selftext_html}} <li><div class='expando-button collapsed selftext'></div></li> {{/if}}
-            {{/if}}
+            {{/unless}}
             <span class='taglineScore'>submitted</span>
                  <time datetime="{{timeUgly}}" title="{{timePretty}}">{{timeAgo}}</time> ago by <a class="author" href="/user/{{author}}" target="_blank">{{author}}</a>
             {{#if author_flair_css_class}}<span class="flair flair-{{author_flair_css_class}}" title=""></span>{{/if}}
@@ -78,7 +78,7 @@
 </div>
 </div>
 
-{{#if expand}}<div class="expando postRowContent"></div>{{/if}}
+{{#unless disableExpand}}<div class="expando postRowContent"></div>{{/unless}}
 
         <div class="child"></div>
 
