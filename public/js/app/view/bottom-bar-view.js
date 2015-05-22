@@ -104,9 +104,9 @@
          }
        },
        restAndrefetch: function() {
-         this.collection.reset()
+         this.collection.reset() 
          this.loading = false
-         this.fetchMore()
+        this.fetchMore()
        },
        purgeNonImgAndRerender: function() {
          this.collection.removeNonImgs()
@@ -121,6 +121,9 @@
            name: this.selectedID
          })
          var index = this.collection.indexOf(selectedModel);
+         if(index<0){
+           index=0;
+         }
          this.shouldWeFetchMore(index)
          return index
        },
@@ -129,6 +132,9 @@
            return
          }
          var index = this.getCurrentCollectionIndex()
+         if(index===0) {
+          index=1;
+         }
 
          var prevModel = this.collection.at(index - 1);
          if (typeof prevModel !== 'undefined') {
