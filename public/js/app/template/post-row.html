@@ -44,6 +44,12 @@
                 <a class="comments" href="{{actualPermalink}}"  target="_blank">{{num_comments}} <span class='commentWord'>comments</span> <span class='commentIcon fa fa-comments'> </span>  </a>
                 </li>
 
+                {{#if embededImg}}
+                <li class="startSlideShowPostRow">
+                  <span class=""><a class="option" href="{{slideshowUrl}}">slideshow</a></span></li>
+                <li>
+                {{/if}}
+
                 <li class="share">
                 <span class="share-button toggle"><a class="option active login-required" href="#">share</a></span></li>
                 <li>

@@ -920,6 +920,11 @@ z-index: 114;
   filter:alpha(opacity=90); /* For IE8 and earlier */
 }
 
+.startSlideShowPostRow {
+  padding-left: 0px !important;
+  margin-right: -10px;
+}
+
 
 .testItems {
   font-size:16px;

@@ -117,7 +117,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
         //'comments/:subName/:id/slideshow': 'slideshow',
 
-        Backbone.history.navigate('/comments/' + this.subName + "/" + App.curModel.get('id') + '/slideshow', {
+        Backbone.history.navigate(this.model.get('slideshowUrl'), {
           trigger: true
         });
 
