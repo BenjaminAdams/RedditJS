@@ -80,6 +80,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'user/:username(/)': 'user',
                 'user/:username/:sortOrder(/)': 'user',
 
+                'user/:username/m/:subName(/)': 'multihub',
+                'u/:username/m/:subName(/)': 'multihub',
+
                 'message/compose/:username(/)': 'compose',
                 'message/:type(/)': 'inbox',
                 'download(/)': 'download',
@@ -90,7 +93,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 'search/:q/:timeFrame(/)': 'search',
                 'search/:q/:timeFrame/:sortOrder(/)': 'search'
             },
-            //we override the route function 
+            //we override the route function
             //middleware, this will be fired before every route
             route: function(route, name, callback) {
                 var router = this;
@@ -113,7 +116,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                         //if user closes slideshow enable header
                         router.initHeader();
                         App.slideShowActive = false;
-                        App.trigger('btmbar:restAndrefetch') //we remove models that are not images when we go into slideshow, we need to get those back 
+                        App.trigger('btmbar:restAndrefetch') //we remove models that are not images when we go into slideshow, we need to get those back
                             //exit fullscreen if the user was in fullscreen mode
                         if (!window.screenTop && !window.screenY) {
                             //if already in fullscreen mode toggle it off
@@ -140,7 +143,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 if (App.subs.length > 1) {
                     App.stop()
                 }
-                this.doSidebar('front');
+                this.doSidebar('front',{type:'subreddit'});
                 require(['view/subreddit-view'], function(SubredditView) {
 
                     App.mainRegion.show(new SubredditView({
@@ -150,27 +153,53 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 })
             },
 
+
+
             subreddit: function(subName, sortOrder, timeFrame, mode) {
                 if (App.subs.length > 1) {
                     App.stop()
                 }
 
-                this.doSidebar(subName);
+                this.doSidebar(subName,{type:'subreddit'});
                 this.subName = subName
+                this.type = 'subreddit'
+
 
                 require(['view/subreddit-view'], function(SubredditView) {
                     App.mainRegion.show(new SubredditView({
                         subName: subName,
                         sortOrder: sortOrder || 'hot',
-                        timeFrame: timeFrame || 'month'
+                        timeFrame: timeFrame || 'month',
+                        type: 'subreddit'
                     }));
 
                 })
 
             },
+            multihub: function(userName, subName, sortOrder,timeFrame,mode){
+              if (App.subs.length > 1) {
+                  App.stop()
+              }
+              this.doSidebar(subName,{type:'multihub',userName:userName});
+              this.subName = subName;
+              this.type = 'multihub';
+              this.userName = userName;
+
+              require(['view/subreddit-view'], function(SubredditView) {
+
+                  App.mainRegion.show(new SubredditView({
+                      subName: subName,
+                      sortOrder: sortOrder || 'hot',
+                      timeFrame: timeFrame || 'month',
+                      type: 'multihub',
+                      userName: userName
+                  }));
+
+              })
+            },
 
             subredditDomain: function(domain, sortOrder, opts) {
-                this.doSidebar('front');
+                this.doSidebar('front',{type:'subreddit'});
                 require(['view/subreddit-view'], function(SubredditView) {
                     App.mainRegion.show(new SubredditView({
                         subName: '',
@@ -196,7 +225,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 if (App.subs.length > 1) {
                     App.stop()
                 }
-                this.doSidebar(subName);
+                this.doSidebar(subName,{type:'subreddit'});
 
                 this.subName = subName
 
@@ -279,7 +308,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             },
             search: function(searchQ, timeFrame, sortOrder) {
 
-                this.doSidebar('front');
+                this.doSidebar(subName,{type:'subreddit'})
                 require(['view/search-view'], function(SearchView) {
                     App.mainRegion.show(new SearchView({
                         searchQ: searchQ,
@@ -289,7 +318,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                 })
             },
             submit: function(subName, q) {
-                this.doSidebar(subName);
+                this.doSidebar(subName,{type:'subreddit'});
                 require(['view/submit-view'], function(SubmitView) {
                     App.mainRegion.show(new SubmitView({
                         subName: subName
@@ -305,7 +334,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             },
 
             prefs: function() {
-                this.doSidebar('front');
+                this.doSidebar('front',{type:'subreddit'});
                 require(['view/prefs'], function(PrefsView) {
                     App.mainRegion.show(new PrefsView())
                 });
@@ -349,17 +378,18 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
             },
 
             /*   Util functions
-             
-             
+
+
              */
             //displays the sidebar for that subreddit if its not already created
-            doSidebar: function(subName) {
+            doSidebar: function(subName,type) {
                 if ((typeof App.sidebarRegion.currentView === 'undefined' || App.sidebarRegion.currentView.subName != subName) && App.isBot === false) { //only update sidebar if the subreddit changes
 
-                    var sidebarModel = new SidebarModel(subName)
+                    var sidebarModel = new SidebarModel(subName,type)
                     if (subName === 'front' || subName === 'all') {
                         App.sidebarRegion.show(new SidebarView({
                             subName: 'front',
+                            type: type,
                             model: sidebarModel
                         }))
                     } else {
@@ -367,6 +397,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                             success: function(model) {
                                 App.sidebarRegion.show(new SidebarView({
                                     subName: subName,
+                                    type: type,
                                     model: model
                                 }))
                             }
@@ -487,7 +518,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
                     }
                 }
 
-                //update cssType 
+                //update cssType
                 App.settings.set('cssType', $.cookie('cssType') || 'useSrStyles')
                     //update useSrEverywhereTxt
                 App.settings.set('useSrEverywhereTxt', $.cookie('useSrEverywhereTxt') || '')

@@ -1,10 +1,17 @@
 define(['App', 'underscore', 'backbone', 'jquery', 'moment'], function(App, _, Backbone, $) {
 	var Sidebar = Backbone.Model.extend({
-		initialize: function(data) {
+		initialize: function(data,options) {
+
+
 			if (data === null) {
-				this.subName = 'front'
+				this.subName = 'front';
+				this.type = 'subreddit';
+				this.userName = '';
 			} else {
+				this.type = options.type;
+				this.userName = options.userName  || '';
 				this.subName = data
+
 			}
 		},
 
@@ -23,12 +30,16 @@ define(['App', 'underscore', 'backbone', 'jquery', 'moment'], function(App, _, B
 					return 'http://api.reddit.com/.json?jsonp=?';
 				} else {
 					//return "https://pay.reddit.com/r/" + this.subName + "/about.json?jsonp=?"
-					return 'https://reddit.com/r/' + this.subName + "/about.json?jsonp=?"
+					if(this.type=='subreddit')
+						return 'https://reddit.com/r/' + this.subName + "/about.json?jsonp=?";
+					else
+						return 'https://reddit.com/u/' + this.userName + "/m/" + this.subName + ".json?jsonp=?";
+
 				}
 			}
 		},
 
-		// Default attributes 
+		// Default attributes
 		defaults: {
 			display_name: '',
 			description_html: '',
