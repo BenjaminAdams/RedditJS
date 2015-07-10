@@ -9,6 +9,8 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 
 			this.after = ""
 			this.subName = data.subName
+			console.log(data)
+
 			this.sortOrder = data.sortOrder
 			this.domain = data.domain
 			this.forceJSONP = data.forceJSONP || false //so we force the user to download the subreddit with jsonp
@@ -19,12 +21,20 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 			//this.sortOrder = "/" + this.sortOrder //needs to start with a slash to be injected into the URL
 			this.subID = this.subName + this.sortOrder
 
+			this.type = data.type
+
 			//build the URL string before fetch
-			if (this.subName == "front" || this.domain !== null) {
-				this.subnameWithrR = ''
-			} else {
-				this.subnameWithrR = 'r/' + this.subName + '/'
+			if(this.type=='subreddit'){
+				if (this.subName == "front" || this.domain !== null) {
+					this.subnameWithrR = ''
+				} else {
+					this.subnameWithrR = 'r/' + this.subName + '/'
+				}
 			}
+			else { // multihub
+				this.subnameWithrR = 'u/' + data.userName + '/m/' + this.subName + '/'
+			}
+
 
 			if (this.domain !== null) {
 				this.domainStr = 'domain/' + this.domain + '/'

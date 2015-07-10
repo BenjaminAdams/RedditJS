@@ -27,7 +27,15 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				_.bindAll(this, 'gotNewPosts', 'fetchError')
 				var self = this;
 				this.subredditCollectionView = null;
-				this.subName = options.subName
+				this.subName = options.subName;
+				this.type = options.type;
+
+
+				if(options.userName !== 'undefined')
+					this.userName = options.userName;
+				else {
+					this.userName = null;
+				}
 
 				if (this.subName == 'front') {
 					document.title = "redditjs beta"
@@ -44,7 +52,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 				this.model = new Backbone.Model({
 					sortOrder: this.sortOrder,
 					subName: this.subName,
-					timeFrame: this.timeFrame
+					timeFrame: this.timeFrame,
+					userName: this.userName,
+					type: this.type
 				})
 
 				this.subID = this.subName + this.domain + this.sortOrder + this.timeFrame
@@ -117,7 +127,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 						domain: this.domain,
 						subName: this.subName,
 						sortOrder: this.sortOrder,
-						timeFrame: this.timeFrame
+						timeFrame: this.timeFrame,
+						userName: this.userName,
+						type: this.type
 					});
 					if (this.collection.length < 100) {
 						this.fetchMore();
@@ -298,9 +310,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
 					var self = this;
 					if (this.gridOption == 'grid') {
-						this.triggerPoint = 5000; // px from the bottom 
+						this.triggerPoint = 5000; // px from the bottom
 					} else {
-						this.triggerPoint = 2000; // px from the bottom 
+						this.triggerPoint = 2000; // px from the bottom
 					}
 
 					//keep the scrollheight in the collection so when we return to it, we can auto-move to it
