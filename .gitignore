@@ -9,3 +9,4 @@ node_modules/
 *.versionsBackup
 ssl/*
 server/ssl/*
+.DS_Store
