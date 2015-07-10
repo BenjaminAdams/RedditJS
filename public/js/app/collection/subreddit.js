@@ -21,7 +21,7 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 			//this.sortOrder = "/" + this.sortOrder //needs to start with a slash to be injected into the URL
 			this.subID = this.subName + this.sortOrder
 
-			this.type = data.type
+			this.type = data.type || 'subreddit'
 
 			//build the URL string before fetch
 			if(this.type=='subreddit'){
