@@ -28,7 +28,7 @@ var redisStore = require('connect-redis')(session);
 
 // var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
-var callbackURL = process.env.REDDIT_CALLBACK || "http://redditjs.com/auth/reddit/callback"
+var callbackURL = process.env.REDDIT_CALLBACK || "https://redditjs.com/auth/reddit/callback"
 var loginAgainMsg = 'login to reddit please'
 
 /*
@@ -59,7 +59,6 @@ passport.use(new RedditStrategy({
             //callbackURL: "http://redditjs.com/auth/reddit/callback"
     },
     function(accessToken, refreshToken, profile, done) {
-        //console.log('profile=', profile)
         profile.access_token = accessToken //set the recently updated access token
         profile.refresh_token = refreshToken
         profile.tokenExpires = Math.round(+new Date() / 1000) + (60 * 59) //expires one hour from now, with one minute to spare
@@ -107,7 +106,7 @@ if (process.env.NODE_ENV === 'production') {
         proxy: true,
         cookie: {
             maxAge: sessionExpireTime,
-            secure: true
+            secure: false
         },
         secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
     }
@@ -156,7 +155,6 @@ server.get('/me', ensureAuthenticated, function(req, res) {
 
 //requests the <title> tag of any given URL, used for the submit page
 server.get('/api/getTitle', function(req, res) {
-    console.log('getting title')
     api.getTitle(res, req)
 });
 
@@ -181,7 +179,6 @@ server.get('/login', function(req, res, next) {
 });
 
 server.get('/logout', function(req, res, next) {
-    console.log('logout route')
     req.session.destroy();
     req.logout()
     res.send(200, "ok")
@@ -190,7 +187,6 @@ server.get('/logout', function(req, res, next) {
 //reddit Oauth docs: https://github.com/reddit/reddit/wiki/OAuth2
 server.get('/auth/reddit/callback', function(req, res, next) {
     // Check for origin via state token
-    console.log('got a callback from oauth')
 
     if (req.query.state == req.session.state) {
 
@@ -201,7 +197,7 @@ server.get('/auth/reddit/callback', function(req, res, next) {
             failureRedirect: '/login'
         })(req, res, next);
     } else {
-        next(new Error(403));
+        next(new Error('There was a problem connecting to the reddit server.  Please try again'));
     }
 });
 
@@ -210,6 +206,7 @@ server.get("/redirectBack", function(req, res) {
     res.render('index', {
         user: req.user || false //bootstrap user to client if they are logged in
     })
+	
 });
 
 //redirect to non-www
@@ -223,7 +220,6 @@ server.all('/*', function(req, res, next) {
 
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
-
     if (req.device.type === 'bot') {
         bots.fetchForBot(res, req)
     } else {
@@ -237,7 +233,7 @@ server.get("*", function(req, res) {
 // Start Node.js Server
 http.createServer(server).listen(port);
 
-console.log('\nWelcome to redditjs.com!\nPlease go to http://localhost:' + port + ' to start using RedditJS');
+console.log('\nWelcome to redditjs.com!');
 
 function ensureAuthenticated(req, res, next) {
 
@@ -252,7 +248,6 @@ function ensureAuthenticated(req, res, next) {
         })
 
     } else {
-        console.log(req.session)
         res.send(419, loginAgainMsg)
 
     }
