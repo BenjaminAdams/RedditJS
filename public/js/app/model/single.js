@@ -34,9 +34,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/parseComm
     },
     parse: function(response) {
       if (this.parseNow === true) {
-
         response = this.parseOnce(response)
-
       }
       return response
     },
@@ -151,6 +149,8 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/parseComm
         data.media_embed = ""
       }
 
+      data.permalink = data.permalink.replace('?ref=search_posts', '')
+
       if (data.is_self === true) {
         //data.external = 'data-bypass'
         data.actualUrl = data.url
@@ -167,6 +167,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/parseComm
       }
 
       data.actualPermalink = data.permalink //we have this because we override the permalink in the slideshow, but we need a link to get to the comment page
+
       data.slideshowUrl = '/comments/' + data.subreddit + "/" + data.id + '/slideshow'
 
       //console.log(data.media_embed.content)

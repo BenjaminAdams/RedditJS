@@ -7,14 +7,12 @@ define(['underscore', 'backbone', 'model/comment-more-link'], function(_, Backbo
 
     var comments = new CommentsCollection()
     _.each(data.children, function(item) {
-      // do stuff
       item.data.kind = item.kind
       item.data.link_id = parentPageLinkID
       if (item.kind === "more") {
         var newMoreLink = new CommentMoreLinkModel(item.data)
         comments.add(newMoreLink)
       } else {
-        //console.log("THIS IS A T1", item)
         var newComment = new CommentModel(item.data)
         comments.add(newComment)
       }

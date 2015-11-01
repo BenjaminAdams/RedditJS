@@ -79,9 +79,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         var self = this
         var CommentView = require('view/comment-view')
 
-        if (self.collection.length > 0)
-
-        {
+        if (self.collection.length > 0) {
           self.commentCollectionView = new CViewComments({
             collection: self.collection,
             childView: CommentView,
@@ -89,28 +87,19 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
             commentsDisabled: self.commentsDisabled
           })
 
-          try {
-            self.replies.show(self.commentCollectionView)
-          } catch (e) {
-            console.log('collection=', self.collection)
-            console.log('region=', self.replies)
-
-          }
+          self.replies.show(self.commentCollectionView)
 
         }
 
         this.addOutboundLink()
         this.permalinkParent = this.model.get('permalinkParent')
         this.setupTextareaExpanding()
-          //this.model.set('permalinkParent', options.permalinkParent)
-          //this.renderChildren(this.model.get('replies'))
       },
       onBeforeDestroy: function() {
         this.ui.userTxtInput.off('blur focus');
       },
       addOneChild: function(model) {
         this.collection.add(model)
-          //this.commentCollectionView.collection.add(model)
       },
       //add data-external and a special class to any link in a comment
       //once the links have the class outBoundLink on them, they will no longer trigger the hover view
@@ -123,15 +112,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         e.stopPropagation()
         $(this.el).html("<div class='loadingS'></div>")
         var self = this
-          //console.log('loading MOAR')
+
         var link_id = this.model.get('link_id')
         var params = {
           link_id: link_id,
           id: this.id,
           api_type: 'json',
-          //sort: 'top',
           children: this.model.get('children').join(","),
-          //uh: $.cookie('modhash'), 
           byPassAuth: true
         };
         console.log('MOAR=', params)
@@ -165,7 +152,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
       },
       reRenderMOAR: function(newComments) {
         if (typeof newComments !== 'undefined' && newComments.length > 0) {
-          //console.log('newcomments=', newComments)
           //pluck the first model in the collection and set it as this model for reRendering
           this.model = newComments.at(0)
           newComments = newComments.slice(1, newComments.length)
@@ -181,7 +167,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
           this.renderOtherReplyComments(newComments)
           var replies = this.model.get('replies')
-            //this.renderChildren(replies)
           this.collection.add(replies)
           this.addOutboundLink()
         }
@@ -218,7 +203,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
       },
       commentLinkHover: function(e) {
-        //console.log('hovering over a comment')
         e.preventDefault()
         e.stopPropagation()
         if (App.settings.get('cmtLoad') === true) {
@@ -246,7 +230,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
                 ahrefDescription = url
               }
 
-              //$(target).css('float', 'left')
               var originalText = $('.outBoundLink:first').parent().parent().text().trim()
               var originalHtml = this.$('.outBoundLink:first').parent().parent().html()
               if (youtubeID) {
