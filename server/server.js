@@ -31,6 +31,9 @@ var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,r
 var callbackURL = process.env.REDDIT_CALLBACK || "https://redditjs.com/auth/reddit/callback"
 var loginAgainMsg = 'login to reddit please'
 
+//determines if we should serve minified CSS and Javascript to the client
+var minifiedStr = process.env.NODE_ENV == 'production' ? '.min' : ''
+
 /*
 for your local env run
     export REDDIT_KEY = 'your key'
@@ -233,7 +236,7 @@ server.get("*", function(req, res) {
 // Start Node.js Server
 http.createServer(server).listen(port);
 
-console.log('\nWelcome to redditjs.com!, running on port: ' + port);
+console.log('\nWelcome to redditjs.com!, running on port: ' + port + ' in with NODE_ENV: ' + process.env.NODE_ENV);
 
 function ensureAuthenticated(req, res, next) {
 
@@ -256,6 +259,7 @@ function ensureAuthenticated(req, res, next) {
 
 function setupLocals(req, res, next) {
   res.locals.timestamp = timestamp.timestamp //saves the last time we ran grunt
+  res.locals.minifiedStr = minifiedStr
   next()
 }
 

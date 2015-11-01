@@ -9,8 +9,8 @@ head
   meta(property='og:type', content='website')
   meta(name="verifyownership", content="ac8779753b0b9d2bd874e922a0faedf6")
 
-  //***************change to /css/styles.min.css for production
-  link(rel='stylesheet', href='/css/styles.min.css?#{timestamp}')   
+
+  link(rel='stylesheet', href='/css/styles#{minifiedStr}.css?#{timestamp}')   
 
   script.
     window.redditUser=  !{JSON.stringify(user)};
@@ -25,20 +25,10 @@ body.listing-page.hot-page
   #content.content
   #bottom-bar-container
 
-  //script(src='/js/lib/require.js') using CDN instead
   script(src='//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.min.js')
   script(src='/js/app/config/config.js')
 
-
-  //***************change to /js/app/init/main.min.js for production
-  script(src='/js/app/init/main.min.js?#{timestamp}')
+  script(src='/js/app/init/main#{minifiedStr}.js?#{timestamp}')
 
   noscript
     div Please enable JavaScript to view this website.
-  script.
-    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-    e.src='//www.google-analytics.com/analytics.js';
-    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'))
-    ga('create','UA-4769553-53');ga('send','pageview')

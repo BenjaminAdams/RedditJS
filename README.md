@@ -96,10 +96,10 @@ All of these options are optional.
 #### How to run redditjs locally
  * Clone repo `git clone git@github.com:BenjaminAdams/RedditJS.git`
  * In the console type `npm install`
- * `sudo npm -g install nodemon` This starts the node server and monitors for changes in the files and updates the code running on node.
+ * `sudo npm -g install nodemon` This starts the node server and monitors for changes in the files and updates the code running on node
  * Run the project and watch for live changes to the code type `nodemon` and you should be able to open it in http://localhost:8002/ 
  * To minify the code for production type `grunt` which creates `styles.min.css` and `main.min.js`
- * If are not seeing changes you make live, you may need to change /server/views/jade to have `script(src='/js/app/init/main.min.js')` to `script(src='/js/app/init/main.js')` also change link`(rel='stylesheet', href='/css/styles.min.css')` to `link(rel='stylesheet', href='/css/styles.css')`
+ * Changing NODE_ENV to `production` will use the minified resources
 
 #### How to setup oauth to run locally or on your own server
 * Have a local redis instance (http://redis.io/ - sudo apt-get install redis-server)
