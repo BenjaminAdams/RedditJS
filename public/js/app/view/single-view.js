@@ -63,8 +63,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
         }
 
-        App.on("single:remove", this.remove, this);
-        App.on("single:giveBtnBarID", this.triggerID, this);
+        this.listenTo(App, "single:remove", this.remove, this);
+        this.listenTo(App, "single:giveBtnBarID", this.triggerID, this);
 
       },
       onRender: function() {
@@ -81,10 +81,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         }
         this.triggerID()
         this.scrollTop()
-        $(window).resize(this.debouncer(function(e) {
-          if (self.destroyed) return
-          self.resize()
-        }));
+
         this.disableComment()
         this.addOutboundLink()
 
@@ -94,12 +91,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       onBeforeDestroy: function() {
 
         this.destroyed = true
-
-        $(window).off('resize', this.debouncer);
-        //$(document).unbind('keyup', this.keyPressComment);
-        App.off("single:remove", this.remove, this);
-        App.off("single:giveBtnBarID", this.triggerID, this);
-        App.off("comment:addOneChild" + this.model.get('name'), this.addOneChild)
 
         this.ui.singleCommentText.off("click", this.showLoginBox)
 
@@ -322,7 +313,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         this.updatePageTitle(this.model.get('title'))
         this.collection = collection
 
-        App.on("comment:addOneChild" + this.model.get('name'), this.addOneChild);
+        this.listenTo(App, "comment:addOneChild" + this.model.get('name'), this.addOneChild);
 
         //console.log('single view passing in op', self.model.get('author'))
 

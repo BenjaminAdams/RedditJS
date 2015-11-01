@@ -45,55 +45,55 @@ var REDDIT_CONSUMER_KEY = process.env.REDDIT_KEY || 'only use these';
 var REDDIT_CONSUMER_SECRET = process.env.REDDIT_SECRET || 'to use oauth';
 
 passport.serializeUser(function(user, done) {
-    done(null, user);
+  done(null, user);
 });
 
 passport.deserializeUser(function(obj, done) {
-    done(null, obj);
+  done(null, obj);
 });
 
 passport.use(new RedditStrategy({
-        clientID: REDDIT_CONSUMER_KEY,
-        clientSecret: REDDIT_CONSUMER_SECRET,
-        callbackURL: callbackURL
-            //callbackURL: "http://redditjs.com/auth/reddit/callback"
-    },
-    function(accessToken, refreshToken, profile, done) {
-        profile.access_token = accessToken //set the recently updated access token
-        profile.refresh_token = refreshToken
-        profile.tokenExpires = Math.round(+new Date() / 1000) + (60 * 59) //expires one hour from now, with one minute to spare
+    clientID: REDDIT_CONSUMER_KEY,
+    clientSecret: REDDIT_CONSUMER_SECRET,
+    callbackURL: callbackURL
+      //callbackURL: "http://redditjs.com/auth/reddit/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    profile.access_token = accessToken //set the recently updated access token
+    profile.refresh_token = refreshToken
+    profile.tokenExpires = Math.round(+new Date() / 1000) + (60 * 59) //expires one hour from now, with one minute to spare
 
-        process.nextTick(function() {
-            return done(null, profile);
-        });
+    process.nextTick(function() {
+      return done(null, profile);
+    });
 
-    }));
+  }));
 
 // SERVER CONFIGURATION
 // ====================
 var oneDay = 86400000;
 var sessionExpireTime = 999999999
 server.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
 
-    next();
+  next();
 });
 server.enable('trust proxy');
 server.use(compress());
 server.use(express.static(__dirname + '../../public', {
-    maxAge: oneDay
+  maxAge: oneDay
 }));
 
 server.use(favicon(__dirname + '../../public/img/favicon.ico'));
 
 if (process.env.NODE_ENV !== 'production') {
 
-    server.use(errorHandler({
-        dumpExceptions: true,
-        showStack: true
-    }));
+  server.use(errorHandler({
+    dumpExceptions: true,
+    showStack: true
+  }));
 }
 
 server.use(cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
@@ -101,31 +101,31 @@ server.use(cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
 var secureCookies = {}
 if (process.env.NODE_ENV === 'production') {
 
-    secureCookies = {
-        store: new redisStore(),
-        proxy: true,
-        cookie: {
-            maxAge: sessionExpireTime,
-            secure: false
-        },
-        secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
-    }
+  secureCookies = {
+    store: new redisStore(),
+    proxy: true,
+    cookie: {
+      maxAge: sessionExpireTime,
+      secure: false
+    },
+    secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
+  }
 
 } else {
-    //development
-    secureCookies = {
-        store: new redisStore(),
-        cookie: {
-            maxAge: sessionExpireTime
-        },
-        secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
-    }
+  //development
+  secureCookies = {
+    store: new redisStore(),
+    cookie: {
+      maxAge: sessionExpireTime
+    },
+    secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
+  }
 
 }
 
 server.use(session(secureCookies));
 server.use(setupLocals)
-    //server.use(logger());
+  //server.use(logger());
 server.use(bodyParser());
 server.use(methodOverride());
 server.use(passport.initialize());
@@ -136,26 +136,26 @@ server.set('views', path.join(__dirname, 'views'))
 server.set('view engine', 'jade')
 
 server.get('/api', ensureAuthenticated, function(req, res) {
-    api.get(res, req)
+  api.get(res, req)
 });
 server.post('/api', ensureAuthenticated, function(req, res) {
-    api.post(res, req)
+  api.post(res, req)
 });
 
 server.get('/apiNonAuth', function(req, res) {
-    api.getNonAuth(res, req)
+  api.getNonAuth(res, req)
 });
 server.post('/apiNonAuth', function(req, res) {
-    api.postNonAuth(res, req)
+  api.postNonAuth(res, req)
 });
 server.get('/me', ensureAuthenticated, function(req, res) {
-    res.json(200, req.user)
+  res.json(200, req.user)
 
 });
 
 //requests the <title> tag of any given URL, used for the submit page
 server.get('/api/getTitle', function(req, res) {
-    api.getTitle(res, req)
+  api.getTitle(res, req)
 });
 
 //Oauth routes
@@ -167,160 +167,160 @@ server.get('/api/getTitle', function(req, res) {
 //
 //   Note that the 'state' option is a Reddit-specific requirement.
 server.get('/login', function(req, res, next) {
-    req.session.state = crypto.randomBytes(32).toString('hex');
+  req.session.state = crypto.randomBytes(32).toString('hex');
 
-    passport.authenticate('reddit', {
-        state: req.session.state,
-        //authorizationURL: 'https://ssl.reddit.com/api/v1/authorize.compact',
-        scope: scope,
-        duration: 'permanent' //permanent or temporary
-            //duration: 'temporary' //permanent or temporary
-    })(req, res, next);
+  passport.authenticate('reddit', {
+    state: req.session.state,
+    //authorizationURL: 'https://ssl.reddit.com/api/v1/authorize.compact',
+    scope: scope,
+    duration: 'permanent' //permanent or temporary
+      //duration: 'temporary' //permanent or temporary
+  })(req, res, next);
 });
 
 server.get('/logout', function(req, res, next) {
-    req.session.destroy();
-    req.logout()
-    res.send(200, "ok")
+  req.session.destroy();
+  req.logout()
+  res.send(200, "ok")
 });
 
 //reddit Oauth docs: https://github.com/reddit/reddit/wiki/OAuth2
 server.get('/auth/reddit/callback', function(req, res, next) {
-    // Check for origin via state token
+  // Check for origin via state token
 
-    if (req.query.state == req.session.state) {
+  if (req.query.state == req.session.state) {
 
-        req.session.code = req.query.code
-            //request users info at: https://oauth.reddit.com/api/v1/me.json
-        passport.authenticate('reddit', {
-            successRedirect: '/redirectBack',
-            failureRedirect: '/login'
-        })(req, res, next);
-    } else {
-        next(new Error('There was a problem connecting to the reddit server.  Please try again'));
-    }
+    req.session.code = req.query.code
+      //request users info at: https://oauth.reddit.com/api/v1/me.json
+    passport.authenticate('reddit', {
+      successRedirect: '/redirectBack',
+      failureRedirect: '/login'
+    })(req, res, next);
+  } else {
+    next(new Error('There was a problem connecting to the reddit server.  Please try again'));
+  }
 });
 
 server.get("/redirectBack", function(req, res) {
-    delete req.session.state;
-    res.render('index', {
-        user: req.user || false //bootstrap user to client if they are logged in
-    })
-	
+  delete req.session.state;
+  res.render('index', {
+    user: req.user || false //bootstrap user to client if they are logged in
+  })
+
 });
 
 //redirect to non-www
 server.all('/*', function(req, res, next) {
-    if (req.headers.host.match(/^www/) !== null) {
-        res.redirect('http://' + req.headers.host.replace(/^www\./, '') + req.url);
-    } else {
-        next();
-    }
+  if (req.headers.host.match(/^www/) !== null) {
+    res.redirect('http://' + req.headers.host.replace(/^www\./, '') + req.url);
+  } else {
+    next();
+  }
 })
 
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
-    if (req.device.type === 'bot') {
-        bots.fetchForBot(res, req)
-    } else {
-        res.render('index', {
-            user: req.user || false //bootstrap user to client if they are logged in
-        })
-    }
+  if (req.device.type === 'bot') {
+    bots.fetchForBot(res, req)
+  } else {
+    res.render('index', {
+      user: req.user || false //bootstrap user to client if they are logged in
+    })
+  }
 
 });
 
 // Start Node.js Server
 http.createServer(server).listen(port);
 
-console.log('\nWelcome to redditjs.com!');
+console.log('\nWelcome to redditjs.com!, running on port: ' + port);
 
 function ensureAuthenticated(req, res, next) {
 
-    if (req.isAuthenticated()) {
+  if (req.isAuthenticated()) {
 
-        refreshToken(req, res, function(isExpired) {
-            if (isExpired === true) {
-                return next();
-            } else {
-                res.send(419, loginAgainMsg)
-            }
-        })
-
-    } else {
+    refreshToken(req, res, function(isExpired) {
+      if (isExpired === true) {
+        return next();
+      } else {
         res.send(419, loginAgainMsg)
+      }
+    })
 
-    }
+  } else {
+    res.send(419, loginAgainMsg)
+
+  }
 
 }
 
 function setupLocals(req, res, next) {
-    res.locals.timestamp = timestamp.timestamp //saves the last time we ran grunt
-    next()
+  res.locals.timestamp = timestamp.timestamp //saves the last time we ran grunt
+  next()
 }
 
 function refreshToken(req, res, next) {
-    var now = Math.round(+new Date() / 1000)
+  var now = Math.round(+new Date() / 1000)
 
-    if (now < req.user.tokenExpires) {
-        //console.log('token is NOT expired')
-        return next(true)
-    } else {
-        //console.log('token is expired, lets refresh!', req.user.name)
+  if (now < req.user.tokenExpires) {
+    //console.log('token is NOT expired')
+    return next(true)
+  } else {
+    //console.log('token is expired, lets refresh!', req.user.name)
 
-        var authorization = "Basic " + Buffer("" + REDDIT_CONSUMER_KEY + ":" + REDDIT_CONSUMER_SECRET).toString('base64');
+    var authorization = "Basic " + Buffer("" + REDDIT_CONSUMER_KEY + ":" + REDDIT_CONSUMER_SECRET).toString('base64');
 
-        var params = {
-            "client_id": REDDIT_CONSUMER_KEY,
-            "client_secret": REDDIT_CONSUMER_SECRET,
-            "grant_type": 'refresh_token',
-            "refresh_token": req.user.refresh_token,
-            'scope': scope,
-            'duration': 'permanent',
-            "redirect_uri": callbackURL
-
-        }
-
-        var options = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            url: 'https://ssl.reddit.com/api/v1/access_token?',
-            headers: {
-                'User-Agent': 'RedditJS/1.0 by ' + req.user.name,
-                'Authorization': authorization
-            },
-            form: params,
-        };
-
-        request.post(options, function(error, response, body) {
-            if (error) {
-                console.log('error getting oauth re-authenticate', error)
-
-                res.send(419, loginAgainMsg)
-                return
-            } else if (!error && response.statusCode == 200 || response.statusCode == 304) {
-                //set a new access token after getting a new one
-                var values = JSON.parse(body)
-
-                values.tokenExpires = (now + values.expires_in) - 60 //give it 60 seconds grace time
-
-                if (values !== 'undefined' && typeof values.access_token !== 'undefined' && values.access_token.length > 3) { //return value cant be trusted
-                    req.user.tokenExpires = values.tokenExpires
-                    req.user.access_token = values.access_token
-                    console.log('oauth worked, token=', values.access_token);
-
-                    process.nextTick(function() { //wait for the access token to be in the DB
-                        return next(true)
-                    });
-                } else {
-                    res.send(419, loginAgainMsg)
-                }
-
-            } else {
-                res.send(419, loginAgainMsg)
-            }
-
-        });
+    var params = {
+      "client_id": REDDIT_CONSUMER_KEY,
+      "client_secret": REDDIT_CONSUMER_SECRET,
+      "grant_type": 'refresh_token',
+      "refresh_token": req.user.refresh_token,
+      'scope': scope,
+      'duration': 'permanent',
+      "redirect_uri": callbackURL
 
     }
+
+    var options = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      url: 'https://ssl.reddit.com/api/v1/access_token?',
+      headers: {
+        'User-Agent': 'RedditJS/1.0 by ' + req.user.name,
+        'Authorization': authorization
+      },
+      form: params,
+    };
+
+    request.post(options, function(error, response, body) {
+      if (error) {
+        console.log('error getting oauth re-authenticate', error)
+
+        res.send(419, loginAgainMsg)
+        return
+      } else if (!error && response.statusCode == 200 || response.statusCode == 304) {
+        //set a new access token after getting a new one
+        var values = JSON.parse(body)
+
+        values.tokenExpires = (now + values.expires_in) - 60 //give it 60 seconds grace time
+
+        if (values !== 'undefined' && typeof values.access_token !== 'undefined' && values.access_token.length > 3) { //return value cant be trusted
+          req.user.tokenExpires = values.tokenExpires
+          req.user.access_token = values.access_token
+          console.log('oauth worked, token=', values.access_token);
+
+          process.nextTick(function() { //wait for the access token to be in the DB
+            return next(true)
+          });
+        } else {
+          res.send(419, loginAgainMsg)
+        }
+
+      } else {
+        res.send(419, loginAgainMsg)
+      }
+
+    });
+
+  }
 
 }

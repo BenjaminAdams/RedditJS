@@ -63,7 +63,6 @@ define(['App', 'underscore', 'backbone', 'cookie'],
       },
       //smooth scrolling to the top of the screen
       scrollTop: function() {
-        console.log('scrolltop now')
         $('html, body').animate({
           scrollTop: 0
         }, 150);

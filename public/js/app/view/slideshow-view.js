@@ -39,8 +39,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/slideshow', 'view/basem-v
           this.renderModel(this.model);
         }
 
-        App.on("single:remove", this.remove, this);
-        App.on("single:giveBtnBarID", this.triggerID, this);
+        this.listenTo(App, "single:remove", this.remove, this);
+        this.listenTo(App, "single:giveBtnBarID", this.triggerID, this);
 
         this.startSlideTimer()
       },

@@ -11,7 +11,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/oauth', 'view/l
       initialize: function(data) {
         _.bindAll(this);
 
-        App.on("login", this.loginSuccess, this);
+        this.listenTo(App, "login", this.loginSuccess, this);
       },
       onRender: function() {
         //console.log('rendering oauth popup')

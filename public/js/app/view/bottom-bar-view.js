@@ -31,12 +31,12 @@
          this.selectedID = false;
          this.pixelsOfOneImg = 97.5
 
-         App.on("bottombar:selected", this.selected, this); //when the user focuses on a single post page
-         App.on("btmbar:remove", this.remove, this); //clears everthing in this view
-         App.on("btmbar:gotoPrev", this.gotoPrev, this);
-         App.on("btmbar:gotoNext", this.gotoNext, this);
-         App.on('btmbar:restAndrefetch', this.restAndrefetch, this);
-         App.on('btmbar:purgeNonImgAndRerender', this.purgeNonImgAndRerender, this)
+         this.listenTo(App, "bottombar:selected", this.selected, this); //when the user focuses on a single post page
+         this.listenTo(App, "btmbar:remove", this.remove, this); //clears everthing in this view
+         this.listenTo(App, "btmbar:gotoPrev", this.gotoPrev, this);
+         this.listenTo(App, "btmbar:gotoNext", this.gotoNext, this);
+         this.listenTo(App, 'btmbar:restAndrefetch', this.restAndrefetch, this);
+         this.listenTo(App, 'btmbar:purgeNonImgAndRerender', this.purgeNonImgAndRerender, this)
          $(window).bind('keydown', this.keyPress); //remove this later!
 
          this.loading = false; //keeps track if we are loading more posts or not
@@ -80,12 +80,7 @@
          $('#bottom-bar-container').hide()
 
          $(window).unbind('keydown', this.keyPress);
-         App.off("btmbar:remove", this.remove, this);
-         App.off("bottombar:selected", this.selected, this)
-         App.off("btmbar:gotoPrev", this.gotoPrev, this);
-         App.off("btmbar:gotoNext", this.gotoNext, this);
-         App.off('btmbar:restAndrefetch', this.restAndrefetch, this);
-         App.off('btmbar:purgeNonImgAndRerender', this.purgeNonImgAndRerender, this)
+
          this.deleted = true
 
          App.fullscreenSlideShow.reset();
@@ -104,9 +99,9 @@
          }
        },
        restAndrefetch: function() {
-         this.collection.reset() 
+         this.collection.reset()
          this.loading = false
-        this.fetchMore()
+         this.fetchMore()
        },
        purgeNonImgAndRerender: function() {
          this.collection.removeNonImgs()
@@ -121,8 +116,8 @@
            name: this.selectedID
          })
          var index = this.collection.indexOf(selectedModel);
-         if(index<0){
-           index=0;
+         if (index < 0) {
+           index = 0;
          }
          this.shouldWeFetchMore(index)
          return index
@@ -132,8 +127,8 @@
            return
          }
          var index = this.getCurrentCollectionIndex()
-         if(index===0) {
-          index=1;
+         if (index === 0) {
+           index = 1;
          }
 
          var prevModel = this.collection.at(index - 1);
