@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], function(App, _, Backbone, CommentsCollection, BaseModel) {
-  var Single = BaseModel.extend({
+define(['App', 'underscore', 'backbone', 'collection/comments', 'model/parseComments'], function(App, _, Backbone, CommentsCollection, parseComments) {
+  return Backbone.Model.extend({
     initialize: function(data) {
       this.id = data.id
       this.parseNow = data.parseNow
@@ -34,7 +34,9 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
     },
     parse: function(response) {
       if (this.parseNow === true) {
+
         response = this.parseOnce(response)
+
       }
       return response
     },
@@ -49,7 +51,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
         //set the value for the single reddit post
         data = response[0].data.children[0].data
           //set the values for the comments of this post
-        data.replies = this.parseComments(response[1].data, data.name)
+        data.replies = parseComments(response[1].data, data.name)
       }
 
       var timeAgo = moment.unix(data.created_utc).fromNow(true) //"true" removes the "ago"
@@ -231,5 +233,5 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/base'], f
     }
 
   });
-  return Single;
+
 });

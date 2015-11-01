@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/basem-view', 'model/comment', 'cView/comments', 'collection/comments', 'cookie'],
-  function(App, _, Backbone, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, CViewComments, CommentCollection, Cookie) {
+define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/basem-view', 'model/comment', 'cView/comments', 'collection/comments', 'cookie', 'model/parseComments'],
+  function(App, _, Backbone, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel, CViewComments, CommentCollection, Cookie, parseComments) {
     return BaseView.extend({
       template: commentTmpl,
       events: {
@@ -155,7 +155,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
             skipParse: true
           })
 
-          var newComments = tmpModel.parseComments(data, self.model.get('link_id'))
+          var newComments = parseComments(data, self.model.get('link_id'))
           self.reRenderMOAR(newComments)
         } else {
 

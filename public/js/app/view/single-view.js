@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/loading', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'model/single', 'view/comment-view', 'cookie'],
-  function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, BaseView, SingleModel, CommentView, Cookie) {
+define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/loading', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'model/single', 'view/comment-view', 'cookie', 'model/parseComments'],
+  function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, BaseView, SingleModel, CommentView, Cookie, parseComments) {
     return BaseView.extend({
       template: singleTmpl,
       events: {
@@ -187,7 +187,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
               var tmpModel = new CommentModel({
                 skipParse: true
               })
-              self.linkedCommentModel = tmpModel.parseComments(data, link_id)
+              self.linkedCommentModel = parseComments(data, link_id)
               self.linkedCommentModel = self.linkedCommentModel.models[0]
 
               self.linkedCommentModel.set('permalink', document.URL)
