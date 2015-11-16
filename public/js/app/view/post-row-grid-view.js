@@ -34,7 +34,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
         this.biggerImg = this.model.get('imgUrl')
         this.smallerImg = this.model.get('smallImg')
         this.viewClosed = false //need a way to prevent the image to preload if the view is destroy
-        this.attempts = 0 //how many times we attempt to render the view
+          //this.attempts = 0 //how many times we attempt to render the view
         this.allowedToRender = false
         this.nonImg = false
         this.cols = options.cols
@@ -137,7 +137,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
       preloadImg: function() {
         var self = this
 
-        if (this.viewClosed === true) {
+        if (this.viewClosed === true || this.imgHasLoaded === true) {
           console.log('trying to preload a grid block that has been destroy')
           return
         }
@@ -148,8 +148,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
           App.gridImagesLoadingCount++;
           App.off("gridView:imageLoaded", this.preloadImg)
 
-          $('<img />').attr('src', imgToPreload).load(function(data) {
+          $('<img />').attr('src', imgToPreload).load(function() {
             self.allowedToRender = true
+            self.imgHasLoaded = true
             self.render()
             App.gridImagesLoadingCount--;
             App.trigger("gridView:imageLoaded")
@@ -175,7 +176,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
           self.find('img').attr('src', biggerImg);
           self.find('.gridLoading').hide() //hide loading gif
         }).error(function() {
-          console.log("ERROR loading img")
+
           self.find('.gridLoading').hide() //hide loading gif
             //TODO show a failed to load img
         });
@@ -196,20 +197,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
         return shortest;
       },
       appendToShortest: function(newPost) {
-        var self = this
         var col = this.shortestCol()
-        if (col) {
-          col.appendChild(newPost);
-        } else {
-
-          if (this.attempts < 5) { //prevents infinte loop
-            this.attempts++;
-            setTimeout(function() {
-              self.appendToShortest(newPost)
-            }, 5)
-          }
-
-        }
+        col.appendChild(newPost);
       }
 
     });

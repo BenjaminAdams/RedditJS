@@ -29,7 +29,6 @@ define(['App', 'marionette', 'view/post-row-grid-view'],
         var self = this
         setTimeout(function() {
           if (((self.collection.length - self.collection.countNonImg) < 2) && App.settings.get('hideSelf') === true) {
-            console.log('show non imgs')
             self.noImgsFound()
           }
         }, 5000)
@@ -54,15 +53,11 @@ define(['App', 'marionette', 'view/post-row-grid-view'],
         }
         for (var i = 0; i < colCount; i++) {
 
-          //  var col = $(document.createElement("div"))
-          // col.addClass('column')
-          // this.$el.append(col)
-
           var col = document.createElement('div');
           col.className = 'column';
           this.el.appendChild(col)
 
-          this.cols.push(col)
+          this.cols.push(col) //save ref for child views to have quick access to the columns
         }
 
         $('.side').hide() //Also handling the display or hide of sidebar within sidebar view, need this here for when grid option is on pageload

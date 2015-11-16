@@ -54,7 +54,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
         })
 
         this.subID = this.subName + this.domain + this.sortOrder + this.timeFrame
-        console.log('subid in SR', this.subID)
+
         if (typeof this.sortOrder === 'undefined') {
           this.sortOrder = 'hot'
         }
@@ -160,12 +160,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
         }
         this.siteTableContainer.show(this.subredditCollectionView)
       },
-      //gotoSingle: function(e) {
-      //var name = this.$(e.currentTarget).data('id')
-      //App.curModel = this.collection.findWhere({
-      //name: name
-      //})
-      //},
 
       /**************Grid functions ****************/
       initGridOption: function() {
@@ -269,7 +263,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
         this.showMoarBtn()
 
         //fetch more  posts with the After
-        if (this.collection.after == "stop") {
+        if (this.collection.after === "stop") {
           console.log("AFTER = stop")
           $(window).off("scroll", this.watchScroll);
           this.showDone()
@@ -282,7 +276,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
       /**************Infinite Scroll functions ****************/
       watchScroll: function(e) {
-        console.log('watching scroll in ', this.subID)
+        //console.log('watching scroll in ', this.subID)
 
         if (App.settings.get('infin') === true) {
 
@@ -305,7 +299,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
 
           if ((($(window).scrollTop() + $(window).height()) + this.triggerPoint >= $(document).height()) && this.loading === false) {
 
-            console.log('loading MOAR')
+            //console.log('loading MOAR')
             if (this.collection.after != "stop") {
               this.fetchMore()
             } else {
