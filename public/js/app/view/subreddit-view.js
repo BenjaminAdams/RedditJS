@@ -260,13 +260,15 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
       gotNewPosts: function(models, res) {
         this.loading = false; //turn the flag on to go ahead and fetch more!
         App.subs[this.subID] = this.collection
-        this.showMoarBtn()
 
         //fetch more  posts with the After
         if (this.collection.after === "stop") {
           console.log("AFTER = stop")
           $(window).off("scroll", this.watchScroll);
           this.showDone()
+        } else {
+          this.showMoarBtn()
+          this.helpFillUpScreen();
         }
 
       },
@@ -315,7 +317,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
           this.watchScroll()
         }
 
-        if (this.collection.length < 55 && this.gridOption == 'grid') {
+        var imgCount = this.collection.length - this.collection.countNonImg
+
+        if (imgCount < 25 && this.gridOption == 'grid') {
 
           this.watchScroll()
         }
