@@ -2,11 +2,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
   function(App, _, Backbone, subredditTmpl, BaseView, SubredditCollection, SrCGridView, PostRowGridView, SrCView, PostRowView, Cookie) {
     return BaseView.extend({
       template: subredditTmpl,
-      //className: 'content',
       events: {
         'click #retry': 'tryAgain',
-        //'click .thumbnailSmall': 'gotoSingle',
-        //'click a': 'gotoSingle',
         'click .nextprev': 'fetchMore',
         //events for dropdown timeframe
         'click .drop-time-frame': 'toggleTimeFrame',
@@ -65,21 +62,11 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
         this.loading = false;
 
         this.listenTo(App, "subreddit:changeGridOption", this.changeGridOption, this);
-        //this.listenTo(App,"subreddit:remove", this.remove, this);
-        //this.render();
-        //this.imagesAdded = 0; //keeps a total of how many images we are loading
-        //this.imgAry = []
 
-        //$(window).on("scroll", this.watchScroll);
         $(window).on("scroll", this.debouncer(function(e) {
-
           self.watchScroll()
         }));
-        //$(window).resize(this.debouncer(function(e) {
-        //self.resize()
-        //}));
 
-        //this.target = $("#siteTableContainer"); //the target to test for infinite scroll
         this.target = $(window); //the target to test for infinite scroll
         this.loading = false;
 
@@ -95,8 +82,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
       onRender: function() {
         var self = this
         this.initGridOption();
-        //$(this.el).prepend("<style id='dynamicWidth'> </style>")
-        //console.log("window.subs=", window.subs)
 
         if (typeof App.subs[this.subID] === 'undefined') {
 
@@ -116,7 +101,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
           console.log('loading collection from memory')
           this.collection = App.subs[this.subID]
           this.showMoarBtn()
-            //this.fetchMore();
         }
 
         this.setupCollectionView()

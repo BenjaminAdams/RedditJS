@@ -18,25 +18,26 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
       ui: {
         'gridLoading': '.gridLoading',
         'mainGridImg': '.mainGridImg',
-        upArrow: '.upArrow',
-        downArrow: '.downArrow',
-        midcol: '.midcol',
+        'upArrow': '.upArrow',
+        'downArrow': '.downArrow',
+        'midcol': '.midcol',
         'flatList': '.flat-list',
         'reportConfirm': '.reportConfirm',
         'reportConfirmYes': '.reportConfirmYes',
         'save': '.save',
         'unsave': '.unsave'
       },
-      initialize: function(data) {
+      initialize: function(options) {
         var self = this
         _.bindAll('this.preloadImg');
-        this.model = data.model;
+        this.model = options.model;
         this.biggerImg = this.model.get('imgUrl')
         this.smallerImg = this.model.get('smallImg')
         this.viewClosed = false //need a way to prevent the image to preload if the view is destroy
         this.attempts = 0 //how many times we attempt to render the view
         this.allowedToRender = false
         this.nonImg = false
+        this.cols = options.cols
         this.forceNonImgToRender = false
         if (this.biggerImg) { //don't preload/check for loading if the grid block does not have an img
           this.preloadImg()
@@ -74,24 +75,30 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
         }
 
         if (this.smallerImg !== false && this.nonImg === false) { //only need to hover over img when we have bigger img available
-          this.$el.one("mouseenter", function() {
-            if (self.biggerImg.split('.').pop() == 'gif') {
-              self.ui.gridLoading.attr('src', '/img/loading.gif')
-                //newPost.find('.gridLoading').show() //only show loading icon if its a gif
-            }
 
-            //self.$el.find('img').attr('src', self.biggerImg);
-            //self.$el.find('.gridLoading').hide()
-            $('<img src="' + self.biggerImg + '" />').load(function() {
-              self.ui.mainGridImg.attr('src', self.biggerImg);
-              self.ui.gridLoading.hide()
-            }).error(function() {
-              console.log("ERROR loading img")
-              self.ui.gridLoading.hide() //hide loading gif
-                //TODO show a failed to load img
-            });
+          var timer;
+          this.$el.on("mouseenter", function() {
+            //set a timer so dont load a bunch of high res images fast
+            timer = setTimeout(function() {
+              console.log('mouseenter')
+              if (self.biggerImg.split('.').pop() == 'gif') {
+                self.ui.gridLoading.attr('src', '/img/loading.gif')
+              }
 
-          });
+              $('<img src="' + self.biggerImg + '" />').load(function() {
+                self.ui.mainGridImg.attr('src', self.biggerImg);
+                self.ui.gridLoading.hide()
+              }).error(function() {
+                console.log("ERROR loading img")
+                self.ui.gridLoading.hide() //hide loading gif
+                  //TODO show a failed to load img
+              });
+            }, 250);
+          }).mouseleave(function() {
+            //clear timer if they only hovered for a bit
+            clearTimeout(timer);
+          })
+
         }
 
         if (this.nonImg) {
@@ -107,19 +114,17 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
       },
       fakeRender: function() {
         this.bindUIElements();
-        this.appendToShortest(this.$el)
+        this.appendToShortest(this.el)
 
         if (this.nonImg === false || App.settings.get('hideSelf') === false) {
           this.$el.show()
         } else {
-          //this.$el.css('visibility', 'hidden').show()
           this.$el.hide()
         }
 
       },
       triggerNonImgShow: function() {
         this.$el.show()
-          //this.$el.css('visibility', 'visible')
       },
       //onRender: function() {  //functions like onRender() wont work when we override the render() function like here
       //},
@@ -139,6 +144,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 
         var imgToPreload = this.smallerImg || this.biggerImg
         if (App.gridImagesLoadingCount < 10) {
+          //only attempt to load 10 images at once
           App.gridImagesLoadingCount++;
           App.off("gridView:imageLoaded", this.preloadImg)
 
@@ -160,14 +166,12 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
       loadBiggerImg: function() {
         var self = this
 
-        console.log("Loading bigger IMG");
         if (biggerImg.split('.').pop() == 'gif') {
           self.ui.gridLoading.attr('src', '/img/loading.gif')
             //newPost.find('.gridLoading').show() //only show loading icon if its a gif
         }
 
         $('<img src="' + biggerImg + '" />').load(function() {
-          console.log('loaded img')
           self.find('img').attr('src', biggerImg);
           self.find('.gridLoading').hide() //hide loading gif
         }).error(function() {
@@ -180,28 +184,31 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
       shortestCol: function() {
         var shortest = null
         var count = 0
-        $('.column').each(function() {
+
+        _.each(this.cols, function(x) {
           if (shortest === null) {
-            shortest = $(this)
-          } else if ($(this).height() < shortest.height()) {
-            //console.log($(this).height(), shortest.height())
-            shortest = $(this)
+            shortest = x
+          } else if (x.clientHeight < shortest.clientHeight) {
+            shortest = x
           }
-        });
+        })
+
         return shortest;
       },
       appendToShortest: function(newPost) {
         var self = this
         var col = this.shortestCol()
         if (col) {
-          col.append(newPost);
+          col.appendChild(newPost);
         } else {
+
           if (this.attempts < 5) { //prevents infinte loop
             this.attempts++;
             setTimeout(function() {
               self.appendToShortest(newPost)
             }, 5)
           }
+
         }
       }
 

@@ -6,12 +6,19 @@ define(['App', 'marionette', 'view/post-row-grid-view'],
       initialize: function(options) {
         var self = this
         App.gridImagesLoadingCount = 0 //keeps track of how many images we load at once
+        this.cols = []
       },
       onRender: function() {
         this.gridViewSetup()
 
         //test if all posts in collection are non-image posts
         this.testNonImg()
+      },
+
+      childViewOptions: function() {
+        return {
+          cols: this.cols
+        }
       },
 
       onBeforeClose: function() {
@@ -46,7 +53,16 @@ define(['App', 'marionette', 'view/post-row-grid-view'],
           colCount = Math.floor(fakeMobileWidth / 249)
         }
         for (var i = 0; i < colCount; i++) {
-          this.$el.append('<div class="column"> </div>')
+
+          //  var col = $(document.createElement("div"))
+          // col.addClass('column')
+          // this.$el.append(col)
+
+          var col = document.createElement('div');
+          col.className = 'column';
+          this.el.appendChild(col)
+
+          this.cols.push(col)
         }
 
         $('.side').hide() //Also handling the display or hide of sidebar within sidebar view, need this here for when grid option is on pageload
