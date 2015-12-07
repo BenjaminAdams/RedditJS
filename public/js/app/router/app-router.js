@@ -8,9 +8,9 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
         App.isBot = false
         var params = this.getUrlParameters()
         if (params.reqAsBot === "1") {
-          var fetchBots = ['https://robot85.herokuapp.com/', 'https://robot86.herokuapp.com/', 'https://robot87.herokuapp.com/']
-          var bot = fetchBots[Math.floor((Math.random() * fetchBots.length))]
-          App.baseURL = bot + 'api/'
+          //var fetchBots = ['https://robot85.herokuapp.com/', 'https://robot86.herokuapp.com/', 'https://robot87.herokuapp.com/']
+          // var bot = fetchBots[Math.floor((Math.random() * fetchBots.length))]
+          // App.baseURL = bot + 'api/'
           App.isBot = true
         }
 
@@ -59,6 +59,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
         '(:sortOrder)(/)': 'home',
 
         'r/:subName(/)': 'subreddit',
+        'r/:subName?reqAsBot=1': 'subreddit',
         'r/:subName?mode=:mode': 'subreddit',
         'r/:subName/:sortOrder(/)': 'subreddit',
         'r/:subName/:sortOrder/:timeFrame': 'subreddit',
