@@ -2,6 +2,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
   function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, BaseView, SingleModel, CommentView, Cookie, parseComments, CViewComments) {
     return BaseView.extend({
       template: singleTmpl,
+      className: 'singlePagePost',
       events: {
         'click #retry': 'tryAgain',
         'click #retryForComments': 'tryAgain',
