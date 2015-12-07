@@ -223,7 +223,6 @@ server.all('/*', function(req, res, next) {
 
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
-  return bots.fetchForBot(res, req)
 
   if (req.device.type === 'bot') {
     bots.fetchForBot(res, req)
