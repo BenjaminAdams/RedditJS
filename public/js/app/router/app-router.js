@@ -5,14 +5,14 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
         //load settings
         App.settings = new Backbone.Model()
 
-        App.isBot = false
+        App.isBot = window.isBot
         var params = this.getUrlParameters()
-        if (params.reqAsBot === "1") {
+          //if (window.location.search.substring(1) === "reqAsBot") {
           //var fetchBots = ['https://robot85.herokuapp.com/', 'https://robot86.herokuapp.com/', 'https://robot87.herokuapp.com/']
           // var bot = fetchBots[Math.floor((Math.random() * fetchBots.length))]
           // App.baseURL = bot + 'api/'
-          App.isBot = true
-        }
+          // App.isBot = true
+          // }
 
         if (typeof params.embedId !== 'undefined') {
           App.embedId = params.embedId
@@ -59,7 +59,7 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
         '(:sortOrder)(/)': 'home',
 
         'r/:subName(/)': 'subreddit',
-        'r/:subName?reqAsBot=1': 'subreddit',
+        'r/:subName?reqAsBot': 'subreddit',
         'r/:subName?mode=:mode': 'subreddit',
         'r/:subName/:sortOrder(/)': 'subreddit',
         'r/:subName/:sortOrder/:timeFrame': 'subreddit',
