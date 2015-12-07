@@ -13,7 +13,7 @@ module.exports = {
     }
     request.get(options, function(error, response, body) {
       if (body) {
-        body = body.replace('window.isBot=false', 'window.isBot=true')
+        body = body.replace('isBot=false', 'isBot=true')
       }
 
       res.send(200, body)
