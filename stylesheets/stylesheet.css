@@ -15,6 +15,15 @@ a {
   a:hover {
     text-decoration: underline; }
 
+	h4 {
+		text-align:center;
+	}
+	
+	
+	table {
+		font-size:14px;
+	}
+	
 .btn {
   display: inline-block;
   margin-bottom: 1rem;
@@ -205,7 +214,7 @@ a {
 
 @media screen and (min-width: 64em) {
   .main-content {
-    max-width: 64rem;
+    max-width: 85rem;
     padding: 2rem 6rem;
     margin: 0 auto;
     font-size: 1.1rem; } }
