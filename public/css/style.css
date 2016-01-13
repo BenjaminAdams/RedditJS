@@ -213,7 +213,7 @@ border-radius: 7px;
 display:block;
 padding:5px;
 max-width:62%;
-
+cursor: nwse-resize;
 }
 
 .embedImg {
