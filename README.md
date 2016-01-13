@@ -1,3 +1,5 @@
+RedditJS uses [spa-seo-renderer](https://github.com/BenjaminAdams/spa-seo-renderer) so search engines can crawl this single page app.
+
 ##RedditJS
 The code that powers [redditJS.com](http://www.redditjs.com).
 
