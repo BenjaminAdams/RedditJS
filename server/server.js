@@ -17,6 +17,8 @@ var bodyParser = require('body-parser')
 var compress = require('compression')
 var cookieParser = require('cookie-parser');
 var session = require('express-session')
+var MongoStore = require('connect-mongo/es5')(session);
+
 var errorHandler = require('errorhandler')
 var methodOverride = require('method-override')
 var favicon = require('serve-favicon');
@@ -24,7 +26,6 @@ var timestamp = require('../timestamp')
 
 var api = require('./api')
 var bots = require('./bots')
-var redisStore = require('connect-redis')(session);
 
 // var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
@@ -32,10 +33,11 @@ var callbackURL = process.env.REDDIT_CALLBACK || "https://redditjs.com/auth/redd
 var loginAgainMsg = 'login to reddit please'
 
 //determines if we should serve minified CSS and Javascript to the client
-var minifiedStr = process.env.NODE_ENV == 'production' ? '.min' : ''
+var minifiedStr = process.env.NODE_ENV === 'production' ? '.min' : ''
 
 /*
 for your local env run
+    export NODE_ENV='dev'
     export REDDIT_KEY = 'your key'
     export REDDIT_SECRET = 'your secret'
     export REDDIT_CALLBACK = 'http://localhost:8002/auth/reddit/callback'
@@ -99,14 +101,20 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 }
 
-server.use(cookieParser(process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'));
+server.use(cookieParser(process.env.SESSION_SECRET || 'As3242g23g32hs343y346d32fg23f'));
 
 var secureCookies = {}
+var mongoOpts = {
+  url: 'mongodb://localhost/redditjs-sessions'
+}
+
 if (process.env.NODE_ENV === 'production') {
 
   secureCookies = {
-    store: new redisStore(),
+    store: new MongoStore(mongoOpts),
     proxy: true,
+    saveUninitialized: false, // don't create session until something stored
+    resave: false, //don't save session if unmodified
     cookie: {
       maxAge: sessionExpireTime,
       secure: false
@@ -117,7 +125,9 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   //development
   secureCookies = {
-    store: new redisStore(),
+    store: new MongoStore(mongoOpts),
+    saveUninitialized: false, // don't create session until something stored
+    resave: false, //don't save session if unmodified
     cookie: {
       maxAge: sessionExpireTime
     },
@@ -129,7 +139,10 @@ if (process.env.NODE_ENV === 'production') {
 server.use(session(secureCookies));
 server.use(setupLocals)
   //server.use(logger());
-server.use(bodyParser());
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({
+  extended: true
+}));
 server.use(methodOverride());
 server.use(passport.initialize());
 server.use(passport.session());
