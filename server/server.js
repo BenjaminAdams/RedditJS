@@ -85,7 +85,9 @@ server.use(function(req, res, next) {
 
   next();
 });
-server.enable('trust proxy');
+
+
+server.set('trust proxy', 1)
 server.use(compress());
 server.use(express.static(__dirname + '../../public', {
   maxAge: oneDay
@@ -115,10 +117,10 @@ if (process.env.NODE_ENV === 'production') {
     proxy: true,
     saveUninitialized: false, // don't create session until something stored
     resave: false, //don't save session if unmodified
-    cookie: {
-      maxAge: sessionExpireTime,
-      secure: false
-    },
+    //cookie: {
+     // maxAge: sessionExpireTime,
+     // secure: true
+    //},
     secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
   }
 
@@ -128,9 +130,9 @@ if (process.env.NODE_ENV === 'production') {
     store: new MongoStore(mongoOpts),
     saveUninitialized: false, // don't create session until something stored
     resave: false, //don't save session if unmodified
-    cookie: {
-      maxAge: sessionExpireTime
-    },
+    //cookie: {
+    //  maxAge: sessionExpireTime
+    //},
     secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
   }
 
@@ -213,6 +215,7 @@ server.get('/auth/reddit/callback', function(req, res, next) {
       failureRedirect: '/login'
     })(req, res, next);
   } else {
+console.log('qry=',req.query, 'session=',req.session)
     next(new Error('There was a problem connecting to the reddit server.  Please try again'));
   }
 });
