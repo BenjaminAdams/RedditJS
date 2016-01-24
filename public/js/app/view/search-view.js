@@ -37,7 +37,7 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
           sortOrder: this.sortOrder
         })
 
-        this.collection = new SearchCollection([], {
+        this.collection = new SearchCollection(null, {
           timeFrame: this.timeFrame,
           sortOrder: this.sortOrder,
           searchQ: this.searchQ
@@ -71,7 +71,7 @@ define(['App', 'view/subreddit-view', 'collection/search', 'hbs!template/search'
 
       },
 
-      onRender: function() {
+      onShow: function() {
         this.initGridOption();
         this.siteTableContainer.show(this.subredditCollectionView)
         $(this.el).prepend("<style id='dynamicWidth'> </style>")

@@ -70,12 +70,10 @@ module.exports = {
       form: req.body,
     };
 
-    console.log(options)
-
     request.post(options, function(error, response, body) {
-      console.log('resp=', body)
+
       if (error) {
-        console.log(error)
+
         if (typeof response !== 'undefined' && typeof response.statusCode !== 'undefined') {
           res.sendStatus(response.statusCode)
         } else {
@@ -185,7 +183,6 @@ module.exports = {
     var url_parts = url.parse(req.url, true);
     var urlStr = url_parts.query.url
     var cookie = url_parts.query.cookie
-    console.log('thisis=', url_parts.path)
     var queryParams = url_parts.path.replace('/api/?url=', '');
     queryParams = url_parts.path.replace('/api/?url=', '');
     //queryParams = queryParams.replace(urlStr, '')

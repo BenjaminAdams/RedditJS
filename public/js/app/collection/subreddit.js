@@ -94,8 +94,6 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
       _.each(response.data.children, function(item, count) {
         if (item.data.hidden === false) {
 
-          // item.data.count = count
-
           if ((count % 2) === 0) {
             item.data.evenOrOdd = "even"
           } else {

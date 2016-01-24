@@ -1,5 +1,5 @@
-define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, SingleModel) {
-  return Backbone.Collection.extend({
+define(['App', 'backbone', 'model/single', 'collection/subreddit'], function(App, Backbone, SingleModel, SrCollection) {
+  return SrCollection.extend({
     initialize: function(x, data) {
       _.bindAll(this);
       this.after = ""
@@ -42,50 +42,6 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
       //jsonp search? 
       //http://www.reddit.com/search.json?q=test&after=t3_18irx&sort=hot&t=week&jsonp=?
 
-    },
-    parse: function(response) {
-      //set the after for pagination
-      console.log(response)
-      this.after = response.data.after;
-
-      if (this.after === "" || this.after === null) {
-        this.after = "stop" //tells us we have finished downloading all of the possible posts in this subreddit
-      }
-
-      var modhash = response.data.modhash;
-      if (typeof modhash == "string" && modhash.length > 5) {
-        $.cookie('modhash', modhash, {
-          path: '/'
-        });
-      }
-
-      var self = this;
-      var models = Array();
-      _.each(response.data.children, function(item) {
-        if (item.data.hidden === false) {
-
-          var singleModel = new SingleModel({
-            subName: this.subName,
-            id: item.data.id
-          });
-          item.data = singleModel.parseOnce(item.data)
-          item.data.count = self.count
-
-          if ((self.count % 2) === 0) {
-            item.data.evenOrOdd = "even"
-          } else {
-            item.data.evenOrOdd = "odd"
-          }
-
-          self.count++;
-
-          models.push(item.data)
-        }
-      });
-
-      //reset the url to have the new after tag
-      this.instanceUrl = this.getUrl()
-      return models;
     }
 
   });
