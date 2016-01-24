@@ -632,6 +632,11 @@ display:none;
   .embedly-embed { 
     margin-left: 86px; 
   }
+
+  .block .embedly-embed { 
+    margin-left: 0px; 
+  }
+
 }
 
 

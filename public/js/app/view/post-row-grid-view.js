@@ -80,7 +80,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
 
         var width = this.$el.width() //width of grid block
         var height = this.$el.height()
-        $embed.attr('width', width - 30)
+        $embed.attr('width', width)
         $embed.attr('height', height - 30)
         return $embed
       },
