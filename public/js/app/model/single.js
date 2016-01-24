@@ -1,9 +1,9 @@
-define(['App', 'underscore', 'backbone', 'collection/comments', 'model/parseComments'], function(App, _, Backbone, CommentsCollection, parseComments) {
+define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _, Backbone, CommentsCollection) {
   return Backbone.Model.extend({
-    initialize: function(data) {
-      this.id = data.id
-      this.parseNow = data.parseNow
-      this.sortOrder = data.sortOrder
+    initialize: function(attributes, options) {
+      this.id = options.id
+      this.parseNow = options.parseNow
+      this.sortOrder = options.sortOrder
 
     },
     url: function() {
@@ -32,14 +32,8 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/parseComm
       startedDL: false
         //  slug: "slug"
     },
-    parse: function(response) {
-      if (this.parseNow === true) {
-        response = this.parseOnce(response)
-      }
-      return response
-    },
     //so we have the attributes in the root of the model
-    parseOnce: function(response) {
+    parse: function(response) {
       var data;
       //console.log("RESPONSE of single model", response)
       if (typeof response[0] === 'undefined') {
@@ -49,7 +43,11 @@ define(['App', 'underscore', 'backbone', 'collection/comments', 'model/parseComm
         //set the value for the single reddit post
         data = response[0].data.children[0].data
           //set the values for the comments of this post
-        data.replies = parseComments(response[1].data, data.name)
+          //data.replies = parseComments(response[1].data, data.name)
+        data.replies = new CommentsCollection(response[1].data, {
+          name: data.name,
+          parse: true
+        })
       }
 
       var timeAgo = moment.unix(data.created_utc).fromNow(true) //"true" removes the "ago"

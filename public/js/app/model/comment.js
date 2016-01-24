@@ -1,12 +1,31 @@
-define(['App', 'underscore', 'backbone', 'jquery', 'model/parseComments'], function(App, _, Backbone, $, parseComments) {
+define(['App', 'underscore', 'backbone', 'jquery'], function(App, _, Backbone, $) {
   return Backbone.Model.extend({
     initialize: function(options) {
-      if (typeof options.skipParse === 'undefined') {
-        this.parseThis()
-      }
+
     },
-    parseThis: function() {
-      var data = this.attributes
+    parseAsCommentMoreLink: function(data) {
+      if (typeof data.children !== "undefined" && data.children !== "") {
+        data.childrenCount = data.children.length
+      }
+      //data.link_id = this.link_id
+      if (data.childrenCount == 1) {
+        data.replyVerb = 'reply'
+      } else {
+        data.replyVerb = 'replies'
+      }
+
+      return data
+    },
+
+    parse: function(data) {
+
+      if (!data) {
+        return
+      }
+
+      if (data.kind === 'more') {
+        return this.parseAsCommentMoreLink(data)
+      }
 
       var timeAgo = moment.unix(data.created_utc).fromNow(true) //"true" removes the "ago"
       timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
@@ -24,8 +43,6 @@ define(['App', 'underscore', 'backbone', 'jquery', 'model/parseComments'], funct
       data.score = +data.ups - parseInt(data.downs, 10)
       data.scoreUp = +data.score + 1
       data.scoreDown = +data.score - 1
-
-      data.kind = "t1" //either "more" or "t1"
 
       if (data.likes === null) {
         data.voted = 'unvoted'
@@ -51,13 +68,15 @@ define(['App', 'underscore', 'backbone', 'jquery', 'model/parseComments'], funct
       }
 
       data.body_html = (typeof data.body_html === 'undefined') ? '' : $('<div/>').html(data.body_html).text();
+
       var linkName = data.link_id.replace('t3_', '')
+
       data.permalink = '/r/' + data.subreddit + '/comments/' + linkName + "/L/" + data.id
 
       if (typeof data.replies !== "undefined" && data.replies !== null && typeof data.replies.data !== "undefined") {
 
-        data.replies = parseComments(data.replies.data, data.link_id)
-        data.childrenCount = data.replies.length
+        // data.replies = parseComments(data.replies.data, data.link_id)
+        data.childrenCount = data.replies.data.length
 
         if (data.replies.length == 1) {
           data.childOrChildren = 'child'
@@ -70,7 +89,7 @@ define(['App', 'underscore', 'backbone', 'jquery', 'model/parseComments'], funct
         data.childrenCount = 0
       }
 
-      this.attributes = data
+      return data
     }
 
   });

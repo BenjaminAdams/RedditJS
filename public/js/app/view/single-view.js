@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/loading', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'model/single', 'view/comment-view', 'cookie', 'model/parseComments', 'cView/comments'],
-  function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, BaseView, SingleModel, CommentView, Cookie, parseComments, CViewComments) {
+define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/loading', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'model/single', 'cView/comments'],
+  function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, BaseView, SingleModel, CViewComments) {
     return BaseView.extend({
       template: singleTmpl,
       className: 'singlePagePost',
@@ -142,15 +142,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
       fetchComments: function(callback, sortOrder, errorCallback) {
 
-        this.comments = new SingleModel({
+        var singleModel = new SingleModel(null, {
           subName: this.subName,
           id: this.id,
-          parseNow: true,
           sortOrder: sortOrder
         });
 
-        //this.render();
-        this.fetchXhr = this.comments.fetch({
+        this.fetchXhr = singleModel.fetch({
           success: callback,
           error: errorCallback
         });
@@ -178,9 +176,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
             require(['model/comment'], function(CommentModel) {
               data.children = data.json.data.things
               var tmpModel = new CommentModel({
-                skipParse: true
-              })
-              self.linkedCommentModel = parseComments(data, link_id)
+                  skipParse: true
+                })
+                // self.linkedCommentModel = parseComments(data, link_id)
               self.linkedCommentModel = self.linkedCommentModel.models[0]
 
               self.linkedCommentModel.set('permalink', document.URL)
@@ -302,17 +300,16 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
         this.listenTo(App, "comment:addOneChild" + this.model.get('name'), this.addOneChild);
 
-        //var t = bench('loading commentview')
+        var t = bench('loading commentview') //TIMER
 
         this.commentCollectionView = new CViewComments({
           collection: collection,
-          childView: CommentView,
           originalPoster: this.model.get('author'),
           commentsDisabled: this.model.get('commentsDisabled')
         })
         this.siteTableComments.show(this.commentCollectionView)
 
-        //t.stop()
+        t.stop() //END TIMER
 
       }
 

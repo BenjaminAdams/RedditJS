@@ -9,7 +9,6 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 
       this.after = ""
       this.subName = data.subName
-      console.log(data)
 
       this.sortOrder = data.sortOrder
       this.domain = data.domain
@@ -18,7 +17,7 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
       if (typeof this.sortOrder === 'undefined' || this.sortOrder === 'reqAsBot=1') {
         this.sortOrder = 'hot' //the default sort order is hot
       }
-      //this.sortOrder = "/" + this.sortOrder //needs to start with a slash to be injected into the URL
+
       this.subID = this.subName + this.sortOrder
 
       this.type = data.type || 'subreddit'
@@ -54,13 +53,11 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
       }
 
     },
-    // Reference to this collection's model.
     model: SingleModel,
     url: function() {
       return this.instanceUrl //keeps a dynamic URL so we can give it a new "after"
     },
     getUrl: function() {
-      //var username = $.cookie('username')
       var username = App.user.name || false
       var linkCount = App.settings.get('linkCount')
 
@@ -70,14 +67,7 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
       } else {
         console.log('getting subreddit via JSONP')
 
-        //if (App.isBot === true) {
-
-        //   return App.baseURL + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount
-        // } else {
         return 'https://reddit.com/' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
-          // }
-
-        //return App.baseURL + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
       }
     },
     parse: function(response) {
@@ -103,12 +93,12 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
       _.each(response.data.children, function(item) {
         if (item.data.hidden === false) {
 
-          var singleModel = new SingleModel({
-            subName: this.subName,
+          var singleModel = new SingleModel(item.data, {
+            subName: data.subreddit,
             id: item.data.id,
-            parseNow: false
+            parse: true
           });
-          item.data = singleModel.parseOnce(item.data)
+
           item.data.count = self.count
 
           if ((self.count % 2) === 0) {
