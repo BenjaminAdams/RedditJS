@@ -99,7 +99,7 @@ define(['App', 'backbone', 'model/single', 'model/comment'], function(App, Backb
         }
 
       });
-
+      this.instanceUrl = this.getUrl()
       return models;
     }
 

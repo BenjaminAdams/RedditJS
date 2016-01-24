@@ -110,7 +110,7 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 
         }
       });
-
+      this.instanceUrl = this.getUrl()
       return models;
     },
     removeNonImgs: function() {

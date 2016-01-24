@@ -58,7 +58,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/user', 'view/subreddit-vi
         }
 
         //fetch more  posts with the After
-        if (this.collection.after == "stop") {
+        if (this.collection.after === "stop") {
           console.log("AFTER = stop")
           $(window).off("scroll", this.watchScroll);
         }

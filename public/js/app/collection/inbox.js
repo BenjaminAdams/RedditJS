@@ -1,105 +1,55 @@
-/* Inbox.js Collection
+define(['backbone', "moment"], function(Backbone) {
+  return Backbone.Collection.extend({
+    initialize: function(nothing, data) {
+      _.bindAll(this);
+      this.after = ""
+      this.type = data.type
+      this.count = 1
+      this.instanceUrl = this.getUrl()
+    },
+    model: Backbone.Model.extend({
+      parse: function(data) {
+        if (typeof data.data !== 'undefined') {
+          //the data  comes in this format
+          data.data.kind = data.kind
+          data = data.data
+        }
 
-View mail in these formats:
-unread
-sent
-all
+        data.body_html = (typeof data.body_html === 'undefined') ? '' : $('<div/>').html(data.body_html).text();
 
+        var timeAgo = moment.unix(data.created_utc).fromNow(true) //"true" removes the "ago"
+        timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
+        data.timeAgo = timeAgo
+        data.timeUgly = moment.unix(data.created_utc).format()
+        data.timePretty = moment.unix(data.created_utc).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
+        return data
+      }
+    }),
+    url: function() {
+      return this.instanceUrl //keeps a dynamic URL so we can give it a new "after"
+    },
+    getUrl: function() {
+      //http://api.reddit.com/user/armastevs.json
+      if (this.after.length < 3) {
+        //return '/api/?url=message/' + this.type + ".json&after=" + this.after
+        return '/api/?url=message/' + this.type + "&after=" + this.after + '&mark=true'
 
-*/
+      } else {
 
-define(['backbone', 'model/single', 'model/comment', "moment"], function(Backbone, SingleModel, CommentModel) {
+        return '/api/?url=message/' + this.type + '&mark=true'
+      }
+    },
+    parse: function(response) {
+      //set the after for pagination
+      if (!response || !response.data) return response
 
-	var User = Backbone.Collection.extend({
-		initialize: function(nothing, data) {
-			_.bindAll(this);
-			this.after = ""
-			this.type = data.type
+      if (!response.data.after) {
+        this.after = "stop" //tells us we have finished downloading all of the possible posts in this subreddit
+      }
 
-			this.count = 1
-			this.instanceUrl = this.getUrl()
-
-		},
-		// Reference to this collection's model.
-		model: SingleModel,
-
-		url: function() {
-			return this.instanceUrl //keeps a dynamic URL so we can give it a new "after"
-		},
-		getUrl: function() {
-			//http://api.reddit.com/user/armastevs.json
-			if (this.after.length < 3) {
-				//return '/api/?url=message/' + this.type + ".json&after=" + this.after
-				return '/api/?url=message/' + this.type + "&after=" + this.after + '&mark=true'
-
-			} else {
-
-				return '/api/?url=message/' + this.type + '&mark=true'
-			}
-		},
-
-		/*              example detail:
-	// body: asdasdasdasdasd
-	// was_comment: false
-	// first_message: null
-	// name: t4_13g95s
-	// first_message_name: null
-	// created: 1378417702
-	// dest: armastevs
-	// author: faketestuser
-	// created_utc: 1378388902
-	// body_html: <!-- SC_OFF --><div class="md"><p>asdasdasdasdasd</p> </div><!-- SC_ON -->
-	// subreddit: null
-	// parent_id: null
-	// context:
-	// replies:
-	// new: true   //if the message is unread or not
-	// id: 13g95s
-	//subject: asdasdasd
-	*/
-		parse: function(response) {
-			//set the after for pagination
-
-			if (typeof response !== 'undefined' && typeof response.data !== 'undefined') {
-
-				this.after = response.data.after;
-				console.log('response=', response)
-
-				if (this.after === "" || this.after === null) {
-					this.after = "stop" //tells us we have finished downloading all of the possible posts in this subreddit
-				}
-
-				var self = this;
-				var models = Array();
-				_.each(response.data.children, function(item) {
-
-					if ((self.count % 2) === 0) {
-						item.data.evenOrOdd = "even"
-					} else {
-						item.data.evenOrOdd = "odd"
-					}
-
-					item.data.body_html = (typeof item.data.body_html === 'undefined') ? '' : $('<div/>').html(item.data.body_html).text();
-
-					var timeAgo = moment.unix(item.data.created_utc).fromNow(true) //"true" removes the "ago"
-					timeAgo = timeAgo.replace("in ", ''); //why would it add the word "in"
-					item.data.timeAgo = timeAgo
-					item.data.timeUgly = moment.unix(item.data.created_utc).format()
-					item.data.timePretty = moment.unix(item.data.created_utc).format("ddd MMM DD HH:mm:ss YYYY") + " UTC" //format Sun Aug 18 12:51:06 2013 UTC
-
-					models.push(item.data)
-
-				});
-
-				//reset the url to have the new after tag
-				this.instanceUrl = this.getUrl()
-				console.log('returning models=', models)
-				return models;
-			} else {
-				return response
-			}
-		}
-
-	});
-	return User;
+      //reset the url to have the new after tag
+      this.instanceUrl = this.getUrl()
+      return response.data.children;
+    }
+  });
 });
