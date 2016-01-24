@@ -4,7 +4,6 @@ define(['backbone', 'model/comment'], function(Backbone, CommentModel) {
     initialize: function(models, options) {
       _.bindAll(this);
       this.name = options.name //this is maybe the parentId name
-
     },
     parse: function(data) {
       if (!data || !data.children || data.children.length === 0) return []
@@ -25,8 +24,8 @@ define(['backbone', 'model/comment'], function(Backbone, CommentModel) {
       var allTheComments = []
       _.each(children, function(x) {
 
-        x.data.kind = x.kind
-        allTheComments.push(x.data)
+        //x.data.kind = x.kind
+        allTheComments.push(x)
         if (_.has(x, 'data.replies.data.children')) {
           Array.prototype.push.apply(allTheComments, self.addComments(x.data.replies.data.children));
         }

@@ -46,36 +46,28 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
       initialize: function(options) {
         _.bindAll(this);
         var self = this;
-        this.$parentEl = options.$parentEl //hack to load comments in the order want to
-
         this.model = options.model
-
         this.collection = this.model.get('replies')
         this.originalPoster = options.originalPoster
-        this.blinking = '<img class="blinkingFakeInput" src="/img/text_cursor.gif" />'
-
+        this.blinking = '<img class="blinkingFakeInput" src="/img/text_cursor.gif" />' //baseview uses this 
         this.commentsDisabled = options.commentsDisabled
-
         this.model.set('commentsDisabled', this.commentsDisabled)
+        this.name = this.model.get('name')
+        this.id = this.model.get('id')
+        this.mainPostId = options.mainPostId
 
         if (this.model.get('author') === this.originalPoster) {
           this.model.set('showOriginalPoster', 'submitter')
         }
 
-        this.name = this.model.get('name')
-        this.id = this.model.get('id')
         if (this.model.get('kind') == 'more') {
           this.template = CommentMOAR
         } else {
           this.template = commentTmpl
         }
-
-        // this.listenTo(App, "comment:addOneChild" + this.model.get('name'), this.addOneChild, this);
-
       },
       onShow: function() {
         var self = this
-
         this.addOutboundLink()
         this.permalinkParent = this.model.get('permalinkParent')
         this.setupTextareaExpanding()
@@ -95,49 +87,43 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         $(this.el).html("<div class='loadingS'></div>")
         var self = this
 
-        var link_id = this.model.get('link_id')
         var params = {
-          link_id: link_id,
-          id: this.id,
+          link_id: this.mainPostId,
           api_type: 'json',
           children: this.model.get('children').join(","),
           byPassAuth: true
         };
         console.log('MOAR=', params)
 
-        //TODO: move this URL generating logic to the model
         if (this.checkIfLoggedIn() === true) {
-
           this.api("api/morechildren.json", 'POST', params, this.gotDataFromRenderMoar);
-
         } else {
-
           this.apiNonAuth("api/morechildren.json", 'POST', params, this.gotDataFromRenderMoar);
         }
 
       },
       gotDataFromRenderMoar: function(data) {
         var self = this
-        if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
-          data.children = data.json.data.things
-          var tmpModel = new CommentModel({
-            skipParse: true
-          })
+        if (_.has(data, 'json.data.things') && data.json.data.things.length > 0) {
 
-          var newComments = parseComments(data, self.model.get('link_id'))
+          var newComments = []
+
+          _.each(data.json.data.things, function(x) {
+            newComments.push(new CommentModel(x, {
+              parse: true
+            }))
+          })
           self.reRenderMOAR(newComments)
         } else {
-
-          self.render()
-
+          //the request failed so give the user the option to try again
+          this.render()
         }
+
       },
       reRenderMOAR: function(newComments) {
         if (typeof newComments !== 'undefined' && newComments.length > 0) {
           //pluck the first model in the collection and set it as this model for reRendering
-          this.model = newComments.at(0)
-          newComments = newComments.slice(1, newComments.length)
-          newComments = new Backbone.Collection(newComments)
+          this.model = newComments[0]
 
           this.model.set('permalink', this.permalinkParent + this.model.get('id'))
           this.model.set('permalinkParent', this.permalinkParent)
@@ -147,9 +133,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
           this.$el.empty()
           this.render()
 
-          this.renderOtherReplyComments(newComments)
-          var replies = this.model.get('replies')
-          this.collection.add(replies)
+          this._parent.collection.add(_.tail(newComments)) //add all but the first comment to the collection
           this.addOutboundLink()
         }
       },
@@ -157,12 +141,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
       hideThread: function(e) {
         e.preventDefault()
         e.stopPropagation()
-
         this.ui.noncollapsed.hide()
         this.ui.collapsed.show()
         this.ui.child.hide()
         this.ui.midcol.hide()
-
       },
       showThread: function(e) {
         e.preventDefault()
@@ -171,7 +153,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         this.ui.noncollapsed.show()
         this.ui.child.show()
         this.ui.midcol.show()
-
       },
       //shows the comment reply textbox
       toggleReply: function(e) {
@@ -182,7 +163,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
           this.setupTextareaExpanding()
           this.replyHasBeenToggledOnce = true
         }
-
       },
       commentLinkHover: function(e) {
         e.preventDefault()
@@ -202,7 +182,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
               //URL is NOT an image
               //try and fix an imgur link?
               url = this.fixImgur(url)
-
             }
 
             if (url !== false || youtubeID !== false) {
@@ -237,17 +216,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         collection.each(function(model) {
           App.trigger("comment:addOneChild" + model.get('parent_id'), model);
         })
-
       },
-      /**************Fetching functions ****************/
       fetchError: function(response, error) {
         console.log("fetch error, lets retry")
-
       },
       loaded: function(model, res) {
         this.$('.loading').hide()
         this.render();
       }
     });
-
   });

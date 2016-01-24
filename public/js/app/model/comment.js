@@ -1,13 +1,10 @@
 define(['App', 'underscore', 'backbone', 'jquery'], function(App, _, Backbone, $) {
   return Backbone.Model.extend({
-    initialize: function(options) {
-
-    },
     parseAsCommentMoreLink: function(data) {
-      if (typeof data.children !== "undefined" && data.children !== "") {
-        data.childrenCount = data.children.length
-      }
-      //data.link_id = this.link_id
+      if (data.children.length === 0) return null
+
+      data.childrenCount = data.children.length
+
       if (data.childrenCount == 1) {
         data.replyVerb = 'reply'
       } else {
@@ -16,11 +13,15 @@ define(['App', 'underscore', 'backbone', 'jquery'], function(App, _, Backbone, $
 
       return data
     },
-
     parse: function(data) {
-
       if (!data) {
         return
+      }
+
+      if (typeof data.data !== 'undefined') {
+        //the data from getmorechildren comes in this format
+        data.data.kind = data.kind
+        data = data.data
       }
 
       if (data.kind === 'more') {

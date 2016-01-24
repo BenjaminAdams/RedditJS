@@ -6,7 +6,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       events: {
         'click #retry': 'tryAgain',
         'click #retryForComments': 'tryAgain',
-        //'click .expando-button': 'toggleExpando',
         'click .leftArrow': 'gotoPrev',
         'click .rightArrow': 'gotoNext',
         'click .toggleDropdownCmntSort': 'toggleDropDownCmtSort',
@@ -16,14 +15,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         'submit #mainComment': 'comment',
         'keyup .userTxtInput': 'keyPressComment',
         'click .startSlideshow': 'startSlideshow'
-
       },
       regions: {
         thepost: '#thepost',
         siteTableComments: '#siteTableComments'
       },
       ui: {
-
         loadingC: '#loadingC',
         text: '.text',
         commentreply: '.commentreply',
@@ -52,7 +49,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
           this.template = loadingTmpl
 
         } else {
-          // console.log('loading a model from memory')
+          //loading a model from memory
           //this is what we do when we pass in a model with out the comments
           this.model = App.curModel;
           this.updatePageTitle(this.model.get('title'));
@@ -65,7 +62,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
         this.listenTo(App, "single:remove", this.remove, this);
         this.listenTo(App, "single:giveBtnBarID", this.triggerID, this);
-
       },
       onRender: function() {
         var self = this
@@ -81,17 +77,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         }
         this.triggerID()
         this.scrollTop()
-
         this.disableComment()
         this.addOutboundLink()
-
         this.setupTextareaExpanding()
-
       },
       onBeforeDestroy: function() {
-
         this.destroyed = true
-
         this.ui.singleCommentText.off("click", this.showLoginBox)
 
         //removes the ajax call if the user decided to leave the page while still waiting on reddit api
@@ -99,7 +90,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
           this.fetchXhr.abort();
         }
         this.fetchXhr.abort()
-
       },
       startSlideshow: function() {
         App.curModel = this.model;
@@ -108,9 +98,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         Backbone.history.navigate(this.model.get('slideshowUrl'), {
           trigger: true
         });
-
       },
-
       disableComment: function() {
         var self = this
           //disable textbox if user is not logged in
@@ -139,7 +127,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       updatePageTitle: function(title) {
         document.title = title + " | redditJS.com"
       },
-
       fetchComments: function(callback, sortOrder, errorCallback) {
 
         var singleModel = new SingleModel(null, {
@@ -156,7 +143,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         if (this.commentLink !== null) {
           this.loadLinkedComment()
         }
-
       },
       //this function displays a single comment if the user is viewing a linked comment via the permalink feature
       loadLinkedComment: function() {
@@ -197,25 +183,18 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       triggerID: function() {
         App.trigger("bottombar:selected", "t3_" + this.id);
       },
-
-      /**************Fetching functions ****************/
       fetchErrorForComments: function(response, error) {
-
         this.ui.noCommentError.html("<div id='retryForComments'><img src='/img/sad-icon.png' title='click here to try again'/> </div> ")
         this.nextErrorFunctionToRun = this
         this.ui.loadingC.hide()
 
       },
-
       fetchError: function(response, error) {
-
         this.nextErrorFunctionToRun = this
         $(this.el).html("<div id='retry' >  <div class='loading'></div> </div> ")
         $(this.el).html("<div id='retry' >  <img src='/img/sad-icon.png' /><br /> click here to try again </div> ")
         this.ui.loadingC.hide()
-
       },
-
       tryAgain: function() {
         // $(this.el).
         // $(this.el).append("<style id='dynamicWidth'> </style>")
@@ -232,9 +211,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       gotoNext: function() {
         App.trigger('btmbar:gotoNext')
       },
-
       renderStuff: function(model) {
-
         this.template = singleTmpl
         this.render()
 
@@ -248,69 +225,55 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         //shows the key navigation help on hover
         this.$('.arrowNav').hover(
           function(e) {
-
             self.$('#arrowNavHelp').show()
-
           },
           function(e) {
             self.$('#arrowNavHelp').hide()
           }
         )
-
       },
+      //if the user's URL is directed to a specific comment
       loadLinkedCommentView: function() {
         if (typeof this.linkedCommentModel !== 'undefined') {
           var self = this
             //add this model to the start of the reply collection
           this.model.attributes.replies.unshift(this.linkedCommentModel)
           setTimeout(function() {
-
             self.$('#siteTableComments .usertext-body').first().addClass('highlightedComment')
           }, 300)
-
         }
       },
       //if we dont pass in a model we need to render the comments here
       loadComments: function(model, res) {
-
         this.ui.loadingC.hide()
         this.permalinkParent = this.model.get('permalink') //this is for the comment callback so we can set the permalink after someone comments on a main post
-
         this.renderComments(model.get('replies'))
-
       },
       loaded: function(model, res) {
-
         this.model = model
-
         this.renderStuff(model);
         this.loadComments(model);
-
       },
-
       addOneChild: function(model) {
         this.collection.add(model)
       },
-
       renderComments: function(collection) {
-
         var self = this
         this.updatePageTitle(this.model.get('title'))
         this.collection = collection
 
-        this.listenTo(App, "comment:addOneChild" + this.model.get('name'), this.addOneChild);
+        //this.listenTo(App, "comment:addOneChild" + this.model.get('name'), this.addOneChild);
 
         var t = bench('loading commentview') //TIMER
 
-        this.commentCollectionView = new CViewComments({
+        this.siteTableComments.show(new CViewComments({
           collection: collection,
           originalPoster: this.model.get('author'),
-          commentsDisabled: this.model.get('commentsDisabled')
-        })
-        this.siteTableComments.show(this.commentCollectionView)
+          commentsDisabled: this.model.get('commentsDisabled'),
+          mainPostId: this.model.get('name')
+        }))
 
         t.stop() //END TIMER
-
       }
 
     });

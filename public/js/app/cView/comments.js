@@ -6,11 +6,13 @@ define(['App', 'backbone', 'jquery', 'view/comment-view', 'collection/comments']
         this.originalPoster = options.originalPoster
         this.commentsDisabled = options.commentsDisabled
         this.collection = options.collection
+        this.mainPostId = options.mainPostId
       },
       childViewOptions: function(model, index) {
         return {
           originalPoster: this.originalPoster,
           commentsDisabled: this.commentsDisabled,
+          mainPostId: this.mainPostId
         }
       },
       //I've hacked the CollectionView to render recursively nested comments
@@ -25,7 +27,7 @@ define(['App', 'backbone', 'jquery', 'view/comment-view', 'collection/comments']
       attachHtml: function(collectionView, childView, index) {
         var parentId = childView.model.get('parent_id')
 
-        if (parentId.startsWith('t3_')) {
+        if (parentId && parentId.startsWith('t3_')) {
           //load comment view normally
           collectionView._insertAfter(childView);
         } else {
