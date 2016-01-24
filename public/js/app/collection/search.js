@@ -66,8 +66,7 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
 
           var singleModel = new SingleModel({
             subName: this.subName,
-            id: item.data.id,
-            parseNow: false
+            id: item.data.id
           });
           item.data = singleModel.parseOnce(item.data)
           item.data.count = self.count

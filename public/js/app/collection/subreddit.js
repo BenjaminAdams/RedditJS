@@ -12,7 +12,7 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
       this.sortOrder = data.sortOrder
       this.domain = data.domain
       this.forceJSONP = data.forceJSONP || false //so we force the user to download the subreddit with jsonp
-      this.count = 1
+        //this.count = 1
       if (typeof this.sortOrder === 'undefined' || this.sortOrder === 'reqAsBot=1') {
         this.sortOrder = 'hot' //the default sort order is hot
       }
@@ -70,10 +70,12 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
       }
     },
     parse: function(response) {
-      var self = this;
       if (typeof response === 'undefined' || response.length === 0) {
         return
       }
+
+      var self = this
+      var models = []
 
       this.after = response.data.after;
 
@@ -88,25 +90,17 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
         });
       }
 
-      var models = Array();
-      _.each(response.data.children, function(item) {
+      //build the children array of the reddit posts into the main collection
+      _.each(response.data.children, function(item, count) {
         if (item.data.hidden === false) {
 
-          var singleModel = new SingleModel(item.data, {
-            subName: data.subreddit,
-            id: item.data.id,
-            parse: true
-          });
+          // item.data.count = count
 
-          item.data.count = self.count
-
-          if ((self.count % 2) === 0) {
+          if ((count % 2) === 0) {
             item.data.evenOrOdd = "even"
           } else {
             item.data.evenOrOdd = "odd"
           }
-
-          self.count++;
 
           if (item.data.imgUrl === false) {
             self.countNonImg++;
@@ -117,13 +111,11 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
         }
       });
 
-      //reset the url to have the new after tag
-      this.instanceUrl = this.getUrl()
       return models;
     },
     removeNonImgs: function() {
       //the slideshow needs to only have images in it
-      var tmp = this.remove(this.where({
+      this.remove(this.where({
         imgUrl: false
       }));
     },

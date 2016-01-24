@@ -14,22 +14,12 @@ define(['App', 'backbone', 'jquery', 'view/comment-view', 'collection/comments']
         }
       },
       //I've hacked the CollectionView to render recursively nested comments
-
       _renderChildren: function() {
         this.destroyEmptyView();
         this.destroyChildren({
           checkEmpty: false
         });
-
-        //if (this.isEmpty(this.collection)) {
-        //   this.showEmptyView();
-        // } else {
-        //this.triggerMethod('before:render:collection', this);
-        //this.startBuffering();
         this.showCollection();
-        //this.endBuffering();
-        //this.triggerMethod('render:collection', this);
-
       },
 
       attachHtml: function(collectionView, childView, index) {

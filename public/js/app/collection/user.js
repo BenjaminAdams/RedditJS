@@ -100,8 +100,6 @@ define(['App', 'backbone', 'model/single', 'model/comment'], function(App, Backb
 
       });
 
-      //reset the url to have the new after tag
-      // this.instanceUrl = this.getUrl()
       return models;
     }
 

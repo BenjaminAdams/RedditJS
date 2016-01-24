@@ -123,20 +123,16 @@ define(['App', 'underscore', 'backbone', 'hbs!template/slideshow', 'view/basem-v
       },
 
       fetchModel: function() {
-
         this.model = new SingleModel({
           subName: this.subName,
-          id: this.id,
-          parseNow: true
+          id: this.id
         });
 
         this.fetchXhr = this.model.fetch({
           success: this.renderModel,
           error: this.fetchError
         });
-
       },
-
       fetchError: function(response, error) {
         $(this.el).html("<div id='retry'><div class='loading'></div> </div>")
         $(this.el).html("<div id='retry'><img src='/img/sad-icon.png' /><br/> click here to try again </div>")
