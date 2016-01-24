@@ -33,6 +33,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
         this.model = options.model;
         this.biggerImg = this.model.get('imgUrl')
         this.smallerImg = this.model.get('smallImg')
+        this.isGifv = this.model.get('isGifv')
         this.viewClosed = false //need a way to prevent the image to preload if the view is destroy
           //this.attempts = 0 //how many times we attempt to render the view
         this.allowedToRender = false
@@ -58,29 +59,62 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
           return false //so we dont render non image posts
         }
 
-        if (App.settings.get('displaySelf') === true && !this.biggerImg) {
-          //return false
-        }
-
-        //console.log('rendering grid block')
         this.$el.html($(PostRowGridTmpl({
           model: this.model.attributes
         })))
 
         this.$el.hide()
 
-        if (this.biggerImg.split('.').pop() == 'gif') {
-          this.$el.find('.gridLoading').show()
-            //newPost.find('.gridLoading').show() //only show loading icon if its a gif
+        if (this.nonImg) {
+          setTimeout(function() {
+            self.fakeRender()
+          }, 1)
+        } else {
+          this.fakeRender()
         }
 
-        if (this.smallerImg !== false && this.nonImg === false) { //only need to hover over img when we have bigger img available
+        return this
 
-          var timer;
+      },
+      changeGifVEmbedDimensions: function($embed) {
+
+        var width = this.$el.width() //width of grid block
+        var height = this.$el.height()
+        $embed.attr('width', width - 30)
+        $embed.attr('height', height - 30)
+        return $embed
+      },
+
+      setupMouseOver: function() {
+        var self = this
+        var timer;
+
+        if (this.biggerImg.split('.').pop() == 'gif') {
+          this.$el.find('.gridLoading').show() //only show loading icon if its a gif
+        }
+
+        if (this.isGifv === true) {
+          //load gifv
           this.$el.on("mouseenter", function() {
             //set a timer so dont load a bunch of high res images fast
             timer = setTimeout(function() {
-              console.log('mouseenter')
+
+              var $embed = $(self.model.get('media_embed'))
+
+              $embed = self.changeGifVEmbedDimensions($embed)
+
+              self.ui.mainGridImg.replaceWith($embed)
+              self.ui.gridLoading.hide()
+            }, 250);
+          }).mouseleave(function() {
+            clearTimeout(timer); //clear timer if they only hovered for a bit
+          })
+
+        } else if (this.smallerImg !== false && this.nonImg === false) { //only need to hover over img when we have bigger img available
+
+          this.$el.on("mouseenter", function() {
+            //set a timer so dont load a bunch of high res images fast
+            timer = setTimeout(function() {
               if (self.biggerImg.split('.').pop() == 'gif') {
                 self.ui.gridLoading.attr('src', '/img/loading.gif')
               }
@@ -95,23 +129,12 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
               });
             }, 250);
           }).mouseleave(function() {
-            //clear timer if they only hovered for a bit
-            clearTimeout(timer);
+            clearTimeout(timer); //clear timer if they only hovered for a bit           
           })
 
         }
-
-        if (this.nonImg) {
-          setTimeout(function() {
-            self.fakeRender()
-          }, 1)
-        } else {
-          this.fakeRender()
-        }
-
-        return this
-
       },
+
       fakeRender: function() {
         this.bindUIElements();
         this.appendToShortest(this.el)
@@ -122,17 +145,15 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
           this.$el.hide()
         }
 
+        this.setupMouseOver()
+
       },
       triggerNonImgShow: function() {
         this.$el.show()
       },
-      //onRender: function() {  //functions like onRender() wont work when we override the render() function like here
-      //},
       onBeforeDestroy: function() {
         this.viewClosed = true
-
         this.$el.off("mouseenter")
-
       },
       preloadImg: function() {
         var self = this
@@ -162,14 +183,12 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
           App.once("gridView:imageLoaded", this.preloadImg, this);
         }
       },
-
       //when the user hovers over a grid block image load the gif/bigger img from imgur
       loadBiggerImg: function() {
         var self = this
 
         if (biggerImg.split('.').pop() == 'gif') {
-          self.ui.gridLoading.attr('src', '/img/loading.gif')
-            //newPost.find('.gridLoading').show() //only show loading icon if its a gif
+          self.ui.gridLoading.attr('src', '/img/loading.gif') //only show loading icon if its a gif
         }
 
         $('<img src="' + biggerImg + '" />').load(function() {

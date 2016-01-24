@@ -101,13 +101,25 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
       //figure out a URL that we can embed in an image tag
       data.expandHTML = ""
       data.embededImg = false //if its a single image/video we can embed into a single post view
-      data.imgUrl = false
-      if (this.checkIsImg(data.url) === false) {
-        data.imgUrl = this.fixImgur(data.url) //try and fix an imgur link
-        data.smallImg = this.getSmallerImg(data.imgUrl) //try and get a smaller img format from imgur
+      var imgUrl = data.url
+      if (this.checkIsImg(imgUrl) === false) {
+        //URL is NOT an image
+        //try and fix an imgur link?
+        imgUrl = this.fixImgur(imgUrl)
       }
+      data.imgUrl = imgUrl
+      data.smallImg = this.getSmallerImg(data.imgUrl)
 
-      if (typeof data.media_embed.content === 'undefined' && data.is_self === false && data.imgUrl !== false) {
+      if (typeof data.media_embed.content !== 'undefined' && data.url.endsWith('.gifv')) {
+        //gifv support
+        data.isGifv = true
+        data.media_embed = $('<div/>').html(data.media_embed.content).text();
+        data.expandHTML = data.media_embed
+        data.embededImg = true
+
+      } else if (typeof data.media_embed.content === 'undefined' && data.url.endsWith('.gifv')) {
+        data.embededImg = false //sometimes we dont have an embeded content for gifv's resulting in an empty expando
+      } else if (typeof data.media_embed.content === 'undefined' && data.is_self === false && data.imgUrl !== false) {
         //this is a single image we can embed
         data.embededImg = true
         data.media_embed = "<img class='embedImg dragImg' src='" + data.imgUrl + "' />"
@@ -118,7 +130,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
         data.media_embed = $('<div/>').html(data.media_embed.content).text();
         data.expandHTML = "<li><div class='expando-button expanded video'></div></li>"
       } else {
-        data.media_embed = ""
+        //data.media_embed = ""
       }
 
       if (data.permalink) {
@@ -132,9 +144,9 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
       data.url = data.permalink
       data.external = ''
 
-      if (data.is_self !== true && data.embededImg !== true) {
-        data.external = 'data-bypass'
-      }
+      // if (data.is_self !== true && data.embededImg !== true) {
+      // data.external = 'data-bypass'
+      // }
 
       data.actualPermalink = data.permalink //we have this because we override the permalink in the slideshow, but we need a link to get to the comment page
       data.slideshowUrl = '/comments/' + data.subreddit + "/" + data.id + '/slideshow'
@@ -144,7 +156,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
 
     checkIsImg: function(url) {
       if (!url) return false
-      return (url.match(/\.(jpeg|jpg|gif|png)$/) !== null);
+      return (url.match(/\.(jpeg|jpg|gif|gifv|png)$/) !== null);
     },
     fixImgur: function(url) {
       if (this.containsStr("imgur.com", url)) {
@@ -159,7 +171,6 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
 
           return url + ".jpg"
         }
-
       }
       return false;
     },
@@ -172,13 +183,12 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
           return false
         } else {
           url = url.replace(/(\?.*)|(#.*)|(&.*)/g, "")
-            //url = url.substr(0, url.lastIndexOf('.'));
           url = url.replace('.jpg', '')
           url = url.replace('.png', '')
           url = url.replace('.jpeg', '')
+          url = url.replace('.gifv', '')
           url = url.replace('.gif', '')
-
-          return url + "l.jpg" //add l to the end of the img url to give it a better preview
+          return url + "l.jpg" //add l to the end of the img url to give it a smaller preview img
         }
 
       }

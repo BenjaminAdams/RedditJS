@@ -3,7 +3,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
     return BaseView.extend({
       template: commentTmpl,
       events: {
-
         'click .noncollapsed .expand': "hideThread",
         'click .collapsed .expand': "showThread",
         'click .cancel': 'hideUserInput',
@@ -19,7 +18,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         'click .mdHelpShow': 'showMdHelp',
         'click .mdHelpHide': 'hideMdHelp',
         'keyup .userTxtInput': 'keyPressComment'
-
       },
       regions: {
         'replies': '.replies',
