@@ -1,6 +1,5 @@
 define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, SingleModel) {
-
-  var SubredditCollection = Backbone.Collection.extend({
+  return Backbone.Collection.extend({
 
     initialize: function(models, data) {
       _.bindAll(this);
@@ -136,5 +135,4 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
       })
     }
   });
-  return SubredditCollection;
 });

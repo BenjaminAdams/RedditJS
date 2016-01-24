@@ -86,7 +86,6 @@ server.use(function(req, res, next) {
   next();
 });
 
-
 server.set('trust proxy', 1)
 server.use(compress());
 server.use(express.static(__dirname + '../../public', {
@@ -118,8 +117,8 @@ if (process.env.NODE_ENV === 'production') {
     saveUninitialized: false, // don't create session until something stored
     resave: false, //don't save session if unmodified
     //cookie: {
-     // maxAge: sessionExpireTime,
-     // secure: true
+    // maxAge: sessionExpireTime,
+    // secure: true
     //},
     secret: process.env.SESSION_SECRET || 'asdasdasdasd32fg23f'
   }
@@ -215,7 +214,7 @@ server.get('/auth/reddit/callback', function(req, res, next) {
       failureRedirect: '/login'
     })(req, res, next);
   } else {
-console.log('qry=',req.query, 'session=',req.session)
+
     next(new Error('There was a problem connecting to the reddit server.  Please try again'));
   }
 });
@@ -250,7 +249,6 @@ server.get("*", function(req, res) {
 
 });
 
-// Start Node.js Server
 http.createServer(server).listen(port);
 
 console.log('\nWelcome to redditjs.com!, running on port: ' + port + ' in with NODE_ENV: ' + process.env.NODE_ENV);

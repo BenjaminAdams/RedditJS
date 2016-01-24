@@ -147,7 +147,8 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
         data.media_embed = ""
       }
 
-      data.permalink = data.permalink.replace('?ref=search_posts', '')
+      //data.permalink = data.permalink.replace('?ref=search_posts', '')
+      data.permalink = data.url
 
       if (data.is_self === true) {
         //data.external = 'data-bypass'
@@ -186,6 +187,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
     },
 
     checkIsImg: function(url) {
+      if (!url) return false
       return (url.match(/\.(jpeg|jpg|gif|png)$/) !== null);
     },
     fixImgur: function(url) {
@@ -228,6 +230,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
 
     },
     containsStr: function(needle, haystack) {
+      if (typeof haystack === 'undefined') return false
       return (haystack.indexOf(needle) >= 0)
     }
 

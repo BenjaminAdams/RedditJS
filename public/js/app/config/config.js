@@ -14,7 +14,6 @@ require.config({
     'cookie': '../lib/jquery.cookie',
     'localstorage': '../lib/jquery.total-storage',
     'moment': '../lib/moment',
-    //'markdown': '../lib/markdown',
     'snuownd': '../lib/snuownd',
     'console': '../lib/console'
   },
@@ -23,9 +22,6 @@ require.config({
     'underscore': {
       exports: '_'
     },
-    // "markdown": {
-    //     exports: "markdown"
-    // },
     // Backbone
     "backbone": {
       // Depends on underscore/lodash and jQuery

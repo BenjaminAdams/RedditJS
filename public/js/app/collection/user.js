@@ -1,6 +1,5 @@
-define(['App', 'backbone', 'model/single', 'model/comment', "moment"], function(App, Backbone, SingleModel, CommentModel) {
-
-  var User = Backbone.Collection.extend({
+define(['App', 'backbone', 'model/single', 'model/comment'], function(App, Backbone, SingleModel, CommentModel) {
+  return Backbone.Collection.extend({
     initialize: function(tmp, data) {
       _.bindAll(this);
       this.after = ""
@@ -14,20 +13,15 @@ define(['App', 'backbone', 'model/single', 'model/comment', "moment"], function(
       this.instanceUrl = this.getUrl()
 
     },
-    // Reference to this collection's model.
-    model: SingleModel,
+
+    model: Backbone.Model.extend(),
 
     url: function() {
       return this.instanceUrl //keeps a dynamic URL so we can give it a new "after"
     },
     getUrl: function() {
       //http://api.reddit.com/user/armastevs.json
-      var urlPrefix = '/apiNonAuth/?url=user/'
-      var username = App.user.name || false
-
-      if (username !== false) {
-        urlPrefix = '/api/?url=user/'
-      }
+      var urlPrefix = this.getUrlPrefix()
 
       if (this.after.length < 3) {
         return urlPrefix + this.username + ".json&sort=" + this.sortOrder
@@ -35,10 +29,19 @@ define(['App', 'backbone', 'model/single', 'model/comment', "moment"], function(
         return urlPrefix + this.username + ".json&after=" + this.after + "&sort=" + this.sortOrder
       }
     },
+    getUrlPrefix: function() {
+      //if the user is logged in fetch via server
+      //we have to do this because there is a problem getting user data from the reddit api
+      var username = App.user.name || false
+      if (username !== false) {
+        return '/api/?url=user/'
+      }
+      return '/apiNonAuth/?url=user/'
+    },
     parse: function(response) {
-      //set the after for pagination
-      this.after = response.data.after;
-      console.log('response=', response)
+
+      var self = this;
+      this.after = response.data.after; //set the after for pagination
 
       if (this.after === "" || this.after === null) {
         this.after = "stop" //tells us we have finished downloading all of the possible posts in this subreddit
@@ -51,11 +54,12 @@ define(['App', 'backbone', 'model/single', 'model/comment', "moment"], function(
         });
       }
 
-      var self = this;
-      var models = Array();
-      _.each(response.data.children, function(item) {
+      var models = [];
 
-        if ((self.count % 2) === 0) {
+      //build the children array of the users posts into the main collection
+      _.each(response.data.children, function(item, count) {
+
+        if ((count % 2) === 0) {
           item.data.evenOrOdd = "even"
         } else {
           item.data.evenOrOdd = "odd"
@@ -77,19 +81,30 @@ define(['App', 'backbone', 'model/single', 'model/comment', "moment"], function(
         }
         //item.data.likes = item.data.likes || false
 
-        var comment = new CommentModel(item.data)
-        models.push(comment.attributes)
+        if (item.data.kind === 't1') {
+          //parse this is a comment
+          var comment = new CommentModel(item.data, {
+            parse: true
+          })
+          models.push(comment.attributes)
 
-        self.count++;
+        } else if (item.data.kind === 't3') {
+          //parse this is a reddit post
+          var post = new SingleModel(item.data, {
+            parse: true
+          })
+          models.push(post.attributes)
+        } else {
+          console.log('not sure what to do')
+        }
 
       });
 
       //reset the url to have the new after tag
-      this.instanceUrl = this.getUrl()
-      console.log('returning models=', models)
+      // this.instanceUrl = this.getUrl()
       return models;
     }
 
   });
-  return User;
+
 });

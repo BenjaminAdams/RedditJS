@@ -7,7 +7,7 @@ define(['backbone', 'model/comment'], function(Backbone, CommentModel) {
 
     },
     parse: function(data) {
-      if (!data || !data.children || data.children.length == 0) return []
+      if (!data || !data.children || data.children.length === 0) return []
       var allTheComments = []
 
       //if the parent_id is t1 its parent is comment

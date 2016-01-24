@@ -43,21 +43,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         'userTxtInput': '.userTxtInput',
         'liveTextarea': '.liveTextarea'
       },
-      // attachElContent: function(html) {
-
-      //   var parentId = this.model.get('parent_id')
-
-      //   if (parentId.startsWith('t3_')) {
-      //     //load comment view normally
-      //     this.$el.html(html);
-      //   } else {
-      //     //render comment view inside of parent comment's div classname: replies-{{name}}
-      //     this.$el = this.$parentEl.find('.replies-' + parentId)
-      //     this.$el.html(html);
-      //   }
-
-      //   return this;
-      // },
       initialize: function(options) {
         _.bindAll(this);
         var self = this;
@@ -77,10 +62,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
           this.model.set('showOriginalPoster', 'submitter')
         }
 
-        // if (typeof this.collection === 'undefined' || this.collection === null || this.collection.length === 0) {
-        // this.collection = new CommentCollection()
-        //}
-
         this.name = this.model.get('name')
         this.id = this.model.get('id')
         if (this.model.get('kind') == 'more') {
@@ -94,19 +75,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
       },
       onShow: function() {
         var self = this
-          // var CommentView = require('view/comment-view')
-
-        // if (self.collection.length > 0) {
-        //   self.commentCollectionView = new CViewComments({
-        //     collection: self.collection,
-        //     childView: CommentView,
-        //     originalPoster: self.originalPoster,
-        //     commentsDisabled: self.commentsDisabled
-        //   })
-
-        //   self.replies.show(self.commentCollectionView)
-
-        // }
 
         this.addOutboundLink()
         this.permalinkParent = this.model.get('permalinkParent')
@@ -115,9 +83,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
       onBeforeDestroy: function() {
         this.ui.userTxtInput.off('blur focus');
       },
-      // addOneChild: function(model) {
-      //   this.collection.add(model)
-      // },
       //add data-external and a special class to any link in a comment
       //once the links have the class outBoundLink on them, they will no longer trigger the hover view
       addOutboundLink: function() {

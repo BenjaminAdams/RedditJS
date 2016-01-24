@@ -79,7 +79,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/subreddit', 'view/basem-v
         }, 100);
 
       },
-      onRender: function() {
+      onShow: function() {
         var self = this
         this.initGridOption();
 
