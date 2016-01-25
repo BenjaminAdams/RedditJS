@@ -64,9 +64,11 @@ define(['App', 'backbone', 'model/single', "moment"], function(App, Backbone, Si
         console.log('getting subreddit via redditjs server.....')
         return '/api/?url=' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json&limit=" + linkCount + "&after=" + this.after + this.timeFrame
       } else {
-        console.log('getting subreddit via JSONP')
 
-        return 'https://reddit.com/' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
+        var url = 'https://www.reddit.com/' + this.domainStr + this.subnameWithrR + this.sortOrder + ".json?after=" + this.after + this.timeFrame + "&limit=" + linkCount + "&jsonp=?"
+        console.log('getting subreddit via JSONP', url)
+
+        return url
       }
     },
     parse: function(response) {
