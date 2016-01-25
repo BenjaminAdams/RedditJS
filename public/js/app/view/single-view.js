@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/loading', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'model/single', 'cView/comments'],
-  function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, BaseView, SingleModel, CViewComments) {
+define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/loading', 'view/post-row-view', 'view/sidebar-view', 'view/basem-view', 'model/single', 'cView/comments', 'model/comment'],
+  function(App, _, Backbone, singleTmpl, loadingTmpl, PostRowView, SidebarView, BaseView, SingleModel, CViewComments, CommentModel) {
     return BaseView.extend({
       template: singleTmpl,
       className: 'singlePagePost',
@@ -153,29 +153,26 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
           id: this.commentLink,
           api_type: 'json',
           children: this.commentLink,
-          byPassAuth: true
+          byPassAuth: false
         }
 
-        this.api("api/morechildren.json", 'POST', params, function(data) {
-          if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
+        this.apiNonAuth("api/morechildren.json", 'POST', params, function(data) {
 
-            require(['model/comment'], function(CommentModel) {
-              data.children = data.json.data.things
-              var tmpModel = new CommentModel({
-                  skipParse: true
-                })
-                // self.linkedCommentModel = parseComments(data, link_id)
-              self.linkedCommentModel = self.linkedCommentModel.models[0]
+          if (_.has(data, 'json.data.things') && data.json.data.things.length > 0) {
 
-              self.linkedCommentModel.set('permalink', document.URL)
-
-              if (self.hasRendered === true) {
-                self.loadLinkedCommentView()
-              }
-
+            self.linkedCommentModel = new CommentModel(data.json.data.things[0], {
+              parse: true
             })
 
+            if (self.hasRendered === true) {
+              self.loadLinkedCommentView()
+            }
+
+          } else {
+            //todo show error
+
           }
+
         });
 
       },
