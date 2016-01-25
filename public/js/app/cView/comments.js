@@ -23,13 +23,26 @@ define(['App', 'backbone', 'jquery', 'view/comment-view', 'collection/comments']
         });
         this.showCollection();
       },
+      showCollection: function() {
+        var self = this
+        var models = this.collection.models;
 
+        _.each(models, function(child, index) {
+          var childViewOptions = self.getOption('childViewOptions');
+          childViewOptions = Marionette._getValue(childViewOptions, self, [child, index]);
+
+          var view = self.buildChildView(child, self.childView, childViewOptions);
+          view._parent = this
+          this.children.add(view);
+          this.renderChildView(view, index);
+        }, this);
+      },
       attachHtml: function(collectionView, childView, index) {
-        var parentId = childView.model.get('parent_id')
 
+        var parentId = childView.model.get('parent_id')
         if (parentId && parentId.startsWith('t3_')) {
           //load comment view normally
-          collectionView._insertAfter(childView);
+          this.$el.append(childView.el);
         } else {
           //render child comment inside of parent view
           var parent = _.findWhere(collectionView.children._views, function(obj) {
@@ -40,6 +53,12 @@ define(['App', 'backbone', 'jquery', 'view/comment-view', 'collection/comments']
           repliesDiv.append(childView.$el)
         }
 
+      },
+
+      renderChildView: function(view, index) {
+        view.render();
+        this.attachHtml(this, view, index);
+        return view;
       },
 
     });

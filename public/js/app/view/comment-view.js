@@ -20,7 +20,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         'keyup .userTxtInput': 'keyPressComment'
       },
       regions: {
-        'replies': '.replies',
         'hoverImgParent': '.hoverImgParent:first'
       },
       ui: {
@@ -162,6 +161,64 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
           this.replyHasBeenToggledOnce = true
         }
       },
+      //attempts to create a new comment
+      comment: function(e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        if (this.checkIfLoggedIn() === true) {
+          var self = this
+
+          var id = this.model.get('name')
+            //var text = this.$('#text' + id).val()
+          var text = this.ui.text.val()
+          text = this.sterilize(text) //clean the input
+
+          var params = {
+            api_type: 'json',
+            thing_id: id,
+            text: text,
+            uh: $.cookie('modhash')
+          };
+          console.log(params)
+
+          this.api("/api/comment", 'POST', params, function(data) {
+            console.log("comment done", data)
+            self.commentCallback(data)
+          });
+        } else {
+          this.showLoginBox()
+        }
+      }, //callback after trying to write a comment
+
+      commentCallback: function(data) {
+        console.log('callback comment=', data)
+        if (_.has(data, 'json.data.things') && data.json.data.things.length > 0) {
+          this.ui.status.html('<span class="success">success!</span>')
+          this.ui.text.val('')
+          this.hideUserInput()
+
+          var newComments = []
+
+          _.each(data.json.data.things, function(x) {
+            newComments.push(new CommentModel(x, {
+              parse: true
+            }))
+          })
+
+          this._parent.collection.add(newComments)
+        } else {
+
+          var msgAry = ((data || {}).json || {}).errors;
+          var msg = 'An error has happened while posting your comment'
+          if (typeof msgAry[0] !== 'undefined' && typeof msgAry[0][1] !== 'undefined') {
+            msg = msgAry[0][1]
+          }
+
+          this.ui.status.html('<div class="error">' + msg + '</div>')
+
+        }
+      },
       commentLinkHover: function(e) {
         e.preventDefault()
         e.stopPropagation()
@@ -207,13 +264,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
             }
           }
         }
-      },
-      renderOtherReplyComments: function(collection) {
-        console.log('other replies', collection)
-        var self = this
-        collection.each(function(model) {
-          App.trigger("comment:addOneChild" + model.get('parent_id'), model);
-        })
       },
       fetchError: function(response, error) {
         console.log("fetch error, lets retry")

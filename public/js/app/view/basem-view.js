@@ -234,35 +234,15 @@ define(['App', 'underscore', 'backbone', 'cookie'],
           this.showLoginBox()
         }
       },
-      //attempts to create a new comment
-      comment: function(e) {
-        e.preventDefault()
-        e.stopPropagation()
 
-        if (this.checkIfLoggedIn() === true) {
-          var self = this
-
-          var id = this.model.get('name')
-            //var text = this.$('#text' + id).val()
-          var text = this.ui.text.val()
-          text = this.sterilize(text) //clean the input
-
-          var params = {
-            api_type: 'json',
-            thing_id: id,
-            text: text,
-            uh: $.cookie('modhash')
-          };
-          console.log(params)
-
-          this.api("/api/comment", 'POST', params, function(data) {
-            console.log("comment done", data)
-            self.commentCallback(data)
-          });
-        } else {
-          this.showLoginBox()
+      //hides the comment reply textbox
+      hideUserInput: function(e) {
+        if (typeof e !== 'undefined') {
+          e.preventDefault()
+          e.stopPropagation()
         }
-      }, //callback after trying to write a comment
+        this.ui.commentreply.hide()
+      },
       toggleShare: function(e) {
         e.preventDefault()
         e.stopPropagation()
@@ -275,76 +255,6 @@ define(['App', 'underscore', 'backbone', 'cookie'],
             //shareUrl.delay(10).focus().select()
         }
 
-      },
-      commentCallback: function(data) {
-        console.log('callback comment=', data)
-        CommentModel = require('model/comment') //in order to have nested models inside of models we need to do this
-        CommentView = require('view/comment-view') //in cases of recursion its ok!
-
-        //post comment to have the new ID from this data 
-        if (typeof data !== 'undefined' && typeof data.json !== 'undefined' && typeof data.json.data !== 'undefined' && typeof data.json.data.things !== 'undefined') {
-          //status{{model.name}}
-          this.ui.status.html('<span class="success">success!</span>')
-            //data.json.data.things[0].data.link_id = this.model.get('name')
-          var attributes = data.json.data.things[0].data
-          attributes.author = $.cookie('username');
-
-          //this if statement will only fire during a comment callback
-          if (typeof attributes.body_html === 'undefined' && typeof attributes.contentHTML === 'string') {
-            attributes.body_html = attributes.contentHTML
-          }
-
-          attributes.name = attributes.id
-          if (typeof attributes.link === 'undefined') {
-            attributes.link_id = this.model.get('name')
-
-          } else {
-            attributes.link_id = attributes.link
-          }
-
-          attributes.likes = true
-          attributes.subreddit = this.model.get('subreddit')
-          attributes.smallid = attributes.id.replace('t1_', '')
-          attributes.smallid = attributes.id.replace('t3_', '')
-          attributes.permalink = '/r/' + data.subreddit + '/comments/' + attributes.link_id + "#" + attributes.id
-
-          attributes.downs = 0
-          attributes.ups = 1
-
-          //clear the users text
-          this.ui.text.val("")
-
-          var newModel = new CommentModel(attributes) //shouldn't have to input this data into the model twice
-          this.hideUserInput()
-
-          newModel.set('permalink', this.permalinkParent + attributes.id)
-          newModel.set('permalinkParent', this.permalinkParent)
-
-          App.trigger("comment:addOneChild" + newModel.get('parent_id'), newModel);
-
-        } else {
-          //this.$('.status' + this.model.get('name')).html('error ' + data)
-          //this.ui.status.html('<div class="error">' + data.json.errors[0][1] + '</div>')
-
-          //var msg = data.json.errors[0][1]
-          var msgAry = ((data || {}).json || {}).errors;
-          var msg = 'An error has happened while posting your comment'
-          if (typeof msgAry[0] !== 'undefined' && typeof msgAry[0][1] !== 'undefined') {
-            msg = msgAry[0][1]
-          }
-
-          this.ui.status.html('<div class="error">' + msg + '</div>')
-
-          //this.ui.status.html('<div class="error">' + data.responseText + '</div>')
-
-        }
-      }, //hides the comment reply textbox
-      hideUserInput: function(e) {
-        if (typeof e !== 'undefined') {
-          e.preventDefault()
-          e.stopPropagation()
-        }
-        this.ui.commentreply.hide()
       },
       validURL: function(str) {
         var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
