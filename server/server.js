@@ -312,7 +312,6 @@ function refreshToken(req, res, next) {
 
     request.post(options, function(error, response, body) {
       if (error) {
-        console.log('error getting oauth re-authenticate', error)
 
         res.send(419, loginAgainMsg)
         return
@@ -325,7 +324,6 @@ function refreshToken(req, res, next) {
         if (values !== 'undefined' && typeof values.access_token !== 'undefined' && values.access_token.length > 3) { //return value cant be trusted
           req.user.tokenExpires = values.tokenExpires
           req.user.access_token = values.access_token
-          console.log('oauth worked, token=', values.access_token);
 
           process.nextTick(function() { //wait for the access token to be in the DB
             return next(true)

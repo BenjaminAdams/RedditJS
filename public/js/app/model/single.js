@@ -153,7 +153,6 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
       return data;
 
     },
-
     checkIsImg: function(url) {
       if (!url) return false
       return (url.match(/\.(jpeg|jpg|gif|gifv|png)$/) !== null);

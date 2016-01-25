@@ -30,9 +30,9 @@ define(['App', 'underscore', 'backbone', 'jquery', 'moment'], function(App, _, B
         } else {
           //return "https://pay.reddit.com/r/" + this.subName + "/about.json?jsonp=?"
           if (this.type === 'subreddit')
-            return 'https://reddit.com/r/' + this.subName + "/about.json?jsonp=?";
+            return 'https://www.reddit.com/r/' + this.subName + "/about.json?jsonp=?";
           else
-            return 'https://reddit.com/u/' + this.userName + "/m/" + this.subName + ".json?jsonp=?";
+            return 'https://www.reddit.com/u/' + this.userName + "/m/" + this.subName + ".json?jsonp=?";
 
         }
       }
