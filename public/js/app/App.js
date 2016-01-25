@@ -5,7 +5,7 @@ define(['jquery', 'backbone', 'marionette', 'underscore', 'cookie', 'global'],
 
     //bootstrap the user variable
     App.user = window.redditUser || false
-    App.baseURL = 'https://reddit.com/'
+    App.baseURL = 'https://www.reddit.com/'
     App.embedId = 0 //use this ID to pass messages back and forth between widget and main frame
     App.isEmbeded = false
     App.slideShowSpeed = $.cookie('slideShowSpeed') || 8000
