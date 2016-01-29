@@ -38,7 +38,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         'reportConfirm': '.reportConfirm',
         'reportConfirmYes': '.reportConfirmYes',
         'userTxtInput': '.userTxtInput',
-        'liveTextarea': '.liveTextarea'
+        'liveTextarea': '.liveTextarea',
+		'replies': '.replies'
       },
       initialize: function(options) {
         _.bindAll(this);
@@ -70,7 +71,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         this.setupTextareaExpanding()
       },
       onBeforeDestroy: function() {
-        this.ui.userTxtInput.off('blur focus');
+		if(typeof this.ui.userTxtInput !== 'string'){
+			 this.ui.userTxtInput.off('blur focus');
+		}       
       },
       //add data-external and a special class to any link in a comment
       //once the links have the class outBoundLink on them, they will no longer trigger the hover view
@@ -118,6 +121,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
       },
       reRenderMOAR: function(newComments) {
+		var self=this
         if (typeof newComments !== 'undefined' && newComments.length > 0) {
           //pluck the first model in the collection and set it as this model for reRendering
           this.model = newComments[0]
@@ -129,9 +133,14 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
           this.template = commentTmpl
           this.$el.empty()
           this.render()
-
-          this._parent.collection.add(_.tail(newComments)) //add all but the first comment to the collection
-          this.addOutboundLink()
+		  this.addOutboundLink()
+		  
+		  setTimeout(function(){
+			   // self._parent.collection.add(_.tail(newComments)) //add all but the first comment to the collection
+			    self._parent.addAry(_.tail(newComments)) //add all but the first comment to the collection
+		  },20)
+        
+         
         }
       },
 

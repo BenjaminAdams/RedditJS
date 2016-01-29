@@ -35,6 +35,7 @@ var loginAgainMsg = 'login to reddit please'
 //determines if we should serve minified CSS and Javascript to the client
 var minifiedStr = process.env.NODE_ENV === 'production' ? '.min' : ''
 
+
 /*
 for your local env run
     export NODE_ENV='dev'
