@@ -39,7 +39,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         'reportConfirmYes': '.reportConfirmYes',
         'userTxtInput': '.userTxtInput',
         'liveTextarea': '.liveTextarea',
-		'replies': '.replies'
+        'replies': '.replies'
       },
       initialize: function(options) {
         _.bindAll(this);
@@ -71,21 +71,20 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         this.setupTextareaExpanding()
       },
       onBeforeDestroy: function() {
-		if(typeof this.ui.userTxtInput !== 'string'){
-			 this.ui.userTxtInput.off('blur focus');
-		}       
+        if (typeof this.ui.userTxtInput !== 'string') {
+          this.ui.userTxtInput.off('blur focus');
+        }
       },
       //add data-external and a special class to any link in a comment
       //once the links have the class outBoundLink on them, they will no longer trigger the hover view
       addOutboundLink: function() {
-        this.$('.hoverImgParent a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
-        this.$('.hoverImgParent a').attr('target', '_blank');
+        this.$el.find('.hoverImgParent a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
+        this.$el.find('.hoverImgParent a').attr('target', '_blank');
       },
       loadMOAR: function(e) {
         e.preventDefault()
         e.stopPropagation()
-        $(this.el).html("<div class='loadingS'></div>")
-        var self = this
+        this.$el.html("<div class='loadingS'></div>")
 
         var params = {
           link_id: this.mainPostId,
@@ -93,7 +92,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
           children: this.model.get('children').join(","),
           byPassAuth: true
         };
-        console.log('MOAR=', params)
 
         if (this.checkIfLoggedIn() === true) {
           this.api("api/morechildren.json", 'POST', params, this.gotDataFromRenderMoar);
@@ -103,7 +101,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
       },
       gotDataFromRenderMoar: function(data) {
-        var self = this
         if (_.has(data, 'json.data.things') && data.json.data.things.length > 0) {
 
           var newComments = []
@@ -113,7 +110,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
               parse: true
             }))
           })
-          self.reRenderMOAR(newComments)
+          this.reRenderMOAR(newComments)
         } else {
           //the request failed so give the user the option to try again
           this.render()
@@ -121,7 +118,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
       },
       reRenderMOAR: function(newComments) {
-		var self=this
+        var self = this
         if (typeof newComments !== 'undefined' && newComments.length > 0) {
           //pluck the first model in the collection and set it as this model for reRendering
           this.model = newComments[0]
@@ -131,16 +128,11 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
 
           //change template back to normal comment template
           this.template = commentTmpl
-          this.$el.empty()
           this.render()
-		  this.addOutboundLink()
-		  
-		  setTimeout(function(){
-			   // self._parent.collection.add(_.tail(newComments)) //add all but the first comment to the collection
-			    self._parent.addAry(_.tail(newComments)) //add all but the first comment to the collection
-		  },20)
-        
-         
+          this.addOutboundLink()
+
+          this._parent.addAry(_.tail(newComments))
+
         }
       },
 
@@ -179,7 +171,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
           var self = this
 
           var id = this.model.get('name')
-            //var text = this.$('#text' + id).val()
           var text = this.ui.text.val()
           text = this.sterilize(text) //clean the input
 
