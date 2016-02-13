@@ -35,7 +35,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       },
       initialize: function(options) {
         _.bindAll(this);
-        var self = this;
 
         this.subName = options.subName
         this.id = options.id
@@ -53,7 +52,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
           //this is what we do when we pass in a model with out the comments
           this.model = App.curModel;
           this.updatePageTitle(this.model.get('title'));
-          delete App.curModel; //memory management
+          delete App.curModel;
           this.renderStuff(this.model);
           //well now we need to get the comments for this post!
           this.fetchComments(this.loadComments, null, this.fetchErrorForComments)
@@ -100,9 +99,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         });
       },
       disableComment: function() {
-        var self = this
-          //disable textbox if user is not logged in
-          //because we have to refresh the page if they login via oauth
+        //disable textbox if user is not logged in
+        //because we have to refresh the page if they login via oauth
         if (this.checkIfLoggedIn() === false) {
           this.ui.singleCommentText.attr('readonly', true);
           this.ui.singleCommentText.val('login to comment')
@@ -170,13 +168,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
 
           } else {
             //todo show error
-
           }
-
         });
-
       },
-
       triggerID: function() {
         App.trigger("bottombar:selected", "t3_" + this.id);
       },
@@ -184,7 +178,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         this.ui.noCommentError.html("<div id='retryForComments'><img src='/img/sad-icon.png' title='click here to try again'/> </div> ")
         this.nextErrorFunctionToRun = this
         this.ui.loadingC.hide()
-
       },
       fetchError: function(response, error) {
         this.nextErrorFunctionToRun = this
@@ -193,10 +186,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         this.ui.loadingC.hide()
       },
       tryAgain: function() {
-        // $(this.el).
-        // $(this.el).append("<style id='dynamicWidth'> </style>")
-        // $(this.el).html("<div id='retry'><img src='img/sad-icon.png' /><br /> click here to try again </div> ")
-
         this.model.fetch({
           success: this.loaded,
           error: this.nextErrorFunctionToRun
@@ -257,9 +246,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       renderComments: function(collection) {
         var self = this
         this.updatePageTitle(this.model.get('title'))
-        this.collection = collection
-
-        //this.listenTo(App, "comment:addOneChild" + this.model.get('name'), this.addOneChild);
+          //this.collection = collection
 
         var t = bench('loading commentview') //TIMER
 
