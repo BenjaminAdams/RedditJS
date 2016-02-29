@@ -29,7 +29,7 @@ var bots = require('./bots')
 
 // var scope = 'modposts,identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread'
 var scope = 'modposts,identity,edit,flair,history,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote'
-var callbackURL = process.env.REDDIT_CALLBACK || "https://redditjs.com/auth/reddit/callback"
+var callbackURL = process.env.REDDIT_CALLBACK || "https://js4.red/auth/reddit/callback"
 var loginAgainMsg = 'login to reddit please'
 
 //determines if we should serve minified CSS and Javascript to the client
