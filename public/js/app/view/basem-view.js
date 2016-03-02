@@ -1,5 +1,5 @@
-define(['App', 'underscore', 'backbone', 'cookie'],
-  function(App, _, Backbone, Cookie) {
+define(['App', 'underscore', 'backbone', 'cookie', 'model/comment'],
+  function(App, _, Backbone, Cookie, CommentModel) {
     return Backbone.Marionette.LayoutView.extend({
       api: function(url, type, params, callback) {
         if (this.checkIfLoggedIn() === true || params.byPassAuth === true) {
@@ -395,7 +395,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
 
         });
       },
-	       comment: function(e) {
+      comment: function(e) {
         e.preventDefault()
         e.stopPropagation()
 
@@ -407,7 +407,7 @@ define(['App', 'underscore', 'backbone', 'cookie'],
           text = this.sterilize(text) //clean the input
 
           var params = {
-            api_type: 'json', 
+            api_type: 'json',
             thing_id: id,
             text: text,
             uh: $.cookie('modhash')
