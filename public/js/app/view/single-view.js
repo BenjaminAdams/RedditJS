@@ -123,7 +123,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       },
 
       updatePageTitle: function(title) {
-        document.title = title + " | redditJS.com"
+        document.title = title + " | js4.red"
       },
       fetchComments: function(callback, sortOrder, errorCallback) {
 
