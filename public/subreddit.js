@@ -72,7 +72,7 @@
 			// Listen to message from child window
 			eventer(messageEvent, function(e) {
 
-				if ((typeof e === 'undefined' && typeof e.data === 'undefined') || (e.origin != 'https://redditjs.com' && e.origin != 'http://localhost:8002')) {
+				if ((typeof e === 'undefined' && typeof e.data === 'undefined') || (e.origin != 'https://js4.red' && e.origin != 'http://localhost:8002')) {
 					//error checking
 					return;
 				}
