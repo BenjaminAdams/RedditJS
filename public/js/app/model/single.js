@@ -110,7 +110,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
       if (this.checkIsImg(imgUrl) === false) {
         //URL is NOT an image
         //try and fix an imgur link?
-        imgUrl = this.fixImgur(imgUrl)
+        imgUrl = this.fixImgur(imgUrl, data.domain)
       }
       data.imgUrl = imgUrl
       data.smallImg = this.getSmallerImg(data.imgUrl)
@@ -162,7 +162,7 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
       if (!url) return false
       return (url.match(/\.(jpeg|jpg|gif|gifv|png)$/) !== null);
     },
-    fixImgur: function(url) {
+    fixImgur: function(url, domain) {
       if (this.containsStr("imgur.com", url)) {
         //check if its a gallery
         url = url.replace('http://imgur.com', 'http://i.imgur.com')
@@ -176,6 +176,11 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
           return url + ".jpg"
         }
       }
+	  
+	  if(domain === 'i.reddituploads.com') {
+		  return url
+	  }
+	  
       return false;
     },
     //imgur keeps a small image that we can use in the grid view
