@@ -97,7 +97,12 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
         data.commentsPlural = 'comments'
       }
       //We have to print the score out for the upvoted and downvoted values
-
+	  
+	  if(data.url) {
+		 data.url = data.url.replace(/&amp;/g, '&'); //redditUpload images were an encodedUrl 
+	  }
+      
+	  
       //figure out a URL that we can embed in an image tag
       data.expandHTML = ""
       data.embededImg = false //if its a single image/video we can embed into a single post view
