@@ -42,7 +42,7 @@ for your local env run
     export REDDIT_KEY = 'your key'
     export REDDIT_SECRET = 'your secret'
     export REDDIT_CALLBACK = 'http://localhost:8002/auth/reddit/callback'
-    export SESSION_SECERET = 'make up some random string'
+    export SESSION_SECRET = 'make up some random string'
 
     *put these in ~/.profile so you have them on reboot
 */
