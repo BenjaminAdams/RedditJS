@@ -1,13 +1,13 @@
 RedditJS uses [spa-seo-renderer](https://github.com/BenjaminAdams/spa-seo-renderer) so search engines can crawl this single page app.
 
-##RedditJS is now known as [js4.red](https://js4.red)!
+## RedditJS is now known as [js4.red](https://js4.red)!
 
-##RedditJS
+## RedditJS
 The code that powers [js4.red](https://js4.red).
 
 I rewrote reddit from the ground up using the javascript framework [Backbone](https://github.com/jashkenas/backbone) and the [reddit API](http://www.reddit.com/dev/api/).  I feel that I've created a better user experience as well as additional features that makes for a more enjoyable experience.  Follow updates at [/r/redditjs](http://www.reddit.com/r/redditjs).
 
-#Features
+# Features
  * **Data Cache:**  Only have to load up the subreddit once.  Once the subreddit is loaded, it will pull the subreddit/single post from memory. (Benefit for both Reddit's server and you!  Only fetch once.)
  * **Unique Views:**  View an entire subreddit in a new way.  View thumbnails only, full images, and large grid mode.  (more to come)
  * **Do everything:** you normally can on Reddit(*almost everything).  Vote/save/hide posts.  Comment, Mail, Search all without having to refresh your browser.
@@ -22,7 +22,7 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * **Same Styles everywhere:** Option to use the same CSS styles from one subreddit all over reddit. I did this so I could use [murica](http://redditjs.com/r/murica) everywhere.
  * **Subreddit Slideshow:** Create a never ending slideshow from the images in a subreddit.  [Reddit Slideshow example](http://redditjs.com/comments/aww/355ay7/slideshow)
 
-####RedditJS is built with:
+#### RedditJS is built with:
  * Node <http://nodejs.org/>
  * Backbone <https://github.com/jashkenas/backbone>
  * Marionette <http://marionettejs.com>
@@ -70,9 +70,9 @@ You can add the script tag to any website, or you can use the [Reddit Embed Word
 ```
 
 
-####Subreddit embed widget
+#### Subreddit embed widget
 
-#####Instructions
+##### Instructions
 Add this script tag where you want the subreddit widget to appear.
 
 
