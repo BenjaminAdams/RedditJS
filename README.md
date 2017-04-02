@@ -116,7 +116,7 @@ Via command line, and also put at bottom of ~/.profile to keep set on system res
     export REDDIT_KEY = 'your key'
     export REDDIT_SECRET = 'your secret'
     export REDDIT_CALLBACK = 'http://localhost:8002/auth/reddit/callback'
-    export SESSION_SECERET = 'make up some random string'
+    export SESSION_SECRET = 'make up some random string'
 ```
 
 #### Thanks
