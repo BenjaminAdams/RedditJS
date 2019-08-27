@@ -1,5 +1,5 @@
 define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/commentMOAR', 'view/hover-img-view', 'view/basem-view', 'model/comment'],
-  function(App, _, Backbone, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel) {
+  function (App, _, Backbone, commentTmpl, CommentMOAR, HoverImgView, BaseView, CommentModel) {
     return BaseView.extend({
       template: commentTmpl,
       events: {
@@ -41,7 +41,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         'liveTextarea': '.liveTextarea',
         'replies': '.replies'
       },
-      initialize: function(options) {
+      initialize: function (options) {
         _.bindAll(this);
         var self = this;
         this.model = options.model
@@ -64,24 +64,24 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
           this.template = commentTmpl
         }
       },
-      onShow: function() {
+      onShow: function () {
         var self = this
         this.addOutboundLink()
         this.permalinkParent = this.model.get('permalinkParent')
         this.setupTextareaExpanding()
       },
-      onBeforeDestroy: function() {
+      onBeforeDestroy: function () {
         if (typeof this.ui.userTxtInput !== 'string') {
           this.ui.userTxtInput.off('blur focus');
         }
       },
       //add data-external and a special class to any link in a comment
       //once the links have the class outBoundLink on them, they will no longer trigger the hover view
-      addOutboundLink: function() {
+      addOutboundLink: function () {
         this.$el.find('.hoverImgParent a').addClass('outBoundLink').attr("data-bypass", "true"); //makes the link external to be clickable
         this.$el.find('.hoverImgParent a').attr('target', '_blank');
       },
-      loadMOAR: function(e) {
+      loadMOAR: function (e) {
         e.preventDefault()
         e.stopPropagation()
         this.$el.html("<div class='loadingS'></div>")
@@ -96,16 +96,22 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         if (this.checkIfLoggedIn() === true) {
           this.api("api/morechildren.json", 'POST', params, this.gotDataFromRenderMoar);
         } else {
-          this.apiNonAuth("api/morechildren.json", 'POST', params, this.gotDataFromRenderMoar);
+          //  this.apiNonAuth("api/morechildren.json", 'POST', params, this.gotDataFromRenderMoar); //this stopped working          
+          $.ajax({
+            url: App.baseURL + 'api/morechildren.json?jsonp=doesntmatter&api_type=json&link_id=' + this.mainPostId + '&children=' + this.model.get('children').join("%2C") + '&sort=confidence',
+            success: this.gotDataFromRenderMoar,
+            error: this.render
+          });
+
         }
 
       },
-      gotDataFromRenderMoar: function(data) {
+      gotDataFromRenderMoar: function (data) {
         if (_.has(data, 'json.data.things') && data.json.data.things.length > 0) {
 
           var newComments = []
 
-          _.each(data.json.data.things, function(x) {
+          _.each(data.json.data.things, function (x) {
             newComments.push(new CommentModel(x, {
               parse: true
             }))
@@ -117,7 +123,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         }
 
       },
-      reRenderMOAR: function(newComments) {
+      reRenderMOAR: function (newComments) {
         var self = this
         if (typeof newComments !== 'undefined' && newComments.length > 0) {
           //pluck the first model in the collection and set it as this model for reRendering
@@ -136,7 +142,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         }
       },
 
-      hideThread: function(e) {
+      hideThread: function (e) {
         e.preventDefault()
         e.stopPropagation()
         this.ui.noncollapsed.hide()
@@ -144,7 +150,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         this.ui.child.hide()
         this.ui.midcol.hide()
       },
-      showThread: function(e) {
+      showThread: function (e) {
         e.preventDefault()
         e.stopPropagation()
         this.ui.collapsed.hide()
@@ -153,7 +159,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         this.ui.midcol.show()
       },
       //shows the comment reply textbox
-      toggleReply: function(e) {
+      toggleReply: function (e) {
         e.preventDefault()
         e.stopPropagation()
         this.ui.commentreply.toggle().find('.text').focus()
@@ -163,8 +169,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         }
       },
       //attempts to create a new comment
- 
-      commentLinkHover: function(e) {
+
+      commentLinkHover: function (e) {
         e.preventDefault()
         e.stopPropagation()
         if (App.settings.get('cmtLoad') === true) {
@@ -210,10 +216,10 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
           }
         }
       },
-      fetchError: function(response, error) {
+      fetchError: function (response, error) {
         console.log("fetch error, lets retry")
       },
-      loaded: function(model, res) {
+      loaded: function (model, res) {
         this.$('.loading').hide()
         this.render();
       }
