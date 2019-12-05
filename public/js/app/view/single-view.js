@@ -42,9 +42,11 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         this.hasRendered = false
         this.blinking = '<img class="blinkingFakeInput" src="/img/text_cursor.gif" />'
 
+        this.sortOrder= this.getSinglePostSortOrder()
+
         if (typeof App.curModel === 'undefined') {
 
-          this.fetchComments(this.loaded, null, this.fetchError)
+          this.fetchComments(this.loaded, this.sortOrder, this.fetchError)
           this.template = loadingTmpl
 
         } else {
@@ -55,8 +57,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
           delete App.curModel;
           this.renderStuff(this.model);
           //well now we need to get the comments for this post!
-          this.fetchComments(this.loadComments, null, this.fetchErrorForComments)
-
+          this.fetchComments(this.loadComments, this.sortOrder, this.fetchErrorForComments)
         }
 
         this.listenTo(App, "single:remove", this.remove, this);
@@ -64,6 +65,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       },
       onRender: function() {
         var self = this
+
+        this.$('.selectedCmntSort').html(this.sortOrder)
+
         if (typeof this.model !== 'undefined') {
 
           self.thepost.show(new PostRowView({
@@ -116,10 +120,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         e.stopPropagation()
         this.$('.drop-choices-single').hide()
         var target = this.$(e.currentTarget)
-        var sortOrder = target.text()
-        this.$('.selectedCmntSort').html(sortOrder)
+        this.sortOrder = target.text()
+
+        this.setSinglePostSortOrder(this.sortOrder)
+
+        this.$('.selectedCmntSort').html(this.sortOrder)
         this.$('#siteTableComments').empty()
-        this.fetchComments(this.loadComments, sortOrder, this.fetchError)
+        this.fetchComments(this.loadComments, this.sortOrder, this.fetchError)
       },
 
       updatePageTitle: function(title) {
@@ -258,6 +265,23 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         }))
 
         t.stop() //END TIMER
+      },
+      getSinglePostSortOrder: function(){
+        try {
+         var res= window.localStorage.getItem('singlePostSortOrder');
+         if(!res) return 'best'
+         return res
+        }catch(e){
+          console.log('failed to get localstorage', e)
+          return 'best'
+        } 
+      },
+      setSinglePostSortOrder: function(sortOrder){
+        try {
+          window.localStorage.setItem('singlePostSortOrder', sortOrder);
+        }catch(e){
+          console.log('failed to set localstorage', e)
+        }       
       }
 
     });
