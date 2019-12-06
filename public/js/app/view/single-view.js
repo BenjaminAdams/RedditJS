@@ -158,7 +158,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
           id: this.commentLink,
           api_type: 'json',
           children: this.commentLink,
-          byPassAuth: false
+          byPassAuth: false,
+          sort: this.sortOrder
         }
 
         this.apiNonAuth("api/morechildren.json", 'POST', params, function(data) {
@@ -265,23 +266,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         }))
 
         t.stop() //END TIMER
-      },
-      getSinglePostSortOrder: function(){
-        try {
-         var res= window.localStorage.getItem('singlePostSortOrder');
-         if(!res) return 'best'
-         return res
-        }catch(e){
-          console.log('failed to get localstorage', e)
-          return 'best'
-        } 
-      },
-      setSinglePostSortOrder: function(sortOrder){
-        try {
-          window.localStorage.setItem('singlePostSortOrder', sortOrder);
-        }catch(e){
-          console.log('failed to set localstorage', e)
-        }       
       }
 
     });

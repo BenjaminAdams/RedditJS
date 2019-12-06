@@ -67,6 +67,23 @@ define(['App', 'underscore', 'backbone', 'cookie', 'model/comment'],
           scrollTop: 0
         }, 150);
       },
+      getSinglePostSortOrder: function(){
+        try {
+         var res= window.localStorage.getItem('singlePostSortOrder');
+         if(!res) return 'best'
+         return res
+        }catch(e){
+          console.log('failed to get localstorage', e)
+          return 'best'
+        } 
+      },
+      setSinglePostSortOrder: function(sortOrder){
+        try {
+          window.localStorage.setItem('singlePostSortOrder', sortOrder);
+        }catch(e){
+          console.log('failed to set localstorage', e)
+        }       
+      },
       fullScreen: function(e) {
         if (this.isDocumentInFullScreenMode()) {
           //if already in fullscreen mode toggle it off

@@ -86,11 +86,18 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         e.stopPropagation()
         this.$el.html("<div class='loadingS'></div>")
 
+
+        var children = this.model.get('children')
+        if(children && children.length >500){
+          children = children.splice(0,499)
+        }
+
         var params = {
           link_id: this.mainPostId,
           api_type: 'json',
-          children: this.model.get('children').join(","),
-          byPassAuth: true
+          children: children.join(","),
+          byPassAuth: true,
+          sort: this.getSinglePostSortOrder()
         };
 
         if (this.checkIfLoggedIn() === true) {
@@ -98,7 +105,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/comment', 'hbs!template/c
         } else {
           //  this.apiNonAuth("api/morechildren.json", 'POST', params, this.gotDataFromRenderMoar); //this stopped working          
           $.ajax({
-            url: App.baseURL + 'api/morechildren.json?jsonp=doesntmatter&api_type=json&link_id=' + this.mainPostId + '&children=' + this.model.get('children').join("%2C") + '&sort=confidence',
+            url: App.baseURL + 'api/morechildren.json?jsonp=doesntmatter&api_type=json&link_id=' + this.mainPostId + '&children=' + children.join("%2C") + '&sort='+ this.getSinglePostSortOrder(),
             success: this.gotDataFromRenderMoar,
             error: this.render
           });
