@@ -1,5 +1,5 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view/basem-view', 'model/user-about', 'model/me', 'hbs!template/userbar-mobile', 'cookie', 'localstorage'],
-  function(App, $, _, Backbone, UserbarTmpl, BaseView, UserModel, MeModel, MobileUserbarTmpl, Cookie, Localstorage) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view/basem-view', 'model/user-about', 'model/me', 'hbs!template/userbar-mobile', 'cookie'],
+  function(App, $, _, Backbone, UserbarTmpl, BaseView, UserModel, MeModel, MobileUserbarTmpl, Cookie) {
     return BaseView.extend({
       template: UserbarTmpl,
       events: {
@@ -66,14 +66,11 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
       showOathLogin: function() {
         console.log('show oath login form')
         this.showLoginBox()
-
       },
 
-      showLoggedOut: function() {
-        //this.$el.html(this.loggedOut)
+      showLoggedOut: function() {        
         this.ui.loggedOut.show()
-        this.ui.loggedIn.hide()
-          //$(this.el).html(this.loggedOut)
+        this.ui.loggedIn.hide()          
       },
       //log user out, delete server side session and client side cookies
       logout: function(e) {
@@ -81,10 +78,9 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/userbar', 'view
         e.stopPropagation()
         App.trigger("logout");
         this.showLoggedOut()
-        App.user = false
-        $.totalStorage.deleteItem('subreddits')
+        App.user = false        
         $.get("/logout");
-
+        window.localStorage.removeItem('subreddits');
       }
     });
 

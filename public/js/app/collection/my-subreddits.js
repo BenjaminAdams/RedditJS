@@ -1,11 +1,11 @@
-define(['App', 'backbone', 'model/single', 'localstorage'], function(App, Backbone, SingleModel, Localstorage) {
+define(['App', 'backbone', 'model/single'], function(App, Backbone, SingleModel) {
   var MySubreddits = Backbone.Collection.extend({
     initialize: function() {
-      var srcookie = $.totalStorage('subreddits')
-      if (typeof $.totalStorage('subreddits') !== 'undefined' && $.totalStorage('subreddits') !== null) {
-        this.loadFromCookie()
+      this.subreddits = this.loadSubredditsFromLS()
+            
+      if (typeof this.subreddits !== 'undefined' && this.subreddits !== null && this.subreddits.length >0) {
+        this.parseFromLS()
       } else {
-
         this.fetch()
       }
     },
@@ -23,39 +23,50 @@ define(['App', 'backbone', 'model/single', 'localstorage'], function(App, Backbo
     //so we have the attributes in the root of the model
     parse: function(response) {
       var subreddits = []
-        //var subredditsStr = ""
 
       if (typeof response === 'undefined' || response.data === 'undefined') {
         this.loadDefaultSubreddits()
       } else {
 
         _.each(response.data.children, function(item) {
-
           subreddits.push({
             header_img: item.data.header_img,
             display_name: item.data.display_name
           });
-
         })
 
-        $.totalStorage('subreddits', subreddits);
+        this.setSubredditsLS(subreddits)
 
         return subreddits;
       }
-
+    },      
+    loadSubredditsFromLS: function(){
+      try {
+       return JSON.parse(window.localStorage.getItem('subreddits'))
+      }catch(e){
+        console.log('failed to get localstorage', e)
+        return null
+      } 
     },
-    loadFromCookie: function() {
+    setSubredditsLS: function(data){
+      try {
+        window.localStorage.setItem('subreddits', JSON.stringify(data));
+      }catch(e){
+        console.log('failed to set localstorage', e)
+      }       
+    },
+    parseFromLS: function() {
       var self = this
-      var subreddits = $.totalStorage('subreddits')
-      for (var i = 0; i < subreddits.length; i++) {
-        self.add({
-          display_name: subreddits[i].display_name,
-          header_img: subreddits[i].header_img
 
+      for (var i = 0; i < this.subreddits.length; i++) {
+        self.add({
+          display_name: this.subreddits[i].display_name,
+          header_img: this.subreddits[i].header_img
         });
 
       }
     },
+    
     loadDefaultSubreddits: function() {
 
       this.add({

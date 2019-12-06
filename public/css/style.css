@@ -931,6 +931,11 @@ body {
     position: relative;
     right: 5px;
 }
+
+.btm-ad {
+    margin: 100px 0 200px 0;
+}
+
 /*On the user page we do not display rank*/
 
 .userView .rank {

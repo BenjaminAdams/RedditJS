@@ -12,7 +12,6 @@ require.config({
     "jszip": '../lib/jszip',
     "fileSaver": '../lib/fileSaver',
     'cookie': '../lib/jquery.cookie',
-    'localstorage': '../lib/jquery.total-storage',
     'moment': '../lib/moment',
     'snuownd': '../lib/snuownd',
     'console': '../lib/console'
@@ -29,7 +28,6 @@ require.config({
       // Exports the global window.Backbone object
       "exports": "Backbone"
     },
-
     //Marionette
     "marionette": {
       "deps": ["underscore", "backbone", "jquery"],
@@ -39,11 +37,8 @@ require.config({
     "handlebars": {
       "exports": "Handlebars"
     },
-    "cookie": ["jquery"],
-    "localstorage": ["jquery"]
-
+    "cookie": ["jquery"]
   },
-
   // hbs config - must duplicate in Gruntfile.js Require build
   hbs: {
     disableI18n: true,

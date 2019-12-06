@@ -9,7 +9,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'view/basem-view', 'hbs!templ
       onRender: function() {
         //delete users subreddits so we can fetch again
         _.invoke(App.subreddits.mine.toArray(), 'destroy');
-        $.totalStorage('subreddits', null);
+        window.localStorage.removeItem('subreddits');
 
         window.close()
       }

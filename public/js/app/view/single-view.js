@@ -31,7 +31,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         singleCommentText: '#singleCommentText',
         userTxtInput: '.userTxtInput',
         liveTextarea: '.liveTextarea',
-        noCommentError: '.noCommentError'
+        noCommentError: '.noCommentError',
+        btmAd: '.btm-ad'
       },
       initialize: function(options) {
         _.bindAll(this);
@@ -82,7 +83,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         this.scrollTop()
         this.disableComment()
         this.addOutboundLink()
-        this.setupTextareaExpanding()
+        this.setupTextareaExpanding()        
       },
       onBeforeDestroy: function() {
         this.destroyed = true
@@ -251,6 +252,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       addOneChild: function(model) {
         this.collection.add(model)
       },
+
       renderComments: function(collection) {
         var self = this
         this.updatePageTitle(this.model.get('title'))

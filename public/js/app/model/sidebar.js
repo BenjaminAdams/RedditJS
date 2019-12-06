@@ -60,7 +60,6 @@ define(['App', 'underscore', 'backbone', 'jquery', 'moment'], function(App, _, B
         //data.description = markdown.toHTML(data.description)
       data.description_html = (typeof data.description_html === 'undefined') ? '' : $('<div/>').html(data.description_html).text();
       //data.description_html = data.description_html.replace("reddit.com","redditjs.com")
-      //localStorage[this.subName] = JSON.stringify(data)
       return data;
 
     },
