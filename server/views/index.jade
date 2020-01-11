@@ -19,7 +19,10 @@ head
     script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
 
   link#subredditStyle(href='', rel='stylesheet')
-    
+
+  if (customCss)
+    link(rel='stylesheet', href='#{customCss}')
+
 body.listing-page.hot-page
   #theHeader  
   .side
