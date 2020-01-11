@@ -244,7 +244,8 @@ server.get("*", function(req, res) {
     bots.fetchForBot(res, req)
   } else {
     res.render('index', {
-      user: req.user || false //bootstrap user to client if they are logged in
+      user: req.user || false, //bootstrap user to client if they are logged in
+      customCss: (req.path == '/embed' && req.query.customCss) || false
     })
   }
 
