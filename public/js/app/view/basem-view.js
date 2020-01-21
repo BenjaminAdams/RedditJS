@@ -454,8 +454,11 @@ define(['App', 'underscore', 'backbone', 'cookie', 'model/comment'],
               parse: true
             }))
           })
-
-          this._parent.collection.add(newComments)
+          if (this.siteTableComments) {
+            this.siteTableComments.currentView.collection.add(newComments);
+          } else {
+            this._parent.collection.add(newComments)
+          }
         } else {
 
           var msgAry = ((data || {}).json || {}).errors;
