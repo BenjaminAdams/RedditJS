@@ -30,6 +30,13 @@
             <a href="#" class="choice hidden">random</a>
 
         </div>
+        {{#if suggested_sort}} 
+            <span class='suggested-switch dropdown-title' title="Use the suggest comment sort order">
+                <label class="switch">
+                    <input type="checkbox" class="suggested-checkbox" {{#if useSuggestedSort}}checked{{/if}}>
+                    <span class="slider round"></span></label> suggested ({{suggested_sort}})
+            </span> 
+        {{/if}}
     </div>
 
 </div>

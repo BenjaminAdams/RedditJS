@@ -535,6 +535,8 @@ define(['App', 'underscore', 'backbone', 'marionette', 'view/header-view', 'view
           }
         }
 
+        App.settings.set('useSuggestedSort', $.cookie('useSuggestedSort')==='true')
+
         //update cssType
         App.settings.set('cssType', $.cookie('cssType') || 'useSrStyles')
           //update useSrEverywhereTxt

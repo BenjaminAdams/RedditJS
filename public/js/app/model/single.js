@@ -10,7 +10,9 @@ define(['App', 'underscore', 'backbone', 'collection/comments'], function(App, _
     },
     url: function() {
       var sortOrderStr = ""
-      if (this.sortOrder !== "undefined") {
+      var useSuggestedSort=App.settings.get('useSuggestedSort')
+      
+      if (this.sortOrder !== "undefined" && this.sortOrder && this.sortOrder !== "null" && useSuggestedSort !== true ) {
         sortOrderStr = "&sort=" + this.sortOrder
       }
       var username = App.user.name || false

@@ -14,7 +14,8 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         'click .mdHelpHide': 'hideMdHelp',
         'submit #mainComment': 'comment',
         'keyup .userTxtInput': 'keyPressComment',
-        'click .startSlideshow': 'startSlideshow'
+        'click .startSlideshow': 'startSlideshow',
+        "change .suggested-checkbox": "updatedSuggestedPref"
       },
       regions: {
         thepost: '#thepost',
@@ -42,9 +43,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         this.commentLink = options.commentLink
         this.hasRendered = false
         this.blinking = '<img class="blinkingFakeInput" src="/img/text_cursor.gif" />'
-
+        
         this.sortOrder= this.getSinglePostSortOrder()
-
+ 
         if (typeof App.curModel === 'undefined') {
 
           this.fetchComments(this.loaded, this.sortOrder, this.fetchError)
@@ -54,6 +55,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
           //loading a model from memory
           //this is what we do when we pass in a model with out the comments
           this.model = App.curModel;
+          this.model.set('useSuggestedSort', App.settings.get('useSuggestedSort'))
           this.updatePageTitle(this.model.get('title'));
           delete App.curModel;
           this.renderStuff(this.model);
@@ -200,6 +202,24 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
           error: this.nextErrorFunctionToRun
         });
       },
+      updatedSuggestedPref: function(e){
+        var target= $(e.currentTarget)
+        var isChecked = target.is(':checked')
+        if(isChecked){
+          console.log(isChecked)
+        } else {
+          console.log(isChecked)
+        }
+
+        App.settings.set({'useSuggestedSort': isChecked});
+        $.cookie('useSuggestedSort', isChecked, {
+          path: '/',
+          expires: 364
+        });
+
+        this.fetchComments(this.loadComments, this.sortOrder, this.fetchError)
+
+      },
       gotoPrev: function() {
         App.trigger('btmbar:gotoPrev')
       },
@@ -246,6 +266,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       },
       loaded: function(model, res) {
         this.model = model
+        this.model.set('useSuggestedSort', App.settings.get('useSuggestedSort'))
         this.renderStuff(model);
         this.loadComments(model);
       },
@@ -258,16 +279,12 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         this.updatePageTitle(this.model.get('title'))
           //this.collection = collection
 
-        var t = bench('loading commentview') //TIMER
-
         this.siteTableComments.show(new CViewComments({
           collection: collection,
           originalPoster: this.model.get('author'),
           commentsDisabled: this.model.get('commentsDisabled'),
           mainPostId: this.model.get('name')
         }))
-
-        t.stop() //END TIMER
       }
 
     });
