@@ -45,7 +45,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         this.blinking = '<img class="blinkingFakeInput" src="/img/text_cursor.gif" />'
         
         this.sortOrder= this.getSinglePostSortOrder()
- 
+       
         if (typeof App.curModel === 'undefined') {
 
           this.fetchComments(this.loaded, this.sortOrder, this.fetchError)
@@ -69,7 +69,13 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       onRender: function() {
         var self = this
 
-        this.$('.selectedCmntSort').html(this.sortOrder)
+        var useSuggestedSort=App.settings.get('useSuggestedSort')
+        if(useSuggestedSort){
+          this.$('.selectedCmntSort').html('suggested')
+        }else {
+          this.$('.selectedCmntSort').html(this.sortOrder)
+        }
+        
 
         if (typeof this.model !== 'undefined') {
 
@@ -116,6 +122,9 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         }
       },
       toggleDropDownCmtSort: function() {
+        var useSuggestedSort=App.settings.get('useSuggestedSort')
+        if(useSuggestedSort) return
+
         this.$('.drop-choices-single').toggle()
       },
       changeCmntSort: function(e) {
@@ -133,7 +142,7 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       },
 
       updatePageTitle: function(title) {
-        document.title = title + " | js4.red"
+        document.title = title + " | redditjs"
       },
       fetchComments: function(callback, sortOrder, errorCallback) {
 
@@ -176,7 +185,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
             if (self.hasRendered === true) {
               self.loadLinkedCommentView()
             }
-
           } else {
             //todo show error
           }
@@ -205,10 +213,11 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
       updatedSuggestedPref: function(e){
         var target= $(e.currentTarget)
         var isChecked = target.is(':checked')
-        if(isChecked){
-          console.log(isChecked)
-        } else {
-          console.log(isChecked)
+
+        if(isChecked) {
+          this.$('.selectedCmntSort').html('suggested')
+        }else {
+          this.$('.selectedCmntSort').html(this.sortOrder)
         }
 
         App.settings.set({'useSuggestedSort': isChecked});
@@ -218,7 +227,6 @@ define(['App', 'underscore', 'backbone', 'hbs!template/single', 'hbs!template/lo
         });
 
         this.fetchComments(this.loadComments, this.sortOrder, this.fetchError)
-
       },
       gotoPrev: function() {
         App.trigger('btmbar:gotoPrev')

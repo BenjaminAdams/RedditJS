@@ -1,7 +1,5 @@
 <div id='thepost' class='sitetable'></div>
 
-
-
 <div class="panestack-title">
     <span class="title">all {{num_comments}} {{commentsPlural}}</span>
 
@@ -13,7 +11,7 @@
     </span>
 
 </div>
-<div class="menuarea sortCommentsMenu" style='border-bottom: none;'>
+<div class="menuarea sortCommentsMenu noselect" style='border-bottom: none;'>
     <div class="spacer">
         <span class="dropdown-title lightdrop ">sorted by: </span>
         <div class="dropdown lightdrop toggleDropdownCmntSort">
@@ -30,13 +28,13 @@
             <a href="#" class="choice hidden">random</a>
 
         </div>
-        {{#if suggested_sort}} 
+        
             <span class='suggested-switch dropdown-title' title="Use the suggest comment sort order">
                 <label class="switch">
                     <input type="checkbox" class="suggested-checkbox" {{#if useSuggestedSort}}checked{{/if}}>
-                    <span class="slider round"></span></label> suggested ({{suggested_sort}})
+                    <span class="slider round"></span></label> use suggested {{#if suggested_sort}} ({{suggested_sort}}) {{else}} (top) {{/if}}
             </span> 
-        {{/if}}
+        
     </div>
 
 </div>
