@@ -3,7 +3,7 @@ RedditJS uses [spa-seo-renderer](https://github.com/BenjaminAdams/spa-seo-render
 ## RedditJS is now known as [js4.red](https://js4.red)!
 
 ## RedditJS
-The code that powers [js4.red](https://js4.red).
+The code that powers [js4.red](removed).
 
 I rewrote reddit from the ground up using the javascript framework [Backbone](https://github.com/jashkenas/backbone) and the [reddit API](http://www.reddit.com/dev/api/).  I feel that I've created a better user experience as well as additional features that makes for a more enjoyable experience.  Follow updates at [/r/redditjs](http://www.reddit.com/r/redditjs).
 
@@ -33,7 +33,7 @@ I rewrote reddit from the ground up using the javascript framework [Backbone](ht
  * Hosted at [Digital Ocean]( https://www.digitalocean.com/?refcode=572549c85ce0)
 
 #### Post embed widget
-You can add this script tag to any website.  The post widget will embed itself onto your Wordpress post and detect if it has been posted to reddit.   [details and examples](http://embed.redditjs.com)
+You can add this script tag to any website.  The post widget will embed itself onto your Wordpress post and detect if it has been posted to reddit.   [details and examples](http://embed.removed.com)
 
 ```<script src='//redditjs.com/post.js'></script>```
 
@@ -76,7 +76,7 @@ You can add the script tag to any website, or you can use the [Reddit Embed Word
 Add this script tag where you want the subreddit widget to appear.
 
 
-```<script src='//redditjs.com/subreddit.js'></script>```
+```<script src='//removed.com/subreddit.js'></script>```
 
 <h3>Options</h3>
 All of these options are optional.
@@ -94,7 +94,7 @@ All of these options are optional.
 </table>
 
 ##### example with options
-<script src='//redditjs.com/subreddit.js' data-subreddit='BeavisAndButthead' data-height='500' data-width='500' data-sort='top' data-theme='light' data-timeframe='month' data-subreddit-mode='grid'></script>
+<script src='//removed.com/subreddit.js' data-subreddit='BeavisAndButthead' data-height='500' data-width='500' data-sort='top' data-theme='light' data-timeframe='month' data-subreddit-mode='grid'></script>
 
 
 #### How to run redditjs locally
