@@ -27,7 +27,7 @@
     "express-device": "^0.3.13",
     "express-session": "^1.13.0",
     "jade": "*",
-    "method-override": "^1.0.2",
+    "method-override": "^2.3.10",
     "multiparty": "^3.3.2",
     "passport": "^0.2.2",
     "passport-reddit": "^0.2.4",
