@@ -23,7 +23,7 @@
     "cookie-session": "^1.2.0",
     "crypto": "0.0.3",
     "errorhandler": "^1.0.1",
-    "express": "^4.13.4",
+    "express": "^4.17.3",
     "express-device": "^0.3.13",
     "express-session": "^1.13.0",
     "jade": "*",
