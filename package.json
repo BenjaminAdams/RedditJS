@@ -14,7 +14,7 @@
     "npm": "2.0.0"
   },
   "dependencies": {
-    "async": "^0.2.10",
+    "async": "^2.6.4",
   "body-parser": "^1.1.1",
     "bytes": "^1.0.0",
     "compression": "^1.0.2",
